@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "css-loader": "^4.2.1",
+    "less": "^3.12.2",
+    "less-loader": "^6.2.0",
+    "node-sass": "^4.14.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^1.2.1",
+    "stylus-loader": "^3.0.2",
+    "vue-style-loader": "^4.1.2"
+  },
+  "dependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^6.0.7"
+  }
+}
