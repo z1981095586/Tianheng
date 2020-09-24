@@ -151,7 +151,7 @@ window.close();
                 axis_no: axis_no.toLocaleUpperCase(),
                 product_name: product_name.toLocaleUpperCase(),
                 total_work_qty:meter.toLocaleUpperCase(),
-                user_id: that.staff_id,
+                user_id: that.staff_name,
                   print_code: that.print_code,
                   end_date:end_date
               }
