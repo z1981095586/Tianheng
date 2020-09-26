@@ -1,499 +1,113 @@
+
 <template>
-    <div style="background-color:rgba(240,240,240,0.9);min-width: 300px;height:300px" class="standard_border">
-      <table style="min-width:300px;"  cellspacing='0' cellpadding='0' height="120px" class="standard_border">
-        <tr>
-          <td style="width: 70%;height: 120px">
-            <el-form :model="outputSubmitForm" ref="outputSubmitForm" label-width="150px" style="margin-top: 20px" :hide-required-asterisk="true">
-              <el-form-item
-                prop="axleNumber"
-                style="display: inline-block"
-                :rules="[{ required: true, message: '织轴号不能为空'}]"
-              >
-                <template slot="label">
-                  <div class="blueInputTitle" style="font-size: 30px;width: 120px" >织轴号</div>
-                </template>
-                <el-input ref="axleNumber" class="standard_input" @focus="focusInput ='axleNumber'" style="font-size: 20px" size="medium" v-model.number="outputSubmitForm.axleNumber"></el-input>
-              </el-form-item>
-            </el-form>
-          </td>
-          <td class="standard_border">
-             <div style="text-align: center;width: 100%">
-               <table width="100%"  cellspacing='0' cellpadding='0' height="80px">
-                 <tr style="height: 40px">
-                   <td><el-button type="info" plain style="width: 60%;font-size: 24px" @click="submitData('finish')">完成</el-button></td>
-                 </tr>
-                 <tr style="height: 40px">
-                   <td><el-button type="info" plain style="width: 60%;font-size: 24px" @click="returnMain(1,null,null)">取消</el-button></td>
-                 </tr>
-               </table>
-             </div>
-          </td>
-        </tr>
-      </table>
-      <table width="100%"  cellspacing='0' cellpadding='0' height="60px">
-           <tr v-for="indexTr in 7" >
-             <td  v-for="indexTd in 6" style="text-align: center;">
-                 <el-button type="primary" plain style="width: 60px" size="medium"  @click="selectTableButton((indexTr-1)*6+indexTd-1)">
-                   <p :style="{'color':buttonList[(indexTr-1)*6+indexTd-1].color}" style="font-weight: bolder;font-size: 3cm;width: 100%">{{buttonList[(indexTr-1)*6+indexTd-1].label}}</p>
-                 </el-button>
-             </td>
-           </tr>
-      </table>
+  <div v-clickoutside="hide">
+    <input v-bind="$attrs"
+           @focus="show"
+           @blur="submit" />
+    <div class="keyboard__warn-mess keyboard__warn">
+      <div v-if=warnMessage
+           class="">
+        {{warnMessage}}
+      </div>
+ 
     </div>
+    <vue-touch-keyboard class="keyboard-nav"
+                        :options="options"
+                        v-if="visible"
+                        :cancel="hide"
+                        :layout="layout"
+                        :accept="hide"
+                        :input="input" />
+  </div>
 </template>
 
+
+
 <script>
-
-    export default {
-      data () {
-        return {
-          companyId:10000015,
-          buttonList:[
-            {
-              label:"A",
-              color:"#000000",
-            }, {
-              label:"B",
-              color:"#000000",
-            }, {
-              label:"C",
-              color:"#000000",
-            },{
-              label:"D",
-              color:"#000000",
-            },{
-              label:"E",
-              color:"#000000",
-            },{
-              label:"F",
-              color:"#000000",
-            },{
-              label:"G",
-              color:"#000000",
-            },{
-              label:"H",
-              color:"#000000",
-            },{
-              label:"I",
-              color:"#000000",
-            },{
-              label:"J",
-              color:"#000000",
-            },{
-              label:"K",
-              color:"#000000",
-            },{
-              label:"L",
-              color:"#000000",
-            },{
-              label:"M",
-              color:"#000000",
-            },{
-              label:"N",
-              color:"#000000",
-            },{
-              label:"O",
-              color:"#000000",
-            },{
-              label:"P",
-              color:"#000000",
-            },{
-              label:"Q",
-              color:"#000000",
-            },{
-              label:"R",
-              color:"#000000",
-            },{
-              label:"S",
-              color:"#000000",
-            },{
-              label:"T",
-              color:"#000000",
-            },{
-              label:"U",
-              color:"#000000",
-            },{
-              label:"1",
-              color:"red",
-            },{
-              label:"2",
-              color:"red",
-            },{
-              label:"3",
-              color:"red",
-            },{
-              label:"V",
-              color:"#000000",
-            },{
-              label:"W",
-              color:"#000000",
-            },{
-              label:"X",
-              color:"#000000",
-            },{
-              label:"4",
-              color:"red",
-            },{
-              label:"5",
-              color:"red",
-            },{
-              label:"6",
-              color:"red",
-            },{
-              label:"Y",
-              color:"#000000",
-            },{
-              label:"Z",
-              color:"#000000",
-            },{
-              label:".",
-              color:"#000000",
-            },{
-              label:"7",
-              color:"red",
-            },{
-              label:"8",
-              color:"red",
-            },{
-              label:"9",
-              color:"red",
-            },{
-              label:"#",
-              color:"#000000",
-            },{
-              label:"_",
-              color:"#000000",
-            },{
-              label:"-",
-              color:"#000000",
-            },{
-              label:"小写",
-              color:"#000000",
-            },{
-              label:"0",
-              color:"red",
-            },{
-              label:"退格",
-              color:"#000000",
-            }
-          ],
-          buttonListB:[
-            {
-              label:"A",
-              color:"#000000",
-            }, {
-              label:"B",
-              color:"#000000",
-            }, {
-              label:"C",
-              color:"#000000",
-            },{
-              label:"D",
-              color:"#000000",
-            },{
-              label:"E",
-              color:"#000000",
-            },{
-              label:"F",
-              color:"#000000",
-            },{
-              label:"G",
-              color:"#000000",
-            },{
-              label:"H",
-              color:"#000000",
-            },{
-              label:"I",
-              color:"#000000",
-            },{
-              label:"J",
-              color:"#000000",
-            },{
-              label:"K",
-              color:"#000000",
-            },{
-              label:"L",
-              color:"#000000",
-            },{
-              label:"M",
-              color:"#000000",
-            },{
-              label:"N",
-              color:"#000000",
-            },{
-              label:"O",
-              color:"#000000",
-            },{
-              label:"P",
-              color:"#000000",
-            },{
-              label:"Q",
-              color:"#000000",
-            },{
-              label:"R",
-              color:"#000000",
-            },{
-              label:"S",
-              color:"#000000",
-            },{
-              label:"T",
-              color:"#000000",
-            },{
-              label:"U",
-              color:"#000000",
-            },{
-              label:"1",
-              color:"red",
-            },{
-              label:"2",
-              color:"red",
-            },{
-              label:"3",
-              color:"red",
-            },{
-              label:"V",
-              color:"#000000",
-            },{
-              label:"W",
-              color:"#000000",
-            },{
-              label:"X",
-              color:"#000000",
-            },{
-              label:"4",
-              color:"red",
-            },{
-              label:"5",
-              color:"red",
-            },{
-              label:"6",
-              color:"red",
-            },{
-              label:"Y",
-              color:"#000000",
-            },{
-              label:"Z",
-              color:"#000000",
-            },{
-              label:".",
-              color:"#000000",
-            },{
-              label:"7",
-              color:"red",
-            },{
-              label:"8",
-              color:"red",
-            },{
-              label:"9",
-              color:"red",
-            },{
-              label:"#",
-              color:"#000000",
-            },{
-              label:"_",
-              color:"#000000",
-            },{
-              label:"-",
-              color:"#000000",
-            },{
-              label:"小写",
-              color:"#000000",
-            },{
-              label:"0",
-              color:"red",
-            },{
-              label:"退格",
-              color:"#000000",
-            }
-          ],
-          buttonListS:[
-            {
-              label:"a",
-              color:"#000000",
-            }, {
-              label:"b",
-              color:"#000000",
-            }, {
-              label:"c",
-              color:"#000000",
-            },{
-              label:"d",
-              color:"#000000",
-            },{
-              label:"e",
-              color:"#000000",
-            },{
-              label:"f",
-              color:"#000000",
-            },{
-              label:"g",
-              color:"#000000",
-            },{
-              label:"h",
-              color:"#000000",
-            },{
-              label:"i",
-              color:"#000000",
-            },{
-              label:"j",
-              color:"#000000",
-            },{
-              label:"k",
-              color:"#000000",
-            },{
-              label:"l",
-              color:"#000000",
-            },{
-              label:"m",
-              color:"#000000",
-            },{
-              label:"n",
-              color:"#000000",
-            },{
-              label:"o",
-              color:"#000000",
-            },{
-              label:"p",
-              color:"#000000",
-            },{
-              label:"q",
-              color:"#000000",
-            },{
-              label:"r",
-              color:"#000000",
-            },{
-              label:"s",
-              color:"#000000",
-            },{
-              label:"t",
-              color:"#000000",
-            },{
-              label:"u",
-              color:"#000000",
-            },{
-              label:"1",
-              color:"red",
-            },{
-              label:"2",
-              color:"red",
-            },{
-              label:"3",
-              color:"red",
-            },{
-              label:"v",
-              color:"#000000",
-            },{
-              label:"w",
-              color:"#000000",
-            },{
-              label:"x",
-              color:"#000000",
-            },{
-              label:"4",
-              color:"red",
-            },{
-              label:"5",
-              color:"red",
-            },{
-              label:"6",
-              color:"red",
-            },{
-              label:"y",
-              color:"#000000",
-            },{
-              label:"z",
-              color:"#000000",
-            },{
-              label:".",
-              color:"#000000",
-            },{
-              label:"7",
-              color:"red",
-            },{
-              label:"8",
-              color:"red",
-            },{
-              label:"9",
-              color:"red",
-            },{
-              label:"#",
-              color:"#000000",
-            },{
-              label:"_",
-              color:"#000000",
-            },{
-              label:"-",
-              color:"#000000",
-            },{
-              label:"大写",
-              color:"#000000",
-            },{
-              label:"0",
-              color:"red",
-            },{
-              label:"退格",
-              color:"#000000",
-            }
-          ],
-          focusInput:null,
-          outputSubmitForm:{
-            axleNumber:"",
-          }
-        }
-      },
-      methods:{
-        selectTableButton(index){
-         let buttonName =   this.buttonList[index].label;
-         if(buttonName === "小写"){
-           this.buttonList=this.buttonListS;
-         }else if(buttonName === "大写"){
-           this.buttonList=this.buttonListB;
-         }else if(buttonName === "退格"){
-           if(this.focusInput === "axleNumber"){
-             this.outputSubmitForm.axleNumber = this.outputSubmitForm.axleNumber.substring(0,this.outputSubmitForm.axleNumber.length-1)
-           }else if(this.focusInput === "finished_meter"){
-             this.outputSubmitForm.finished_meter = this.outputSubmitForm.finished_meter.substring(0,this.outputSubmitForm.finished_meter.length-1)
-           }
-         }else{
-           if(this.focusInput === "axleNumber"){
-             this.outputSubmitForm.axleNumber += buttonName;
-           }else if(this.focusInput === "finished_meter"){
-             this.outputSubmitForm.finished_meter += buttonName;
-           }
-         }
-         //对焦
-         if(this.focusInput === "axleNumber"){
-           this.$refs.axleNumber.focus()
-         }else if(this.focusInput === "finished_meter"){
-           this.$refs.finished_meter.focus()
-         }
-        },
-        returnMain(step,status,data){
-          let emitData = {};
-          emitData.step = step;
-          emitData.status = status;
-          emitData.data = data;
-          this.$emit('closeSetAxleTable',emitData)
-        },
-        submitData(status){
-          let regPos = /^\d+(\.\d+)?$/; //非负浮点数
-          if(regPos.test(this.outputSubmitForm.axleNumber)){
-            this.returnMain(1,status,this.outputSubmitForm);
-          }else{
-            this.outputSubmitForm.axleNumber="";
-            this.$message.error('请输入正确的经轴号');
-          }
-        }
-      },
-      mounted() {
-        this.$refs.axleNumber.focus()
-      },
-      destroyed() {
-
+import VueTouchKeyboard from 'vue-touch-keyboard';
+import 'vue-touch-keyboard/dist/vue-touch-keyboard.css';
+import $ from 'jquery';
+ 
+const clickoutside = {//自定义命令，功能：点击键盘以外的区域隐藏键盘
+  // 初始化指令
+ 
+  bind (el, binding, vnode) {
+    function documentHandler (e) {
+      // 这里判断点击的元素是否是本身，是本身，则返回
+      if (el.contains(e.target)) {
+        return false;
+      }
+      // 判断指令中是否绑定了函数
+      if (binding.expression) {
+        // 如果绑定了函数 则调用那个函数，此处binding.value就是handleClose方法
+        binding.value(e);
       }
     }
+    // 给当前元素绑定个私有变量，方便在unbind中可以解除事件监听
+    el.__vueClickOutside__ = documentHandler;
+    document.addEventListener('click', documentHandler);
+  },
+  update () { },
+  unbind (el, binding) {
+    // 解除事件监听
+    document.removeEventListener('click', el.__vueClickOutside__);
+    delete el.__vueClickOutside__;
+  },
+};
+ 
+export default {
+  components: {
+    'vue-touch-keyboard': VueTouchKeyboard.component,
+  },
+  directives: { clickoutside },
+  data: function () {
+    return {
+      visible: false,
+      input: null,
+      options: {
+        useKbEvents: false,
+        preventClickEvent: false
+      }
+    };
+  },
+  props: {
+    warnMessage: { type: String, default: null },//错误提示
+    layout: { type: String, default: 'normal' },//键盘的种类：normal:全键盘/numeric：数字/compact：字母
+    instanceID: String,
+  },
+  methods: {
+    accept () {
+      this.hide();
+    },
+ 
+    show (e) {
+      this.input = e.target;
+      if (!this.visible) { this.visible = true }
+ 
+    },
+    hide () {
+      this.visible = false;
+    },
+    submit () {
+      if (this.input === null) {
+        return;
+      }
+      this.$emit('data-change', this.input.value);
+    },
+  },
+  watch: {
+    warnMessage: {
+      handler () {
+        // debugger;
+        const doubleId = `#${this.instanceID}`;
+        if (this.warnMessage !== '' && this.warnMessage != null) {
+          $(doubleId).find('input').css('border', '1px solid rgba(255, 0, 90, 1)');
+        } else {
+          $(doubleId).find('input').css('border', 'none');
+        }
+      },
+    },
+  },
+}
 </script>
 
-<style lang="less">
-
-</style>

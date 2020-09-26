@@ -22,17 +22,19 @@
     </div>
     <div class="line"></div>
     <div class="contain">
-
-      <div class="main">
-        <div class="name_contain">
-          <div class="one_name" v-for="(item,index) in dataList" @click="toIndex(item.id,item.staff_name)" :key="index">
-            <span>{{item.staff_name}}</span></div>
-        </div>
-        <div class="page_btn">
-          <div class="top_jiantou" @click="pageReduce"><img src="../../static/images/shangjiantou.png"></div>
-             <div class="current_page" ><span>第</span><span>{{page2}}/{{pageNumber}}</span><span>页</span></div>
-          <div class="bottom_jiantou" @click="pageAdd"><img src="../../static/images/xiajiantou.png"></div>
-        </div>
+<!-- <div class="main" > -->
+      <div class="main" style="display:flex;justify-content: center;align-items: center;">
+   
+  <div style="width:80%;height:60%;display:flex;flex-direction: column;    justify-content: space-around;">
+       <div class="stockIn_span">
+            <div class="span_con"><div class="span_con_span"><span>账号：</span>     <input v-model="number" id="keyinput" @focus="show" style="width:50.4%;font-size:1.3em;    height: 100%;border-radius: 8px;border: none;"   /></div></div>
+          </div>
+       
+    <div class="stockIn_span">
+            <div class="span_con"><div class="span_con_span"> <div class="sure_btn" @click="login"><span>登入</span></div></div></div>
+          </div>
+  </div>
+      
       </div>
       <div class="bottom_btn">
         <div class="btn_con">
@@ -44,28 +46,47 @@
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
        <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
-      <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
-        size="61%">
-        <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
-          :layout="mm_layout" :cancel="mm_hide" :accept="mm_accept" :input="mm_input" />
-      </el-drawer> -->
+ 
       <span slot="footer" class="dialog-footer">
         <el-button style="    font-size: 3.5em;" @click="dialogVisibleClose = false">取 消</el-button>
         <el-button style="    font-size: 3.5em;" type="primary" @click="shutdown()">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 退出系统的对话框 -->
+       <!-- 小键盘 -->
+    <el-drawer
+  title=""
+  :visible.sync="visible"
+  direction="btt"
+  size="58.5%">
+ <vue-touch-keyboard id="keyboard" style="width:100%;height:100%" v-if="visible" :layout="layout"  :accept="accept" :input="input" :next="next" />
+ 
+</el-drawer>
+  <!-- 小键盘 -->
+
   </div>
 
 
 
 </template>
 <script>
+
+
   import axios from 'axios'
   export default {
     name: "people",
 
     data: () => ({
+      number:"",
+
+   
+    visible: false,
+      layout: "numeric",
+      input: null,
+      options: {
+        useKbEvents: false
+      },
+    
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
@@ -86,6 +107,44 @@
     }),
 
     methods: {
+ accept(text) {
+         
+          this.hide();
+        },
+
+        show(e) {
+       
+          this.input = e.target;
+          // this.layout = e.target.dataset.layout;
+          document.getElementById("keyinput").blur();
+          console.log(document.getElementById("keyinput"))
+          if (!this.visible)
+            this.visible = true
+            
+        },
+
+        hide() {
+     
+          this.visible = false;
+        },
+				
+	next() {
+   
+    //       let inputs = document.querySelectorAll("input");
+	  // let found = false;
+	  // [].forEach.call(inputs, (item, i) => {
+	  //   if (!found && item == this.input && i < inputs.length - 1) {
+		// found = true;
+		// this.$nextTick(() => {
+		// 	inputs[i+1].focus();
+		//     });
+		// }
+	  //   });
+	  //  if (!found) {
+		// this.input.blur();
+		// this.hide();
+	  // }
+       },
          shutdown(){//关闭页面
          this.$store.commit('clear', true)
          console.log(this.$store.state)
@@ -171,59 +230,9 @@ window.close();
         })
         }
       },
-      toIndex(id, name) { //传送操作人信息给主页
-      console.log(this.lastPath)
-        this.$store.commit('setPeopleData', {
-          staff_name: name,
-          staff_id: id
-        }) //存储操作人信息
-           this.$store.commit('setPasswordFlag', false)//更改操作人员需要重新输入密码，标识更改
-       if(this.lastPath=="index"){
-             this.$router.push({
-               path: '/index',
-          name: 'index',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
-          }
-        })
-          // this.$router.push("/index/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
-        }else if(this.lastPath=="stockIn"){
-             this.$router.push({
-               path: '/stockIn',
-          name: 'stockIn',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num,
-           library_name:this.library_name
-          }
-        })
-            // this.$router.push("/stockIn/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
-        }else if(this.lastPath=="stockOut"){
-               this.$router.push({
-               path: '/stockOut',
-          name: 'stockOut',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num,
-           library_name:this.library_name
-          }
-        })
-            // this.$router.push("/stockOut/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
-        }else if(this.lastPath=="peopleIn"){
-            // this.$router.push("/peopleIn")
-                 this.$router.push({
-               path: '/peopleIn',
-          name: 'peopleIn',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
-          }
-        })
-        }
-      },
-      getRootStaffOrganization() { //获取根组织
-        let url = "http://120.55.124.53:8206/api/staff/getRootStaffOrganization"
+      login() { //传送操作人信息给主页
+ 
+              let url = "http://120.55.124.53:8206/api/axis/login"
 
         let that = this
     
@@ -231,86 +240,222 @@ window.close();
         axios({
           method: "post",
           url: url,
-          timeout:1000,
-          data: {    },
-          headers: {
-            companyID: companyID
-          }
-        }).then((res) => {
-          //console.log(res.data.data.id);
-          that.id = res.data.data.id;
-          that.getStaffListByOrganization(that.id) //获取指定组织下的所有员工列表(包括子组织)
-        }, function (err) {
        
-    //  if (err == "Error: timeout of 1000ms exceeded"||"Error: Network Error") { //超时1000毫秒显示断网图标
-    //         that.network = false
-    //             that.$message({
-    //           type: 'warning',
-    //           message: '网络掉线了！'
-    //         });
-    //       } else {
-
-    //         that.network = true
-    //       }
-        })
-
-      },
-      getStaffListByOrganization(id) { //获取指定组织下的所有员工列表(包括子组织)
-        let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
-        let that = this
-        //console.log(that.companyID)
-        let companyID = that.companyID
-        axios({
-          method: "post",
-          url: url,
-          data: {
-            staff_organization_id: id,
-            page: that.page,
-            pageNum: that.pageNum
-          },
+          data: { 
+            selectInfo:{
+                 company_id: companyID
+            },
+            staff:{
+              staff_code:that.number,
+       
+            }
+             },
           headers: {
             companyID: companyID
           }
         }).then((res) => {
-          console.log(res);
-              that.page2=that.page
-                  that.pageNumber=Math.ceil(res.data.totalDataNum/that.pageNum)
-          if (res.data.data.staffModel.length == 0) {
-            this.$notify.info({
-              title: '消息',
-              duration: 2000,
-              message: '这是最后一页了！'
+          console.log(res)
+                           that.$message({
+              type: 'success',
+              message: '登录成功！',
+             duration:2000
             });
-            that.page = that.page - 1 //最后一页页数改正，不可再加
-             that.page2=that.page //用page显示会因为改正闪一下，所以用page2
-            that.flag = false //最后一页标识，不能再+页数了
-            return
-          } else {
-            that.flag = true
-          }
-          if (that.dataList.length > 0) {
-            that.dataList = []
-          }
-          for (let i = 0; i < res.data.data.staffModel.length; i++) {
-            that.dataList.push(res.data.data.staffModel[i])
+          if(res.data.message=="成功"){
+    that.$store.commit('setPeopleData', {
+          staff_name:res.data.result.staff_name,
+          staff_id: res.data.result.staff_organization_id
+        }) //存储操作人信息
+                   that.$store.commit('setPasswordFlag', false)//更改操作人员需要重新输入密码，标识更改
+       if(that.lastPath=="index"){
+             that.$router.push({
+               path: '/index',
+          name: 'index',
+          params:{
+       companyId:that.$store.state.companyID,
+       library_num:that.$store.state.library_num
           }
         })
-
-      },
-      pageReduce() { //上一页
-
-        if (this.page > 1) {
-          this.page = this.page - 1
+          // this.$router.push("/index/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+        }else if(that.lastPath=="stockIn"){
+             that.$router.push({
+               path: '/stockIn',
+          name: 'stockIn',
+          params:{
+       companyId:that.$store.state.companyID,
+       library_num:that.$store.state.library_num,
+           library_name:that.library_name
+          }
+        })
+            // this.$router.push("/stockIn/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+        }else if(that.lastPath=="stockOut"){
+               that.$router.push({
+               path: '/stockOut',
+          name: 'stockOut',
+          params:{
+       companyId:that.$store.state.companyID,
+       library_num:that.$store.state.library_num,
+           library_name:that.library_name
+          }
+        })
+            // this.$router.push("/stockOut/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+        }else if(that.lastPath=="peopleIn"){
+            // this.$router.push("/peopleIn")
+                 that.$router.push({
+               path: '/peopleIn',
+          name: 'peopleIn',
+          params:{
+       companyId:that.$store.state.companyID,
+       library_num:that.$store.state.library_num
+          }
+        })
         }
-        this.getStaffListByOrganization(this.id)
-      },
-      pageAdd() { //下一页
-        if (this.flag == true) { //只有不是最后一页才可下一页操作
-          this.page = this.page + 1
-          this.getStaffListByOrganization(this.id)
-        }
+          }else{
+                            that.$message({
+              type: 'warning',
+              message: '请检查账号密码是否正确！'
+            });
+          }
 
+        })
+
+      //   this.$store.commit('setPeopleData', {
+      //     staff_name: name,
+      //     staff_id: id
+      //   }) //存储操作人信息
+      //      this.$store.commit('setPasswordFlag', false)//更改操作人员需要重新输入密码，标识更改
+      //  if(this.lastPath=="index"){
+      //        this.$router.push({
+      //          path: '/index',
+      //     name: 'index',
+      //     params:{
+      //  companyId:this.$store.state.companyID,
+      //  library_num:this.$store.state.library_num
+      //     }
+      //   })
+      //     // this.$router.push("/index/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+      //   }else if(this.lastPath=="stockIn"){
+      //        this.$router.push({
+      //          path: '/stockIn',
+      //     name: 'stockIn',
+      //     params:{
+      //  companyId:this.$store.state.companyID,
+      //  library_num:this.$store.state.library_num,
+      //      library_name:this.library_name
+      //     }
+      //   })
+      //       // this.$router.push("/stockIn/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+      //   }else if(this.lastPath=="stockOut"){
+      //          this.$router.push({
+      //          path: '/stockOut',
+      //     name: 'stockOut',
+      //     params:{
+      //  companyId:this.$store.state.companyID,
+      //  library_num:this.$store.state.library_num,
+      //      library_name:this.library_name
+      //     }
+      //   })
+      //       // this.$router.push("/stockOut/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
+      //   }else if(this.lastPath=="peopleIn"){
+      //       // this.$router.push("/peopleIn")
+      //            this.$router.push({
+      //          path: '/peopleIn',
+      //     name: 'peopleIn',
+      //     params:{
+      //  companyId:this.$store.state.companyID,
+      //  library_num:this.$store.state.library_num
+      //     }
+      //   })
+      //   }
       },
+    //   getRootStaffOrganization() { //获取根组织
+    //     let url = "http://120.55.124.53:8206/api/staff/getRootStaffOrganization"
+
+    //     let that = this
+    
+    //     let companyID = that.companyID
+    //     axios({
+    //       method: "post",
+    //       url: url,
+    //       timeout:1000,
+    //       data: {    },
+    //       headers: {
+    //         companyID: companyID
+    //       }
+    //     }).then((res) => {
+    //       //console.log(res.data.data.id);
+    //       that.id = res.data.data.id;
+    //       that.getStaffListByOrganization(that.id) //获取指定组织下的所有员工列表(包括子组织)
+    //     }, function (err) {
+       
+    // //  if (err == "Error: timeout of 1000ms exceeded"||"Error: Network Error") { //超时1000毫秒显示断网图标
+    // //         that.network = false
+    // //             that.$message({
+    // //           type: 'warning',
+    // //           message: '网络掉线了！'
+    // //         });
+    // //       } else {
+
+    // //         that.network = true
+    // //       }
+    //     })
+
+    //   },
+    //   getStaffListByOrganization(id) { //获取指定组织下的所有员工列表(包括子组织)
+    //     let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+    //     let that = this
+    //     //console.log(that.companyID)
+    //     let companyID = that.companyID
+    //     axios({
+    //       method: "post",
+    //       url: url,
+    //       data: {
+    //         staff_organization_id: id,
+    //         page: that.page,
+    //         pageNum: that.pageNum
+    //       },
+    //       headers: {
+    //         companyID: companyID
+    //       }
+    //     }).then((res) => {
+    //       console.log(res);
+    //           that.page2=that.page
+    //               that.pageNumber=Math.ceil(res.data.totalDataNum/that.pageNum)
+    //       if (res.data.data.staffModel.length == 0) {
+    //         this.$notify.info({
+    //           title: '消息',
+    //           duration: 2000,
+    //           message: '这是最后一页了！'
+    //         });
+    //         that.page = that.page - 1 //最后一页页数改正，不可再加
+    //          that.page2=that.page //用page显示会因为改正闪一下，所以用page2
+    //         that.flag = false //最后一页标识，不能再+页数了
+    //         return
+    //       } else {
+    //         that.flag = true
+    //       }
+    //       if (that.dataList.length > 0) {
+    //         that.dataList = []
+    //       }
+    //       for (let i = 0; i < res.data.data.staffModel.length; i++) {
+    //         that.dataList.push(res.data.data.staffModel[i])
+    //       }
+    //     })
+
+    //   },
+    //   pageReduce() { //上一页
+
+    //     if (this.page > 1) {
+    //       this.page = this.page - 1
+    //     }
+    //     this.getStaffListByOrganization(this.id)
+    //   },
+    //   pageAdd() { //下一页
+    //     if (this.flag == true) { //只有不是最后一页才可下一页操作
+    //       this.page = this.page + 1
+    //       this.getStaffListByOrganization(this.id)
+    //     }
+
+    //   },
     },
     mounted() {
 
@@ -329,7 +474,7 @@ window.close();
             this.library_name=this.$route.params.library_name
       console.log(this.$route.params.lastPath)
       let timer = setInterval(this.getTime, 1000);
-      this.getRootStaffOrganization()
+      // this.getRootStaffOrganization()
 
 
     },
@@ -383,7 +528,12 @@ window.close();
 
   }
 
-
+.inputs{
+  width: 50.4%;
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+}
 
   /* 头部*/
   .head {
@@ -521,7 +671,47 @@ window.close();
     height: 60%;
 
   }
+  .stockIn_span {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .span_con {
+    width: 90%;
+    height: 100%;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+  }
+.span_con_span{
+     width: 100%;
+    height: 100%;
+    display: flex;
+    color: white;
+    font-size: 1.6em;
+    justify-content: center;
+    align-items: center;
+}
+  .sure_btn {
+    width: 42%;
+    height: 87%;
+    font-size: 1.6em;
+    background: rgb(74, 160, 188);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .sure_btn span {
+    color: white;
+    font-size: 1em;
+  }
   .name_contain {
     width: 80%;
     margin: 3%;

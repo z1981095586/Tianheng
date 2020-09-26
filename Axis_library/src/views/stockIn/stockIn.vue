@@ -31,13 +31,13 @@
             <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库批号：</span>    <el-input v-model="product_name" style="width:38.4%;"  ></el-input></div></div>
+            <div class="span_con"><div class="span_con_span"><span>入库批号：</span>    <el-input v-model="product_name" style="width:33.4%;"  ></el-input></div></div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库库位：</span> <el-input disabled  v-model="library_name"  style="width:38.4%;" ></el-input><span style="margin-left:1em;">入库轴号：</span><el-input  style="width:38.4%;" v-model="axis_no"  ></el-input></div></div>
+            <div class="span_con"><div class="span_con_span"><span>入库库位：</span> <el-input disabled  v-model="library_name"  style="width:33.4%;" ></el-input><span style="margin-left:1em;">入库轴号：</span><el-input  style="width:33.4%;" v-model="axis_no"  ></el-input></div></div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库米数：</span> <el-input v-model="meter" style="width:38.4%;"  ></el-input><span style="margin-left:1em;">入库人员：</span> <el-input disabled style="width:38.4%;" v-model="staff_name"  ></el-input></div></div>
+            <div class="span_con"><div class="span_con_span"><span>入库米数：</span> <el-input v-model="meter" style="width:33.4%;"  ></el-input><span style="margin-left:1em;">入库人员：</span> <el-input disabled style="width:33.4%;" v-model="staff_name"  ></el-input></div></div>
           </div>
         </div>
         <div class="bottom_btn">

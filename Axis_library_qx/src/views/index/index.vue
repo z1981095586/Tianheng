@@ -67,7 +67,10 @@
           <div class="kctj_con" v-show="kctj_show">
             <div class="title_info">
               <div class="Used_location"><span>已用库位：&nbsp;&nbsp;&nbsp;{{used_num}}</span></div>
-              <div class="Stock_type"><span>库存品种：&nbsp;&nbsp;&nbsp;{{style_num}}</span><div class="enddate_input"><span>限制:</span><input style="width:50%;height:50%" v-model="end_date" /></div></div>
+              <div class="Stock_type"><span>库存品种：&nbsp;&nbsp;&nbsp;{{style_num}}</span>
+                <div class="enddate_input"><span>限制:</span><input style="width:50%;height:50%" v-model="end_date" />
+                </div>
+              </div>
             </div>
             <div class="kc_btn_contain">
               <div class="kc_button"
@@ -122,10 +125,10 @@
         </div>
       </div>
     </div>
-          <!-- 退出系统的对话框 -->
+    <!-- 退出系统的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-       <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
+        <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
@@ -140,8 +143,8 @@
     <!-- 轴号的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisible3" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-        <input type="text" style="width: 100%;height: 71%;font-size: 2em;    " 
-          placeholder="请输入轴号" v-model="zh_search" data-layout="normal" /></div>
+        <input type="text" style="width: 100%;height: 71%;font-size: 2em;    " placeholder="请输入轴号" v-model="zh_search"
+          data-layout="normal" /></div>
       <!-- <el-drawer title="" :visible.sync="zh_visible2" direction="btt" :modal="zh_modal" :show-close="zh_showclose"
         size="61%">
         <vue-touch-keyboard :options="zh_options" style="font-size: 2em;" v-if="zh_visible2" :layout="zh_layout"
@@ -156,8 +159,8 @@
     <!-- 库位的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisible2" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-        <input type="text" style="width: 100%;height: 71%;font-size: 2em;   border: 1px solid black;" 
-        placeholder="请输入库位" v-model="kw_search" data-layout="normal" />
+        <input type="text" style="width: 100%;height: 71%;font-size: 2em;   border: 1px solid black;"
+          placeholder="请输入库位" v-model="kw_search" data-layout="normal" />
 
         <!-- <el-drawer title="" :visible.sync="kw_visible2" direction="btt" :modal="kw_modal" :show-close="kw_showclose"
           size="61%">
@@ -175,7 +178,7 @@
     <el-dialog title="提示" :visible.sync="dialogVisible" width="80%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
         <input type="text" style="width: 100%;height: 71%;font-size: 2em;   border: 1px solid black;"
-        placeholder="请输入品名" v-model="pm_search" data-layout="normal" /></div>
+          placeholder="请输入品名" v-model="pm_search" data-layout="normal" /></div>
       <!-- <el-drawer title="" :visible.sync="pm_visible2" direction="btt" :modal="pm_modal" :show-close="pm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="pm_options" v-if="pm_visible2" :next="pm_next"
@@ -191,7 +194,7 @@
     <el-dialog title="提示" :visible.sync="dialogVisible4" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
         <input type="text" style="width: 100%;height: 50%;font-size: 2em;    border: 1px solid black;"
-          placeholder="请输入系统密码"  v-model="SystemPassword" data-layout="normal" /></div>
+          placeholder="请输入系统密码" v-model="SystemPassword" data-layout="normal" /></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
@@ -226,9 +229,9 @@
   export default {
     name: "index",
     data: () => ({
- 
 
-   
+
+
       companyID: "", //公司ID
       library_num: "", //几号库
       network: true, //是否联网
@@ -250,7 +253,7 @@
       kc_pageSize: null, //库存品名查询总页数
       pm_data: [], //暂时存放品名查询数据
       style_name: "", //品名
-        dialogVisibleClose:false,//确认退出系统对话框
+      dialogVisibleClose: false, //确认退出系统对话框
       dialogVisible: false, //品名对话框
       pm_search: "",
       dialogVisible2: false, //库位对话框
@@ -261,7 +264,7 @@
       SystemPassword: "",
       dialogVisible5: false, //确认跳转入库对话框
       message: "",
-    
+
       zt: "", //入库出库的状态
       library_name: "",
       tabName: "", //当前激活的tabname
@@ -338,44 +341,49 @@
       mm_showclose: false,
       mm_options: {
         useKbEvents: false,
-        timers:null,
+        timers: null,
         preventClickEvent: false
       },
-      end_date:3
+      end_date: 3
     }),
-   
+
 
 
     methods: {
-      shutdown(){//关闭页面
-         this.$store.commit('clear', true)
-         console.log(this.$store.state)
-var userAgent = navigator.userAgent;
-if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-window.open('','_self').close()  
+      shutdown() { //关闭页面
+        this.$store.commit('clear', true)
+        console.log(this.$store.state)
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+          window.open('', '_self').close()
 
-window.location.href = "about:blank"
-}else {
-window.opener = null;
-window.open("about:blank", "_self");
-window.close();
-}
+          window.location.href = "about:blank"
+        } else {
+          window.opener = null;
+          window.open("about:blank", "_self");
+          window.close();
+        }
       },
-    tableCellStyle4({row, column, rowIndex, columnIndex}) {
-  if(columnIndex==1){
-     if(row.end_date2>this.end_date){
-  
+      tableCellStyle4({
+        row,
+        column,
+        rowIndex,
+        columnIndex
+      }) {
+        if (columnIndex == 1) {
+          if (row.end_date2 > this.end_date) {
 
-return 'color:red;background:rgb(30,30,111);';
-      }else{
-        return 'background:rgb(30,30,111);color:white';
-      }
-  }else{
-        return 'background:rgb(30,30,111);color:white';
-      }
- 
-  
-},
+
+            return 'color:red;background:rgb(30,30,111);';
+          } else {
+            return 'background:rgb(30,30,111);color:white';
+          }
+        } else {
+          return 'background:rgb(30,30,111);color:white';
+        }
+
+
+      },
       clearValue(key) {
         console.log("dsa")
         if (key == "zh") {
@@ -518,30 +526,30 @@ return 'color:red;background:rgb(30,30,111);';
         this.dialogVisible2 = false
 
       },
-      GetNumberOfDays(date1,date2){//获得天数
-    //date1：开始日期，date2结束日期
-    var a1 = Date.parse(new Date(date1));
-    var a2 = Date.parse(new Date(date2));
-    var day = parseInt((a2-a1)/ (1000 * 60 * 60 * 24));//核心：时间戳相减，然后除以天数
-    return day
-},
-getdate(now) {
-            
-             let   y = now.getFullYear();
-              let m = now.getMonth() + 1
-              let  d = now.getDate();
-            return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
-        },
-randomTime(num){
-let  timestamp = Date.parse(new Date());
-timestamp=timestamp-24*60*60*1000
-let k=timestamp+Math.random()*num*1000000
-k= new Date(k);
- return this.getdate(k)
-},
+      GetNumberOfDays(date1, date2) { //获得天数
+        //date1：开始日期，date2结束日期
+        var a1 = Date.parse(new Date(date1));
+        var a2 = Date.parse(new Date(date2));
+        var day = parseInt((a2 - a1) / (1000 * 60 * 60 * 24)); //核心：时间戳相减，然后除以天数
+        return day
+      },
+      getdate(now) {
+
+        let y = now.getFullYear();
+        let m = now.getMonth() + 1
+        let d = now.getDate();
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+      },
+      randomTime(num) {
+        let timestamp = Date.parse(new Date());
+        timestamp = timestamp - 24 * 60 * 60 * 1000
+        let k = timestamp + Math.random() * num * 1000000
+        k = new Date(k);
+        return this.getdate(k)
+      },
       inventoryInquiry(library_num, library_name, axis_name, style_name, type) { //轴库查询
-      
-    
+
+
         let url = "http://120.55.124.53:8206/api/axis/inventoryInquiry"
         let that = this
 
@@ -558,7 +566,7 @@ k= new Date(k);
               library_name: library_name,
               axis_name: axis_name,
               style_name: style_name,
-              library_num_list:[1,2]
+              library_num_list: [1, 2]
             }
           },
           headers: {
@@ -567,14 +575,14 @@ k= new Date(k);
         }).then((res) => {
           that.tableData2 = [] //初始化表格
 
-  //获取日期 YYYY-MM-DD
-var today = new Date();
-var y = today.getFullYear();//获取年份
-var m = (today.getMonth() + 1) < 10 ? ('0' + (today.getMonth() + 1)) : (today.getMonth() + 1);//获取月份
-        var d = today.getDate() < 10 ? ('0' + today.getDate()) : today.getDate();//获取天
+          //获取日期 YYYY-MM-DD
+          var today = new Date();
+          var y = today.getFullYear(); //获取年份
+          var m = (today.getMonth() + 1) < 10 ? ('0' + (today.getMonth() + 1)) : (today.getMonth() + 1); //获取月份
+          var d = today.getDate() < 10 ? ('0' + today.getDate()) : today.getDate(); //获取天
 
-        today = y + "-" + m + "-" + d; //获取当前时间
-        console.log(today)
+          today = y + "-" + m + "-" + d; //获取当前时间
+          console.log(today)
           if (type == "pm") { //品名查询的专属分页，其他查询不需要分页
             console.log(style_name)
             that.pm_data = []
@@ -588,20 +596,22 @@ var m = (today.getMonth() + 1) < 10 ? ('0' + (today.getMonth() + 1)) : (today.ge
 
 
               for (let i = 0; i < res.data.result.length; i++) {
-                             if(res.data.result[i].end_date==null){
-                  res.data.result[i].end_date=that.randomTime(i)
+                if (res.data.result[i].end_date == null) {
+                  res.data.result[i].end_date = that.randomTime(i)
                 }
-                      res.data.result[i].libraryName=res.data.result[i].library_name+"/"+res.data.result[i].library_num
-                        if(res.data.result[i].end_date!=""&&(res.data.result[i].end_date!=null)){
-let str=res.data.result[i].end_date
- 
-  res.data.result[i].end_date2=that.GetNumberOfDays(str.substr(0,10),today)
-                        }else{
-                          res.data.result[i].end_date2=0
-                        }
-               
-                        res.data.result[i].end_date3= res.data.result[i].end_date+'('+ res.data.result[i].end_date2+"天)"
-                          
+                res.data.result[i].libraryName = res.data.result[i].library_name + "/" + res.data.result[i]
+                  .library_num
+                if (res.data.result[i].end_date != "" && (res.data.result[i].end_date != null)) {
+                  let str = res.data.result[i].end_date
+
+                  res.data.result[i].end_date2 = that.GetNumberOfDays(str.substr(0, 10), today)
+                } else {
+                  res.data.result[i].end_date2 = 0
+                }
+
+                res.data.result[i].end_date3 = res.data.result[i].end_date + '(' + res.data.result[i].end_date2 +
+                  "天)"
+
                 if (res.data.result[i].is_take == 1) {
                   res.data.result[i].is_take = "入库"
                 } else if (res.data.result[i].is_take == 0) {
@@ -615,14 +625,14 @@ let str=res.data.result[i].end_date
 
             that.kc_pageSize = Math.ceil(that.pm_data.length / 6) //计算一共有多少页
             for (let i = ((that.kc_pageNum * 6 - 1) - 5); i <= (that.kc_pageNum * 6 -
-              1); i++) { //把对应当前页面的4条数据放入tableData2
+                1); i++) { //把对应当前页面的4条数据放入tableData2
 
               if (that.pm_data[i]) {
                 that.tableData2.push(that.pm_data[i])
               }
 
             }
-                that.tableData2=that.sortByKey(that.tableData2,"end_date2")
+            that.tableData2 = that.sortByKey(that.tableData2, "end_date2")
           } else { //除了品名查询其他结果的处理
             if (res.data.result.length == 0) {
 
@@ -634,22 +644,24 @@ let str=res.data.result[i].end_date
 
 
               for (let i = 0; i < res.data.result.length; i++) {
-                             if(res.data.result[i].end_date==null){
-                  res.data.result[i].end_date=that.randomTime(i)
+                if (res.data.result[i].end_date == null) {
+                  res.data.result[i].end_date = that.randomTime(i)
                 }
-                res.data.result[i].libraryName=res.data.result[i].library_name+"/"+res.data.result[i].library_num
-            
-                       if(res.data.result[i].end_date!=""&&(res.data.result[i].end_date!=null)){
-let str=res.data.result[i].end_date
- 
-  res.data.result[i].end_date2=that.GetNumberOfDays(str.substr(0,10),today)
-                        }else{
-                          res.data.result[i].end_date2=0
-                        }
-                            if(res.data.result[i].end_date==null){
-                  res.data.result[i].end_date=""
+                res.data.result[i].libraryName = res.data.result[i].library_name + "/" + res.data.result[i]
+                  .library_num
+
+                if (res.data.result[i].end_date != "" && (res.data.result[i].end_date != null)) {
+                  let str = res.data.result[i].end_date
+
+                  res.data.result[i].end_date2 = that.GetNumberOfDays(str.substr(0, 10), today)
+                } else {
+                  res.data.result[i].end_date2 = 0
                 }
-                     res.data.result[i].end_date3= res.data.result[i].end_date+'('+ res.data.result[i].end_date2+"天)"
+                if (res.data.result[i].end_date == null) {
+                  res.data.result[i].end_date = ""
+                }
+                res.data.result[i].end_date3 = res.data.result[i].end_date + '(' + res.data.result[i].end_date2 +
+                  "天)"
                 if (res.data.result[i].is_take == 1) {
                   res.data.result[i].is_take = "入库"
                 } else if (res.data.result[i].is_take == 0) {
@@ -657,9 +669,9 @@ let str=res.data.result[i].end_date
                 }
                 that.tableData2.push(res.data.result[i])
               }
-              that.tableData2=that.sortByKey(that.tableData2,"end_date2")
+              that.tableData2 = that.sortByKey(that.tableData2, "end_date2")
 
-            
+
             }
           }
 
@@ -684,7 +696,7 @@ let str=res.data.result[i].end_date
 
 
       },
-              sortByKey(array, key) {
+      sortByKey(array, key) {
         return array.sort(function (a, b) {
           let x = a[key];
           let y = b[key];
@@ -770,12 +782,12 @@ let str=res.data.result[i].end_date
               } else if (res.data.result[i].is_take == 0) {
                 res.data.result[i].flag = false
               }
-              if(that.companyID=="10000013"){
-                res.data.result[i].in="kcgk_con_one_out"
-              res.data.result[i].out="kcgk_con_one_out2"
-              }else{
-                res.data.result[i].in="kcgk_con_one_in"
-              res.data.result[i].out="kcgk_con_one_out"
+              if (that.companyID == "10000013") {
+                res.data.result[i].in = "kcgk_con_one_out"
+                res.data.result[i].out = "kcgk_con_one_out2"
+              } else {
+                res.data.result[i].in = "kcgk_con_one_in"
+                res.data.result[i].out = "kcgk_con_one_out"
               }
               that.dataList.push(res.data.result[i])
             }
@@ -808,7 +820,7 @@ let str=res.data.result[i].end_date
             company_id: that.companyID,
             page_num: that.page_num,
             page_size: that.page_size,
-            library_num:that.library_num
+            library_num: that.library_num
           },
           headers: {
 
@@ -915,16 +927,16 @@ let str=res.data.result[i].end_date
           this.xtsz_show = false;
           this.tableData2 = []
           this.kc_pageBtn_show = false
-           this.getAllAxis();
-    //    if(this.timers!=null){
-    //          clearInterval(this.timers);
-    // this.timers = null;
-    //    }
-    //         this.timers = setInterval(() =>{
-    //           this.getCurrent()
-    //                }, 1000);
+          this.getAllAxis();
+          //    if(this.timers!=null){
+          //          clearInterval(this.timers);
+          // this.timers = null;
+          //    }
+          //         this.timers = setInterval(() =>{
+          //           this.getCurrent()
+          //                }, 1000);
 
-         
+
           return
         }
         if (tabName == "出入明细") {
@@ -935,10 +947,10 @@ let str=res.data.result[i].end_date
           this.tableData2 = []
           this.kc_pageBtn_show = false
           this.page_num = 1
-                 if(this.timers!=null){
-             clearInterval(this.timers);
-    this.timers = null;
-       }
+          if (this.timers != null) {
+            clearInterval(this.timers);
+            this.timers = null;
+          }
           this.getInAndOutRecord()
           return
         }
@@ -950,42 +962,31 @@ let str=res.data.result[i].end_date
           this.tableData2 = []
           this.query('kw');
           this.kc_pageBtn_show = false
-                     if(this.timers!=null){
-             clearInterval(this.timers);
-    this.timers = null;
-       }
+          if (this.timers != null) {
+            clearInterval(this.timers);
+            this.timers = null;
+          }
           this.inventoryStatistics()
           return
         }
         if (tabName == "系统设置") {
           console.log(this.companyID)
-          if(this.companyID=="10000013"){
-                   for (let i = 0; i < this.tabList.length; i++) { //更改所有样式为未选中
 
-
-              this.tabList[i].class = "one_choose"
-
-            }
-            for (let i = 0; i < this.tabList.length; i++) { //更改系统设置的样式为选中
-              if (this.tabList[i].tabName == tabName) {
-                this.tabList[i].class = "one_chooseed"
-              }
-            }
-            this.kcgk_show = false; //隐藏其他内容，显示系统设置界面
-            this.crmx_show = false;
-            this.kctj_show = false;
-            this.xtsz_show = true;
-            return
+          if (this.timers != null) {
+            clearInterval(this.timers);
+            this.timers = null;
           }
-                   if(this.timers!=null){
-             clearInterval(this.timers);
-    this.timers = null;
-       }
           this.tableData2 = []
           this.kc_pageBtn_show = false
-          if (this.passwordFlag == false) { //判断有没有输入过正确的系统密码
-            this.dialogVisible4 = true
-          } else { //如果已经输入过正确密码，显示系统设置界面
+          // if (this.passwordFlag == false) { //判断有没有输入过正确的系统密码
+          //   this.dialogVisible4 = true
+          // } else { //如果已经输入过正确密码，显示系统设置界面
+          if (this.staff_name == "") {
+            this.$message({
+              type: 'warning',
+              message: '请先登录！'
+            });
+          } else {
             for (let i = 0; i < this.tabList.length; i++) { //更改所有样式为未选中
 
 
@@ -1007,49 +1008,49 @@ let str=res.data.result[i].end_date
         }
         /*点击不同侧边栏选项显示不同的view*/
       },
-      getCurrent(){
-        let that=this
+      getCurrent() {
+        let that = this
 
-//         let currentName=String(Math.floor(Math.random()*41));
-//         for(let i=0;i<that.dataList.length;i++){
-//   that.dataList[i].back=null
-// }
-//             for(let i=0;i<that.dataList.length;i++){
-//   if(that.dataList[i].library_name==currentName){
-//     that.dataList[i].back="background:red;"
-//   }
-//             }
-        let currentName=""
-let url = "http://127.0.0.1:16099/api/beam/getBeamList"
-for(let i=0;i<that.dataList.length;i++){
-  that.dataList[i].back=null
-}
+        //         let currentName=String(Math.floor(Math.random()*41));
+        //         for(let i=0;i<that.dataList.length;i++){
+        //   that.dataList[i].back=null
+        // }
+        //             for(let i=0;i<that.dataList.length;i++){
+        //   if(that.dataList[i].library_name==currentName){
+        //     that.dataList[i].back="background:red;"
+        //   }
+        //             }
+        let currentName = ""
+        let url = "http://127.0.0.1:16099/api/beam/getBeamList"
+        for (let i = 0; i < that.dataList.length; i++) {
+          that.dataList[i].back = null
+        }
 
- axios({
-            method: "post",
-            url: url,
-            dataType: 'jsonp', // 请求方式为jsonp
-            data: {
-              selectInfo: {
-                company_id: that.companyID
-              },
-              staff: {
-                id: that.staff_id,
-                password: that.SystemPassword
-              }
-
+        axios({
+          method: "post",
+          url: url,
+          dataType: 'jsonp', // 请求方式为jsonp
+          data: {
+            selectInfo: {
+              company_id: that.companyID
             },
-            headers: {
-
+            staff: {
+              id: that.staff_id,
+              password: that.SystemPassword
             }
-          }).then((res) => {
-            currentName=res.data[0].libraryName
-            for(let i=0;i<that.dataList.length;i++){
-  if(that.dataList[i].library_name==currentName){
-    that.dataList[i].back="background:red;"
-  }
-}
-          })
+
+          },
+          headers: {
+
+          }
+        }).then((res) => {
+          currentName = res.data[0].libraryName
+          for (let i = 0; i < that.dataList.length; i++) {
+            if (that.dataList[i].library_name == currentName) {
+              that.dataList[i].back = "background:red;"
+            }
+          }
+        })
       },
       checkPassword() {
 
@@ -1177,14 +1178,14 @@ for(let i=0;i<that.dataList.length;i++){
           this.kc_pageBtn_show = false
           this.dialogVisible2 = false
           this.inventoryInquiry(this.library_num, this.kw_search, "", "", 'kw')
- 
+
           return
         }
         if (type == "zh") { //轴号精确查询
           this.kc_pageBtn_show = false
           this.dialogVisible3 = false
           this.inventoryInquiry(this.library_num, "", this.zh_search, "", 'zh')
-   
+
           return
         }
         if (type == "pm") { //品名精确查询
@@ -1202,8 +1203,8 @@ for(let i=0;i<that.dataList.length;i++){
         this.$router.push({ //跳转
           path: '/people',
           name: 'people',
-           params:{
-            lastPath:"index"
+          params: {
+            lastPath: "index"
           }
 
         })
@@ -1244,12 +1245,12 @@ for(let i=0;i<that.dataList.length;i++){
       this.passwordFlag = this.$store.state.passwordFlag //系统密码是否输入标识设置
       if (this.$store.state.companyID != "") { //判断store是否有companyid
         this.companyID = this.$store.state.companyID
-         this.library_num = this.$store.state.library_num
+        this.library_num = this.$store.state.library_num
       } else { //没有就从路由那边取值
         this.companyID = this.$route.params.companyId;
-             this.library_num = this.$route.params.library_num
+        this.library_num = this.$route.params.library_num
       }
- 
+
       console.log(this.$route)
       this.$store.commit('setCompanyID', {
         companyID: this.companyID,
@@ -1360,13 +1361,15 @@ for(let i=0;i<that.dataList.length;i++){
   /deep/ .el-table--enable-row-hover .el-table__body tr:hover>td {
     background: rgb(33, 30, 124);
   }
-.enddate_input{
-  width: 50%;
-  height: 100%;
-  display: flex;
-  align-items: center;
- 
-}
+
+  .enddate_input {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+  }
+
   .content {
     width: 100%;
     height: 100vh;
@@ -1476,7 +1479,7 @@ for(let i=0;i<that.dataList.length;i++){
   }
 
   .right_con {
-        margin-right: 2%;
+    margin-right: 2%;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
@@ -1487,11 +1490,11 @@ for(let i=0;i<that.dataList.length;i++){
     font-size: 1.5em;
     color: white;
     font-weight: 600;
-        margin-right: 6rem;
+    margin-right: 6rem;
   }
 
   .shutdown {
-      position: absolute;
+    position: absolute;
     /* top: 0rem; */
     right: 1rem;
     width: 3rem;
@@ -1606,15 +1609,13 @@ for(let i=0;i<that.dataList.length;i++){
     justify-content: center;
     align-items: center;
     float: left;
-   color: white;
+    color: white;
     font-size: 1.5em;
 
     font-weight: 600;
   }
 
-  .kcgk_con_one_in span {
- 
-  }
+  .kcgk_con_one_in span {}
 
   .kcgk_con_one_out {
     width: 9%;
@@ -1626,12 +1627,13 @@ for(let i=0;i<that.dataList.length;i++){
     justify-content: center;
     align-items: center;
     float: left;
- color: white;
+    color: white;
     font-size: 1.5em;
 
     font-weight: 600;
   }
- .kcgk_con_one_out2 {
+
+  .kcgk_con_one_out2 {
     width: 9%;
     height: 50px;
     background: rgb(114, 112, 126);
@@ -1641,7 +1643,7 @@ for(let i=0;i<that.dataList.length;i++){
     justify-content: center;
     align-items: center;
     float: left;
- color: white;
+    color: white;
     font-size: 1.5em;
 
     font-weight: 600;
