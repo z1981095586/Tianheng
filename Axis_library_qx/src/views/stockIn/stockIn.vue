@@ -127,7 +127,7 @@
                 axis_no: that.axis_no,
                 product_name: that.product_name,
                 total_work_qty: that.meter,
-                user_id: that.staff_id,
+                 user_id:that.staff_name,
                 print_code:that.print_code
               }
             },

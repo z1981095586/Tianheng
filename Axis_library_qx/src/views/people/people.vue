@@ -30,7 +30,7 @@
             <div class="span_con"><div class="span_con_span"><span>账号：</span>     <input v-model="number" id="keyinput" @focus="show" style="width:50.4%;font-size:1.3em;    height: 100%;border-radius: 8px;border: none;"   /></div></div>
           </div>
        
-    <div class="stockIn_span">
+    <div class="stockIn_span" style="height: 39%;">
             <div class="span_con"><div class="span_con_span"> <div class="sure_btn" @click="login"><span>登入</span></div></div></div>
           </div>
   </div>

@@ -1285,6 +1285,7 @@
             }
           })
             .then(response => {
+              console.log(response)
               let data = response.data.data;
               this.totalYield = data.totalYield;
               let Awanzhou1Efficiency = '';

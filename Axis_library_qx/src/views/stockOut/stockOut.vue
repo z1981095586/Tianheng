@@ -115,7 +115,7 @@ window.close();
             },
             library_name: that.library_name,
             library_num: that.library_num,
-            user_id:that.staff_id
+            user_id:that.staff_name
 
 
           },

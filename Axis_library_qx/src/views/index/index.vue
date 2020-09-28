@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column prop="meter_num" label="长度" width="60">
                 </el-table-column>
-                <el-table-column prop="staff_name" label="操作人" width="90">
+                <el-table-column prop="user_id" label="操作人" width="90">
                 </el-table-column>
               </el-table>
             </div>

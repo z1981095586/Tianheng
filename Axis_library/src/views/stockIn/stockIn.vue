@@ -170,7 +170,7 @@ window.close();
             } else {
               that.$message({
                 type: 'error',
-                message: '操作失败！'
+                message: res.data.message+'！'
               });
             }
 
