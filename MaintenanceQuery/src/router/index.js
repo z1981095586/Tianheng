@@ -4,15 +4,16 @@ import Router from 'vue-router'
 import select from '@/components/select'//查询
 import  Maintenance_details from '@/components/Maintenance_details'//维保详情
 import Component_consumption_details from  '@/components/Component_consumption_details'//部品消耗详情
-import ToMaintenance_list from '@/components/ToMaintenance_list' 
+import ToMaintenance_list from '@/components/ToMaintenance_list' //首页
 import Maintenance_history from '@/components/Maintenance_history' //保养历史记录
 import Maintenance_list from '@/components/Maintenance_list' //保养列表
 import Maintenance_materials from '@/components/Maintenance_materials' //保养物料（增加）
 import Maintenance from '@/components/Maintenance' //保养
-import hello from '@/components/HelloWorld' //首页
+import hello from '@/components/HelloWorld' 
 import Maintenance_history_detail from '@/components/Maintenance_history_detail' //保养历史详情
 import choose from '@/components/choose' //选择页面
-import Axistrace from '@/components/Axistrace' //首页
+import Axistrace from '@/components/Axistrace' //轴追溯
+import repairHistory from '@/components/repairHistory' //维修记录
 Vue.use(Router)
 
 export default new Router({
@@ -31,6 +32,11 @@ export default new Router({
       path: '/select/:machine_id/:company_id',
       name: 'select',
       component: select
+    },
+    {
+      path: '/repairHistory/:company_id',
+      name: 'repairHistory',
+      component: repairHistory
     },
     {
       path: '/Maintenance_details',
