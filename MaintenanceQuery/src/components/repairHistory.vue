@@ -139,7 +139,6 @@
             url: url,
             method: "post",
             data: {
-
               "startDate": that.selectInfo.startDate,
               "endDate": that.selectInfo.endDate,
               "machineId": that.selectInfo.machineId,
@@ -170,13 +169,8 @@
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
-
-
       this.selectInfo.company_id = this.$route.params.company_id;
-
       this.getData()
-
-
     }
   }
 
@@ -187,10 +181,7 @@
     position: fixed;
     bottom: 17px;
     left: 35%;
-
-
   }
-
   .table {
     width: 100%;
     height: 75%;
@@ -198,20 +189,15 @@
     justify-content: center;
     align-items: center;
   }
-
   .table_con {
     width: 95%;
     height: 95%;
-
     border-top: 1px solid grey;
   }
-
   .table_body {
     width: 100%;
     height: 93%;
-
   }
-
   .query /deep/ .el-input--suffix .el-input__inner {
     padding-right: 0;
   }
@@ -304,7 +290,6 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 15px;
-
   }
 
   .card-con {
