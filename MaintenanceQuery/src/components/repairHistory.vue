@@ -1,8 +1,8 @@
 <template>
-  <div class="content" style="padding-top:10px;">
+  <div class="content" >
 
-    <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">维修记录</span>
-    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i>
+    <!-- <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">维修记录</span>
+    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i> -->
 
     <!--出库单详细-->
     <div class="all-page">
@@ -47,6 +47,7 @@
               <template slot-scope="scope">
                 <el-image :src="scope.row.img1" lazy :preview-src-list="urls"></el-image>
               </template>
+   
             </el-table-column>
           </el-table>
         </div>
@@ -69,13 +70,10 @@
     name: 'Maintenance_history',
     data() {
       return {
-
-
         urls: [
           "http://47.110.95.57/Img_compress/20200409110500pic1.jpg",
         ],
         tableData: [
-
         ],
         selectInfo: {
           company_id: '',
@@ -84,7 +82,6 @@
           parts: "",
           errorReason: "",
           machineId: ""
-
         },
         pageNum: 1,
         total: null
@@ -93,18 +90,16 @@
     },
     methods: {
       prev() { //上一页
-
         if (this.pageNum > 1) {
           this.pageNum--;
           this.getData()
         }
       },
       next() { //下一页
-
         this.pageNum++;
         this.getData()
       },
-      back() {
+      back() { 
         nativeMethod.closeActivity();
       },
       headerCellStyle() {
@@ -113,7 +108,7 @@
       cellStyle() {
         return "padding: 5px 0;    text-align: center;"
       },
-      cellCick(row, column, cell, event) {
+      cellCick(row, column, cell, event) { //显示大图
      
         this.urls = []
         if (row.img1 != null) {
@@ -125,13 +120,14 @@
         if (row.img3 != null) {
           this.urls.push(row.img3)
         }
-
       },
-      getData(IsSearch) {
+
+      
+      getData(IsSearch) {//获取数据
+
 
         let url = "http://106.12.219.66:8227/report/getRepairSubmit"
         let that = this
-
        if(IsSearch==true){
          that.pageNum=1
        }
@@ -149,7 +145,6 @@
             },
             headers: {
               companyId: that.selectInfo.company_id
-
             }
           })
           .then(res => {
@@ -222,7 +217,6 @@
     font-size: 12px;
     color: rgb(21, 153, 204);
     overflow: hidden;
-
     background-color: #eee;
     background: transparent;
     appearance: none;
@@ -235,20 +229,17 @@
   .all-page /deep/ ._v-container {
     position: absolute;
     top: 19%;
-
-
   }
 
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-
   }
 
 
   .all-page {
-    margin-top: 12px;
+    /* margin-top: 12px; */
     width: 100%;
 
 
@@ -265,8 +256,6 @@
   .query {
     width: 100%;
     height: 6%;
-
-
     display: flex;
     align-items: center;
 

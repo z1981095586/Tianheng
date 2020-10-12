@@ -122,11 +122,11 @@
       }
     },
     methods: {
-      changeWorkshopTiming: function () {
+      changeWorkshopTiming: function () { // 定时刷新
         this.timer = setInterval(() => {
 
           this.getCurrent();
-     
+
           this.getshebei()
           // this.getzuori()
 
@@ -163,57 +163,12 @@
             //////console.log(response.data.data[0].month_all_total)
             //////console.log(that.currentLength)
             that.zcl = k
-            that.shift_yieldSum=response.data.data[0].yesterday_total//获取昨日产量
+            that.shift_yieldSum = response.data.data[0].yesterday_total //获取昨日产量
 
           })
 
       },
-      // getzuori() { //获取昨日产量
-      //   let that = this
-      //   let day1 = new Date();
-      //   day1.setTime(day1.getTime() - 24 * 60 * 60 * 1000);
-      //   let month = ""
-      //   let dates = ""
-      //   if ((day1.getMonth() + 1) < 10) {
-      //     month = "0" + String(day1.getMonth() + 1)
-      //   } else {
-      //     month = String(day1.getMonth() + 1)
-      //   }
-      //   if ((day1.getDate()) < 10) {
 
-      //     dates = "0" + String(day1.getDate())
-      //   } else {
-      //     dates = String(day1.getDate())
-      //   }
-      //   //////console.log(dates)
-      //   let s1 = day1.getFullYear() + "-" + month + "-" + dates;
-      //   axios({
-      //       url: host1 + '/report/getSimpleReport',
-      //       method: 'post',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         'companyId': 0
-      //       },
-      //       data: {
-
-      //         tableName: "xishajiDailyOutput",
-      //         query: {
-      //           shift_date: s1
-      //         }
-
-      //       }
-
-      //     })
-      //     .then(response => {
-      //       //////console.log(response)
-      //       let sum = 0
-      //       for (let i = 0; i < response.data.data.length; i++) {
-      //         response.data.data[i].shift_yield = parseInt(response.data.data[i].shift_yield)
-      //         sum = sum + response.data.data[i].shift_yield
-      //       }
-      //       that.shift_yieldSum = sum
-      //     })
-      // },
       getshebei() { //获取设备运转率
         let that = this
         axios({
@@ -372,6 +327,10 @@
 
             ]
             let xlist = []
+
+            for (let i = 0; i < rhour.length; i++) {
+              xlist.push(rhour[i].substr(11, 5))
+            }
             for (let i = 0; i < pmList.length; i++) {
               for (let j = 0; j < rhour.length; j++) {
 
@@ -405,77 +364,86 @@
                       series[i].data[j] = parseInt(response.data.data[0].rolled_speed)
                     }
 
+                    if (series[0].data.length == 5 && series[1].data.length == 5 && series[2].data.length ==
+                      5) { //data的数组全部push完执行，且只执行一次
+                      that.echart2(pmList, xlist, series)
+                      //console.log(pmList)
+                      this.timer3 = setInterval(() => {
+                        for (let i = 0; i < 3; i++) {
+                          axios({ //罗拉转速处理
+                              url: host1 + '/report/getSimpleReport',
+                              method: 'post',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'companyId': 0
+                              },
+                              data: {
+
+                                tableName: "xishaji",
+                                query: {
+                                  mac_id: pmList[i].mac_id
+                                }
+
+
+                              }
+
+                            })
+                            .then(response => {
+                              //console.log(response)
+                              if (response.data.data.length == 0) {
+                                //console.log(response)
+                                series[i].data.push(0)
+                              } else {
+                                series[i].data.push(parseInt(response.data.data[0].rolled_speed))
+                              }
+
+
+                            })
+                        }
+                        let date = new Date();
+                        let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                        let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+                        if (minute == "00") {
+                          xlist.push(hour + ":" + minute)
+                          xlist.shift()
+                          series[0].data.shift()
+                          series[1].data.shift()
+                          series[2].data.shift()
+                        } else {
+                          xlist.push("")
+                        }
+
+                        setTimeout(() => {
+                          let myChart1 = this.$echarts.init(document.getElementById('echart2'));
+
+                          myChart1.setOption(that.option2)
+
+
+                        }, 1000);
+
+
+
+                      }, 180000);
+                    }
 
                   })
               }
 
+
+
             }
 
-            for (let i = 0; i < rhour.length; i++) {
-              xlist.push(rhour[i].substr(11, 5))
-            }
+
             //  for (let i = 0; i < rhour.length; i++) {
             //            //console.log(new Date(rhour[i]).getTime())
             //           }
-            setTimeout(() => {
-              that.echart2(pmList, xlist, series)
-              //console.log(pmList)
-              this.timer3 = setInterval(() => {
-                for (let i = 0; i < 3; i++) {
-                  axios({ //罗拉转速处理
-                      url: host1 + '/report/getSimpleReport',
-                      method: 'post',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'companyId': 0
-                      },
-                      data: {
 
-                        tableName: "xishaji",
-                        query: {
-                          mac_id: pmList[i].mac_id
-                        }
+            // setTimeout(() => {
 
 
-                      }
 
-                    })
-                    .then(response => {
-                      //console.log(response)
-                      if (response.data.data.length == 0) {
-                        //console.log(response)
-                        series[i].data.push(0)
-                      } else {
-                        series[i].data.push(parseInt(response.data.data[0].rolled_speed))
-                      }
-
-
-                    })
-                }
-                let date = new Date();
-                let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-
-                if (minute == "00") {
-                  xlist.push(hour + ":" + minute)
-                  xlist.shift()
-                  series[0].data.shift()
-                  series[1].data.shift()
-                  series[2].data.shift()
-                } else {
-                  xlist.push("")
-                }
-
-
-                setTimeout(() => {
-                  let myChart1 = this.$echarts.init(document.getElementById('echart2'));
-
-                  myChart1.setOption(that.option2)
-                }, 1000);
-              }, 180000);
-
-
-            }, 1000);
+            // }, 1000);
           })
         // let a=[{mac_id:12},{mac_id:1},{mac_id:2}]
         // let b=[{mac_id:12},{mac_id:1},{mac_id:2}]
@@ -650,6 +618,9 @@
 
             ]
             let xlist = []
+            for (let i = 0; i < rhour.length; i++) {
+              xlist.push(rhour[i].substr(11, 5))
+            }
             for (let i = 0; i < pmList.length; i++) {
               for (let j = 0; j < rhour.length; j++) {
 
@@ -683,74 +654,81 @@
                     } else {
                       series[i].data[j] = parseInt(response.data.data[0].spindle_speed)
                     }
+
+                    if (series[0].data.length == 5 && series[1].data.length == 5 && series[2].data.length ==
+                      5) { //data的数组全部push完执行，且只执行一次
+                      that.echart(pmList, xlist, series)
+
+                      this.timer2 = setInterval(() => {
+                        for (let i = 0; i < 3; i++) {
+                          axios({ //罗拉转速处理
+                              url: host1 + '/report/getSimpleReport',
+                              method: 'post',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'companyId': 0
+                              },
+                              data: {
+
+                                tableName: "xishaji",
+                                query: {
+                                  // mac_id: series[i].name
+                                  mac_id: pmList[i].mac_id
+                                }
+
+
+                              }
+
+                            })
+                            .then(response => {
+
+                              if (response.data.data.length == 0) {
+                                //console.log(response)
+                                series[i].data.push(0)
+                              } else {
+                                series[i].data.push(parseInt(response.data.data[0].spindle_speed))
+                              }
+
+
+                            })
+                        }
+                        let date = new Date();
+                        let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                        let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+                        if (minute == "00") {
+                          xlist.push(hour + ":" + minute)
+                          xlist.shift()
+                          series[0].data.shift()
+                          series[1].data.shift()
+                          series[2].data.shift()
+                        } else {
+                          xlist.push("")
+                        }
+
+
+                        setTimeout(() => {
+                          let myChart1 = this.$echarts.init(document.getElementById('echart1'));
+
+                          myChart1.setOption(that.option)
+
+
+                        }, 1000);
+
+
+                      }, 180000);
+
+                    }
                   })
               }
 
             }
-            for (let i = 0; i < rhour.length; i++) {
-              xlist.push(rhour[i].substr(11, 5))
-            }
-
-            setTimeout(() => {
-              that.echart(pmList, xlist, series)
-
-              this.timer2 = setInterval(() => {
-                for (let i = 0; i < 3; i++) {
-                  axios({ //罗拉转速处理
-                      url: host1 + '/report/getSimpleReport',
-                      method: 'post',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'companyId': 0
-                      },
-                      data: {
-
-                        tableName: "xishaji",
-                        query: {
-                          // mac_id: series[i].name
-                          mac_id: pmList[i].mac_id
-                        }
 
 
-                      }
-
-                    })
-                    .then(response => {
-
-                      if (response.data.data.length == 0) {
-                        //console.log(response)
-                        series[i].data.push(0)
-                      } else {
-                        series[i].data.push(parseInt(response.data.data[0].spindle_speed))
-                      }
+            // setTimeout(() => {
 
 
-                    })
-                }
-                let date = new Date();
-                let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-
-                if (minute == "00") {
-                  xlist.push(hour + ":" + minute)
-                  xlist.shift()
-                  series[0].data.shift()
-                  series[1].data.shift()
-                  series[2].data.shift()
-                } else {
-                  xlist.push("")
-                }
-
-
-                setTimeout(() => {
-                  let myChart1 = this.$echarts.init(document.getElementById('echart1'));
-
-                  myChart1.setOption(that.option)
-                }, 1000);
-              }, 180000);
-
-
-            }, 1000);
+            // }, 1000);
           })
         // let a=[{mac_id:12},{mac_id:1},{mac_id:2}]
         // let b=[{mac_id:12},{mac_id:1},{mac_id:2}]
@@ -814,733 +792,7 @@
 
             })
         }, 36000000);
-        //  this.timer2=setInterval(() => {
 
-        //   }, 360000);
-
-        //        let lists=[]
-        //           let list = []
-        //             let list2=[]
-        //             let str=""
-        //             setTimeout(() => {
-
-
-        //           list2=[]
-        //           str=""
-        //           list = []
-        //         axios({ //罗拉转速处理
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji",
-        //               sort: "DESC",
-        //               sortColumn: "spindle_speed",
-
-
-        //             }
-
-        //           })
-        //           .then(response => {
-
-        //             let datas = response
-
-        //             for (let i = 0; i < 3; i++) {
-        //               axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': 0
-        //                   },
-        //                   async: true, // fasle表示同步请求，true表示异步请求
-        //                   data: {
-
-        //                     tableName: "machine_list",
-        //                     sort: "DESC",
-        //                     //  selectFields:response.data.data[i].machine_ip
-        //                     query: {
-        //                       "mac_ip": response.data.data[i].machine_ip
-        //                     }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-        //              datas.data.data[i].spindle_speed=parseInt(  datas.data.data[i].spindle_speed)
-        //                   datas.data.data[i].mac_id = response.data.data[0].mac_id
-        //                   list.push(datas.data.data[i])
-        //                  list2.push(response.data.data[0].mac_id) //前三台设备id列表
-        // str=str+response.data.data[0].mac_id+","
-        //                 })
-        //                        .then(()=>{
-        //                               list=that.sortByKey(list,"spindle_speed")
-        //                          let list3=[]
-        //                          //////console.log(list)
-        //                          for(let i=list.length-1;i>=0;i--){
-
-        // list3.push(list[i])
-        //                          }
-        //                                    for(let i=0;i<list3.length;i++){
-        //             if (i == 0) {
-        //                     list3[i].class = "table_con"
-        //                      list3[i].styles = "color: rgb(107, 255, 225);"
-        //                    list3[i].style2 = "color: rgb(255, 0, 0);"
-        //                   } else if (i == 1) {
-        //                      list3[i].class = "table_con2"
-        //                     list3[i].styles = "color:rgb(255, 255, 0)"
-        //                     list3[i].style2 = "color: rgb(255, 0, 221);"
-        //                   } else if (i == 2) {
-        //                    list3[i].class = "table_con"
-        //                    list3[i].styles = "color: rgb(89, 240, 4);"
-        //                   list3[i].style2 = "    color: rgb(0, 216, 216);"
-        //                   }
-        //                          }
-        //          that.qllList = list3
-        //              that.machineIdList=list2
-        //              ////////console.log(str)
-        //             ////////console.log(str.split(','))
-        //             let key=str.split(',')
-
-        //             let l = []
-        //             let k = [{
-        //                 name: key[0],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 markLine: {
-        //                   symbol: ['none', 'image://https://s1.ax1x.com/2020/08/10/abCVjf.png'], //去掉箭头
-        //                   symbolSize: [15, 15],
-        //                   itemStyle: {
-        //                     normal: {
-        //                       lineStyle: { //全局的样式
-        //                         type: 'dashed',
-
-        //                       },
-        //                     }
-        //                   },
-        //                   data: [{
-        //                       yAxis: 250,
-
-        //                       itemStyle: {
-        //                         normal: {
-        //                           color: 'red'
-        //                         }
-        //                       },
-        //                       label: { // 线条提示字体
-        //                         show: false,
-        //                         position: 'end',
-
-        //                         color: '#ff3040'
-        //                       }
-        //                     },
-        //                     {
-        //                       yAxis: 110,
-        //                       itemStyle: {
-        //                         normal: {
-        //                           color: 'blue'
-        //                         }
-        //                       },
-        //                       label: {
-        //                         show: false,
-        //                         position: 'end',
-        //                         formatter: '越限下线',
-        //                         color: '#ff3040'
-        //                       }
-        //                     }
-        //                   ]
-        //                 },
-        //                 data: []
-        //               },
-        //               {
-        //                 name: key[1],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 data: []
-        //               },
-        //               {
-        //                 name: key[2],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 data: []
-        //               },
-
-        //             ]
-
-
-        //             that.time = l
-        //             that.speed = k
-
-        //  let rhour=that. gethourarr(5)
-        //  for(let i=0;i<rhour.length;i++){
-        //    l.push(rhour[i])
-        //  }
-
-
-        //  for(let i=0;i<list2.length;i++){
-        //    for(let j=0;j<l.length;j++){
-        //           axios({ 
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji_lola_speed xr",
-
-        //               query:{
-        //                 machine_id:list2[i],
-        //                 "xr.current_time":l[j]
-        //               }
-
-
-        //             }
-
-        //           })
-
-        //           .then(response => {
-        //    // //console.log(response.data.data)
-        //         if(response.data.data.length==0){
-        //                 for(let l=0;l<k.length;l++){
-        //               if(list2[l]==k[l].name){
-        //                 k[l].data.push(0)
-
-        //               }
-        //             }
-        //         }else{
-        //               for(let m=0;m<k.length;m++){
-        //               if(response.data.data[0].machine_id==k[m].name){
-        //                 k[m].data.push(parseInt(response.data.data[0].spindle_speed))
-
-        //               }
-        //             }
-        //         }
-
-        //           })
-        //    }
-        //  }
-        // setTimeout(() => {
-        //    //console.log(k[0].data.length)
-        // if(k[0].data.length==5){
-
-        //     that.time = l
-        //               that.speed = k
-        //               let myChart1 = this.$echarts.init(document.getElementById('echart1'));
-
-        //               myChart1.setOption(that.option)
-        // }
-        // }, 1000);
-
-
-        //       that.timer4 = setInterval(() => {
-        //               let date = new Date();
-        //               let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-        //               let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        //               // l.push(hour + ":" + minute)
-        //               if(minute=="00"){
-        //                 l.push(hour + ":" + minute)
-        //               }else{
-        //                 l.push("")
-        //               }
-        //               // if (l.length > 6) {
-        //               //   l.shift()
-        //               // }
-
-        //      axios({ //前罗拉转速处理
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji",
-        //               sort: "DESC",
-        //               sortColumn: "spindle_speed",
-
-
-        //             }
-
-        //           })
-
-        //           .then(response => {
-        //             let pp=response.data.data
-        //          for(let i=0;i<pp.length;i++){
-        //                axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': 0
-        //                   },
-        //                   async: true, // fasle表示同步请求，true表示异步请求
-        //                   data: {
-
-        //                     tableName: "machine_list",
-        //                     sort: "DESC",
-        //                     //  selectFields:response.data.data[i].machine_ip
-        //                     query: {
-        //                       "mac_ip":pp[i].machine_ip
-        //                     }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-        //                   pp[i].mac_id=response.data.data[0].mac_id
-        //                 })      .then(()=>{
-
-        //                 for (let i = 0; i < k.length; i++) {
-        //                 // if (k[i].data.length > 6) {
-        //                 //   k[i].data.shift()
-        //                 // }
-
-
-        //                   for (let j = 0; j < pp.length; j++) {
-        //                       //  ////////console.log(that.qllList[j].mac_id)
-        //                       // ////////console.log(k[i].name)
-        //                     if (k[i].name == pp[j].mac_id) {
-
-        //                       k[i].data.push(pp[j].spindle_speed)
-        //                     }
-        //                   }
-
-
-
-
-
-
-        //               }
-
-        //               that.time = l
-        //               that.speed = k
-        //               let myChart1 = this.$echarts.init(document.getElementById('echart1'));
-        //               myChart1.setOption(that.option)
-        //              })
-        //          }
-        //           })
-
-
-
-
-
-        //             }, 60000);
-
-        //             that.echart(key)
-
-        //             })
-
-        //             }
-
-        //                 setTimeout(() => {
-
-        //                           if(lists.length==0){
-
-        //               lists=list2
-        //             }else{
-        //               let flag=true
-
-        //               for(let i=0;i<list2.length;i++){
-        //                 if(lists.indexOf(list2[i])==-1){
-
-        //                        flag=false
-        //                        break
-        //                 }else{
-        //                   flag=true
-        //                 }
-        //               }
-
-
-        //               if(flag==true){
-        //                 //console.log("继续")
-
-        //               }else{
-        //                 //console.log("变了")
-        //                 clearInterval(that.timer5)
-        //                      clearInterval(that.timer4)
-        //                 that.qllList=[]
-        //               let myChart1 = this.$echarts.init(document.getElementById('echart1'));
-        //         // 绘制图表
-        //         myChart1.clear();
-        //         that.getdata()
-
-
-        //               }
-        //             }
-        //                 }, 1500);
-
-
-
-        //           })
-        //         },1000)
-        //         that.timer5 = setInterval(() => {
-        //           list2=[]
-        //           str=""
-        //           list = []
-        //         axios({ //罗拉转速处理
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji",
-        //               sort: "DESC",
-        //               sortColumn: "spindle_speed",
-
-
-        //             }
-
-        //           })
-        //           .then(response => {
-
-        //             let datas = response
-
-        //             for (let i = 0; i < 3; i++) {
-        //               axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': 0
-        //                   },
-        //                   async: true, // fasle表示同步请求，true表示异步请求
-        //                   data: {
-
-        //                     tableName: "machine_list",
-        //                     sort: "DESC",
-        //                     //  selectFields:response.data.data[i].machine_ip
-        //                     query: {
-        //                       "mac_ip": response.data.data[i].machine_ip
-        //                     }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-        //              datas.data.data[i].spindle_speed=parseInt(  datas.data.data[i].spindle_speed)
-        //                   datas.data.data[i].mac_id = response.data.data[0].mac_id
-        //                   list.push(datas.data.data[i])
-        //                  list2.push(response.data.data[0].mac_id) //前三台设备id列表
-        // str=str+response.data.data[0].mac_id+","
-        //                 })
-        //                        .then(()=>{
-
-
-        //             })
-
-        //             }
-
-        //                 setTimeout(() => {
-        //                           if(lists.length==0){
-        //               lists=list2
-        //             }else{
-        //               let flag=true
-
-        //               for(let i=0;i<list2.length;i++){
-        //                 if(lists.indexOf(list2[i])==-1){
-
-        //                        flag=false
-        //                        break
-        //                 }else{
-        //                   flag=true
-        //                 }
-        //               }
-
-
-        //               if(flag==true){
-        //                 ////console.log("继续")
-
-        //               }else{
-        //                 ////console.log("变了")
-        //                 clearInterval(that.timer5)
-        //                      clearInterval(that.timer4)
-        //                 that.qllList=[]
-        //               let myChart1 = this.$echarts.init(document.getElementById('echart1'));
-        //         // 绘制图表
-        //         myChart1.clear();
-        //         that.getdata()
-
-
-        //               }
-        //             }
-        //                 }, 1000);
-
-
-
-        //           })
-        //         },12000)
-
-        //         axios({ //锭翼转速(r/min)处理
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji",
-        //               sort: "DESC",
-        //               sortColumn: "rolled_speed",
-
-
-        //             }
-
-        //           })
-        //           .then(response => {
-
-        //             let datas = response
-        //             let list = []
-        //               let list2=[]
-        //                    let str=""
-        //             for (let i = 0; i < 3; i++) {
-        //               axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': 0
-        //                   },
-        //                   data: {
-
-        //                     tableName: "machine_list",
-        //                     sort: "DESC",
-        //                     //  selectFields:response.data.data[i].machine_ip
-        //                     query: {
-        //                       "mac_ip": response.data.data[i].machine_ip
-        //                     }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-
-        //                   datas.data.data[i].mac_id = response.data.data[0].mac_id
-        //                   datas.data.data[i].rolled_speed=parseInt(datas.data.data[i].rolled_speed)
-        //                   list.push(datas.data.data[i])
-        //                   list2.push(response.data.data[0].mac_id) //前三台设备id列表
-        //                   str=str+response.data.data[0].mac_id+","
-        //                 })
-        //                      .then(()=>{
-
-        //                             list=that.sortByKey(list,"rolled_speed")
-        //                             ////////console.log(list)
-        //                          let list3=[]
-        //                          for(let i=list.length-1;i>=0;i--){
-        // list3.push(list[i])
-        //                          }
-        //                                for(let i=0;i<list3.length;i++){
-        //             if (i == 0) {
-        //                     list3[i].class = "table_con"
-        //                      list3[i].styles = "color: rgb(107, 255, 225);"
-        //                    list3[i].style2 = "color: rgb(255, 0, 0);"
-        //                   } else if (i == 1) {
-        //                      list3[i].class = "table_con2"
-        //                     list3[i].styles = "color:rgb(255, 255, 0)"
-        //                     list3[i].style2 = "color: rgb(255, 0, 221);"
-        //                   } else if (i == 2) {
-        //                    list3[i].class = "table_con"
-        //                    list3[i].styles = "color: rgb(89, 240, 4);"
-        //                   list3[i].style2 = "    color: rgb(0, 216, 216);"
-        //                   }
-        //                          }
-
-        //                          ////////console.log(list3)
-        //             that.dyList = list3
-        //              that.machineIdList2=list2
-        //              ////////console.log(str)
-        //             ////////console.log(str.split(','))
-        //             let key=str.split(',')
-
-        //             let l = []
-        //             let k = [{
-        //                 name: key[0],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 markLine: {
-        //                   symbol: ['none', 'image://https://s1.ax1x.com/2020/08/10/abCVjf.png'], //去掉箭头
-        //                   symbolSize: [15, 15],
-        //                   itemStyle: {
-        //                     normal: {
-        //                       lineStyle: { //全局的样式
-        //                         type: 'dashed',
-
-        //                       },
-        //                     }
-        //                   },
-        //                   data: [{
-        //                       yAxis: 20000,
-
-        //                       itemStyle: {
-        //                         normal: {
-        //                           color: 'red'
-        //                         }
-        //                       },
-        //                       label: { // 线条提示字体
-        //                         show: false,
-        //                         position: 'end',
-
-        //                         color: '#ff3040'
-        //                       }
-        //                     },
-        //                     {
-        //                       yAxis: 5000,
-        //                       itemStyle: {
-        //                         normal: {
-        //                           color: 'blue'
-        //                         }
-        //                       },
-        //                       label: {
-        //                         show: false,
-        //                         position: 'end',
-        //                         formatter: '越限下线',
-        //                         color: '#ff3040'
-        //                       }
-        //                     }
-        //                   ]
-        //                 },
-        //                 data: []
-        //               },
-        //               {
-        //                 name: key[1],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 data: []
-        //               },
-        //               {
-        //                 name: key[2],
-        //                 type: 'line',
-        //                 yAxisIndex: 0,
-        //                 data: []
-        //               },
-
-        //             ]
-
-        //             let date = new Date();
-        //             let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-        //             let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        //             l.push(hour + ":" + minute)
-
-        //             for (let i = 0; i < k.length; i++) {  
-        //                for(let j=0;j<that.dyList.length;j++){
-        //            if(k[i].name==that.dyList[j].mac_id){
-        // k[i].data.push(that.dyList[j].rolled_speed)
-        //            }
-
-        //             }
-
-        //             }
-        //             that.time2 = l
-        //             that.speed2 = k
-
-
-        //             that.timer3 = setInterval(() => {
-        //               let date = new Date();
-        //               let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-        //               let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        //               l.push(hour + ":" + minute)
-        //               if (l.length > 6) {
-        //                 l.shift()
-        //               }
-
-        //      axios({
-        //             url: host1 + '/report/getSimpleReport',
-        //             method: 'post',
-        //             headers: {
-        //               'Content-Type': 'application/json',
-        //               'companyId': 0
-        //             },
-        //             data: {
-
-        //               tableName: "xishaji",
-        //               sort: "DESC",
-        //                sortColumn: "rolled_speed",
-
-
-        //             }
-
-        //           })
-
-        //           .then(response => {
-        //             let pp=response.data.data
-        //          for(let i=0;i<pp.length;i++){
-        //                axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': 0
-        //                   },
-        //                   async: true, // fasle表示同步请求，true表示异步请求
-        //                   data: {
-
-        //                     tableName: "machine_list",
-        //                     sort: "DESC",
-        //                     //  selectFields:response.data.data[i].machine_ip
-        //                     query: {
-        //                       "mac_ip":pp[i].machine_ip
-        //                     }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-        //                   pp[i].mac_id=response.data.data[0].mac_id
-        //                 })      .then(()=>{
-
-        //                 for (let i = 0; i < k.length; i++) {
-        //                 if (k[i].data.length > 6) {
-        //                   k[i].data.shift()
-        //                 }
-
-
-        //                   for (let j = 0; j < pp.length; j++) {
-        //                       //  ////////console.log(that.qllList[j].mac_id)
-        //                       // ////////console.log(k[i].name)
-        //                     if (k[i].name == pp[j].mac_id) {
-
-        //                       k[i].data.push(pp[j].rolled_speed)
-        //                     }
-        //                   }
-
-
-
-
-
-
-        //               }
-
-        //               that.time2 = l
-        //               that.speed2 = k
-        //               let myChart1 = this.$echarts.init(document.getElementById('echart2'));
-        //               myChart1.setOption(that.option2)
-        //              })
-        //          }
-        //           })
-
-
-
-
-
-        //             }, 60000);
-
-        //             that.echart2(key)
-
-        //             })
-
-        //             }
-
-
-        //           })
       },
       equalArr(arr1, arr2) {
 
@@ -1838,7 +1090,7 @@
     mounted() {
       this.getdata()
       this.getdata2()
-     
+
 
       this.getCurrent()
       // this.getzuori()

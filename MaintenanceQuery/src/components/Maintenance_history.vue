@@ -10,8 +10,8 @@
 
       <div class="query">
         <span style="margin-left:10px;font-size:0.5em;margin-right:10px">开始时间</span>
-        <el-date-picker v-model=" start_time" style="width:40%;" size="small" type="date"
-          value-format="yyyy-MM-dd" placeholder="选择日期">
+        <el-date-picker v-model=" start_time" style="width:40%;" size="small" type="date" value-format="yyyy-MM-dd"
+          placeholder="选择日期">
         </el-date-picker>
         <span style="margin:18px;font-size:0.5em">机台号</span>
         <el-input v-model="  macRelation.machine_id" size="small" style="width:20%;"></el-input>
@@ -23,12 +23,12 @@
         </el-date-picker>
         <el-button type="primary" style="width:20%;" @click="query()">查询</el-button>
       </div>
-          <div class="query">
+      <div class="query">
         <span style="margin:10px;font-size:0.5em">员工筛选</span>
-       <select name="bbxb" id="selecte" class="shortselect3" @change="change">
-      <option :value="item.id" v-for="item in staffList">{{item.staff_name}}</option>
+        <select name="bbxb" id="selecte" class="shortselect3" @change="change">
+          <option :value="item.id" v-for="item in staffList">{{item.staff_name}}</option>
 
-    </select>
+        </select>
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div class="scroller">
@@ -56,7 +56,7 @@
     name: 'Maintenance_history',
     data() {
       return {
-staff_id:"",
+        staff_id: "",
         macRelation: {
           machine_id: '',
           workshop_id: ''
@@ -71,27 +71,26 @@ staff_id:"",
         page_num: 1,
         total_data_num: null,
         dataList: [],
-        newStaff_id:"",
-        staffList:[
-          {
-            staff_name:"zpd",
-            id:2
+        newStaff_id: "",
+        staffList: [{
+            staff_name: "zpd",
+            id: 2
           },
-               {
-            staff_name:"zps",
-            id:3
+          {
+            staff_name: "zps",
+            id: 3
           },
         ]
       }
     },
     methods: {
-           change(e) { //mactype下拉选择框值改变重新获取数据
-  
-    
- this.newStaff_id=e.target.value
-      this.dataList = []
-         this.page_num=1
- this.getData(this.newStaff_id)
+      change(e) { //mactype下拉选择框值改变重新获取数据
+
+
+        this.newStaff_id = e.target.value
+        this.dataList = []
+        this.page_num = 1
+        this.getData(this.newStaff_id)
       },
       back() {
         this.$router.push({ //跳转并传参数
@@ -102,7 +101,7 @@ staff_id:"",
             operator: this.operator,
             workshop_id: this.macRelation.workshop_id,
             company_id: this.selectInfo.company_id,
-               staff_id:this.staff_id
+            staff_id: this.staff_id
           }
 
         })
@@ -158,7 +157,7 @@ staff_id:"",
 
       },
       getData(newStaff_id) {
-          console.log(newStaff_id)
+        console.log(newStaff_id)
         let url = "http://120.55.124.53:8206/api/maintain/getMaintainRecordPage"
         let that = this
 
@@ -227,20 +226,20 @@ staff_id:"",
 
     },
     mounted() {
-history.pushState(null, null, window.location.href);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, window.location.href);
-        });
+      history.pushState(null, null, window.location.href);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, window.location.href);
+      });
       this.start_time = this.GetDateStr(-3) //当前日期的前三天
       this.end_time = this.GetDateStr(3) //当前日期的后三天
       // this.macRelation.machine_id = this.$route.params.machine_id;
       this.dataList = []
-             this.staff_id = this.$route.params.staff_id
+      this.staff_id = this.$route.params.staff_id
       this.operator = this.$route.params.operator
       // this.macRelation.workshop_id = this.$route.params.workshop_id;
       this.selectInfo.company_id = this.$route.params.company_id;
       this.getData()
-// console.log(this.staff_id)
+      // console.log(this.staff_id)
 
     }
   }
@@ -248,19 +247,19 @@ history.pushState(null, null, window.location.href);
 </script>
 
 <style scoped>
-.shortselect3{
-   border: 0;
+  .shortselect3 {
+    border: 0;
     display: block;
     position: relative;
     min-height: 1.146667rem;
     line-height: 1.146667rem;
     white-space: nowrap;
-   padding-left: 30px;
-   padding-right: 30px;
-   width: 40%;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 40%;
     height: 32px;
-   border: 1px solid #DCDFE6;
-   border-radius: 4px;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
     font-size: 12px;
     color: rgb(21, 153, 204);
     overflow: hidden;
@@ -272,13 +271,15 @@ history.pushState(null, null, window.location.href);
     /* Firefox */
     -webkit-appearance: none;
     /* Safari 和 Chrome */
-}
- .all-page /deep/ ._v-container {
+  }
+
+  .all-page /deep/ ._v-container {
     position: absolute;
     top: 19%;
 
 
   }
+
   span {
     overflow: hidden;
     white-space: nowrap;

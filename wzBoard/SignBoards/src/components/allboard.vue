@@ -737,16 +737,6 @@
 
             }
 
-            // setTimeout(() => {
-       
-
-
-
-
-
-
-
-            // }, 1000);
 
 
           })
@@ -954,175 +944,11 @@
 
             }
 
-            setTimeout(() => {
-      
-
-              //               axios({
-              //         url: host1 + '/report/getSimpleReport',
-              //         method: 'post',
-              //         headers: {
-              //           'Content-Type': 'application/json',
-              //           'companyId': 0
-              //         },
-              //         data: {
-
-              //           tableName: "xishajiDailyOutput",
-
-
-
-
-              //         }
-
-              //       })
-              //       .then(response => {
-              //  ////////console.log(response)
-              //         for(let i=0;i<response.data.data.length;i++){
-              //            if (dateList.indexOf(response.data.data[i].shift_date.substr(5, 5)) != -1) {
-              //              response.data.data[i].shift_date=response.data.data[i].shift_date.substr(5,5)
-              //              response.data.data[i].shift_yield=parseFloat(response.data.data[i].shift_yield)
-              //                list.push(response.data.data[i])
-              //            }
-              //         }
-
-              //                                                       list = list.reduce((obj, item) => {  
-              //       let find = obj.find(i => i.shift_date === item.shift_date)  
-              //      let _d = {  
-              //         ...item,  
-              //         frequency: 2 
-              //       }  
-
-
-              //       find ? (find.shift_yield+=item.shift_yield,find.frequency++ ): obj.push(_d)  
-              //       return obj  
-              //     }, [])
-              //            ////////console.log(list)  
-              //                    ////////console.log(list2) 
-              //            for(let i=0;i<list.length;i++){
-              //             yList.push(   list[i].shift_yield)
-
-              //            }
-              //                   for(let i=0;i<list2.length;i++){
-              //             yList2.push(   list2[i].electric)
-
-              //            }
-              //         for(let i=dateList.length-1;i>=0;i--){
-              //           xList.push(dateList[i])
-              //         }
-
-
-              //            that.echart2(xList,yList,yList2)            
-              //       })
-
-
-            }, 1000);
+        
 
 
           })
-        //                 .then(()=>{
-        //                      axios({ 
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': that.companyId
-        //                   },
-        //                   data: {
-
-        //                     tableName: "looplist_info",
-        //                     selectLikeFields:{
-        //                       name:"细纱机"
-        //                     },
-        //                     selectFields:['name','id']
-        //                     // sort: "DESC",
-        //                     // //  selectFields:response.data.data[i].machine_ip
-        //                     // query: {
-        //                     //   "mac_ip": response.data.data[i].machine_ip
-        //                     // }
-
-        //                   }
-
-        //                 })
-        //                 .then(response => {
-        //                   //////////////console.log(response)
-
-        //                   for(let i=0;i<response.data.data.length;i++){
-        //                             axios({
-        //                   url: host1 + '/report/getSimpleReport',
-        //                   method: 'post',
-        //                   headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'companyId': that.companyId
-        //                   },
-        //                   data: {
-
-        //                     tableName: "electric_history_d",
-        //                     query:{
-        //                     "looplistId":response.data.data[i].id
-        //                     },
-        //                     selectFields:['looplistId','startTime','electric']
-        //                     // sort: "DESC",
-        //                     // //  selectFields:response.data.data[i].machine_ip
-        //                     // query: {
-        //                     //   "mac_ip": response.data.data[i].machine_ip
-        //                     // }
-
-        //                   }
-
-        //                 })
-        //                 .then(res => {
-
-        //                   for(let i=0;i<res.data.data.length;i++){
-
-        //                 if(res.data.data[i].electric=="None"){
-        //                   res.data.data[i].electric=0
-        //                 }else{
-        //                res.data.data[i].electric=parseInt(res.data.data[i].electric) 
-        //                 }
-        //                     list2.push(res.data.data[i])
-        //                   }
-
-
-
-
-        //                 }).then(()=>{
-        //                                   list2 = list2.reduce((obj, item) => {  
-        //   let find = obj.find(i => i.startTime === item.startTime)  
-        //  let _d = {  
-        //     ...item,  
-        //     frequency: 2 
-        //   }  
-
-
-        //   find ? (find.electric+=item.electric,find.frequency++ ): obj.push(_d)  
-        //   return obj  
-        // }, [])
-
-
-
-
-
-        //                 }).then(()=>{
-
-
-        //                 })
-        //                   }
-
-
-        //                 }).then(()=>{
-
-        //                 })
-        //                 })
-        //                    const timer = setTimeout(() => {
-
-        //            for(let i=0;i<list2.length;i++){
-        //   list2[i].electric= (list2[i].electric* list2[i].frequency)/num
-        //  list2[i].startTime=list2[i].startTime.substr(5,5);
-        //  that.xList2.push(list2[i].startTime)
-        //  that.electricList2.push(list2[i].electric)
-        // }
-        // that.echart2()  
-
-        //         }, 2000);
+    
       },
       getDateArr(days) {
 
@@ -1284,10 +1110,11 @@
             }
             that.seriesList = k
             //console.log(k)
-            const timer = setTimeout(() => {
+            
+              console.log(that.legendList)
+                 console.log(that.seriesList)
+            // const timer = setTimeout(() => {
 
-              ////console.log(that.legendList)
-              //      //////////console.log(that.seriesList)
               let option = {
                 tooltip: {
                   trigger: 'axis',
@@ -1401,7 +1228,7 @@
               let myChart1 = this.$echarts.init(document.getElementById('echart4'));
               //console.log(option)
               myChart1.setOption(option)
-            }, 1000);
+            // }, 1000);
             //  for(let j=0;j<res.data.data.length;j++){
             //    that.legendList.push(res.data.data[j].mac_id)
 
@@ -1495,7 +1322,7 @@
                 that.xList4.push(hour + ":" + minute)
               }
               that.seriesList = k
-              const timer = setTimeout(() => { //有问题
+              // const timer = setTimeout(() => { //有问题
 
                 ////console.log(that.legendList)
                 //      //////////console.log(that.seriesList)
@@ -1612,7 +1439,7 @@
                 let myChart1 = this.$echarts.init(document.getElementById('echart4'));
                 //console.log(option)
                 myChart1.setOption(option)
-              }, 1000);
+              // }, 1000);
               //  for(let j=0;j<res.data.data.length;j++){
               //    that.legendList.push(res.data.data[j].mac_id)
 
@@ -2341,13 +2168,7 @@
       this.changeWorkshopTiming()
 
 
-      //   this.getData()
-      //      const timer = setTimeout(() => {
 
-      //  this.startmarquee(30, 30, 80)
-
-
-      //       }, 1000);
     },
     beforeDestroy() {
       if (this.timer) {
