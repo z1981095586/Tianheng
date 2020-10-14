@@ -72,25 +72,17 @@
         total_data_num: null,
         dataList: [],
         newStaff_id: "",
-        staffList: [{
-            staff_name: "zpd",
-            id: 2
-          },
-          {
-            staff_name: "zps",
-            id: 3
-          },
-        ]
+        staffList: []
       }
     },
     methods: {
       change(e) { //mactype下拉选择框值改变重新获取数据
 
 
-        this.newStaff_id = e.target.value
-        this.dataList = []
-        this.page_num = 1
-        this.getData(this.newStaff_id)
+        this.newStaff_id = e.target.value;
+        this.dataList = [];
+        this.page_num = 1;
+        this.getData(this.newStaff_id);
       },
       back() {
         this.$router.push({ //跳转并传参数
@@ -121,19 +113,12 @@
         })
       },
       refresh() { //下拉刷新函数
-        //console.log("refresh");
-
-        this.page_num = 1
-        this.dataList = []
-
-
-
+        this.page_num = 1;
+        this.dataList = [];
         setTimeout(() => { //不设置定时器会出现bug
-          this.getData() //获取数据列表
-
-          this.$refs.my_scroller.finishPullToRefresh() //关闭下拉刷新函数
+          this.getData(); //获取数据列表
+          this.$refs.my_scroller.finishPullToRefresh(); //关闭下拉刷新函数
         }, 500);
-
       },
       inf() {
 
@@ -142,14 +127,14 @@
 
           if (this.dataList.length == this.total_data_num) { //如果数据总条数等于当前数据列表长度了，那就关闭上拉加载了
 
-            this.$refs.my_scroller.finishInfinite(true)
-            return
+            this.$refs.my_scroller.finishInfinite(true);
+            return;
           } else if (this.dataList.length == 0) { //如果查到没数据了，那就关闭上拉加载了
-            this.$refs.my_scroller.finishInfinite(true)
-            return
+            this.$refs.my_scroller.finishInfinite(true);
+            return;
           } else { //否则就++，获取下一页数据
             this.page_num++;
-            this.getData()
+            this.getData();
           }
 
         }, 500);
@@ -192,6 +177,7 @@
             //   center: true,
             //   duration: 2000
             // });
+        
             that.$refs.my_scroller.finishInfinite(true)
             return
           } else {
@@ -219,10 +205,11 @@
         return y + "-" + m + "-" + d;
       },
       query() {
-        this.page_num = 1
-        this.dataList = []
-        this.getData()
+        this.page_num = 1;
+        this.dataList = [];
+        this.getData();
       }
+ 
 
     },
     mounted() {
@@ -230,15 +217,15 @@
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
-      this.start_time = this.GetDateStr(-3) //当前日期的前三天
-      this.end_time = this.GetDateStr(3) //当前日期的后三天
+      this.start_time = this.GetDateStr(-3); //当前日期的前三天
+      this.end_time = this.GetDateStr(3); //当前日期的后三天
       // this.macRelation.machine_id = this.$route.params.machine_id;
-      this.dataList = []
-      this.staff_id = this.$route.params.staff_id
-      this.operator = this.$route.params.operator
+      this.dataList = [];
+      this.staff_id = this.$route.params.staff_id;
+      this.operator = this.$route.params.operator;
       // this.macRelation.workshop_id = this.$route.params.workshop_id;
       this.selectInfo.company_id = this.$route.params.company_id;
-      this.getData()
+      this.getData();
       // console.log(this.staff_id)
 
     }

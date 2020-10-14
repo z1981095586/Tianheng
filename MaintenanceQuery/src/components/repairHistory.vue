@@ -47,7 +47,6 @@
               <template slot-scope="scope">
                 <el-image :src="scope.row.img1" lazy :preview-src-list="urls"></el-image>
               </template>
-   
             </el-table-column>
           </el-table>
         </div>
@@ -85,10 +84,12 @@
         },
         pageNum: 1,
         total: null
-
       }
     },
     methods: {
+      /**
+       * 
+       */
       prev() { //上一页
         if (this.pageNum > 1) {
           this.pageNum--;
@@ -121,11 +122,7 @@
           this.urls.push(row.img3)
         }
       },
-
-      
       getData(IsSearch) {//获取数据
-
-
         let url = "http://106.12.219.66:8227/report/getRepairSubmit"
         let that = this
        if(IsSearch==true){
@@ -148,16 +145,10 @@
             }
           })
           .then(res => {
-
             that.total = res.data.data.total
             that.tableData = res.data.data.list
-
           })
-
       },
-
-
-
     },
     mounted() {
       history.pushState(null, null, window.location.href);
@@ -166,6 +157,7 @@
       });
       this.selectInfo.company_id = this.$route.params.company_id;
       this.getData()
+
     }
   }
 
@@ -196,11 +188,9 @@
   .query /deep/ .el-input--suffix .el-input__inner {
     padding-right: 0;
   }
-
   .query /deep/ .el-range-editor--small .el-range-input {
     font-size: 0.5em;
   }
-
   .shortselect3 {
     border: 0;
     display: block;
@@ -241,26 +231,19 @@
   .all-page {
     /* margin-top: 12px; */
     width: 100%;
-
-
     height: 100vh;
-
     background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
     position: fixed;
     left: 0;
-
   }
-
   .query {
     width: 100%;
     height: 6%;
     display: flex;
     align-items: center;
-
   }
-
   .scroller {
     height: 80%;
     overflow: auto;
@@ -268,9 +251,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
   }
-
   .card {
     width: 90%;
     height: 200px;
@@ -280,7 +261,6 @@
     align-items: center;
     margin-bottom: 15px;
   }
-
   .card-con {
     width: 90%;
     text-align: left;
@@ -289,7 +269,6 @@
     color: black;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   }
-
   .detail {
     width: 90%;
     height: 44px;
@@ -298,5 +277,4 @@
     justify-content: flex-end;
     color: red;
   }
-
 </style>
