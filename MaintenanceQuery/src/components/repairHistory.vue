@@ -22,7 +22,7 @@
         </el-date-picker>
         <span style="margin-left:5px;font-size:0.5em;margin-right:5px">结束时间</span>
         <el-date-picker v-model="selectInfo.endDate" type="date" style="width:30%;margin-right:10px" size="small"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd" >
         </el-date-picker>
 
       </div>
@@ -66,7 +66,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'Maintenance_history',
+    name: 'repairHistory',
     data() {
       return {
         urls: [
@@ -87,9 +87,7 @@
       }
     },
     methods: {
-      /**
-       * 
-       */
+    
       prev() { //上一页
         if (this.pageNum > 1) {
           this.pageNum--;
@@ -128,6 +126,7 @@
        if(IsSearch==true){
          that.pageNum=1
        }
+       
         axios({
             url: url,
             method: "post",
@@ -154,7 +153,7 @@
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
-      });
+      });     
       this.selectInfo.company_id = this.$route.params.company_id;
       this.getData()
 

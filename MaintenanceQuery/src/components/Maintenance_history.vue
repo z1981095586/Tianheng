@@ -170,7 +170,7 @@
         }, {
 
         }).then(function (res) {
-          console.log(res.data.result.maintainRecord)
+
           if (res.data.result.maintainRecord.length == 0) {
             // that.$message({
             //   message: '没有数据！',
