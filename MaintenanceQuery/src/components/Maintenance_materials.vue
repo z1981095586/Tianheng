@@ -47,8 +47,12 @@
             <div class="contain">
               <div class="add"><span>数量：</span>
                 <div class="input-number"><i class="el-icon-remove" @click="sub(item.id)"
-                    style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.id)" v-show="!item.isinputShow">{{item.stockQuantityShow}}</span><el-input size="small" @change="((val)=>{changeStatus(val, item.id)})" @blur="Inputshow(item.id)" v-model="item.stockQuantityShow" v-show="item.isinputShow"></el-input> <i class="el-icon-circle-plus"
-                    @click="add(item.id)" style="color:rgb(49,153,102)"></i> </div>
+                    style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.id)"
+                    v-show="!item.isinputShow">{{item.stockQuantityShow}}</span>
+                  <el-input size="small" @change="((val)=>{changeStatus(val, item.id)})" @blur="Inputshow(item.id)"
+                    v-model="item.stockQuantityShow" v-show="item.isinputShow"></el-input> <i
+                    class="el-icon-circle-plus" @click="add(item.id)" style="color:rgb(49,153,102)"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -71,9 +75,9 @@
     name: 'Maintenance_materials',
     data() {
       return {
- operator:"",
- maintain_type_id:null,
- isClickIn:"",
+        operator: "",
+        maintain_type_id: null,
+        isClickIn: "",
         machine_id: null, //设备id
         company_id: '', //公司id
         mac_type_id: null, //设备类型id
@@ -85,9 +89,9 @@
         menu: [], //存放下拉菜单选项
         categories_id: "", //
         searchinfo: "", //搜索框信息
-    workshop_id:"",
-    machine_id:"",
-    datalist2:[]
+        workshop_id: "",
+        machine_id: "",
+        datalist2: []
       }
     },
     methods: {
@@ -203,9 +207,9 @@
               //  that.noDate=that.iscurrent(that.totalDataNum,that.pageNum)
 
               for (let i = 0; i < res.data.data.product.length; i++) { //push消耗物料数据
-               res.data.data.product[i].stockQuantitydata= res.data.data.product[i].stockQuantity
-             res.data.data.product[i].isinputShow=false
-               res.data.data.product[i].stockQuantityShow=0
+                res.data.data.product[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+                res.data.data.product[i].isinputShow = false
+                res.data.data.product[i].stockQuantityShow = 0
                 that.datalist.push(res.data.data.product[i])
               }
               that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
@@ -230,38 +234,38 @@
 
       getParams() { //获取其他页面传过来的参数
 
-      console.log(this.$route.params)
+
         this.mac_type_id = this.$route.params.dataObj2.mac_type_id
         this.flag = this.$route.params.flag
         this.type_name = this.$route.params.dataObj2.type_name
         this.machine_id = this.$route.params.machine_id
-         this.operator=this.$route.params.operator
-          this.workshop_id=this.$route.params.workshop_id
-           this.company_id=this.$route.params.company_id
-          this.machine_id=this.$route.params.machine_id
-          this.datalist2=this.$route.params.datalist
-          this.maintain_type_id=this.$route.params.maintain_type_id
-          this.isClickIn=this.$route.params.isClickIn
-          console.log(this.datalist2)
+        this.operator = this.$route.params.operator
+        this.workshop_id = this.$route.params.workshop_id
+        this.company_id = this.$route.params.company_id
+        this.machine_id = this.$route.params.machine_id
+        this.datalist2 = this.$route.params.datalist
+        this.maintain_type_id = this.$route.params.maintain_type_id
+        this.isClickIn = this.$route.params.isClickIn
+
       },
       back() { //点取消返回上一个页面
-        
+
         this.$router.push({
           path: "/Maintenance",
           name: "Maintenance",
           params: {
-              dataObj2:{
-                type_name: this.type_name,
+            dataObj2: {
+              type_name: this.type_name,
               mac_type_id: this.mac_type_id,
               flag: this.flag,
-   },
-              operator:this.operator,
-               workshop_id:this.workshop_id,
-            company_id:this.company_id,
-            machine_id:this.machine_id,
-            datalist:this.datalist2,
-            maintain_type_id:this.maintain_type_id,
-            isClickIn:this.isClickIn
+            },
+            operator: this.operator,
+            workshop_id: this.workshop_id,
+            company_id: this.company_id,
+            machine_id: this.machine_id,
+            datalist: this.datalist2,
+            maintain_type_id: this.maintain_type_id,
+            isClickIn: this.isClickIn
           }
 
         })
@@ -309,9 +313,6 @@
         let url = "http://120.55.124.53:8206/api/product/getRootCategories"
         let that = this
         axios.post(url, {
-
-
-
         }, {
           headers: {
             'Content-Type': 'application/json',
@@ -322,9 +323,6 @@
           if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
             that.getSubCategoriesList(res.data.data.categories_id)
           } else {
-
-            
-
             that.$message({
               message: '没有获取到根分类！',
               center: true,
@@ -340,24 +338,19 @@
 
         axios.post(url2, {
           categories_id: id
-
-
         }, {
           headers: {
             'Content-Type': 'application/json',
             "companyId": that.company_id
           }
         }).then(function (res) {
-          //console.log(res)
           if (res.data.data.categoriesModel.length > 0) {
-
             for (let i = 0; i < res.data.data.categoriesModel.length; i++) {
               res.data.data.categoriesModel[i].label = res.data.data.categoriesModel[i].name
               res.data.data.categoriesModel[i].value = res.data.data.categoriesModel[i].name
             }
             that.menu = res.data.data.categoriesModel //设置好下拉菜单选项
 
-            //console.log(that.menu)
             that.categories_id = that.menu[0].categories_id //存储第一个默认选项的id
           } else {
 
@@ -367,8 +360,6 @@
               duration: 1000
             });
           }
-
-
         })
       },
 
@@ -378,8 +369,8 @@
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
             if (this.datalist[i].stockQuantityShow > 0) {
-                 this.datalist[i].stockQuantity = this.datalist[i].stockQuantity +1
-                        this.datalist[i].stockQuantityShow=this.datalist[i].stockQuantityShow -1
+              this.datalist[i].stockQuantity = this.datalist[i].stockQuantity + 1
+              this.datalist[i].stockQuantityShow = this.datalist[i].stockQuantityShow - 1
             } else {
 
               this.$message({
@@ -394,42 +385,42 @@
       add(id) { //点加号将当前记录的库存数量+1
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
- if (this.datalist[i].stockQuantity<=0) {
-      this.$message({
+            if (this.datalist[i].stockQuantity <= 0) {
+              this.$message({
                 message: '数量不能大于库存数量！',
                 center: true,
                 duration: 1000
               });
- }else{
- this.datalist[i].stockQuantity = this.datalist[i].stockQuantity -1
-            this.datalist[i].stockQuantityShow=this.datalist[i].stockQuantityShow +1
- }
-           
+            } else {
+              this.datalist[i].stockQuantity = this.datalist[i].stockQuantity - 1
+              this.datalist[i].stockQuantityShow = this.datalist[i].stockQuantityShow + 1
+            }
+
 
           }
         }
       },
-      changeStatus(val,id){
-           for (let i = 0; i < this.datalist.length; i++) {
+      changeStatus(val, id) {
+        for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
- if (val > this.datalist[i].stockQuantitydata) {
-    this.$message({
+            if (val > this.datalist[i].stockQuantitydata) {
+              this.$message({
                 message: '数量不能大于库存数量！',
                 center: true,
                 duration: 1000
               });
-          this.datalist[i].stockQuantityShow=0
- }else{
-this.datalist[i].stockQuantity = this.datalist[i].stockQuantitydata -val
-            this.datalist[i].stockQuantityShow=val
- }
-            
+              this.datalist[i].stockQuantityShow = 0
+            } else {
+              this.datalist[i].stockQuantity = this.datalist[i].stockQuantitydata - val
+              this.datalist[i].stockQuantityShow = val
+            }
+
 
           }
         }
       },
-      Inputshow(id){
-       for (let i = 0; i < this.datalist.length; i++) {
+      Inputshow(id) {
+        for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
 
             this.datalist[i].isinputShow = !this.datalist[i].isinputShow
@@ -442,25 +433,25 @@ this.datalist[i].stockQuantity = this.datalist[i].stockQuantitydata -val
         let list = []
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].checked == true) {
-            
+
             list.push(this.datalist[i])
           }
         }
-        for(let i=0;i<list.length;i++){
-          list[i].stockQuantity=list[i].stockQuantityShow
+        for (let i = 0; i < list.length; i++) {
+          list[i].stockQuantity = list[i].stockQuantityShow
         }
-        for(let i=0;i<this.datalist2.length;i++){
-      if (typeof (this.datalist2[i].filelist) != "undefined"){
-          if(this.datalist2[i].filelist.length>0){
-          for(let j=0;j<this.datalist2[i].filelist.length;j++){
-            this.datalist2[i].filelist[j]={
-              url:this.datalist2[i].filelist[j],
-              name:j+'.jpg'
-            }
+        for (let i = 0; i < this.datalist2.length; i++) {
+          if (typeof (this.datalist2[i].filelist) != "undefined") {
+            if (this.datalist2[i].filelist.length > 0) {
+              for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
+                this.datalist2[i].filelist[j] = {
+                  url: this.datalist2[i].filelist[j],
+                  name: j + '.jpg'
+                }
 
+              }
+            }
           }
-          }
-           }
         }
 
         //console.log(list)
@@ -470,34 +461,35 @@ this.datalist[i].stockQuantity = this.datalist[i].stockQuantitydata -val
           params: {
 
             dataObj: list,
-                 operator:this.operator,
-               workshop_id:this.workshop_id,
-            company_id:this.company_id,
- 
-              type_name: this.type_name,
-              mac_type_id: this.mac_type_id,
-              flag: this.flag,
-              machine_id: this.machine_id,
-                   datalist:this.datalist2
-            
+            operator: this.operator,
+            workshop_id: this.workshop_id,
+            company_id: this.company_id,
+
+            type_name: this.type_name,
+            mac_type_id: this.mac_type_id,
+            flag: this.flag,
+            machine_id: this.machine_id,
+            datalist: this.datalist2
+          
+
           }
 
         })
       },
       cancel() { //点取消返回上一个页面，只发送设备信息数据
-            for(let i=0;i<this.datalist2.length;i++){
-            console.log(this.datalist2[i].filelist)
+        for (let i = 0; i < this.datalist2.length; i++) {
+          console.log(this.datalist2[i].filelist)
 
-                if (typeof (this.datalist2[i].filelist) != "undefined"){
-          if(this.datalist2[i].filelist.length>0){
-          for(let j=0;j<this.datalist2[i].filelist.length;j++){
-            this.datalist2[i].filelist[j]={
-              url:this.datalist2[i].filelist[j],
-              name:j+'.jpg'
+          if (typeof (this.datalist2[i].filelist) != "undefined") {
+            if (this.datalist2[i].filelist.length > 0) {
+              for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
+                this.datalist2[i].filelist[j] = {
+                  url: this.datalist2[i].filelist[j],
+                  name: j + '.jpg'
+                }
+
+              }
             }
-
-          }
-          }
           }
         }
         this.$router.push({
@@ -505,39 +497,30 @@ this.datalist[i].stockQuantity = this.datalist[i].stockQuantitydata -val
           name: 'Maintenance',
           params: {
 
-
-    
-   dataObj2:{
-                type_name: this.type_name,
+            dataObj2: {
+              type_name: this.type_name,
               mac_type_id: this.mac_type_id,
               flag: this.flag,
-   },
-      datalist:this.datalist2,
-            machine_id:this.machine_id,
-             operator:this.operator,
-               workshop_id:this.workshop_id,
-            company_id:this.company_id
+            },
+            datalist: this.datalist2,
+            machine_id: this.machine_id,
+            operator: this.operator,
+            workshop_id: this.workshop_id,
+            company_id: this.company_id
           }
         })
       }
     },
+
     mounted() {
       this.datalist = [] //初始化数据
       this.pageNum = 1
-    
-      this.getParams()//获取其他页面传的数据
-history.pushState(null, null, window.location.href);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, window.location.href);
-        });
-      
-
-
-      this.getInventory()//获取保养物料数据
-
-
-
-
+      this.getParams() //获取其他页面传的数据
+      history.pushState(null, null, window.location.href);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, window.location.href);
+      });
+      this.getInventory() //获取保养物料数据
     },
     watch: {
       searchinfo: function (val, oldVal) { //监听搜索框数据，若清空，则获取下拉选择下的默认数据
@@ -584,7 +567,7 @@ history.pushState(null, null, window.location.href);
 
   }
 
- .all-page /deep/ ._v-container {
+  .all-page /deep/ ._v-container {
     position: absolute;
     top: 45px;
     left: 0;
@@ -653,7 +636,7 @@ history.pushState(null, null, window.location.href);
 
 
     border-radius: 4px;
-    
+
 
   }
 
@@ -684,7 +667,7 @@ history.pushState(null, null, window.location.href);
     overflow: auto;
     padding-top: 10px;
   }
- 
+
 
 
 

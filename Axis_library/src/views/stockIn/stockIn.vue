@@ -121,12 +121,45 @@ window.close();
 
       },
       warehousing() { //确认提交
-        if (this.staff_id == "") {
+    
+      if(this.axis_no==undefined){
+        this.axis_no=""
+      }
+       if(this.product_name==undefined){
+        this.product_name=""
+      }
+          if(this.meter==undefined){
+        this.meter=""
+      }
+    
+        if (this.staff_id === "") {
           this.$message({
             type: 'error',
             message: '操作人员为空！'
           });
-        } else {
+        }
+         else if (this.library_name=== "") {
+          this.$message({
+            type: 'error',
+            message: '库位号为空！'
+          });
+        }
+         else if (this.axis_no=== "") {
+         this.$message({
+            type: 'error',
+            message: '轴号为空！'
+          });
+        }else if (this.product_name=== "") {
+         this.$message({
+            type: 'error',
+            message: '入库批号为空！'
+          });
+        } else if (this.meter=== "") {
+          this.$message({
+            type: 'error',
+            message: '入库米数为空！'
+          });
+        }else {
           let url = "http://120.55.124.53:8206/api/axis/warehousing"
           let that = this
           let end_date=""
@@ -213,17 +246,17 @@ window.close();
 
         }, function (err) {
           //console.log(err)
-          if (err == "Error: timeout of 1000ms exceeded" || "Error: Network Error") { //超时1000毫秒显示断网图标
-            that.network = false
-            that.$message({
-              type: 'warning',
-              message: '网络掉线了！'
-            });
-          } else {
+          // if (err == "Error: timeout of 1000ms exceeded" || "Error: Network Error") { //超时1000毫秒显示断网图标
+          //   that.network = false
+          //   that.$message({
+          //     type: 'warning',
+          //     message: '网络掉线了！'
+          //   });
+          // } else {
 
 
-            that.network = true
-          }
+          //   that.network = true
+          // }
         })
       },
       toZero(value) {

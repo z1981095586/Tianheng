@@ -72,8 +72,7 @@
         urls: [
           "http://47.110.95.57/Img_compress/20200409110500pic1.jpg",
         ],
-        tableData: [
-        ],
+        tableData: [],
         selectInfo: {
           company_id: '',
           startDate: "",
@@ -87,7 +86,6 @@
       }
     },
     methods: {
-    
       prev() { //上一页
         if (this.pageNum > 1) {
           this.pageNum--;
@@ -108,7 +106,6 @@
         return "padding: 5px 0;    text-align: center;"
       },
       cellCick(row, column, cell, event) { //显示大图
-     
         this.urls = []
         if (row.img1 != null) {
           this.urls.push(row.img1)
@@ -126,7 +123,6 @@
        if(IsSearch==true){
          that.pageNum=1
        }
-       
         axios({
             url: url,
             method: "post",

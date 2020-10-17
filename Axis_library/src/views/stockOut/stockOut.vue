@@ -119,7 +119,18 @@ window.close();
       outOfStock() { //出库
         let url = "http://120.55.124.53:8206/api/axis/outOfStock"
         let that = this
-
+   if (that.staff_id == "") {
+          that.$message({
+            type: 'error',
+            message: '操作人员为空！'
+          });
+        }
+          else if (that.library_name== "") {
+          that.$message({
+            type: 'error',
+            message: '库位号为空！'
+          });
+        }else {
         axios({
           method: "post",
           url: url,
@@ -144,14 +155,15 @@ window.close();
             });
              that.back()
           } else {
-            that.$message({
-              type: 'error',
-              message: '操作失败！'
-            });
+               that.$message({
+                type: 'error',
+                message: res.data.message+'！'
+              });
           }
 
 
         })
+        }
       },
       inventoryInquiry() { //获取出库轴信息
         let url = "http://120.55.124.53:8206/api/axis/inventoryInquiry"
