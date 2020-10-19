@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="head_right">
-         <div class="right_con">
+        <div class="right_con">
           <div class="time">{{time}}</div>
-           <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
+          <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
         </div>
       </div>
     </div>
@@ -33,8 +33,8 @@
           </div>
           <div class="stockIn_span">
             <div class="span_con">
-            <span>出库库位：{{ library_name}}</span>
-            <span>出库轴号：{{axis_name}}</span>
+              <span>出库库位：{{ library_name}}</span>
+              <span>出库轴号：{{axis_name}}</span>
             </div>
           </div>
           <div class="stockIn_span">
@@ -50,10 +50,10 @@
 
       </div>
     </div>
-         <!-- 退出系统的对话框 -->
+    <!-- 退出系统的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-       <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
+        <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
@@ -75,7 +75,7 @@
   export default {
     name: "stockOut",
     data: () => ({
-  network: true,
+      network: true,
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
@@ -84,33 +84,33 @@
       style_name: "", //批号
       meter_num: "", //出库米数
       axis_name: "", //出库轴号
-     dialogVisibleClose:false,
-      showclose:false,
+      dialogVisibleClose: false,
+      showclose: false,
     }),
 
     methods: {
-              shutdown(){//关闭页面
-         this.$store.commit('clear', true)
-         console.log(this.$store.state)
-var userAgent = navigator.userAgent;
-if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-window.open('','_self').close()  
+      shutdown() { //关闭页面
+        this.$store.commit('clear', true)
+        console.log(this.$store.state)
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+          window.open('', '_self').close()
 
-window.location.href = "about:blank"
-}else {
-window.opener = null;
-window.open("about:blank", "_self");
-window.close();
-}
+          window.location.href = "about:blank"
+        } else {
+          window.opener = null;
+          window.open("about:blank", "_self");
+          window.close();
+        }
       },
-            toPeople() { //跳转到操作人员更改
+      toPeople() { //跳转到操作人员更改
 
         this.$router.push({ //跳转
           path: '/people',
           name: 'people',
-          params:{
-            lastPath:"stockOut",
-              library_name:this.library_name
+          params: {
+            lastPath: "stockOut",
+            library_name: this.library_name
           }
 
         })
@@ -119,50 +119,46 @@ window.close();
       outOfStock() { //出库
         let url = "http://120.55.124.53:8206/api/axis/outOfStock"
         let that = this
-   if (that.staff_id == "") {
+        if (that.staff_id == "") {
           that.$message({
             type: 'error',
             message: '操作人员为空！'
           });
-        }
-          else if (that.library_name== "") {
+        } else if (that.library_name == "") {
           that.$message({
             type: 'error',
             message: '库位号为空！'
           });
-        }else {
-        axios({
-          method: "post",
-          url: url,
-          data: {
-            selectInfo: {
-              company_id: Number(that.$store.state.companyID)
+        } else {
+          axios({
+            method: "post",
+            url: url,
+            data: {
+              selectInfo: {
+                company_id: Number(that.$store.state.companyID)
+              },
+              library_name: that.library_name,
+              library_num: that.library_num,
+              user_id: that.staff_id
             },
-            library_name: that.library_name,
-            library_num: that.library_num,
-            user_id:that.staff_id
-
-
-          },
-          headers: {
-          }
-        }).then((res) => {
-          //console.log(res);
-          if (res.data.message == "成功") {
-            that.$message({
-              type: 'success',
-              message: '操作成功！'
-            });
-             that.back()
-          } else {
-               that.$message({
-                type: 'error',
-                message: res.data.message+'！'
+            headers: {}
+          }).then((res) => {
+            //console.log(res);
+            if (res.data.message == "成功") {
+              that.$message({
+                type: 'success',
+                message: '操作成功！'
               });
-          }
+              that.back()
+            } else {
+              that.$message({
+                type: 'error',
+                message: res.data.message + '！'
+              });
+            }
 
 
-        })
+          })
         }
       },
       inventoryInquiry() { //获取出库轴信息
@@ -177,10 +173,10 @@ window.close();
             },
             axisLib: {
               library_name: that.library_name,
-               library_num_list: [that.library_num]
+              library_num_list: [that.library_num]
             }
           },
-          timeout:1000,
+          timeout: 1000,
           headers: {
 
           }
@@ -198,13 +194,13 @@ window.close();
           }
 
 
-        },function (err) {
+        }, function (err) {
           //console.log(err)
-       if (err == "Error: timeout of 1000ms exceeded"||"Error: Network Error") { //超时1000毫秒显示断网图标
+          if (err == "Error: timeout of 1000ms exceeded" || "Error: Network Error") { //超时1000毫秒显示断网图标
             that.network = false
-               that.$message({
+            that.$message({
               type: 'warning',
-              message: '网络掉线了！' 
+              message: '网络掉线了！'
             });
           } else {
 
@@ -239,14 +235,14 @@ window.close();
       },
       back() { //返回主页
 
-      
+
         // this.$router.push("/index/:" + this.$store.state.companyID + "/:" + this.$store.state.library_num)
-           this.$router.push({
-               path: '/index',
+        this.$router.push({
+          path: '/index',
           name: 'index',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
+          params: {
+            companyId: this.$store.state.companyID,
+            library_num: this.$store.state.library_num
           }
         })
 
@@ -298,7 +294,6 @@ window.close();
   .content {
     width: 100%;
     height: 100vh;
-
     background: rgb(33, 30, 124);
     display: flex;
     flex-direction: column;
@@ -325,7 +320,7 @@ window.close();
 
   }
 
- .line {
+  .line {
     background: white;
     width: 99%;
     height: 0.5vh;
@@ -334,31 +329,32 @@ window.close();
   .head_left {
     width: 50%;
     height: 100%;
-    display: flex;   align-items: flex-end;
+    display: flex;
+    align-items: flex-end;
   }
 
   .head_right {
     width: 50%;
     height: 100%;
     display: flex;
-       align-items: center;
+    align-items: center;
     justify-content: flex-end;
   }
 
   .logo {
 
     width: 300px;
-     margin-bottom: 17px;
+    margin-bottom: 17px;
     margin-left: 2%;
   }
 
   .icon {
     height: 100%;
     width: 20%;
-   margin-bottom: 17px;
+    margin-bottom: 17px;
     display: flex;
     justify-content: center;
-     align-items: flex-end;
+    align-items: flex-end;
     margin-left: 25px;
   }
 
@@ -371,9 +367,9 @@ window.close();
   }
 
   .name {
- margin-bottom: 20px;
+    margin-bottom: 20px;
     background: rgb(22, 101, 227);
- min-width: 20%;
+    min-width: 20%;
     min-height: 38%;
     border: 1.5px solid white;
     border-radius: 8px;
@@ -384,16 +380,21 @@ window.close();
 
   }
 
-    .name span {
+  .name span {
     font-size: 1.5em;
     font-weight: 600;
     color: white;
-    word-break:normal; width:auto; display:block; white-space:pre-wrap;word-wrap : break-word ;overflow: hidden ;
+    word-break: normal;
+    width: auto;
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 
   .number {
- 
-   margin-bottom: 20px;
+
+    margin-bottom: 20px;
     height: 38%;
     width: 12%;
     margin-left: 5%;
@@ -414,17 +415,18 @@ window.close();
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-        position: relative;
+    position: relative;
   }
 
   .time {
     font-size: 1.5em;
     color: white;
     font-weight: 600;
-     margin-right: 6rem;
+    margin-right: 6rem;
   }
+
   .shutdown {
-      position: absolute;
+    position: absolute;
     /* top: 0rem; */
     right: 1rem;
     width: 3rem;
@@ -457,7 +459,7 @@ window.close();
   }
 
   .aside span {
-  width: 20%;
+    width: 20%;
     padding-right: 21%;
     border-right: 1.6px solid white;
     font-size: 3em;
