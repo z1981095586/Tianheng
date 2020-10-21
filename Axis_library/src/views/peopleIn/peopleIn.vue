@@ -473,6 +473,11 @@ window.close();
       this.companyID = this.$store.state.companyID
       this.getRootStaffOrganization();
     },
+      beforeDestroy() {
+       if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
+    },
 
 
   }

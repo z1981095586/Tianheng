@@ -251,7 +251,7 @@
 
     },
     mounted() {
-
+      
       let timer = setInterval(this.getTime, 1000);
       if (this.$store.state.peopleData.staff_name) {
         this.staff_name = this.$store.state.peopleData.staff_name
@@ -260,6 +260,11 @@
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
       this.inventoryInquiry()
+    },
+      beforeDestroy() {
+       if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
     },
 
 

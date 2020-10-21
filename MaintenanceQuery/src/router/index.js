@@ -14,6 +14,7 @@ import Maintenance_history_detail from '@/components/Maintenance_history_detail'
 import choose from '@/components/choose' //选择页面
 import Axistrace from '@/components/Axistrace' //轴追溯
 import repairHistory from '@/components/repairHistory' //维修记录
+import chooseMachine from '@/components/chooseMachine' //多选机台
 Vue.use(Router)
 
 export default new Router({
@@ -37,6 +38,11 @@ export default new Router({
       path: '/repairHistory/:company_id',
       name: 'repairHistory',
       component: repairHistory
+    },
+    {
+      path: '/chooseMachine/:company_id/:workshop_id/:operator/:flag/:machine_id/:maintain_type_id/:isClickIn',
+      name: 'chooseMachine',
+      component: chooseMachine
     },
     {
       path: '/Maintenance_details',

@@ -902,6 +902,7 @@
 
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
+      
       },
       tabChange(tabName) { //侧边栏菜单选项改变事件
         console.log(tabName)
@@ -1272,7 +1273,9 @@
     },
 
     beforeDestroy() {
-
+       if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
     },
 
 

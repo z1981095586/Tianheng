@@ -18,6 +18,18 @@
        </div>
      
        </div>
+         <div class="choose2" >
+       <div class="choose-con">
+         <span>检查</span><i class="el-icon-arrow-right"></i>
+       </div>
+     
+       </div>
+         <div class="choose2" >
+       <div class="choose-con">
+         <span>检查历史记录</span><i class="el-icon-arrow-right"></i>
+       </div>
+     
+       </div>
 
 
     </div>

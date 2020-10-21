@@ -1174,15 +1174,15 @@ for(let i=0;i<that.dataList.length;i++){
         this.staff_id = this.$store.state.peopleData.staff_id
       }
       this.getAllAxis(); //默认先获取库存概况
-      // this.timers = setInterval(() =>{
-      //         this.getCurrent()
-      //              }, 1000);
+ 
 
 
     },
 
-    beforeDestroy() {
-
+     beforeDestroy() {
+       if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
     },
 
 

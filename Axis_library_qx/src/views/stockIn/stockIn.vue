@@ -14,9 +14,9 @@
         </div> -->
       </div>
       <div class="head_right">
-         <div class="right_con">
+        <div class="right_con">
           <div class="time">{{time}}</div>
-           <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
+          <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
         </div>
       </div>
     </div>
@@ -49,10 +49,10 @@
 
       </div>
     </div>
-      <!-- 退出系统的对话框 -->
+    <!-- 退出系统的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-       <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
+        <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
@@ -85,9 +85,9 @@
       axis_no: "", //轴号
       meter: "", //入库米数
       user_id: "",
-           dialogVisibleClose:false,
-      showclose:false,
-      autofocus:true
+      dialogVisibleClose: false,
+      showclose: false,
+      autofocus: true
     }),
 
     methods: {
@@ -98,17 +98,47 @@
           name: 'people',
           params: {
             lastPath: "stockIn",
-               library_name:this.library_name
+            library_name: this.library_name
           }
 
         })
 
       },
       warehousing() { //确认提交
+
+        if (this.axis_no == undefined) {
+          this.axis_no = ""
+        }
+        if (this.product_name == undefined) {
+          this.product_name = ""
+        }
+        if (this.meter == undefined) {
+          this.meter = ""
+        }
         if (this.staff_id == "") {
           this.$message({
             type: 'error',
             message: '操作人员为空！'
+          });
+        } else if (this.library_name === "") {
+          this.$message({
+            type: 'error',
+            message: '库位号为空！'
+          });
+        } else if (this.axis_no === "") {
+          this.$message({
+            type: 'error',
+            message: '轴号为空！'
+          });
+        } else if (this.product_name === "") {
+          this.$message({
+            type: 'error',
+            message: '入库批号为空！'
+          });
+        } else if (this.meter === "") {
+          this.$message({
+            type: 'error',
+            message: '入库米数为空！'
           });
         } else {
           let url = "http://120.55.124.53:8206/api/axis/warehousing"
@@ -127,8 +157,8 @@
                 axis_no: that.axis_no,
                 product_name: that.product_name,
                 total_work_qty: that.meter,
-                 user_id:that.staff_name,
-                print_code:that.print_code
+                user_id: that.staff_name,
+                print_code: that.print_code
               }
             },
             headers: {
@@ -145,7 +175,7 @@
             } else {
               that.$message({
                 type: 'error',
-                message: '操作失败！'
+                message: res.data.message + '！'
               });
             }
 
@@ -153,6 +183,9 @@
         }
 
       },
+      /**
+       *
+       */
       getAxisInfo() { //扫码获取轴信息
         let url = "http://120.55.124.53:8206/api/axis/getAxisInfo"
         let that = this
@@ -175,13 +208,13 @@
           res.data.result.work_qty1 = that.toZero(res.data.result.work_qty1)
           res.data.result.work_qty2 = that.toZero(res.data.result.work_qty2)
           res.data.result.work_qty3 = that.toZero(res.data.result.work_qty3)
-            res.data.result.work_qty = that.toZero(res.data.result.work_qty)
-            if(that.$store.state.companyID=="10000013"){
- that.meter = res.data.result.work_qty
-            }else{
-              that.meter = res.data.result.work_qty1 + res.data.result.work_qty2 + res.data.result.work_qty3
-            }
-          
+          res.data.result.work_qty = that.toZero(res.data.result.work_qty)
+          if (that.$store.state.companyID == "10000013") {
+            that.meter = res.data.result.work_qty
+          } else {
+            that.meter = res.data.result.work_qty1 + res.data.result.work_qty2 + res.data.result.work_qty3
+          }
+
           that.axis_no = res.data.result.axis_no
           that.product_name = res.data.result.product_name
           that.user_id = res.data.result.user_id
@@ -199,7 +232,11 @@
 
           //   that.network = true
           // }
+
         })
+        /**
+         * 
+         */
       },
       toZero(value) {
         if (value == null) {
@@ -210,6 +247,7 @@
       },
       getTime() { //获取时间
         //定义一个日期对象;
+      
         var dateTime = new Date();
         //获得系统年份;
         var year = dateTime.getFullYear();
@@ -231,15 +269,16 @@
 
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
+   
       },
       back() { //返回主页
-        // this.$router.push("/index/:" + this.$store.state.companyID + "/:" + this.$store.state.library_num)
-           this.$router.push({
-               path: '/index',
+
+        this.$router.push({
+          path: '/index',
           name: 'index',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
+          params: {
+            companyId: this.$store.state.companyID,
+            library_num: this.$store.state.library_num
           }
         })
       }
@@ -253,10 +292,16 @@
         this.staff_name = this.$store.state.peopleData.staff_name
         this.staff_id = this.$store.state.peopleData.staff_id
       }
+
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
       this.getAxisInfo()
 
+    },
+      beforeDestroy() {
+       if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
     },
     watch: {
       print_code: function (val) {
@@ -265,12 +310,12 @@
 
     },
     directives: {
-    focus: {
+      focus: {
         inserted: function (el) {
-        el.querySelector('input').focus()
+          el.querySelector('input').focus()
         }
-    }
-},
+      }
+    },
 
 
   }
@@ -428,17 +473,18 @@
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-        position: relative;
+    position: relative;
   }
 
   .time {
     font-size: 1.5em;
     color: white;
     font-weight: 600;
-     margin-right: 6rem;
+    margin-right: 6rem;
   }
+
   .shutdown {
-      position: absolute;
+    position: absolute;
     /* top: 0rem; */
     right: 1rem;
     width: 3rem;
