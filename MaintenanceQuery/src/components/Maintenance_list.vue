@@ -3,6 +3,7 @@
 
     <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">待保养记录</span>
     <img :src="require('@/images/saoma.png')" style="width:2rem;position:fixed;right:17px;top:5px;" @click="scan()">
+    
 
     <!--出库单详细-->
     <div class="all-page">
@@ -20,6 +21,7 @@
           <option :value="item.id" v-for="item in menu">{{item.name}}</option>
 
         </select></div>
+        <div class="select" style="background:rgb(245,245,245);height:5%;font-size:0.9rem"><span>确认保养项目</span><i class="el-icon-right"></i><span>选择机台</span><i class="el-icon-right"></i><span>保养提交</span><i class="el-icon-right"></i><span>完成</span></div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div style="height:90%;overflow:auto;">
 
@@ -35,14 +37,14 @@
               <div class="line">
                 <div class="line-con"></div>
               </div>
-              <div class="card-content2" style="margin-top:5px;">
+              <!-- <div class="card-content2" style="margin-top:5px;">
                 <div class="content-two" style="   justify-content: space-between;">
                   <span>设备编号：{{item.machine_id}}</span>
                   <span>设备类型：{{item.mac_type_name}}</span>
                 </div>
 
-              </div>
-              <div class="card-content2">
+              </div> -->
+              <div class="card-content2" >
                 <div class="content-two">
 
                   <span>保养类别：{{item.maintain_type_name}}</span>
@@ -50,6 +52,7 @@
                 </div>
 
               </div>
+              
               <div class="card-content2">
                 <div class="content-two">
                   <span>到期时间：{{item.expire_time}}</span>
@@ -404,7 +407,7 @@
 
   .all-page /deep/ ._v-container {
     position: absolute;
-    top: 10%;
+    top: 11%;
 
 
   }
@@ -602,6 +605,7 @@
   .card-content2 {
     width: 100%;
     height: 20%;
+    margin-top:0.9rem;
     display: flex;
     justify-content: center;
     align-items: center;

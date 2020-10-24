@@ -23,7 +23,7 @@
         <div style="height:80%;overflow:auto;">
           <div v-for="item in datalist">
             <div class="contain" style="margin-top:10px">
-              <div class="card">
+              <div :class="item.checked ? 'card_border' : 'card'">
                 <div class="check">
                   <el-checkbox v-model="item.checked"></el-checkbox>
                 </div>
@@ -795,8 +795,20 @@
     font-size: 0.9rem;
     position: relative;
     font-weight: 400;
+    border-radius: 4px;
   }
-
+  .card_border {
+    width: 95%;
+    height: 62px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    font-size: 0.9rem;
+    position: relative;
+    font-weight: 400;
+    border:1px solid red;
+     border-radius: 4px;
+  }
   .check {
     position: absolute;
     right: 15px;
@@ -811,7 +823,10 @@
   .check .el-checkbox .el-checkbox__input .el-checkbox__inner {
     border-radius: 8px;
   }
-
+.check /deep/ .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: red;
+    border-color: red;
+}
   .card2 {
     width: 95%;
     height: 100px;

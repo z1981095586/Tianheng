@@ -32,14 +32,17 @@
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div class="scroller">
-          <div class="card" v-for="(item,index) in dataList" :key="index">
-            <div class="card-con"><span>设备名称：{{item.machine_id}}</span></div>
+          <div class="card" @click="toDetail(item.id,item.maintain_type_name)" v-for="(item,index) in dataList" :key="index">
+            <div class="card-con"><span>保养项目：{{item.maintain_type_name}}</span></div>
+              <div class="card-con2" style="margin-top:10px;"><span>保养设备：{{item.machine_id}}</span></div>
+                <div class="card-con2"><span>保养完成时间：{{item.maintain_time}}</span><span style="margin-left:1rem;">保养人：{{item.operator}}</span></div>
+            <!-- <div class="card-con"><span>设备名称：{{item.machine_id}}</span></div>
             <div class="card-con"><span>保养时间：{{item.maintain_time}}</span></div>
             <div class="card-con"><span>保养人：{{item.operator}}</span></div>
             <div class="card-con"><span>保养类型：{{item.maintain_type_name}}</span></div>
             <div class="detail">
               <div @click="toDetail(item.id)"><span>保养详情</span><i class="el-icon-arrow-right"></i></div>
-            </div>
+            </div> -->
           </div>
         </div>
       </scroller>
@@ -98,7 +101,8 @@
 
         })
       },
-      toDetail(id) {
+      toDetail(id,maintain_type_name) {
+       
         this.$router.push({ //跳转并传参数
           path: '/Maintenance_history_detail',
           name: 'Maintenance_history_detail',
@@ -107,7 +111,8 @@
             operator: this.operator,
             workshop_id: this.macRelation.workshop_id,
             company_id: this.selectInfo.company_id,
-            id: id
+            id: id,
+            maintain_type_name:maintain_type_name
           }
 
         })
@@ -312,9 +317,10 @@
 
   .card {
     width: 90%;
-    height: 200px;
+    height: 120px;
     background: white;
     display: flex;
+    border-radius: 8px;
     flex-direction: column;
     align-items: center;
     margin-bottom: 15px;
@@ -329,7 +335,16 @@
     color: black;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   }
+  .card-con2 {
+    width: 90%;
+    text-align: left;
+    line-height: 30px;
+    height: 30px;
 
+    color: black;
+    font-size: 0.8rem;
+  
+  }
   .detail {
     width: 90%;
     height: 44px;

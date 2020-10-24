@@ -124,7 +124,7 @@
     methods: {
             shutdown(){//关闭页面
          this.$store.commit('clear', true)
-         console.log(this.$store.state)
+         //console.log(this.$store.state)
 var userAgent = navigator.userAgent;
 if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
 window.open('','_self').close()  
@@ -136,6 +136,7 @@ window.open("about:blank", "_self");
 window.close();
 }
       },
+   
           toPeople() { //跳转到操作人员更改
 
         this.$router.push({ //跳转
@@ -153,7 +154,6 @@ window.close();
         this.dialogFormVisible = true
         this.visible_bm = true
         this.visible_xm = true
-
         // setTimeout(function(){  document.getElementById("input_bm").focus() }, 2000);
         this.form = {}
 
@@ -169,7 +169,7 @@ window.close();
         // alert("Input text: " + text);
 
         this.visible_xm = false
-        console.log(this.form)
+        //console.log(this.form)
         if (document.getElementById("input_bm")) {
           document.getElementById("input_bm").focus()
         }
@@ -181,11 +181,11 @@ window.close();
       },
 
       show2(e) {
-        console.log("show2")
+        //console.log("show2")
 
         this.input2 = e.target;
         this.layout = e.target.dataset.layout;
-        console.log(e)
+        //console.log(e)
         if (this.visible3 == false) {
 
           this.visible3 = true
@@ -195,21 +195,21 @@ window.close();
 
       },
       next() { //清空功能
-        console.log("清空bianma")
+        //console.log("清空bianma")
         this.input.value = ""
 
         this.form.staff_code = ""
       },
       next2() { //清空功能
-        console.log("清空名字")
+        //console.log("清空名字")
         this.input2.value = ""
 
         this.form.staff_name = ""
       },
       hide2() {
-        console.log("hide2")
+        //console.log("hide2")
         if (this.form.staff_name && (this.form.staff_code)) {
-          console.log("add")
+          //console.log("add")
           this.add()
           this.visible_bm = false
           this.visible_xm = false
@@ -232,7 +232,7 @@ window.close();
       },
       accept(text) {
         // alert("Input text: " + text);
-        console.log(this.form)
+        //console.log(this.form)
 
         this.visible_bm = false
         if (document.getElementById("input_xm")) {
@@ -245,24 +245,24 @@ window.close();
       },
       show(e) {
 
-        console.log("show1")
+        //console.log("show1")
         this.input = e.target;
         this.layout = e.target.dataset.layout;
-        console.log(e)
+        //console.log(e)
 
         if (this.visible2 == false) {
 
           this.visible2 = true
         }
-        console.log(this.visible2)
+        //console.log(this.visible2)
 
 
       },
 
       hide() {
-        console.log("hide1")
+        //console.log("hide1")
         if (this.form.staff_name && (this.form.staff_code)) {
-          console.log(this.form)
+          //console.log(this.form)
           this.add()
           this.visible_bm = false
           this.visible_xm = false
@@ -277,7 +277,7 @@ window.close();
 
       },
       add() {
-        console.log(this.form)
+        //console.log(this.form)
         let that = this
         let url = "http://120.55.124.53:8206/api/staff/addStaff"
         let companyID = that.companyID
@@ -293,7 +293,7 @@ window.close();
             companyID: companyID
           }
         }).then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           if (res.data.message == "插入成功") {
             that.$message({
               type: 'success',
@@ -312,8 +312,8 @@ window.close();
               message: res.data.message
             });
           }
-          console.log(that.input)
-          console.log(that.form)
+          //console.log(that.input)
+          //console.log(that.form)
           that.input.value = ""
           that.input2.value = ""
 
@@ -327,7 +327,7 @@ window.close();
         let url = "http://120.55.124.53:8206/api/staff/getRootStaffOrganization"
 
         let that = this
-        //console.log(that.companyID)
+        ////console.log(that.companyID)
         let companyID = that.companyID
         axios({
           method: "post",
@@ -340,11 +340,11 @@ window.close();
             companyID: companyID
           }
         }).then((res) => {
-          //console.log(res.data.data.id);
+          ////console.log(res.data.data.id);
           that.id = res.data.data.id;
           that.getStaffListByOrganization(that.id) //获取指定组织下的所有员工列表(包括子组织)
         }, function (err) {
-          //console.log(err)
+          ////console.log(err)
           if (err == "Error: timeout of 1000ms exceeded" || "Error: Network Error") { //超时1000毫秒显示断网图标
             that.network = false
             that.$message({
@@ -377,7 +377,7 @@ window.close();
             companyID: that.companyID
           }
         }).then((res) => {
-          console.log(res);
+          //console.log(res);
           res.data.totalDataNum
           that.pageNumber = Math.ceil(res.data.totalDataNum / that.pageNum)
           that.page2 = that.page
@@ -464,7 +464,7 @@ window.close();
 
     },
     mounted() {
-      console.log(Math.ceil(13 / 6))
+      //console.log(Math.ceil(13 / 6))
       let timer = setInterval(this.getTime, 1000);
       if (this.$store.state.peopleData.staff_name) { //获取操作者名字和id
         this.staff_name = this.$store.state.peopleData.staff_name

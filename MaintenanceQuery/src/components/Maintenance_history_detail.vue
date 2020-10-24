@@ -6,14 +6,22 @@
 
     <!--出库单详细-->
     <div class="all-page">
+      <div class="card" style="width:100%;height:60px;">
+        <div class="card-head" style="height:45%;"><span>&nbsp;&nbsp;</span><span>保养项目：{{maintain_type_name}}</span>
+        </div>
+        <div class="line">
+          <div class="line-con"></div>
+        </div>
+        <div class="card-head" style="height:45%;"><span>&nbsp;&nbsp;</span><span>机台：{{id}}</span>
+        </div>
+      </div>
 
-
-      <div style="height:92%;margin-top:4%;overflow:auto;background:white;">
+      <div style="height:40%;margin-top:3%;overflow:auto;background:white;">
         <div v-for="(item,index) in dataList" :key="index">
           <div class="contain" v-if="item.confirm==1">
             <div class="card">
               <div class="card-head"><span
-                  style="color:red;font-weight:700;font-size:20px;text-align:center;">*</span><span>{{item.index}}.保养条目：{{item.maintain_item}}</span>
+                  style="color:red;font-weight:700;font-size:20px;text-align:center;">*</span><span>{{item.index}}.保养条目：{{item.maintain_item_name}}</span>
               </div>
               <div class="line">
                 <div class="line-con"></div>
@@ -34,7 +42,7 @@
           <div class="contain" style="margin-top:10px;" v-else-if="item.confirm==3">
             <div class="card">
               <div class="card-head"><span
-                  style="color:red;font-weight:700;font-size:20px;text-align:center;">*</span><span>{{item.index}}.保养条目：{{item.maintain_item}}</span>
+                  style="color:red;font-weight:700;font-size:20px;text-align:center;">*</span><span>{{item.index}}.保养条目：{{item.maintain_item_name}}</span>
               </div>
               <div class="line">
                 <div class="line-con"></div>
@@ -54,15 +62,15 @@
 
           <div class="contain" style="margin-top:10px;" v-else="item.confirm==2">
             <div class="card2">
-              <div class="card-head"><span>{{item.index}}.保养条目：{{item.maintain_item}}</span><span
+              <div class="card-head"><span>{{item.index}}.保养条目：{{item.maintain_item_name}}</span><span
                   style="color:rgba(0,0,0,0.5)">(提交现场实际照片)</span></div>
               <div class="line">
                 <div class="line-con">
                   <el-image style="width: 80px; height: 80px;float:left;margin:10px"
                     v-for="(items,indexs) in item.picture" :key="indexs" :src="items" :preview-src-list="item.picture">
-                     <div slot="error" class="image-slot">
-      
-      </div>
+                    <div slot="error" class="image-slot">
+
+                    </div>
                   </el-image>
                 </div>
               </div>
@@ -75,7 +83,18 @@
         </div>
       </div>
 
+      <div class="card" style="width:100%;height:200px;margin-top:2rem;">
+        <div class="card-head" style="height:20%;"><span>&nbsp;&nbsp;</span><span>保养耗品：</span>
+        </div>
+        <div class="line">
+          <div class="line-con"></div>
+        </div>
+        <div style="height:40%;width:100%;margin-top:3%;overflow:auto;background:white;">
+          <div style="width:100%;text-align:left;height:25%;" v-for="(item,index) in consumeList" :key="index"><span
+              style="margin-left:1rem">{{item.product_name}} &nbsp;&nbsp;* {{item.quantity}} </span></div>
+        </div>
 
+      </div>
     </div>
 
   </div>
@@ -96,8 +115,10 @@
         selectInfo: {
           company_id: ''
         },
+        maintain_type_name: this.$route.params.maintain_type_name,
         operator: '', //操作人
-        dataList: []
+        dataList: [],
+        consumeList: []
       }
     },
     methods: {
@@ -148,6 +169,10 @@
               res.data.result.maintainRecords[i].picture = res.data.result.maintainRecords[i].picture.split(',')
 
               that.dataList.push(res.data.result.maintainRecords[i])
+
+            }
+            for (let i = 0; i < res.data.result.consumeMaterials.length; i++) {
+              that.consumeList.push(res.data.result.consumeMaterials[i])
             }
           }
           console.log(that.dataList)
@@ -162,12 +187,12 @@
       this.operator = this.$route.params.operator
       this.macRelation.workshop_id = this.$route.params.workshop_id;
       this.selectInfo.company_id = this.$route.params.company_id;
-      console.log(this.id)
+
       this.getData()
-history.pushState(null, null, window.location.href);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, window.location.href);
-        });
+      history.pushState(null, null, window.location.href);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, window.location.href);
+      });
 
     }
   }
@@ -175,12 +200,13 @@ history.pushState(null, null, window.location.href);
 </script>
 
 <style scoped>
- .all-page /deep/ ._v-container {
+  .all-page /deep/ ._v-container {
     position: absolute;
     top: 13%;
 
 
   }
+
   span {
     overflow: hidden;
     white-space: nowrap;
@@ -368,7 +394,7 @@ history.pushState(null, null, window.location.href);
 
   .card2 {
     width: 95%;
-        height: 265px;
+    height: 265px;
     display: flex;
     flex-direction: column;
     background: white;

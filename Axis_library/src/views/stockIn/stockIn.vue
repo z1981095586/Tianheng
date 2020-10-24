@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="head_right">
-         <div class="right_con">
+        <div class="right_con">
           <div class="time">{{time}}</div>
-           <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
+          <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
         </div>
       </div>
     </div>
@@ -31,17 +31,32 @@
             <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库批号：</span>    <el-input v-model="product_name" style="width:33.4%;"  ></el-input></div></div>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库批号：</span>
+                <el-input v-model="product_name" style="width:33.4%;"></el-input>
+              </div>
+            </div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库库位：</span> <el-input disabled  v-model="library_name"  style="width:33.4%;" ></el-input><span style="margin-left:1em;">入库轴号：</span><el-input  style="width:33.4%;" v-model="axis_no"  ></el-input></div></div>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库库位：</span>
+                <el-input disabled v-model="library_name" style="width:33.4%;"></el-input><span
+                  style="margin-left:1em;">入库轴号：</span>
+                <el-input style="width:33.4%;" v-model="axis_no"></el-input>
+              </div>
+            </div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库米数：</span> <el-input v-model="meter" style="width:33.4%;"  ></el-input><span style="margin-left:1em;">入库人员：</span> <el-input disabled style="width:33.4%;" v-model="staff_name"  ></el-input></div></div>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库米数：</span>
+                <el-input v-model="meter" style="width:33.4%;"></el-input><span style="margin-left:1em;">入库人员：</span>
+                <el-input disabled style="width:33.4%;" v-model="staff_name"></el-input>
+              </div>
+            </div>
           </div>
         </div>
         <div class="bottom_btn">
-          
+
           <div class="bottom_btn_contain">
             <div class="sure_btn" @click="warehousing"><span>确认提交</span></div>
             <div class="back_btn" @click="back"><img src="../../static/images/back.png"></div>
@@ -50,10 +65,10 @@
 
       </div>
     </div>
-          <!-- 退出系统的对话框 -->
+    <!-- 退出系统的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
-       <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
+        <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
         <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
@@ -80,8 +95,8 @@
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
-       dialogVisibleClose:false,
-      showclose:false,
+      dialogVisibleClose: false,
+      showclose: false,
       print_code: "",
       product_name: "", //批号
       library_name: "", //库位
@@ -89,23 +104,23 @@
       axis_no: "", //轴号
       meter: "", //入库米数
       user_id: "",
-      autofocus:true
+      autofocus: true
     }),
 
     methods: {
-             shutdown(){//关闭页面
-         this.$store.commit('clear', true)
-         console.log(this.$store.state)
-var userAgent = navigator.userAgent;
-if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-window.open('','_self').close()  
+      shutdown() { //关闭页面
+        this.$store.commit('clear', true)
+       // console.log(this.$store.state)
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+          window.open('', '_self').close()
 
-window.location.href = "about:blank"
-}else {
-window.opener = null;
-window.open("about:blank", "_self");
-window.close();
-}
+          window.location.href = "about:blank"
+        } else {
+          window.opener = null;
+          window.open("about:blank", "_self");
+          window.close();
+        }
       },
       toPeople() { //跳转到操作人员更改
 
@@ -114,61 +129,59 @@ window.close();
           name: 'people',
           params: {
             lastPath: "stockIn",
-            library_name:this.library_name
+            library_name: this.library_name
           }
 
         })
 
       },
       warehousing() { //确认提交
-    
-      if(this.axis_no==undefined){
-        this.axis_no=""
-      }
-       if(this.product_name==undefined){
-        this.product_name=""
-      }
-          if(this.meter==undefined){
-        this.meter=""
-      }
-    
+
+        if (this.axis_no == undefined) {
+          this.axis_no = ""
+        }
+        if (this.product_name == undefined) {
+          this.product_name = ""
+        }
+        if (this.meter == undefined) {
+          this.meter = ""
+        }
+
         if (this.staff_id === "") {
           this.$message({
             type: 'error',
             message: '操作人员为空！'
           });
-        }
-         else if (this.library_name=== "") {
+        } else if (this.library_name === "") {
           this.$message({
             type: 'error',
             message: '库位号为空！'
           });
-        }
-         else if (this.axis_no=== "") {
-         this.$message({
+        } else if (this.axis_no === "") {
+          this.$message({
             type: 'error',
             message: '轴号为空！'
           });
-        }else if (this.product_name=== "") {
-         this.$message({
+        } else if (this.product_name === "") {
+          this.$message({
             type: 'error',
             message: '入库批号为空！'
           });
-        } else if (this.meter=== "") {
+        } else if (this.meter === "") {
           this.$message({
             type: 'error',
             message: '入库米数为空！'
           });
-        }else {
+        } else {
           let url = "http://120.55.124.53:8206/api/axis/warehousing"
           let that = this
-          let end_date=""
-          if(that.print_code==""){
-            end_date=that.getFormatDate('date')+" "+that.getFormatDate('time')
+          let end_date = ""
+          if (that.print_code == "") {
+            end_date = that.getFormatDate('date') + " " + that.getFormatDate('time')
           }
-          let meter=String(that.meter);
-          let product_name=that.product_name;
-          let axis_no=that.axis_no
+          let meter = String(that.meter);
+          let product_name = that.product_name;
+          let axis_no = that.axis_no
           axios({
             method: "post",
             url: url,
@@ -183,17 +196,17 @@ window.close();
 
                 axis_no: axis_no.toLocaleUpperCase(),
                 product_name: product_name.toLocaleUpperCase(),
-                total_work_qty:meter.toLocaleUpperCase(),
+                total_work_qty: meter.toLocaleUpperCase(),
                 user_id: that.staff_name,
-                  print_code: that.print_code,
-                  end_date:end_date
+                print_code: that.print_code,
+                end_date: end_date
               }
             },
             headers: {
 
             }
           }).then((res) => {
-            console.log(res);
+            //console.log(res);
             if (res.data.message == "成功") {
               that.$message({
                 type: 'success',
@@ -203,7 +216,7 @@ window.close();
             } else {
               that.$message({
                 type: 'error',
-                message: res.data.message+'！'
+                message: res.data.message + '！'
               });
             }
 
@@ -233,13 +246,13 @@ window.close();
           res.data.result.work_qty1 = that.toZero(res.data.result.work_qty1)
           res.data.result.work_qty2 = that.toZero(res.data.result.work_qty2)
           res.data.result.work_qty3 = that.toZero(res.data.result.work_qty3)
-            res.data.result.work_qty = that.toZero(res.data.result.work_qty)
-            if(that.$store.state.companyID=="10000013"){
- that.meter = res.data.result.work_qty
-            }else{
-              that.meter = res.data.result.work_qty1 + res.data.result.work_qty2 + res.data.result.work_qty3
-            }
-          
+          res.data.result.work_qty = that.toZero(res.data.result.work_qty)
+          if (that.$store.state.companyID == "10000013") {
+            that.meter = res.data.result.work_qty
+          } else {
+            that.meter = res.data.result.work_qty1 + res.data.result.work_qty2 + res.data.result.work_qty3
+          }
+
           that.axis_no = res.data.result.axis_no
           that.product_name = res.data.result.product_name
           that.user_id = res.data.result.user_id
@@ -280,6 +293,7 @@ window.close();
         //获得系统分钟;
         var minutes = dateTime.getMinutes();
         //获得系统秒数;
+
         var second = dateTime.getSeconds();
         day < 10 ? day = '0' + day : day;
         month < 10 ? month = '0' + month : month;
@@ -292,79 +306,81 @@ window.close();
       },
       back() { //返回主页
         // this.$router.push("/index/:" + this.$store.state.companyID + "/:" + this.$store.state.library_num)
-           this.$router.push({
-               path: '/index',
+        this.$router.push({
+          path: '/index',
           name: 'index',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
+          params: {
+            companyId: this.$store.state.companyID,
+            library_num: this.$store.state.library_num
           }
         })
       },
-      getFormatDate (type) {
-  const date = new Date()
-  const year = date.getFullYear()
-  let month = date.getMonth() + 1
-  let  m=date.getMinutes()
-  let h=date.getHours()
-  let s= date.getSeconds()
-  
-  let strDate = ''
-  const seperator1 = '-' // 连接年月日
-  const seperator2 = ':' // 连接时分秒
-  let currentdate = ''
-  strDate = date.getDate()
-  if (month >= 1 && month <= 9) {
-    month = '0' + month
-  }
-  if (strDate >= 0 && strDate <= 9) {
-    strDate = '0' + strDate
-  }
-    if (m >= 0 && m <= 9) {
-    m = '0' + m
-  }
-      if (h >= 0 && h <= 9) {
-    h = '0' + h
-  }
-      if (s>= 0 && s <= 9) {
-    s = '0' + s
-  }
-  switch (type) {
-    case 'date':
-      currentdate = year + seperator1 + month + seperator1 + strDate
-      break
-    case 'time':
-      currentdate = h + seperator2 + m + seperator2 + s
-      break
-    case 'year':
-      currentdate = parseInt(year)
-      break
-    default:
-      return false
-  }
-  return currentdate
-}
+      getFormatDate(type) {
+        const date = new Date()
+        const year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let m = date.getMinutes()
+        let h = date.getHours()
+        let s = date.getSeconds()
 
-
+        let strDate = ''
+        const seperator1 = '-' // 连接年月日
+        const seperator2 = ':' // 连接时分秒
+        let currentdate = ''
+        strDate = date.getDate()
+        if (month >= 1 && month <= 9) {
+          month = '0' + month
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = '0' + strDate
+        }
+        if (m >= 0 && m <= 9) {
+          m = '0' + m
+        }
+        if (h >= 0 && h <= 9) {
+          h = '0' + h
+        }
+        if (s >= 0 && s <= 9) {
+          s = '0' + s
+        }
+        switch (type) {
+          case 'date':
+            currentdate = year + seperator1 + month + seperator1 + strDate
+            break
+          case 'time':
+            currentdate = h + seperator2 + m + seperator2 + s
+            break
+          case 'year':
+            currentdate = parseInt(year)
+            break
+          default:
+            return false
+        }
+        return currentdate
+      }
     },
+
     mounted() {
-// console.log("toLocaleUpperCase".toLocaleUpperCase())
-      let timer = setInterval(this.getTime, 1000);
+    
+      let timer = setInterval(this.getTime(), 1000);
       if (this.$store.state.peopleData.staff_name) {
         this.staff_name = this.$store.state.peopleData.staff_name
         this.staff_id = this.$store.state.peopleData.staff_id
       }
-      console.log(this.$route.params)
+
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
+
+  
       this.getAxisInfo()
-      console.log(this.getFormatDate('date')+" "+this.getFormatDate('time'))
+     
+
 
     },
-      beforeDestroy() {
-       if (this.timer) {
-          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
-        }
+    beforeDestroy() {
+      if (this.timer) {
+        clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+      }
     },
     watch: {
       print_code: function (val) {
@@ -373,14 +389,13 @@ window.close();
 
     },
     directives: {
-    focus: {
+      focus: {
+        
         inserted: function (el) {
-        el.querySelector('input').focus()
+          el.querySelector('input').focus()
         }
-    }
-},
-
-
+      }
+    },
   }
 
 </script>
@@ -536,17 +551,18 @@ window.close();
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-        position: relative;
+    position: relative;
   }
 
   .time {
     font-size: 1.5em;
     color: white;
     font-weight: 600;
-     margin-right: 6rem;
+    margin-right: 6rem;
   }
+
   .shutdown {
-      position: absolute;
+    position: absolute;
     /* top: 0rem; */
     right: 1rem;
     width: 3rem;
@@ -693,15 +709,17 @@ window.close();
     justify-content: space-between;
     align-items: center;
   }
-.span_con_span{
-     width: 100%;
+
+  .span_con_span {
+    width: 100%;
     height: 100%;
     display: flex;
     color: white;
     font-size: 1.6em;
     justify-content: flex-start;
     align-items: center;
-}
+  }
+
   /* .span_con span {
     width: 100%;
     height: 100%;

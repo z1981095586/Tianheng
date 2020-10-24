@@ -7,7 +7,10 @@
     <!--出库单详细-->
     <div class="all-page">
 
-      <el-button @click="sure">确认</el-button>
+  <el-checkbox-group v-model="checkboxGroup1">
+      <el-checkbox-button v-for="item in machineList" style="magin:1rem;" :label="item" :key="item">{{item}}</el-checkbox-button>
+    </el-checkbox-group>
+     <div class="btn"><span @click="sure">选择完毕</span></div>
 
     </div>
 
@@ -31,9 +34,17 @@
         },
         flag: "",//保养类别
         operator: '', //操作人
+        checkboxGroup1:[],
+        machineList: ['1011', '1012', '1013', '1014','1015','1016','1017','1018','1019',],
+          isIndeterminate: true,
+          checkAll: false,
       }
     },
     methods: {
+      handleCheckAllChange(val){
+         this.checkboxGroup1 = val ? this.machineList : [];
+        this.isIndeterminate = false;
+      },
       back() {
         // nativeMethod.closeActivity();
         this.$router.push({ //跳转并传参数
@@ -46,6 +57,7 @@
         })
       },
       sure() { //确认按钮
+      console.log(this.checkboxGroup1)
         this.$router.push({ //跳转并传参数
           path: '/Maintenance',
           name: 'Maintenance',
@@ -80,6 +92,9 @@
 </script>
 
 <style scoped>
+.el-checkbox-button, .el-checkbox-button__inner{
+  margin: 0.5rem;
+}
   span {
     overflow: hidden;
     white-space: nowrap;
@@ -136,6 +151,24 @@
     display: flex;
     justify-content: space-around;
 
+  }
+  .btn{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn span{
+    width: 100%;
+    height: 3rem;
+       display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(49, 153, 102);
+    color: white;
   }
 
 </style>
