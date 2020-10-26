@@ -6,7 +6,7 @@
       <div class="top">
         <div class="top_card">
           <div class="top_card_con">
-            <el-image src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            <el-image :src="img"
               style="width:5rem;height:5rem"></el-image>
             <div class="font"><span style="color:#FF9A44">3600.00元</span><span
                 style="color:#A1A1A1;font-weight:500;font-size:1rem">今日销售额</span></div>
@@ -14,21 +14,21 @@
         </div>
         <div class="top_card">
           <div class="top_card_con">
-            <el-image src="" style="width:5rem;height:5rem"></el-image>
+            <el-image :src="img2" style="width:5rem;height:5rem"></el-image>
             <div class="font"><span style="color:#DC3943">600.00元</span><span
                 style="color:#A1A1A1;font-weight:500;font-size:1rem">昨日销售额</span></div>
           </div>
         </div>
         <div class="top_card">
           <div class="top_card_con">
-            <el-image src="" style="width:5rem;height:5rem"></el-image>
+            <el-image :src="img3" style="width:5rem;height:5rem"></el-image>
             <div class="font"><span style="color:#1CC18B">85723.00元</span><span
                 style="color:#A1A1A1;font-weight:500;font-size:1rem">青叶库存总额</span></div>
           </div>
         </div>
         <div class="top_card">
           <div class="top_card_con">
-            <el-image src="" style="width:5rem;height:5rem"></el-image>
+            <el-image :src="img4" style="width:5rem;height:5rem"></el-image>
             <div class="font"><span style="color:#2877F9">680721.00元</span><span
                 style="color:#A1A1A1;font-weight:500;font-size:1rem">商品库存总额</span></div>
           </div>
@@ -46,12 +46,48 @@
             <div class="middle_card_con_body">
               <div class="middle_card_con_body_one">
                 <el-image
-                  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                  style="width：3rem;height;3rem"></el-image>
+                  :src="img5"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
                 <span>仓库管理</span>
               </div>
-
+     <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img6"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>供应商</span>
+              </div>
+                   <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img7"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>用户管理</span>
+              </div>
+                   <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img8"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>还款登记</span>
+              </div>
+                   <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img9"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>销售管理</span>
+              </div>
+                   <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img10"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>统计分析</span>
+              </div>
+                   <div class="middle_card_con_body_one">
+                <el-image
+                  :src="img11"
+                  style="width：1rem;height;1rem" fit="contain"></el-image>
+                <span>添加菜单</span>
+              </div>
             </div>
+            
           </div>
         </div>
         <div class="middle_card">
@@ -94,32 +130,32 @@
             <div class="middle_card_con_body" style="overflow-x:hidden">
               <div class="middle_card_con_row2">
                 <div style="display:flex;align-items:center;">
-                  <el-image src="" style="width:1.5rem;height:1.5rem;"></el-image><span
+                  <el-image :src="img12" style="width:0.7rem;height:0.7rem;" fit="contain"></el-image><span
                     style="margin-left:10px">大佛龙井</span>
                 </div><span>400斤</span>
               </div>
-              <el-progress :percentage="80" style="width:100%;"></el-progress>
+              <el-progress :percentage="70" color="#F5B758" :show-text="false" style="width:100%;"></el-progress>
               <div class="middle_card_con_row2">
                 <div style="display:flex;align-items:center;">
-                  <el-image src="" style="width:1.5rem;height:1.5rem;"></el-image><span
-                    style="margin-left:10px">大佛龙井</span>
-                </div><span>400斤</span>
+                  <el-image :src="img13" style="width:0.7rem;height:0.7rem;" fit="contain"></el-image><span
+                    style="margin-left:10px">碧螺春</span>
+                </div><span>368斤</span>
               </div>
-              <el-progress :percentage="80" style="width:100%;"></el-progress>
+              <el-progress :percentage="64" color="#4CE79B" :show-text="false" style="width:100%;"></el-progress>
               <div class="middle_card_con_row2">
                 <div style="display:flex;align-items:center;">
-                  <el-image src="" style="width:1.5rem;height:1.5rem;"></el-image><span
-                    style="margin-left:10px">大佛龙井</span>
-                </div><span>400斤</span>
+                  <el-image :src="img14" style="width:0.7rem;height:0.7rem;" fit="contain"></el-image><span
+                    style="margin-left:10px">西湖龙井</span>
+                </div><span>300斤</span>
               </div>
-              <el-progress :percentage="80" style="width:100%;"></el-progress>
+              <el-progress :percentage="51" color="#4789F4" :show-text="false" style="width:100%;"></el-progress>
               <div class="middle_card_con_row2">
                 <div style="display:flex;align-items:center;">
-                  <el-image src="" style="width:1.5rem;height:1.5rem;"></el-image><span
-                    style="margin-left:10px">大佛龙井</span>
-                </div><span>400斤</span>
+                  <el-image :src="img15" style="width:0.7rem;height:0.7rem;" fit="contain"></el-image><span
+                    style="margin-left:10px">黄山毛峰</span>
+                </div><span>230斤</span>
               </div>
-              <el-progress :percentage="80" style="width:100%;"></el-progress>
+              <el-progress :percentage="30" color="#F44656" :show-text="false" style="width:100%;"></el-progress>
             </div>
           </div>
         </div>
@@ -139,10 +175,10 @@
                   <span>本月销售总额</span>
                   <div style="width:45%;height:100%;display:flex;align-items:center;  justify-content: space-around;">
                     <div>
-                      <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span>上月</span>
+                      <el-image :src="img14" style="width:0.7rem;height:0.7rem;margin-right:0.3rem;" fit="contain"></el-image><span>上月</span>
                     </div>
                     <div>
-                      <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span>本月</span>
+                      <el-image :src="img15" style="width:0.7rem;height:0.7rem;margin-right:0.3rem;" fit="contain"></el-image><span>本月</span>
                     </div>
                   </div>
                 </div>
@@ -152,7 +188,7 @@
                 </div>
                 <div class="sale_con" style="font-size:0.8rem;">
                   <div style="width:45%;height:100%;display:flex;align-items:center;  justify-content: space-around;">
-                    <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span
+                    <el-image :src="img16" style="width:1.5rem;height:1.5rem;" fit="contain"></el-image><span
                       style="color:red">30%</span><span>（同比上月）</span>
                   </div>
                   <el-progress :percentage="80" :stroke-width="15" color="#6FA0F6" :show-text="false"
@@ -164,23 +200,23 @@
                   <span>本月销售总额</span>
                   <div style="width:45%;height:100%;display:flex;align-items:center;  justify-content: space-around;">
                     <div>
-                      <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span>上月</span>
+                      <el-image :src="img14" style="width:0.7rem;height:0.7rem;margin-right:0.3rem;" fit="contain"></el-image><span>上月</span>
                     </div>
                     <div>
-                      <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span>本月</span>
+                      <el-image :src="img13" style="width:0.7rem;height:0.7rem;margin-right:0.3rem;" fit="contain"></el-image><span>本月</span>
                     </div>
                   </div>
                 </div>
                 <div class="sale_con" style="font-size: 1.2rem;"><span>54703.00元</span>
-                  <el-progress :percentage="80" :stroke-width="15" color="red" :show-text="false"
+                  <el-progress :percentage="80" :stroke-width="15" color="#F77681" :show-text="false"
                     style="width:35%;margin-right:1rem;"></el-progress>
                 </div>
                 <div class="sale_con" style="font-size:0.8rem;">
                   <div style="width:45%;height:100%;display:flex;align-items:center;  justify-content: space-around;">
-                    <el-image src="" style="width:0.8rem;height:0.8rem;"></el-image><span
+                    <el-image :src="img17" style="width:1.5rem;height:1.5rem;" fit="contain" ></el-image><span
                       style="color:red">30%</span><span>（同比上月）</span>
                   </div>
-                  <el-progress :percentage="80" :stroke-width="15" color="#6FA0F6" :show-text="false"
+                  <el-progress :percentage="80" :stroke-width="15" color="#4CE79B" :show-text="false"
                     style="width:35%;margin-right:1rem;"></el-progress>
                 </div>
               </div>
@@ -215,6 +251,26 @@
   export default {
     name: "index",
     data: () => ({
+img:require('../assets/images_home/jrxse.png'),
+img2:require('../assets/images_home/zrxse.png'),
+img3:require('../assets/images_home/qykcze.png'),
+img4:require('../assets/images_home/spkcze.png'),
+img5:require('../assets/images_home/ckgl.png'),
+img6:require('../assets/images_home/gys.png'),
+img7:require('../assets/images_home/yhgl.png'),
+img8:require('../assets/images_home/hkdj.png'),
+img9:require('../assets/images_home/xsgl.png'),
+img10:require('../assets/images_home/tjfx.png'),
+img11:require('../assets/images_home/tjcd.png'),
+img12:require('../assets/images_home/circle1.png'),
+img13:require('../assets/images_home/circle2.png'),
+img14:require('../assets/images_home/circle3.png'),
+img15:require('../assets/images_home/circle4.png'),
+img16:require('../assets/images_home/sjt.png'),
+img17:require('../assets/images_home/xjt.png'),
+
+// img:require('../../assets/images_home/编组 3@2x.png'),
+
       time: "",
       spanList: [{
           text: "本日",
@@ -379,12 +435,12 @@
     height: 20%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     /* border: 1px solid black; */
   }
 
   .top_card {
-    width: 18%;
+    width: 22%;
     height: 80%;
     border-radius: 15px;
     background: white;
@@ -424,12 +480,12 @@
     height: 30%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     /* border: 1px solid black; */
   }
 
   .middle_card {
-    width: 25%;
+    width: 30%;
     height: 100%;
     border-radius: 15px;
     box-shadow: 1.2px 1.2px 1.2px rgba(0, 0, 0, 0.1);
@@ -461,7 +517,7 @@
 
   .line {
     width: 100%;
-    height: 1.5px;
+    height: 1px;
     margin-top: 0.3rem;
     display: flex;
     align-items: center;
@@ -471,7 +527,7 @@
 
   .line_con {
     width: 100%;
-    height: 2px;
+    height: 1px;
     background: rgba(0, 0, 0, 0.2);
   }
 
@@ -540,7 +596,7 @@
   }
 
   .bottom_card {
-    width: 20%;
+    width: 22%;
     height: 80%;
     border-radius: 15px;
     box-shadow: 1.2px 1.2px 1.2px rgba(0, 0, 0, 0.1);

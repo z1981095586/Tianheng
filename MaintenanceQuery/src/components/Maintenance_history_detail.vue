@@ -203,31 +203,24 @@
   .all-page /deep/ ._v-container {
     position: absolute;
     top: 13%;
-
-
   }
 
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-
   }
 
 
   .all-page {
     margin-top: 12px;
     width: 100%;
-
-
     height: 100vh;
-
     background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
     position: fixed;
     left: 0;
-
   }
 
   .query {
