@@ -31,13 +31,27 @@
             <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><span>入库批号：{{product_name}}</span></div>
+            <div class="span_con"><div class="span_con_span"><span>入库批号：</span>
+                <!-- <el-input v-model="product_name" style="width:33.4%;"></el-input> -->
+                <el-autocomplete
+  v-model="product_name" style="width:33.4%;"
+  :fetch-suggestions="querySearchAsync"
+  @select="handleSelect"
+></el-autocomplete>
+              </div></div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><span>入库库位：{{library_name}}</span><span>入库轴号：{{axis_no}}</span></div>
+            <div class="span_con">     <div class="span_con_span"><span>入库库位：</span>
+                <el-input disabled v-model="library_name" style="width:33.4%;"></el-input><span
+                  style="margin-left:1em;">入库轴号：</span>
+                <el-input style="width:33.4%;" v-model="axis_no"></el-input>
+              </div></div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><span>入库米数：{{meter}}</span><span>入库人员：{{staff_name}}</span></div>
+            <div class="span_con">    <div class="span_con_span"><span>入库米数：</span>
+                <el-input v-model="meter" style="width:33.4%;"></el-input><span style="margin-left:1em;">入库人员：</span>
+                <el-input disabled style="width:33.4%;" v-model="staff_name"></el-input>
+              </div></div>
           </div>
         </div>
         <div class="bottom_btn">
@@ -87,7 +101,8 @@
       user_id: "",
       dialogVisibleClose: false,
       showclose: false,
-      autofocus: true
+      autofocus: true,
+      product_nameList:[]
     }),
 
     methods: {
@@ -185,7 +200,50 @@
       },
       /**
        *
+      
        */
+      //品名下拉带输入建议事件
+       querySearchAsync(queryString, cb) {
+        var restaurants = this.product_nameList;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+         handleSelect(item) {
+       
+        this.product_name=item.name
+      },
+        //品名下拉带输入建议事件
+      getPinMinPiHao(){ //获取品名列表
+let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
+      let that = this
+        axios({
+          method: "post",
+          url: url,
+          timeout: 1000,
+          data: {
+            selectInfo: {
+              company_id: Number(that.$store.state.companyID)
+            },
+    
+          },
+          headers: {
+
+          }
+        }).then((res) => {
+          console.log(res)
+          for(let i=0;i<res.data.result.length;i++){
+            that.product_nameList.push({value:res.data.result[i].product_name,name:res.data.result[i].product_name})
+          }
+        })
+
+      },
+     
       getAxisInfo() { //扫码获取轴信息
         let url = "http://120.55.124.53:8206/api/axis/getAxisInfo"
         let that = this
@@ -296,6 +354,7 @@
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
       this.getAxisInfo()
+      this.getPinMinPiHao()
 
     },
       beforeDestroy() {
@@ -630,8 +689,7 @@
     justify-content: space-between;
     align-items: center;
   }
-
-  .span_con span {
+  .span_con_span {
     width: 100%;
     height: 100%;
     display: flex;
@@ -640,6 +698,15 @@
     justify-content: flex-start;
     align-items: center;
   }
+  /* .span_con span {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    color: white;
+    font-size: 1.6em;
+    justify-content: flex-start;
+    align-items: center;
+  } */
 
   /* 主要内容*/
 

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 import select from '@/components/select'//查询
 import  Maintenance_details from '@/components/Maintenance_details'//维保详情
 import Component_consumption_details from  '@/components/Component_consumption_details'//部品消耗详情
@@ -40,7 +39,7 @@ export default new Router({
       component: repairHistory
     },
     {
-      path: '/chooseMachine/:company_id/:workshop_id/:operator/:flag/:machine_id/:maintain_type_id/:isClickIn',
+      path: '/chooseMachine/:company_id/:workshop_id/:operator/:flag/:maintain_type_id/:isClickIn',
       name: 'chooseMachine',
       component: chooseMachine
     },
@@ -70,12 +69,12 @@ export default new Router({
       component: Maintenance_history
     },
     {
-      path: '/Maintenance_materials',
+      path: '/Maintenance_materials/:isThisApp/:company_id',
       name: 'Maintenance_materials',
       component: Maintenance_materials
     },
     {
-      path: '/Maintenance/:company_id/:workshop_id/:operator/:flag/:machine_id/:maintain_type_id/:isClickIn',
+      path: '/Maintenance/:company_id/:workshop_id/:operator/:flag/:maintain_type_id/:isClickIn',
       name: 'Maintenance',
       component: Maintenance
     },

@@ -35,7 +35,9 @@
           <div class="card" @click="toDetail(item.id,item.maintain_type_name)" v-for="(item,index) in dataList" :key="index">
             <div class="card-con"><span>保养项目：{{item.maintain_type_name}}</span></div>
               <div class="card-con2" style="margin-top:10px;"><span>保养设备：{{item.machine_id}}</span></div>
-                <div class="card-con2"><span>保养完成时间：{{item.maintain_time}}</span><span style="margin-left:1rem;">保养人：{{item.operator}}</span></div>
+                <div class="card-con2"><span>保养完成时间：{{item.maintain_time}}</span></div>
+                 <div class="card-con2"><span >保养人：{{item.operator}}</span></div>
+               
             <!-- <div class="card-con"><span>设备名称：{{item.machine_id}}</span></div>
             <div class="card-con"><span>保养时间：{{item.maintain_time}}</span></div>
             <div class="card-con"><span>保养人：{{item.operator}}</span></div>
@@ -196,7 +198,11 @@
               // }
               that.dataList.push(res.data.result.maintainRecord[i])
             }
-            that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+            if(that.datalist.length==that.total_data_num){
+             that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+          }else{
+             that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
+          }
           }
 
         })
@@ -317,7 +323,7 @@
 
   .card {
     width: 90%;
-    height: 120px;
+    height: 141px;
     background: white;
     display: flex;
     border-radius: 8px;

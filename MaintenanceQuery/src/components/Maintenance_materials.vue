@@ -78,7 +78,7 @@
         operator: "",
         maintain_type_id: null,
         isClickIn: "",
-        machine_id: null, //设备id
+    
         company_id: '', //公司id
         mac_type_id: null, //设备类型id
         flag: null, //
@@ -90,8 +90,11 @@
         categories_id: "", //
         searchinfo: "", //搜索框信息
         workshop_id: "",
-        machine_id: "",
-        datalist2: []
+        
+        datalist2: [],
+        mac_type_id:this.$route.params.mac_type_id,
+        machine_id_list: [],
+        isThisApp: this.$route.params.isThisApp //是否是当前项目的页面跳转到本页面
       }
     },
     methods: {
@@ -108,6 +111,7 @@
         }
 
       },
+     
       change(e) { //下拉菜单值发生变化监听事件
         //console.log(e.target.value)
         this.categories_id = e.target.value
@@ -115,112 +119,109 @@
         this.pageNum = 1
         this.getInventory(this.searchinfo) //如果搜索框有数据，依旧会搜索当前选择的下拉值下的搜索数据
       },
+      /**
+   
+       */
       getInventory(searchinfo) { //获取保养物料数据
-
-        if (this.menu.length == 0) { //如果下拉菜单没数据去获取分类根目录
-
-          this.getRootCategories()
-        }
-
         //  this.$refs.myscroller.finishPullToRefresh();
         let that = this
         let url = "http://120.55.124.53:16021/api/warehouse/getInventory" //获取库存数量
         var datas; //存放json数据
-        setTimeout(() => { //过300毫秒执行，防止categories_id没有查到就执行报错
-          //console.log(that.menu)
-          if (that.menu.length > 0) { //如果下拉菜单有数据
-            if (searchinfo) { //如果搜素输入框有东西
-              datas = { //查询当前选择的下拉选项下的搜索数据
-
-
-                page: that.pageNum,
-                pageNum: 10,
-                startDate: "1999-01-01 00:00:00",
-                endDate: "2999-01-01 00:00:00",
-                isFilterZero: "1",
-                isDisable: "0",
-                productTypeId: this.categories_id,
-                queryConditions: searchinfo
-              }
-            } else { //查询当前选择的下拉选项下的数据
-              datas = {
-
-
-                page: that.pageNum,
-                pageNum: 10,
-                startDate: "1999-01-01 00:00:00",
-                endDate: "2999-01-01 00:00:00",
-                isFilterZero: "1",
-                isDisable: "0",
-                productTypeId: this.categories_id
-              }
+        // setTimeout(() => { //过300毫秒执行，防止categories_id没有查到就执行报错
+        //console.log(that.menu)
+        if (that.menu.length > 0) { //如果下拉菜单有数据
+          if (searchinfo) { //如果搜素输入框有东西
+            datas = { //查询当前选择的下拉选项下的搜索数据
+              page: that.pageNum,
+              pageNum: 10,
+              startDate: "1999-01-01 00:00:00",
+              endDate: "2999-01-01 00:00:00",
+              isFilterZero: "1",
+              isDisable: "0",
+              productTypeId: this.categories_id,
+              queryConditions: searchinfo
             }
-
-          } else { //如果下拉菜单没有获取到，那就获取全部数据
-            if (searchinfo) {
-              let datas = {
-
-
-                page: that.pageNum,
-                pageNum: 10,
-                startDate: "1999-01-01 00:00:00",
-                endDate: "2999-01-01 00:00:00",
-                isFilterZero: "1",
-                isDisable: "0",
-                productTypeId: this.categories_id,
-                queryConditions: searchinfo
-              }
-            } else {
-              datas = {
-
-
-                page: that.pageNum,
-                pageNum: 10,
-                startDate: "1999-01-01 00:00:00",
-                endDate: "2999-01-01 00:00:00",
-                isFilterZero: "1",
-                isDisable: "0",
-                // queryConditions:""
-              }
-
+          } else { //查询当前选择的下拉选项下的数据
+            datas = {
+              page: that.pageNum,
+              pageNum: 10,
+              startDate: "1999-01-01 00:00:00",
+              endDate: "2999-01-01 00:00:00",
+              isFilterZero: "1",
+              isDisable: "0",
+              productTypeId: this.categories_id
             }
           }
-          axios.post(url, datas, { //开始查询
-            headers: {
-              'Content-Type': 'application/json',
-              "companyId": that.company_id
+
+        } else { //如果下拉菜单没有获取到，那就获取全部数据
+          if (searchinfo) {
+            let datas = {
+
+
+              page: that.pageNum,
+              pageNum: 10,
+              startDate: "1999-01-01 00:00:00",
+              endDate: "2999-01-01 00:00:00",
+              isFilterZero: "1",
+              isDisable: "0",
+              productTypeId: this.categories_id,
+              queryConditions: searchinfo
             }
-          }).then(function (res) {
-            //console.log(res)
-            if (res.data.data.product.length == 0) { //如果查到没数据了，那就关闭上拉加载了
-              that.$message({
-                message: '没有更多数据了！',
-                center: true,
-                duration: 1000
-              });
-              that.$refs.my_scroller.finishInfinite(true)
-              return
-            } else {
-              that.totalDataNum = res.data.data.totalDataNum //设置数据总条数
-              that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
+          } else {
+            datas = {
 
-              //  that.noDate=that.iscurrent(that.totalDataNum,that.pageNum)
 
-              for (let i = 0; i < res.data.data.product.length; i++) { //push消耗物料数据
-                res.data.data.product[i].stockQuantitydata = res.data.data.product[i].stockQuantity
-                res.data.data.product[i].isinputShow = false
-                res.data.data.product[i].stockQuantityShow = 0
-                that.datalist.push(res.data.data.product[i])
-              }
-              that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+              page: that.pageNum,
+              pageNum: 10,
+              startDate: "1999-01-01 00:00:00",
+              endDate: "2999-01-01 00:00:00",
+              isFilterZero: "1",
+              isDisable: "0",
+              // queryConditions:""
             }
 
+          }
+        }
+        axios.post(url, datas, { //开始查询
+          headers: {
+            'Content-Type': 'application/json',
+            "companyId": that.company_id
+          }
+        }).then(function (res) {
+          //console.log(res)
+          if (res.data.data.product.length == 0) { //如果查到没数据了，那就关闭上拉加载了
+            // that.$message({
+            //   message: '没有更多数据了！',
+            //   center: true,
+            //   duration: 1000
+            // });
+            that.$refs.my_scroller.finishInfinite(true)
+            return
+          } else {
+            that.totalDataNum = res.data.data.totalDataNum //设置数据总条数
+            that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
+
+            //  that.noDate=that.iscurrent(that.totalDataNum,that.pageNum)
+
+            for (let i = 0; i < res.data.data.product.length; i++) { //push消耗物料数据
+              res.data.data.product[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+              res.data.data.product[i].isinputShow = false
+              res.data.data.product[i].stockQuantityShow = 0
+              that.datalist.push(res.data.data.product[i])
+            }
+             if(that.datalist.length==that.totalDataNum){
+             that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+          }else{
+             that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
+          }
+          }
 
 
 
-          })
 
-        }, 300);
+        })
+
+        // }, 300);
 
       },
       iscurrent(totalDataNum, pageNum) { //判断当前页数是否最后一条
@@ -234,41 +235,55 @@
 
       getParams() { //获取其他页面传过来的参数
 
+        this.machine_id_list = this.$route.params.machine_id_list
 
-        this.mac_type_id = this.$route.params.dataObj2.mac_type_id
+        if (this.$route.params.isThisApp == "false"||this.$route.params.isThisApp == false) {
+          this.mac_type_id = ""
+          this.type_name = ""
+        } else {
+          this.mac_type_id = this.$route.params.dataObj2.mac_type_id
+          this.type_name = this.$route.params.dataObj2.type_name
+        }
+
         this.flag = this.$route.params.flag
-        this.type_name = this.$route.params.dataObj2.type_name
-        this.machine_id = this.$route.params.machine_id
+
+        
         this.operator = this.$route.params.operator
         this.workshop_id = this.$route.params.workshop_id
         this.company_id = this.$route.params.company_id
-        this.machine_id = this.$route.params.machine_id
+      
         this.datalist2 = this.$route.params.datalist
         this.maintain_type_id = this.$route.params.maintain_type_id
         this.isClickIn = this.$route.params.isClickIn
 
       },
       back() { //点取消返回上一个页面
+        if (this.isThisApp == "false"||this.isThisApp == false) {
+          nativeMethod.closeActivity()
+        } else {
+          this.$router.push({
+            path: "/Maintenance",
+            name: "Maintenance",
+            params: {
+              dataObj2: {
+                type_name: this.type_name,
+                mac_type_id: this.mac_type_id,
+                flag: this.flag,
+              },
+              mac_type_id:this.mac_type_id,
+              machine_id_list: this.machine_id_list,
+              operator: this.operator,
+              workshop_id: this.workshop_id,
+              company_id: this.company_id,
+        
+              datalist: this.datalist2,
+              maintain_type_id: this.maintain_type_id,
+              isClickIn: this.isClickIn
+            }
 
-        this.$router.push({
-          path: "/Maintenance",
-          name: "Maintenance",
-          params: {
-            dataObj2: {
-              type_name: this.type_name,
-              mac_type_id: this.mac_type_id,
-              flag: this.flag,
-            },
-            operator: this.operator,
-            workshop_id: this.workshop_id,
-            company_id: this.company_id,
-            machine_id: this.machine_id,
-            datalist: this.datalist2,
-            maintain_type_id: this.maintain_type_id,
-            isClickIn: this.isClickIn
-          }
+          })
+        }
 
-        })
       },
       refresh() { //下拉刷新函数
         //console.log("refresh");
@@ -312,8 +327,7 @@
       getRootCategories() { //获取分类根目录
         let url = "http://120.55.124.53:8206/api/product/getRootCategories"
         let that = this
-        axios.post(url, {
-        }, {
+        axios.post(url, {}, {
           headers: {
             'Content-Type': 'application/json',
             "companyId": that.company_id
@@ -352,6 +366,7 @@
             that.menu = res.data.data.categoriesModel //设置好下拉菜单选项
 
             that.categories_id = that.menu[0].categories_id //存储第一个默认选项的id
+            that.getInventory()
           } else {
 
             that.$message({
@@ -430,6 +445,8 @@
       },
       submit() { //提交跳转页面，将选择的数据发送到上一个页面
         //console.log(this.datalist)
+        console.log(this.isThisApp)
+
         let list = []
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].checked == true) {
@@ -440,87 +457,104 @@
         for (let i = 0; i < list.length; i++) {
           list[i].stockQuantity = list[i].stockQuantityShow
         }
-        for (let i = 0; i < this.datalist2.length; i++) {
-          if (typeof (this.datalist2[i].filelist) != "undefined") {
-            if (this.datalist2[i].filelist.length > 0) {
-              for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
-                this.datalist2[i].filelist[j] = {
-                  url: this.datalist2[i].filelist[j],
-                  name: j + '.jpg'
-                }
+        console.log(list)
+        if (this.isThisApp == "true"||this.isThisApp == true) { //当前项目页面调用此页面执行代码
+          for (let i = 0; i < this.datalist2.length; i++) {
+            if (typeof (this.datalist2[i].filelist) != "undefined") {
+              if (this.datalist2[i].filelist.length > 0) {
+                for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
+                  this.datalist2[i].filelist[j] = {
+                    url: this.datalist2[i].filelist[j],
+                    name: j + '.jpg'
+                  }
 
+                }
               }
             }
           }
-        }
 
-        //console.log(list)
-        this.$router.push({
-          path: '/Maintenance',
-          name: 'Maintenance',
-          params: {
 
-            dataObj: list,
-            operator: this.operator,
-            workshop_id: this.workshop_id,
-            company_id: this.company_id,
 
-            type_name: this.type_name,
-            mac_type_id: this.mac_type_id,
-            flag: this.flag,
-            machine_id: this.machine_id,
-            datalist: this.datalist2
-          
+          this.$router.push({
+            path: '/Maintenance',
+            name: 'Maintenance',
+            params: {
 
-          }
-
-        })
-      },
-      cancel() { //点取消返回上一个页面，只发送设备信息数据
-        for (let i = 0; i < this.datalist2.length; i++) {
-          console.log(this.datalist2[i].filelist)
-
-          if (typeof (this.datalist2[i].filelist) != "undefined") {
-            if (this.datalist2[i].filelist.length > 0) {
-              for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
-                this.datalist2[i].filelist[j] = {
-                  url: this.datalist2[i].filelist[j],
-                  name: j + '.jpg'
-                }
-
-              }
-            }
-          }
-        }
-        this.$router.push({
-          path: '/Maintenance',
-          name: 'Maintenance',
-          params: {
-
-            dataObj2: {
+              dataObj: list,
+              operator: this.operator,
+              workshop_id: this.workshop_id,
+              company_id: this.company_id,
+              machine_id_list: this.machine_id_list,
               type_name: this.type_name,
               mac_type_id: this.mac_type_id,
               flag: this.flag,
-            },
-            datalist: this.datalist2,
-            machine_id: this.machine_id,
-            operator: this.operator,
-            workshop_id: this.workshop_id,
-            company_id: this.company_id
+ 
+              datalist: this.datalist2
+            }
+
+          })
+        } else { //非当前项目页面调用此页面执行代码
+          nativeMethod.setMaterial(list);
+        }
+      },
+      cancel() { //点取消返回上一个页面，只发送设备信息数据
+
+        if (this.isThisApp == "false"||this.isThisApp == false) {
+          nativeMethod.closeActivity();
+        } else {
+          for (let i = 0; i < this.datalist2.length; i++) {
+            console.log(this.datalist2[i].filelist)
+
+            if (typeof (this.datalist2[i].filelist) != "undefined") {
+              if (this.datalist2[i].filelist.length > 0) {
+                for (let j = 0; j < this.datalist2[i].filelist.length; j++) {
+                  this.datalist2[i].filelist[j] = {
+                    url: this.datalist2[i].filelist[j],
+                    name: j + '.jpg'
+                  }
+
+                }
+              }
+            }
           }
-        })
+          this.$router.push({
+            path: '/Maintenance',
+            name: 'Maintenance',
+            params: {
+
+              dataObj2: {
+                type_name: this.type_name,
+                mac_type_id: this.mac_type_id,
+                flag: this.flag,
+              },
+              machine_id_list: this.machine_id_list,
+              datalist: this.datalist2,
+        
+              operator: this.operator,
+              workshop_id: this.workshop_id,
+              company_id: this.company_id,
+              mac_type_id:this.mac_type_id,
+            }
+          })
+        }
+
       }
     },
 
     mounted() {
       this.datalist = [] //初始化数据
       this.pageNum = 1
+      console.log(this.$route.params)
       this.getParams() //获取其他页面传的数据
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
-      this.getInventory() //获取保养物料数据
+      if (this.menu.length == 0) { //如果下拉菜单没数据去获取分类根目录
+
+        this.getRootCategories()
+      }
+
     },
     watch: {
       searchinfo: function (val, oldVal) { //监听搜索框数据，若清空，则获取下拉选择下的默认数据
@@ -556,7 +590,6 @@
     font-size: 12px;
     color: rgb(21, 153, 204);
     overflow: hidden;
-
     background-color: #eee;
     background: transparent;
     appearance: none;
@@ -564,7 +597,6 @@
     /* Firefox */
     -webkit-appearance: none;
     /* Safari 和 Chrome */
-
   }
 
   .all-page /deep/ ._v-container {
@@ -797,6 +829,7 @@
     font-weight: 400;
     border-radius: 4px;
   }
+
   .card_border {
     width: 95%;
     height: 62px;
@@ -806,9 +839,10 @@
     font-size: 0.9rem;
     position: relative;
     font-weight: 400;
-    border:1px solid red;
-     border-radius: 4px;
+    border: 1px solid red;
+    border-radius: 4px;
   }
+
   .check {
     position: absolute;
     right: 15px;
@@ -823,10 +857,13 @@
   .check .el-checkbox .el-checkbox__input .el-checkbox__inner {
     border-radius: 8px;
   }
-.check /deep/ .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+
+  .check /deep/ .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
     background-color: red;
     border-color: red;
-}
+  }
+
   .card2 {
     width: 95%;
     height: 100px;

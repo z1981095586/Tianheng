@@ -1,3 +1,4 @@
+
 <template>
   <div class="content" style="padding-top:10px;">
     <el-dialog title="请选择保养类型" :visible.sync="dialogVisible" width="60%">
@@ -16,7 +17,8 @@
     <div class="all-page">
       <div class="contain">
         <div class="head">
-          <div class="con" style="width:55%;"><span>设备编号：{{machine_id}}</span></div>
+               <div class="con" style="width:55%;"><span>保养分类：{{flag}}</span></div>
+        
           <div class="con"><span>设备类型：{{type_name}}</span></div>
 
         </div>
@@ -24,9 +26,11 @@
       </div>
 
       <div class="contain">
-        <div class="head">
-          <div class="con" style="width:55%;"><span>保养分类：{{flag}}</span></div>
-          <div class="con"><span></span></div>
+        <div class="head" style="height:auto;justify-content: flex-start;">
+          <div class="con" style="width:93%;"><div style="      margin-left: 5px;  text-align: justify;
+    text-justify: newspaper;
+    word-break: break-all;">设备编号：{{machine_id_list.toString()}}</div></div>
+         
 
         </div>
 
@@ -102,10 +106,10 @@
 
           </div>
         </div>
-            <div class="card2" style="height:129px;">
+        <div class="card2" style="height:129px;">
           <div class="card-head2">
             <div style="margin-left:5px;"><span>消耗物料：</span><span style="color:rgba(0,0,0,0.5)">(备品更换使用记录)</span></div>
-          
+
             <div class="add_btn" @click="toadd"><span>增加</span></div>
           </div>
           <div class="line">
@@ -141,7 +145,7 @@
       </div>
       <div class="bottom">
         <div class="submit" @click="isclick()"><span>提交</span></div>
-        <div class="cancel" @click="back"><span>取消</span></div>
+        <div class="cancel" @click="back2"><span>取消</span></div>
       </div>
       <!-- <div class="contain" style="margin-top:10px;">
         <div class="card2" style="height:129px;">
@@ -203,8 +207,9 @@
         isclickIn: null,
         mac_type_id: null, //设备类型id
         type_name: null, //类型名称
-        machine_id: null, //设备id
+       
         operator: "", //操作人
+        machine_id_list: "",
         flag: null, //用于存放当前设备是大保养还是小保养
         company_id: '',
         limit: 5, //最多5张照片
@@ -214,6 +219,7 @@
         workshop_id: "",
         yes: true,
         no: false,
+        mac_type_id:this.$route.params.mac_type_id,
         consume_list: [] //消耗物料列表
       }
     },
@@ -225,7 +231,7 @@
         //   this.dialogVisible = true
         // } else {
         //   console.log("sda")
-          this.submit()
+        this.submit()
         // }
       },
       change3(e) { //mactype下拉选择框值改变重新获取数据
@@ -244,15 +250,18 @@
           type_name: this.type_name,
           mac_type_id: this.mac_type_id,
           flag: this.flag,
-          machine_id: this.machine_id
+      
         }
         this.$router.push({
           path: "/Maintenance_materials",
           name: "Maintenance_materials",
           params: {
+            isThisApp:true,
             operator: this.operator,
             dataObj2: dataObj2,
-            machine_id: this.machine_id,
+         mac_type_id:this.mac_type_id,
+            machine_id_list: this.machine_id_list,
+         
             workshop_id: this.workshop_id,
             company_id: this.company_id,
             maintain_type_id: this.maintain_type_id,
@@ -263,13 +272,12 @@
           }
         })
       },
-
-      back() { //点击取消返回上一个页面，保养列表
+      back2() { //返回保养列表
         let p = {
           mac_type_id: this.mac_type_id,
           workshop_id: this.workshop_id,
           company_id: this.company_id,
-          machine_id: this.machine_id
+     
         }
         console.log(p)
         this.$router.push({ //跳转并传参数
@@ -277,6 +285,38 @@
           name: 'Maintenance_list',
           params: p
 
+        })
+
+      },
+      back() { //返回上一个页面
+        // let p = {
+        //   mac_type_id: this.mac_type_id,
+        //   workshop_id: this.workshop_id,
+        //   company_id: this.company_id,
+        //   machine_id: this.machine_id
+        // }
+        // console.log(p)
+        // this.$router.push({ //跳转并传参数
+        //   path: '/Maintenance_list',
+        //   name: 'Maintenance_list',
+        //   params: p
+
+        // })
+   
+        this.$router.push({
+          path: '/chooseMachine',
+          name: 'chooseMachine',
+          params: {
+            operator: this.operator,
+            workshop_id: this.workshop_id,
+            company_id: this.company_id,
+            flag: this.flag,
+      
+            maintain_type_id: this.maintain_type_id,
+            isClickIn: this.isClickIn,
+            machine_id_list: this.machine_id_list,
+            mac_type_id:this.mac_type_id,
+          }
         })
       },
       getParams() {
@@ -287,11 +327,13 @@
         this.isClickIn = this.$route.params.isClickIn
         this.workshop_id = this.$route.params.workshop_id
         this.operator = this.$route.params.operator
+        this.machine_id_list = this.$route.params.machine_id_list
         this.datalist = this.$route.params.datalist
+        this.mac_type_id=this.$route.params.mac_type_id
         // this.mac_type_id =this.$route.params .mac_type_id//这个是扫码页面传来的当前的设备编号，设备名称等数据
         this.flag = this.$route.params.flag
         //this.type_name = this.$route.params .type_name
-        this.machine_id = this.$route.params.machine_id
+      
         // if(this.datalist.filelist==undefined){
         //       if(this.datalist.filelist.length>0){
         //       for(let i=0;i<this.datalist.filelist.length;i++){
@@ -300,10 +342,10 @@
         //       }
         //     }
         // }
-        
-//         if(this.$route.params.mac_type_id){
-//  this.mac_type_id= this.$route.params.mac_type_id
-//         }
+
+        //         if(this.$route.params.mac_type_id){
+        //  this.mac_type_id= this.$route.params.mac_type_id
+        //         }
         console.log(this.maintain_type_id)
         console.log(this.isClickIn)
         if (this.isClickIn == "false") {
@@ -316,29 +358,56 @@
           let routerParams = this.$route.params.dataObj
           this.consume_list = routerParams
         }
-
+    let url = 'http://106.12.219.66:8227/report/getSimpleReport';
+        let headers = {
+          'Content-Type': 'application/json',
+          'companyID': this.company_id
+        };
+        let method = "post";
+        let data = {
+          "tableName": "mac_type",
+      
+          "selectFields": ["id", "type_name"],
+          "query":{"id":this.mac_type_id}
+        };
+   
         let that = this;
-        axios.get("http://106.12.219.66:8763/com-machine-info/selectAMachineRelation", {
-          params: {
-            machineId: that.machine_id
-          },
-          headers: {
-            companyId: that.company_id
-          }
-        }).then((res) => {
-          console.log(res);
-                // if(that.mac_type_id==""){
- that.mac_type_id = res.data.data[0].machineType
-          // }
-
-          that.type_name = res.data.data[0].macType.typeName
-          if (that.datalist) {
-            console.log(that.datalist)
+         axios({
+            url: url,
+            method: method,
+            data: data,
+            headers: headers
+          })
+          .then(response => {
+            console.log(response.data.data)
+           that.type_name = response.data.data[0].type_name
+               if (that.datalist) {
+           
           } else {
             that.getMaintain() //获取保养信息
           }
+          })
+        // axios.get("http://106.12.219.66:8763/com-machine-info/selectAMachineRelation", {
+        //   params: {
+        //     machineId: that.machine_id
+        //   },
+        //   headers: {
+        //     companyId: that.company_id
+        //   }
+        // }).then((res) => {
+        //   console.log(res);
+        //   // if(that.mac_type_id==""){
+        //   that.mac_type_id = res.data.data[0].machineType
+        //   // }
 
-        });
+        //   that.type_name = res.data.data[0].macType.typeName
+        //   if (that.datalist) {
+        //     console.log(that.datalist)
+        //   } else {
+        //     that.getMaintain() //获取保养信息
+        //   }
+
+        // });
 
 
 
@@ -385,10 +454,10 @@
 
         let maintainMainRecord = { //这是当前设备和操作者的信息，传给后台
           operator: this.operator,
-          "machine_id": this.machine_id,
+          "machine_id": this.machine_id_list.toString(),
           "mac_type_id": this.mac_type_id,
           "maintain_type_id": maintain_type,
-          "workshop_id":this.workshop_id
+          "workshop_id": this.workshop_id
         }
         let selectInfo = {
           "company_id": this.company_id
@@ -437,6 +506,7 @@
             text: input,
             maintain_item_id: arr[i].id
           })
+     
 
 
         }
@@ -452,6 +522,43 @@
         }
 
         //数据处理完成，开始更新
+        console.log(this.datalist)
+        for(let i=0;i<this.datalist.length;i++){
+          if(this.datalist[i].confirm==3){
+            if(this.datalist[i].input==""){
+              this.$message({
+                         type: 'warning',
+              message: this.datalist[i].name+'项未填写！',
+              center: true,
+              duration: 2000
+              })
+              return
+            }
+          }
+               if(this.datalist[i].confirm==2){
+            if(!this.datalist[i].picture){
+              this.$message({
+                         type: 'warning',
+              message: this.datalist[i].name+'项未上传图片！',
+              center: true,
+              duration: 2000
+              })
+              return
+            }
+          }
+          //        if(this.datalist[i].confirm==1){
+          //   if(this.datalist[i].radio==""){
+          //     this.$message({
+          //                type: 'none',
+          //     message: this.datalist[i].name+'项未打钩！',
+          //     center: true,
+          //     duration: 2000
+          //     })
+          //     return
+          //   }
+          // }
+        }
+        console.log(arr2)
         let that = this
         axios.post("http://120.55.124.53:8206/api/maintain/submitMaintain", {
 
@@ -478,7 +585,7 @@
               mac_type_id: that.mac_type_id,
               workshop_id: that.workshop_id,
               company_id: that.company_id,
-              machine_id: that.machine_id
+          
             }
 
             that.$router.push({ //跳转并传参数
@@ -676,16 +783,16 @@
             let list = []
             console.log(that.flag)
             for (var i = 0; i < res.data.data.length; i++) {
-                 
-                if(res.data.data[i].name==that.flag){
-               
-for (var j = 0; j < res.data.data[i].maintainItemList.length; j++) {
-  res.data.data[i].maintainItemList[j].index = j+1
-                res.data.data[i].maintainItemList[j].input = ""
-                res.data.data[i].maintainItemList[j].radio = ""
-                list.push(res.data.data[i].maintainItemList[j])
+
+              if (res.data.data[i].name == that.flag) {
+
+                for (var j = 0; j < res.data.data[i].maintainItemList.length; j++) {
+                  res.data.data[i].maintainItemList[j].index = j + 1
+                  res.data.data[i].maintainItemList[j].input = ""
+                  res.data.data[i].maintainItemList[j].radio = ""
+                  list.push(res.data.data[i].maintainItemList[j])
                 }
-                
+
               }
             }
             //           if(that.flag=="大保养"){
@@ -717,12 +824,12 @@ for (var j = 0; j < res.data.data[i].maintainItemList.length; j++) {
 
     },
     mounted() {
-      //console.log(this)
+      console.log(this.$route.params)
       this.getParams() //先获取其他页面传过来的数据
-history.pushState(null, null, window.location.href);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, window.location.href);
-        });
+      history.pushState(null, null, window.location.href);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, window.location.href);
+      });
 
     }
   }
@@ -976,7 +1083,9 @@ history.pushState(null, null, window.location.href);
 
     justify-content: center;
   }
-
+.card-con /deep/ .el-checkbox__inner{
+  z-index: -1;
+}
   .card-content /deep/ .el-radio {
     margin: 0;
   }

@@ -22,16 +22,20 @@
 
         </select></div>
         <div class="select" style="background:rgb(245,245,245);height:5%;font-size:0.9rem"><span>确认保养项目</span><i class="el-icon-right"></i><span>选择机台</span><i class="el-icon-right"></i><span>保养提交</span><i class="el-icon-right"></i><span>完成</span></div>
-      <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
-        <div style="height:90%;overflow:auto;">
+      <!-- <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller"> -->
+        <div style="height:75%;overflow:auto;">
 
 
 
           <div class="contain" style="margin-top:8px;" v-for="item in datalist">
-            <div class="card"
-              @click="toDetail(item.mac_type_id,item.mac_type_name,item.maintain_type_name,item.machine_id,item.workshop_id,item.maintain_type_id)">
+            <!-- <div class="card"
+              @click="toDetail(item.mac_type_id,item.mac_type_name,item.maintain_type_name,item.machine_id,item.workshop_id,item.maintain_type_id)"> -->
+              <div class="card"
+              @click="toDetail(item.mac_type_id,item.mac_type_name,item.name,item.workshop_id,item.id)"> 
               <div class="card-head">
-                <div><span>{{workshop_name}}</span><span>上次保养时间：{{item.maintain_time}}</span></div><span
+                <!-- <div><span>{{workshop_name}}</span><span>上次提交时间：{{item.maintain_time}}</span></div> -->
+                <div><span>{{workshop_name}}</span><span>保养周期：{{item.intervals}}天</span></div>
+                <span
                   class="no-deal">待处理</span>
               </div>
               <div class="line">
@@ -47,7 +51,7 @@
               <div class="card-content2" >
                 <div class="content-two">
 
-                  <span>保养类别：{{item.maintain_type_name}}</span>
+                  <span>保养类别：{{item.name}}</span>
 
                 </div>
 
@@ -55,7 +59,7 @@
               
               <div class="card-content2">
                 <div class="content-two">
-                  <span>到期时间：{{item.expire_time}}</span>
+                  <span>备注：{{item.remarks}}</span>
 
                 </div>
 
@@ -64,7 +68,7 @@
           </div>
 
         </div>
-      </scroller>
+      <!-- </scroller> -->
 
 
     </div>
@@ -96,7 +100,7 @@
         selectInfo: {
           company_id: ''
         },
-        days_to_expire: 0, //近几日
+        days_to_expire: 99999, //近几日
         operator: '', //操作人
         menu: [
           // {id:1,name:"1号车间"},
@@ -207,7 +211,7 @@
         this.getMachine_id()
       },
 
-      toDetail(mac_type_id, type_name, flag, machine_id, workshop_id, maintain_type_id) { //跳转到选择机台页面，传递参数
+      toDetail(mac_type_id, type_name, flag, workshop_id, maintain_type_id) { //跳转到选择机台页面，传递参数
 
         this.$router.push({ //跳转并传参数
           path: '/chooseMachine',
@@ -216,9 +220,10 @@
             company_id: this.selectInfo.company_id,
             operator: this.operator,
             workshop_id: workshop_id,
-
+            mac_type_id:this.macRelation.mac_type_id,
+        workshop_id:this.macRelation.workshop_id,
             flag: flag,
-            machine_id: machine_id,
+          
             maintain_type_id: maintain_type_id,
             isClickIn: true
           }
@@ -249,17 +254,14 @@
       },
 
       getMachine_id() { // 获取设备编号
-        //console.log(workshop_id)
-
-        let url = 'http://120.55.124.53:8206/api/maintain/getRecentMaintainRecord'
-        let macRelation = {
+      let url = 'http://120.55.124.53:8206/api/maintain/getMaintainType'
+        let maintainType = {
           mac_type_id: this.macRelation.mac_type_id,
-          workshop_id: this.macRelation.workshop_id
+       
         }
         let selectInfo = {
           company_id: this.selectInfo.company_id,
-          page_size: this.page_size,
-          page_num: this.page_num
+       
         }
 
 
@@ -267,30 +269,34 @@
         let that = this
         console.log(that.staff_id)
         axios.post(url, {
-          macRelation,
+         maintainType,
           selectInfo,
-          // "staff_id":that.staff_id,
-          days_to_expire: that.days_to_expire
+        
         }).then(function (res) {
 
 
           console.log(res)
-          //获取当前时间
-          var currentTime = that.getTime(new Date());
-          if (res.data.result.machine_list.length == 0) {
+     
+
+          if (res.data.result.length == 0) {
             // that.$message({
             //   message: '没有数据！',
             //   center: true,
             //   duration: 2000
             // });
-            that.$refs.my_scroller.finishInfinite(true)
+            // that.$refs.my_scroller.finishInfinite(true)
             return
           } else {
-            that.total_data_num = res.data.result.total_data_num //设置数据总条数
-            for (let i = 0; i < res.data.result.machine_list.length; i++) {
-              for (let j = 0; j < res.data.result.machine_list[i].maintain.length; j++) {
-                that.datalist.push(res.data.result.machine_list[i].maintain[j])
-              }
+            // that.total_data_num = res.data.result.total_data_num //设置数据总条数
+            for (let i = 0; i < res.data.result.length; i++) {
+           if(res.data.result[i].intervals==null||res.data.result[i].intervals<0){
+             res.data.result[i].intervals=0
+           }
+            if(res.data.result[i].remarks==null||res.data.result[i].remarks==""){
+             res.data.result[i].remarks="暂无填写"
+           }
+                that.datalist.push(res.data.result[i])
+              
               // res.data.result.machine_list[i].big_maintain.flag = "大保养" //判断保养类型
               // res.data.result.machine_list[i].small_maintain.flag = "小保养"
               // that.datalist.push(res.data.result.machine_list[i].big_maintain) //将处理完成的数据push到数据列表
@@ -298,37 +304,77 @@
 
 
             }
-            that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+      
+          
           }
 
-          //console.log(currentTime)
-          //   if (res.data.result.length == 0) {
-          //   that.$message({
-          //     message: '没有数据！',
-          //     center: true,
-          //     duration: 2000
-          //   });
-          //   that.$refs.my_scroller.finishInfinite(true)
-          //   return
-          // } else {
-          //   // that.total_data_num = res.data.result.total_data_num //设置数据总条数
-          //             for (let i = 0; i < res.data.result.length; i++) {
-
-          //   res.data.result[i].big_maintain.flag = "大保养" //判断保养类型
-          //   res.data.result[i].small_maintain.flag = "小保养"
-          //   that.datalist.push(res.data.result[i].big_maintain) //将处理完成的数据push到数据列表
-          //   that.datalist.push(res.data.result[i].small_maintain)
-
-
-          // }
-          //   that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
-          // }
-
-          //console.log(that.datalist)
+     
 
 
 
         })
+        /******** */
+
+        // let url = 'http://120.55.124.53:8206/api/maintain/getRecentMaintainRecord'
+        // let macRelation = {
+        //   mac_type_id: this.macRelation.mac_type_id,
+        //   workshop_id: this.macRelation.workshop_id
+        // }
+        // let selectInfo = {
+        //   company_id: this.selectInfo.company_id,
+        //   page_size: this.page_size,
+        //   page_num: this.page_num
+        // }
+
+
+
+        // let that = this
+        // console.log(that.staff_id)
+        // axios.post(url, {
+        //   macRelation,
+        //   selectInfo,
+        //   // "staff_id":that.staff_id,
+        //   days_to_expire: that.days_to_expire
+        // }).then(function (res) {
+
+
+        //   console.log(res)
+     
+
+        //   if (res.data.result.machine_list.length == 0) {
+        //     // that.$message({
+        //     //   message: '没有数据！',
+        //     //   center: true,
+        //     //   duration: 2000
+        //     // });
+        //     that.$refs.my_scroller.finishInfinite(true)
+        //     return
+        //   } else {
+        //     that.total_data_num = res.data.result.total_data_num //设置数据总条数
+        //     for (let i = 0; i < res.data.result.machine_list.length; i++) {
+        //       for (let j = 0; j < res.data.result.machine_list[i].maintain.length; j++) {
+        //         that.datalist.push(res.data.result.machine_list[i].maintain[j])
+        //       }
+        //       // res.data.result.machine_list[i].big_maintain.flag = "大保养" //判断保养类型
+        //       // res.data.result.machine_list[i].small_maintain.flag = "小保养"
+        //       // that.datalist.push(res.data.result.machine_list[i].big_maintain) //将处理完成的数据push到数据列表
+        //       // that.datalist.push(res.data.result.machine_list[i].small_maintain)
+
+
+        //     }
+        //          if(that.datalist.length==that.total_data_num){
+        //      that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+        //   }else{
+        //      that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
+        //   }
+          
+        //   }
+
+     
+
+
+
+        // })
       },
       inf() {
 
