@@ -1,4 +1,3 @@
-
 <template>
   <div class="content" style="padding-top:10px;">
     <el-dialog title="请选择保养类型" :visible.sync="dialogVisible" width="60%">
@@ -17,8 +16,8 @@
     <div class="all-page">
       <div class="contain">
         <div class="head">
-               <div class="con" style="width:55%;"><span>保养分类：{{flag}}</span></div>
-        
+          <div class="con" style="width:55%;"><span>保养分类：{{flag}}</span></div>
+
           <div class="con"><span>设备类型：{{type_name}}</span></div>
 
         </div>
@@ -27,10 +26,12 @@
 
       <div class="contain">
         <div class="head" style="height:auto;justify-content: flex-start;">
-          <div class="con" style="width:93%;"><div style="      margin-left: 5px;  text-align: justify;
+          <div class="con" style="width:93%;">
+            <div style="      margin-left: 5px;  text-align: justify;
     text-justify: newspaper;
-    word-break: break-all;">设备编号：{{machine_id_list.toString()}}</div></div>
-         
+    word-break: break-all;">设备编号：{{machine_id_list.toString()}}</div>
+          </div>
+
 
         </div>
 
@@ -207,7 +208,7 @@
         isclickIn: null,
         mac_type_id: null, //设备类型id
         type_name: null, //类型名称
-       
+
         operator: "", //操作人
         machine_id_list: "",
         flag: null, //用于存放当前设备是大保养还是小保养
@@ -219,7 +220,7 @@
         workshop_id: "",
         yes: true,
         no: false,
-        mac_type_id:this.$route.params.mac_type_id,
+        mac_type_id: this.$route.params.mac_type_id,
         consume_list: [] //消耗物料列表
       }
     },
@@ -250,18 +251,18 @@
           type_name: this.type_name,
           mac_type_id: this.mac_type_id,
           flag: this.flag,
-      
+
         }
         this.$router.push({
           path: "/Maintenance_materials",
           name: "Maintenance_materials",
           params: {
-            isThisApp:true,
+            isThisApp: true,
             operator: this.operator,
             dataObj2: dataObj2,
-         mac_type_id:this.mac_type_id,
+            mac_type_id: this.mac_type_id,
             machine_id_list: this.machine_id_list,
-         
+
             workshop_id: this.workshop_id,
             company_id: this.company_id,
             maintain_type_id: this.maintain_type_id,
@@ -277,7 +278,7 @@
           mac_type_id: this.mac_type_id,
           workshop_id: this.workshop_id,
           company_id: this.company_id,
-     
+
         }
         console.log(p)
         this.$router.push({ //跳转并传参数
@@ -302,7 +303,7 @@
         //   params: p
 
         // })
-   
+
         this.$router.push({
           path: '/chooseMachine',
           name: 'chooseMachine',
@@ -311,11 +312,11 @@
             workshop_id: this.workshop_id,
             company_id: this.company_id,
             flag: this.flag,
-      
+
             maintain_type_id: this.maintain_type_id,
             isClickIn: this.isClickIn,
             machine_id_list: this.machine_id_list,
-            mac_type_id:this.mac_type_id,
+            mac_type_id: this.mac_type_id,
           }
         })
       },
@@ -329,11 +330,11 @@
         this.operator = this.$route.params.operator
         this.machine_id_list = this.$route.params.machine_id_list
         this.datalist = this.$route.params.datalist
-        this.mac_type_id=this.$route.params.mac_type_id
+        this.mac_type_id = this.$route.params.mac_type_id
         // this.mac_type_id =this.$route.params .mac_type_id//这个是扫码页面传来的当前的设备编号，设备名称等数据
         this.flag = this.$route.params.flag
         //this.type_name = this.$route.params .type_name
-      
+
         // if(this.datalist.filelist==undefined){
         //       if(this.datalist.filelist.length>0){
         //       for(let i=0;i<this.datalist.filelist.length;i++){
@@ -358,7 +359,7 @@
           let routerParams = this.$route.params.dataObj
           this.consume_list = routerParams
         }
-    let url = 'http://106.12.219.66:8227/report/getSimpleReport';
+        let url = 'http://106.12.219.66:8227/report/getSimpleReport';
         let headers = {
           'Content-Type': 'application/json',
           'companyID': this.company_id
@@ -366,13 +367,15 @@
         let method = "post";
         let data = {
           "tableName": "mac_type",
-      
+
           "selectFields": ["id", "type_name"],
-          "query":{"id":this.mac_type_id}
+          "query": {
+            "id": this.mac_type_id
+          }
         };
-   
+
         let that = this;
-         axios({
+        axios({
             url: url,
             method: method,
             data: data,
@@ -380,12 +383,12 @@
           })
           .then(response => {
             console.log(response.data.data)
-           that.type_name = response.data.data[0].type_name
-               if (that.datalist) {
-           
-          } else {
-            that.getMaintain() //获取保养信息
-          }
+            that.type_name = response.data.data[0].type_name
+            if (that.datalist) {
+
+            } else {
+              that.getMaintain() //获取保养信息
+            }
           })
         // axios.get("http://106.12.219.66:8763/com-machine-info/selectAMachineRelation", {
         //   params: {
@@ -506,7 +509,7 @@
             text: input,
             maintain_item_id: arr[i].id
           })
-     
+
 
 
         }
@@ -521,27 +524,27 @@
           arr3.push(data3)
         }
 
-        //数据处理完成，开始更新
+       
         console.log(this.datalist)
-        for(let i=0;i<this.datalist.length;i++){
-          if(this.datalist[i].confirm==3){
-            if(this.datalist[i].input==""){
+        for (let i = 0; i < this.datalist.length; i++) {
+          if (this.datalist[i].confirm == 3) {
+            if (this.datalist[i].input == "") {
               this.$message({
-                         type: 'warning',
-              message: this.datalist[i].name+'项未填写！',
-              center: true,
-              duration: 2000
+                type: 'warning',
+                message: this.datalist[i].name + '项未填写！',
+                center: true,
+                duration: 2000
               })
               return
             }
           }
-               if(this.datalist[i].confirm==2){
-            if(!this.datalist[i].picture){
+          if (this.datalist[i].confirm == 2) {
+            if (!this.datalist[i].picture) {
               this.$message({
-                         type: 'warning',
-              message: this.datalist[i].name+'项未上传图片！',
-              center: true,
-              duration: 2000
+                type: 'warning',
+                message: this.datalist[i].name + '项未上传图片！',
+                center: true,
+                duration: 2000
               })
               return
             }
@@ -559,6 +562,7 @@
           // }
         }
         console.log(arr2)
+         //数据处理完成，开始更新
         let that = this
         axios.post("http://120.55.124.53:8206/api/maintain/submitMaintain", {
 
@@ -585,7 +589,7 @@
               mac_type_id: that.mac_type_id,
               workshop_id: that.workshop_id,
               company_id: that.company_id,
-          
+
             }
 
             that.$router.push({ //跳转并传参数
@@ -795,24 +799,7 @@
 
               }
             }
-            //           if(that.flag=="大保养"){
-            //   for (var i = 0; i < res.data.data['大保养'].length; i++) { //将大保养的数据push进list暂存
-            //             res.data.data['大保养'][i].index = i + 1
-            //             res.data.data['大保养'][i].input = ""
-            //             res.data.data['大保养'][i].radio = ""
-            //             list.push(res.data.data['大保养'][i])
-            //           }
-            //           }else if(that.flag=="小保养"){
-            // for (var i = 0; i < res.data.data['小保养'].length; i++) { //将小保养的数据push进list暂存
-            //             res.data.data['小保养'][i].index = i + 1
-            //             res.data.data['小保养'][i].radio = ""
-            //             res.data.data['小保养'][i].input = ""
-            //             list.push(res.data.data['小保养'][i])
-            //           }
-            //           }
-
-
-            //console.log(list)
+    
             that.datalist = list
           }
 
@@ -1083,9 +1070,11 @@
 
     justify-content: center;
   }
-.card-con /deep/ .el-checkbox__inner{
-  z-index: -1;
-}
+
+  .card-con /deep/ .el-checkbox__inner {
+    z-index: -1;
+  }
+
   .card-content /deep/ .el-radio {
     margin: 0;
   }

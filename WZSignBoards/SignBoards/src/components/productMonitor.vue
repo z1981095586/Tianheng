@@ -1081,7 +1081,7 @@ sortColumn:"machine_id"
     .one-card22 {
     width: 45%;
     margin: 1.5%;
-    height: 44%;
+    height: 45%;
     float: left;
 
     background-image: url("../static/img/js_orange.png");
