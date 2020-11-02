@@ -722,14 +722,11 @@
         });
       },
       uploadError(err, file, fileList) {
-        console.log(err)
-        console.log(file)
         this.$message({
           message: '上传失败，图片不能大于1Mb！',
           center: true,
           duration: 2000
         });
-
       },
       // 上传图片-成功
       handleAvatarSuccess(response, file, fileList, id) {
@@ -785,24 +782,18 @@
             return;
           } else {
             let list = []
-            console.log(that.flag)
             for (var i = 0; i < res.data.data.length; i++) {
-
               if (res.data.data[i].name == that.flag) {
-
                 for (var j = 0; j < res.data.data[i].maintainItemList.length; j++) {
-                  res.data.data[i].maintainItemList[j].index = j + 1
+                  res.data.data[i].maintainItemList[j].index = j + 1 //索引
                   res.data.data[i].maintainItemList[j].input = ""
                   res.data.data[i].maintainItemList[j].radio = ""
                   list.push(res.data.data[i].maintainItemList[j])
                 }
-
               }
             }
-    
             that.datalist = list
           }
-
         })
       }
 
@@ -811,11 +802,13 @@
 
     },
     mounted() {
+    
       console.log(this.$route.params)
       this.getParams() //先获取其他页面传过来的数据
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
+       
       });
 
     }
@@ -1072,7 +1065,7 @@
   }
 
   .card-con /deep/ .el-checkbox__inner {
-    z-index: -1;
+    z-index: 0;
   }
 
   .card-content /deep/ .el-radio {

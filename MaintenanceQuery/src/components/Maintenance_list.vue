@@ -172,6 +172,7 @@
             }
             this.getWorkShopList() //获取车间id列表
           })
+
       },
 
       back() {
@@ -377,12 +378,8 @@
         // })
       },
       inf() {
-
-
         setTimeout(() => {
-
           if (this.datalist.length == this.total_data_num) { //如果数据总条数等于当前数据列表长度了，那就关闭上拉加载了
-
             this.$refs.my_scroller.finishInfinite(true)
             return
           } else if (this.datalist.length == 0) { //如果查到没数据了，那就关闭上拉加载了
@@ -392,25 +389,16 @@
             this.page_num++;
             this.getMachine_id()
           }
-
         }, 500);
-
-
       },
       refresh() { //下拉刷新函数
         //console.log("refresh");
-
         this.page_num = 1
         this.datalist = []
-
-
-
         setTimeout(() => { //不设置定时器会出现bug
           this.getMachine_id() //获取数据列表
-
           this.$refs.my_scroller.finishPullToRefresh() //关闭下拉刷新函数
         }, 500);
-
       },
       getTime(date) { //获取当前时间
         var year = date.getFullYear();
@@ -429,7 +417,7 @@
     mounted() {
       //  this.macRelation.machine_id = this.$route.params.machine_id;
       this.operator = this.$route.params.operator
-      // this.macRelation.workshop_id = this.$route.params.workshop_id;
+      //  this.macRelation.workshop_id = this.$route.params.workshop_id;
       this.selectInfo.company_id = this.$route.params.company_id;
       this.staff_id = this.$route.params.staff_id
       this.getMacTypeCategoryList()
@@ -437,7 +425,6 @@
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
-
     }
   }
 

@@ -26,7 +26,8 @@ export default new Router({
     {
       path: '/',
       name: 'hello',
-      component: hello
+      component: hello,
+   
     },
     {
       path: '/select/:machine_id/:company_id',

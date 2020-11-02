@@ -5,7 +5,7 @@
     <ul>
       <li>
         <a
-          href="http://localhost:8080/#/select/018040/1/10000018"
+          href="http://106.12.219.66:81/MaintenanceQuery/#/select/018040/1/10000018"
           target="_blank"
         >
        to select
@@ -13,7 +13,7 @@
       </li>
       <li>
         <a
-          href="http://192.168.43.119:8080/#/Maintenance/10000018/1/admin/大保养/1175"
+          href="http://106.12.219.66:81/MaintenanceQuery/#/ToMaintenance_list/10000015/admin/1"
           target="_blank"
         >
        to 保养

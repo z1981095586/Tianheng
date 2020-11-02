@@ -258,18 +258,7 @@
           that.user_id = res.data.result.user_id
 
         }, function (err) {
-          //console.log(err)
-          // if (err == "Error: timeout of 1000ms exceeded" || "Error: Network Error") { //超时1000毫秒显示断网图标
-          //   that.network = false
-          //   that.$message({
-          //     type: 'warning',
-          //     message: '网络掉线了！'
-          //   });
-          // } else {
-
-
-          //   that.network = true
-          // }
+  
         })
       },
       toZero(value) {
