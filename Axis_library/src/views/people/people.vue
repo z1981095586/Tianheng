@@ -294,7 +294,10 @@ window.close();
             that.dataList = []
           }
           for (let i = 0; i < res.data.data.staffModel.length; i++) {
-            that.dataList.push(res.data.data.staffModel[i])
+            if(res.data.data.staffModel[i].staff_name!="0"){
+  that.dataList.push(res.data.data.staffModel[i])
+            }
+          
           }
         })
 

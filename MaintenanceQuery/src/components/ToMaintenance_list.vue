@@ -2,7 +2,7 @@
   <div class="content" style="padding-top:10px;">
 
     <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">保养</span>
-    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i>
+    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back()"></i>
 
     <!--出库单详细-->
     <div class="all-page">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+
   export default {
     name: 'ToMaintenance_list',
     data() {
@@ -56,7 +57,7 @@
     },
     methods: {
       toCheck(){
-
+          
       }, 
       toCheckHistory(){ //跳转到检查历史记录
 
@@ -69,9 +70,9 @@
           path: '/Maintenance_list',
           name: 'Maintenance_list',
           params: {
-            // machine_id:this.macRelation.machine_id,
+            //machine_id:this.macRelation.machine_id,
             operator: this.operator,
-            // workshop_id:this.macRelation.workshop_id,
+            //workshop_id:this.macRelation.workshop_id,
             company_id: this.selectInfo.company_id,
             staff_id: this.staff_id
           }
@@ -88,18 +89,20 @@
             staff_id: this.staff_id
           }
         })
-      }
+      },
+
     },
     mounted() {
       // this.macRelation.machine_id = this.$route.params.machine_id;
       this.operator = this.$route.params.operator
       this.selectInfo.company_id = this.$route.params.company_id;
-      this.staff_id = this.$route.params.staff_id
+      this.staff_id= this.$route.params.staff_id
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
-    }
+    },
+
     
   }
 

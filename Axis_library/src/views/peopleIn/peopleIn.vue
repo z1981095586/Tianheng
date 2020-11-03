@@ -24,7 +24,7 @@
     <div class="contain">
       <div class="name_contain">
         <div class="name_contain_son">
-          <div v-for="(item,index) in dataList" class="one_name" :key="index"><span>{{item.staff_name}}</span></div>
+          <div v-for="(item,index) in dataList" class="one_name" @click="deletePeopleShow(item.staff_name,item.id)"  :key="index"><span>{{item.staff_name}}</span> <img v-show="showCloseIcon" class="chahao" src="../../static/images/chacha.png" /></div>
         </div>
         <div class="page_btn">
           <div class="top_jiantou" @click="pageReduce"><img src="../../static/images/shangjiantou.png"></div>
@@ -34,7 +34,8 @@
       </div>
       <div class="bottom_btn">
         <div class="add_btn" @click="add_btn_click"><span>添加操作人员</span></div>
-
+  <div class="add_btn" @click="showCloseIcon=true"  v-show="!showCloseIcon"><span>删除操作人员</span></div>
+  <div class="add_btn" @click="showCloseIcon=false" v-show="showCloseIcon"><span>取消操作人员</span></div>
         <div class="back_btn" @click="back"><img src="../../static/images/back.png"></div>
       </div>
     </div>
@@ -80,6 +81,21 @@
       </span>
     </el-dialog>
     <!-- 退出系统的对话框 -->
+              <!-- 是否删除人员的对话框 -->
+    <el-dialog title="提示" :visible.sync="dialogFormVisible2" width="50%" :show-close="showclose">
+      <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
+       <span>是否确认删除{{deleteName}}?</span></div>
+      <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
+        size="61%">
+        <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
+          :layout="mm_layout" :cancel="mm_hide" :accept="mm_accept" :input="mm_input" />
+      </el-drawer> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button style="    font-size: 3.5em;" @click="dialogFormVisible2 = false">取 消</el-button>
+        <el-button style="    font-size: 3.5em;" type="primary" @click="deletePeople()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 是否删除人员的对话框 -->
   </div>
 
 
@@ -97,7 +113,7 @@
       id: "",
         dialogVisibleClose:false,
       showclose:false,
-      pageNum: 28, //这个是pagesize
+      pageNum: 21, //这个是pagesize
       pageNumber: null, //这个是总页数
       page2: 1, //显示的当前页数
       network: true,
@@ -117,11 +133,61 @@
       showclose: false,
       options: {
         useKbEvents: false,
-        preventClickEvent: false
+        preventClickEvent: false,
+     
       },
+         showCloseIcon:false,
+         dialogFormVisible2:false,
+         deleteName:"",
+         deleteId:""
     }),
 
     methods: {
+      deletePeopleShow( deleteName,deleteId){
+        console.log( deleteName)
+        this. deleteName= deleteName
+        this.deleteId=deleteId
+        if(this.showCloseIcon==true){
+          this. dialogFormVisible2=true
+        }
+      
+      },
+      deletePeople(){
+let url="http://120.55.124.53:8206/api/staff/deleteStaff"
+let that=this
+ let companyID = that.companyID
+        axios({
+          method: "post",
+          url: url,
+          data: {
+            staff_id:that.deleteId
+          },
+          headers: {
+            companyID: companyID
+          }
+        }).then((res) => {
+          console.log(res)
+        if(res.data.message=="删除成功"){
+                 that.$message({
+              type: 'success',
+              message: '删除成功'
+
+            });
+                 that.page = 1
+            that.page2 = 1
+            that.dataList = []
+            that.getRootStaffOrganization()
+        that.dialogFormVisible2=false
+        }else{
+                 that.$message({
+              type: 'error',
+              message: '删除失败'
+
+            });
+
+        }
+        })
+      },
             shutdown(){//关闭页面
          this.$store.commit('clear', true)
          //console.log(this.$store.state)
@@ -484,6 +550,14 @@ window.close();
 
 </script>
 <style scoped>
+.chahao{
+width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 1px;
+    top: 1px;
+
+}
   .crmx_con /deep/ .el-table th,
   .el-table tr {
     background-color: rgb(179, 206, 248);
@@ -778,7 +852,7 @@ window.close();
   }
 
   .one_name {
-    height: 17%;
+    height: 27%;
     width: 13%;
     background: rgb(41, 159, 78);
     border-radius: 12px;
@@ -787,6 +861,7 @@ window.close();
     align-items: center;
     margin: 0.6%;
     float: left;
+    position: relative;
   }
 
   .one_name span {

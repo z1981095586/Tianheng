@@ -5,7 +5,7 @@ import stockIn from '@/views/stockIn/stockIn'
 import stockOut from '@/views/stockOut/stockOut'
 import peopleIn from '@/views/peopleIn/peopleIn'
 import people from '@/views/people/people'
-import indexs from '@/views/index'
+
 // import VueTouchKeyboard from "vue-touch-keyboard";
 // import style from "vue-touch-keyboard/dist/vue-touch-keyboard.css";
 //  Vue.use(VueTouchKeyboard);
@@ -20,11 +20,7 @@ export default new Router({
       name: 'index',
       component: index
     },
-    {
-      path: '/indexs',
-      name: 'indexs',
-      component: indexs
-    },
+
     {
       path: '/stockIn',
       name: 'stockIn',

@@ -72,6 +72,7 @@
       this.getMachineList(this.workshop_id,this.mac_type_id)
       },
       prevClick(){
+     
                 console.log("prev")
 this.page--;
 

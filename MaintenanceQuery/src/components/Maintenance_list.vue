@@ -3,71 +3,71 @@
 
     <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">待保养记录</span>
     <img :src="require('@/images/saoma.png')" style="width:2rem;position:fixed;right:17px;top:5px;" @click="scan()">
-    
+
 
     <!--出库单详细-->
     <div class="all-page">
       <div class="select"> <select name="bbxb" id="selecte" class="shortselect3" @change="change3">
-          <option :value="item.id" v-for="item in mac_type">{{item.type_name}}</option>
+           <option  :value="item.id" v-for="item in mac_type">{{item.type_name}}</option>
 
         </select>
         <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i>
-        <select name="bbxb" id="selecte" class="shortselect2" @change="change2">
+        <!-- <select name="bbxb" id="selecte" class="shortselect2" @change="change2">
           <option :value="item.id" v-for="item in menu2">{{item.name}}</option>
 
-        </select>
+        </select> -->
 
         <select name="bbxb" id="selecte" class="shortselect" @change="change">
           <option :value="item.id" v-for="item in menu">{{item.name}}</option>
 
         </select></div>
-        <div class="select" style="background:rgb(245,245,245);height:5%;font-size:0.9rem"><span>确认保养项目</span><i class="el-icon-right"></i><span>选择机台</span><i class="el-icon-right"></i><span>保养提交</span><i class="el-icon-right"></i><span>完成</span></div>
+      <div class="select" style="background:rgb(245,245,245);height:5%;font-size:0.9rem"><span>确认保养项目</span><i
+          class="el-icon-right"></i><span>选择机台</span><i class="el-icon-right"></i><span>保养提交</span><i
+          class="el-icon-right"></i><span>完成</span></div>
       <!-- <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller"> -->
-        <div style="height:75%;overflow:auto;">
+      <div style="height:75%;overflow:auto;">
 
 
 
-          <div class="contain" style="margin-top:8px;" v-for="item in datalist">
-            <!-- <div class="card"
+        <div class="contain" style="margin-top:8px;" v-for="item in datalist">
+          <!-- <div class="card"
               @click="toDetail(item.mac_type_id,item.mac_type_name,item.maintain_type_name,item.machine_id,item.workshop_id,item.maintain_type_id)"> -->
-              <div class="card"
-              @click="toDetail(item.mac_type_id,item.mac_type_name,item.name,item.workshop_id,item.id)"> 
-              <div class="card-head">
-                <!-- <div><span>{{workshop_name}}</span><span>上次提交时间：{{item.maintain_time}}</span></div> -->
-                <div><span>{{workshop_name}}</span><span>保养周期：{{item.intervals}}天</span></div>
-                <span
-                  class="no-deal">待处理</span>
-              </div>
-              <div class="line">
-                <div class="line-con"></div>
-              </div>
-              <!-- <div class="card-content2" style="margin-top:5px;">
+          <div class="card" @click="toDetail(item.mac_type_id,item.mac_type_name,item.name,item.workshop_id,item.id)">
+            <div class="card-head">
+              <!-- <div><span>{{workshop_name}}</span><span>上次提交时间：{{item.maintain_time}}</span></div> -->
+              <div><span>{{workshop_name}}</span><span>保养周期：{{item.intervals}}天</span></div>
+              <span class="no-deal">待处理</span>
+            </div>
+            <div class="line">
+              <div class="line-con"></div>
+            </div>
+            <!-- <div class="card-content2" style="margin-top:5px;">
                 <div class="content-two" style="   justify-content: space-between;">
                   <span>设备编号：{{item.machine_id}}</span>
                   <span>设备类型：{{item.mac_type_name}}</span>
                 </div>
 
               </div> -->
-              <div class="card-content2" >
-                <div class="content-two">
+            <div class="card-content2">
+              <div class="content-two">
 
-                  <span>保养类别：{{item.name}}</span>
-
-                </div>
+                <span>保养类别：{{item.name}}</span>
 
               </div>
-              
-              <div class="card-content2">
-                <div class="content-two">
-                  <span>备注：{{item.remarks}}</span>
 
-                </div>
+            </div>
+
+            <div class="card-content2">
+              <div class="content-two">
+                <span>备注：{{item.remarks}}</span>
 
               </div>
+
             </div>
           </div>
-
         </div>
+
+      </div>
       <!-- </scroller> -->
 
 
@@ -221,10 +221,10 @@
             company_id: this.selectInfo.company_id,
             operator: this.operator,
             workshop_id: workshop_id,
-            mac_type_id:this.macRelation.mac_type_id,
-        workshop_id:this.macRelation.workshop_id,
+            mac_type_id: this.macRelation.mac_type_id,
+            workshop_id: this.macRelation.workshop_id,
             flag: flag,
-          
+
             maintain_type_id: maintain_type_id,
             isClickIn: true
           }
@@ -255,14 +255,14 @@
       },
 
       getMachine_id() { // 获取设备编号
-      let url = 'http://120.55.124.53:8206/api/maintain/getMaintainType'
+        let url = 'http://120.55.124.53:8206/api/maintain/getMaintainType'
         let maintainType = {
           mac_type_id: this.macRelation.mac_type_id,
-       
+
         }
         let selectInfo = {
           company_id: this.selectInfo.company_id,
-       
+
         }
 
 
@@ -270,14 +270,14 @@
         let that = this
         console.log(that.staff_id)
         axios.post(url, {
-         maintainType,
+          maintainType,
           selectInfo,
-        
+
         }).then(function (res) {
 
 
           console.log(res)
-     
+
 
           if (res.data.result.length == 0) {
             // that.$message({
@@ -290,14 +290,14 @@
           } else {
             // that.total_data_num = res.data.result.total_data_num //设置数据总条数
             for (let i = 0; i < res.data.result.length; i++) {
-           if(res.data.result[i].intervals==null||res.data.result[i].intervals<0){
-             res.data.result[i].intervals=0
-           }
-            if(res.data.result[i].remarks==null||res.data.result[i].remarks==""){
-             res.data.result[i].remarks="暂无填写"
-           }
-                that.datalist.push(res.data.result[i])
-              
+              if (res.data.result[i].intervals == null || res.data.result[i].intervals < 0) {
+                res.data.result[i].intervals = 0
+              }
+              if (res.data.result[i].remarks == null || res.data.result[i].remarks == "") {
+                res.data.result[i].remarks = "暂无填写"
+              }
+              that.datalist.push(res.data.result[i])
+
               // res.data.result.machine_list[i].big_maintain.flag = "大保养" //判断保养类型
               // res.data.result.machine_list[i].small_maintain.flag = "小保养"
               // that.datalist.push(res.data.result.machine_list[i].big_maintain) //将处理完成的数据push到数据列表
@@ -305,16 +305,16 @@
 
 
             }
-      
-          
+
+
           }
 
-     
+
 
 
 
         })
-        /******** */
+      
 
         // let url = 'http://120.55.124.53:8206/api/maintain/getRecentMaintainRecord'
         // let macRelation = {
@@ -340,7 +340,7 @@
 
 
         //   console.log(res)
-     
+
 
         //   if (res.data.result.machine_list.length == 0) {
         //     // that.$message({
@@ -368,10 +368,10 @@
         //   }else{
         //      that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
         //   }
-          
+
         //   }
 
-     
+
 
 
 
@@ -638,7 +638,7 @@
   .card-content2 {
     width: 100%;
     height: 20%;
-    margin-top:0.9rem;
+    margin-top: 0.9rem;
     display: flex;
     justify-content: center;
     align-items: center;

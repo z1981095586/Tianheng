@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column prop="meter_num" label="长度" width="60">
                 </el-table-column>
-                <el-table-column prop="staff_name" label="操作人" width="90">
+                <el-table-column prop="user_id" label="操作人" width="90">
                 </el-table-column>
               </el-table>
             </div>
@@ -111,10 +111,10 @@
           </div>
           <div class="xtsz_con" v-show="xtsz_show">
             <div class="xtsz_con_son">
-              <div class="xtsz_btn" @click="clear"><span>出入明细清零</span></div>
+              <div class="xtsz_btn" @click="dialogVisibleClose6 =true"><span>出入明细清零</span></div>
               <div class="xtsz_btn" @click="toPeopleIn"><span>操作人员录入</span></div>
               <div class="xtsz_btn" @click="getCorrectTime"><span>系统时间校正</span></div>
-              <div class="xtsz_btn"><span>权限管理</span></div>
+              <div class="xtsz_btn" @click="dialogVisible7=true"><span>权限管理</span></div>
             </div>
             <div class="system_num">V1.06</div>
           </div>
@@ -188,6 +188,21 @@
       </span>
     </el-dialog>
     <!-- 输入系统密码的对话框 -->
+       <!-- 出入库明细清零的对话框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisibleClose6" width="50%" :show-close="showclose">
+      <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
+       <span>即将清除出入明细记录，是否清除！</span></div>
+      <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
+        size="61%">
+        <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
+          :layout="mm_layout" :cancel="mm_hide" :accept="mm_accept" :input="mm_input" />
+      </el-drawer> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button style="    font-size: 3.5em;" @click="dialogVisibleClose6 = false">取 消</el-button>
+        <el-button style="    font-size: 3.5em;" type="primary" @click="clear">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 出入库明细清零的对话框 -->
         <!-- 退出系统的对话框 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleClose" width="50%" :show-close="showclose">
       <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
@@ -214,6 +229,18 @@
       </span>
     </el-dialog>
     <!-- 输入系统密码的对话框 -->
+     <!-- 输入修改密码的对话框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisible7" width="50%" :show-close="showclose" style="height: 100%;">
+      <div style="display: flex;flex-direction: column;align-items: flex-start;height: 80%;    font-size: 2em;">
+             <input type="text" style="width: 100%;height: 50%;font-size: 2em;    border: 1px solid black;"
+          placeholder="请输入新密码"  v-model="newPassword" data-layout="normal" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="    font-size: 3.5em;" @click="dialogVisible7 = false">取 消</el-button>
+        <el-button style="    font-size: 3.5em;" type="primary" @click="updatePassword()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 输入修改密码的对话框 -->
   </div>
 
 
@@ -260,6 +287,8 @@
       SystemPassword: "",
       dialogVisible5: false, //确认跳转入库对话框
       dialogVisibleClose:false,//确认退出系统对话框
+      dialogVisibleClose6:false,//出入明细清零对话框
+      dialogVisible7:false,//修改新密码对话框
       message: "",
     
       zt: "", //入库出库的状态
@@ -342,10 +371,62 @@
         timers:null,
         preventClickEvent: false
       },
+      newPassword:""
     }),
 
 
     methods: {
+      updatePassword(){
+         let url = "http://120.55.124.53:8206/api/axis/updatePassword"
+
+        let that = this
+            ////console.log(that.companyID)
+        let companyID = that.companyID
+        if(that.newPassword==""){
+           that.$message({
+                type: 'error',
+                message: '密码不能为空！'
+              });
+        }else{
+ axios({
+          method: "post",
+          url: url,
+          timeout: 1000, //设置时间超时，单位毫秒
+          data: {
+selectInfo:{
+  company_id:companyID
+},
+staff:{
+  new_password:that.newPassword,
+  staff_organization_id:"2"
+}
+          },
+          headers: {
+            companyID: companyID
+          }
+        }).then((res) => {
+        
+          if(res.data.message=="成功"){
+                    that.$message({
+              type: 'success',
+              message: '修改成功'
+
+            });
+       
+          }else{
+                   that.$message({
+              type: 'error',
+              message: '修改失败'
+
+            });
+          }
+               that.dialogVisible7=false
+
+        })
+        }
+    
+       
+      },
             shutdown(){//关闭页面
          this.$store.commit('clear', true)
          console.log(this.$store.state)
@@ -871,24 +952,24 @@ window.close();
         }
         if (tabName == "系统设置") {
           console.log(this.companyID)
-          if(this.companyID=="10000013"){
-                   for (let i = 0; i < this.tabList.length; i++) { //更改所有样式为未选中
+          // if(this.companyID=="10000013"){
+          //          for (let i = 0; i < this.tabList.length; i++) { //更改所有样式为未选中
 
 
-              this.tabList[i].class = "one_choose"
+          //     this.tabList[i].class = "one_choose"
 
-            }
-            for (let i = 0; i < this.tabList.length; i++) { //更改系统设置的样式为选中
-              if (this.tabList[i].tabName == tabName) {
-                this.tabList[i].class = "one_chooseed"
-              }
-            }
-            this.kcgk_show = false; //隐藏其他内容，显示系统设置界面
-            this.crmx_show = false;
-            this.kctj_show = false;
-            this.xtsz_show = true;
-            return
-          }
+          //   }
+          //   for (let i = 0; i < this.tabList.length; i++) { //更改系统设置的样式为选中
+          //     if (this.tabList[i].tabName == tabName) {
+          //       this.tabList[i].class = "one_chooseed"
+          //     }
+          //   }
+          //   this.kcgk_show = false; //隐藏其他内容，显示系统设置界面
+          //   this.crmx_show = false;
+          //   this.kctj_show = false;
+          //   this.xtsz_show = true;
+          //   return
+          // }
                    if(this.timers!=null){
              clearInterval(this.timers);
     this.timers = null;
