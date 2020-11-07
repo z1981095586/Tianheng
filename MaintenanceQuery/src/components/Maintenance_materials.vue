@@ -516,7 +516,7 @@
           })
         } else { //非当前项目页面调用此页面执行代码
         console.log( JSON.stringify(list) )
-          //  nativeMethod.setMaterial(JSON.stringify(list) );
+         nativeMethod.setMaterial(JSON.stringify(list) );
         }
       },
       cancel() { //点取消返回上一个页面，只发送设备信息数据
