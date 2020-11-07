@@ -40,8 +40,10 @@
           </div>
         </div>
         <div class="right_box">
-        
-  <div class="card_four">
+        <iframe id="iframe1" src="http://60.191.197.50:18080/share?url=displays/af442f8f-04ef-11ea-a114-20040ff30b87.json"  width="100%" height="100%"
+                       frameborder="0">
+              </iframe>
+  <!-- <div class="card_four">
             <div class="card_four_title">空压机房动力柜1</div>
             <div class="card_four_con">
           <div class="card_four_con_one">
@@ -180,7 +182,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
          
         </div>
       </div>

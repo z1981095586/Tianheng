@@ -826,6 +826,11 @@ window.close();
               } else if (res.data.result.in_and_out_record_list[i].is_take == 0) {
                 res.data.result.in_and_out_record_list[i].is_take = "出库"
               }
+            let  n = Number(res.data.result.in_and_out_record_list[i].user_id); //判断userid是不是数字类型字符串，是的话吧staffname赋值给userid
+if (!isNaN(n))
+{
+   res.data.result.in_and_out_record_list[i].user_id=res.data.result.in_and_out_record_list[i].staff_name
+}
               that.tableData.push(res.data.result.in_and_out_record_list[i])
             }
           }

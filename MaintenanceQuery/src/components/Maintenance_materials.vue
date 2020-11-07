@@ -1,22 +1,25 @@
 <template>
   <div class="content">
 
-    <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">保养物料</span>
+    <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">{{pageName}}</span>
     <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i>
-    <div class="select">
+    <div class="select" style="padding-top:2rem">
 
 
 
-      <select name="bbxb" id="selecte" class="shortselect" @change="change">
+      <!-- <select name="bbxb" id="selecte" class="shortselect" @change="change">
         <option :value="item.categories_id" v-for="item in menu">{{item.label}}</option>
 
-      </select>
+      </select> -->
 
-
+  <el-cascader
+     size="medium"
+    :options="menu"
+    @change="change"   :props="props" :show-all-levels="false"></el-cascader>
     </div>
     <!--出库单详细-->
     <div class="all-page">
-      <div class="input"><input @keyup.13="seachinfo" type="search" ref="input1" placeholder="输入物料编号，名称，规格等"
+      <div class="input"><input @keyup.13="seachinfo" type="search" ref="input1" placeholder="输入物料名称"
           v-model="searchinfo" /> <i class="el-icon-search" style="font-size:15px;"></i>
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
@@ -29,32 +32,35 @@
                 </div>
                 <div class="card-content">
                   <div class="content-one">
-                    <span>备品名称:{{item.name}}</span>
-                    <span>备品规格:{{item.specification}}</span>
+                    <span>备品名称:{{item.product_name}}</span>
+                   
                   </div>
 
                 </div>
                 <div class="card-content">
                   <div class="content-one">
-                    <span>库存数量:{{item.stockQuantity}}</span>
+                     <span>备品规格:{{item.specification}}</span>
 
                   </div>
 
                 </div>
-              </div>
-
-            </div>
-            <div class="contain">
+                <div class="card-content">
+                     <div class="contain">
               <div class="add"><span>数量：</span>
-                <div class="input-number"><i class="el-icon-remove" @click="sub(item.id)"
-                    style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.id)"
+                <div class="input-number"><i class="el-icon-remove" @click="sub(item.product_id)"
+                    style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.product_id)"
                     v-show="!item.isinputShow">{{item.stockQuantityShow}}</span>
-                  <el-input size="small" @change="((val)=>{changeStatus(val, item.id)})" @blur="Inputshow(item.id)"
+                  <el-input size="small" @change="((val)=>{changeStatus(val, item.product_id)})" @blur="Inputshow(item.product_id)"
                     v-model="item.stockQuantityShow" v-show="item.isinputShow"></el-input> <i
-                    class="el-icon-circle-plus" @click="add(item.id)" style="color:rgb(49,153,102)"></i>
+                    class="el-icon-circle-plus" @click="add(item.product_id)" style="color:rgb(49,153,102)"></i>
                 </div>
               </div>
             </div>
+                </div>
+              </div>
+
+            </div>
+         
           </div>
         </div>
       </scroller>
@@ -75,6 +81,8 @@
     name: 'Maintenance_materials',
     data() {
       return {
+        props:{ value:'categories_id',checkStrictly : true },
+        pageName:"",
         operator: "",
         maintain_type_id: null,
         isClickIn: "",
@@ -113,8 +121,8 @@
       },
      
       change(e) { //下拉菜单值发生变化监听事件
-        //console.log(e.target.value)
-        this.categories_id = e.target.value
+        console.log(e[e.length-1])
+        this.categories_id = e[e.length-1]
         this.datalist = []
         this.pageNum = 1
         this.getInventory(this.searchinfo) //如果搜索框有数据，依旧会搜索当前选择的下拉值下的搜索数据
@@ -125,7 +133,7 @@
       getInventory(searchinfo) { //获取保养物料数据
         //  this.$refs.myscroller.finishPullToRefresh();
         let that = this
-        let url = "http://120.55.124.53:16021/api/warehouse/getInventory" //获取库存数量
+        let url = "http://120.55.124.53:8206/api/product/getProductListByCategories" //获取库存数量
         var datas; //存放json数据
         // setTimeout(() => { //过300毫秒执行，防止categories_id没有查到就执行报错
         //console.log(that.menu)
@@ -134,22 +142,17 @@
             datas = { //查询当前选择的下拉选项下的搜索数据
               page: that.pageNum,
               pageNum: 10,
-              startDate: "1999-01-01 00:00:00",
-              endDate: "2999-01-01 00:00:00",
-              isFilterZero: "1",
-              isDisable: "0",
-              productTypeId: this.categories_id,
-              queryConditions: searchinfo
+             
+              categories_id: this.categories_id,
+              product_name: searchinfo
             }
           } else { //查询当前选择的下拉选项下的数据
             datas = {
-              page: that.pageNum,
+             page: that.pageNum,
               pageNum: 10,
-              startDate: "1999-01-01 00:00:00",
-              endDate: "2999-01-01 00:00:00",
-              isFilterZero: "1",
-              isDisable: "0",
-              productTypeId: this.categories_id
+             
+              categories_id: this.categories_id,
+            
             }
           }
 
@@ -158,25 +161,20 @@
             let datas = {
 
 
-              page: that.pageNum,
+                page: that.pageNum,
               pageNum: 10,
-              startDate: "1999-01-01 00:00:00",
-              endDate: "2999-01-01 00:00:00",
-              isFilterZero: "1",
-              isDisable: "0",
-              productTypeId: this.categories_id,
-              queryConditions: searchinfo
+             
+              categories_id: this.categories_id,
+              product_name: searchinfo
             }
           } else {
             datas = {
 
 
-              page: that.pageNum,
+            page: that.pageNum,
               pageNum: 10,
-              startDate: "1999-01-01 00:00:00",
-              endDate: "2999-01-01 00:00:00",
-              isFilterZero: "1",
-              isDisable: "0",
+             
+              categories_id: this.categories_id,
               // queryConditions:""
             }
 
@@ -185,11 +183,11 @@
         axios.post(url, datas, { //开始查询
           headers: {
             'Content-Type': 'application/json',
-            "companyId": that.company_id
+            "companyID": that.company_id
           }
         }).then(function (res) {
-          //console.log(res)
-          if (res.data.data.product.length == 0) { //如果查到没数据了，那就关闭上拉加载了
+          console.log(res)
+          if (res.data.data.productModel.length == 0) { //如果查到没数据了，那就关闭上拉加载了
             // that.$message({
             //   message: '没有更多数据了！',
             //   center: true,
@@ -198,16 +196,16 @@
             that.$refs.my_scroller.finishInfinite(true)
             return
           } else {
-            that.totalDataNum = res.data.data.totalDataNum //设置数据总条数
+            that.totalDataNum = res.data.totalDataNum //设置数据总条数
             that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
 
             //  that.noDate=that.iscurrent(that.totalDataNum,that.pageNum)
 
-            for (let i = 0; i < res.data.data.product.length; i++) { //push消耗物料数据
-              res.data.data.product[i].stockQuantitydata = res.data.data.product[i].stockQuantity
-              res.data.data.product[i].isinputShow = false
-              res.data.data.product[i].stockQuantityShow = 0
-              that.datalist.push(res.data.data.product[i])
+            for (let i = 0; i < res.data.data.productModel.length; i++) { //push消耗物料数据
+              // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+              res.data.data.productModel[i].isinputShow = false
+              res.data.data.productModel[i].stockQuantityShow = 0
+              that.datalist.push(res.data.data.productModel[i])
             }
              if(that.datalist.length==that.totalDataNum){
              that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
@@ -240,9 +238,11 @@
         if (this.$route.params.isThisApp == "false"||this.$route.params.isThisApp == false) {
           this.mac_type_id = ""
           this.type_name = ""
+          this.pageName="保养物料"
         } else {
           this.mac_type_id = this.$route.params.dataObj2.mac_type_id
           this.type_name = this.$route.params.dataObj2.type_name
+             this.pageName="选择物料"
         }
 
         this.flag = this.$route.params.flag
@@ -325,64 +325,85 @@
       },
 
       getRootCategories() { //获取分类根目录
-        let url = "http://120.55.124.53:8206/api/product/getRootCategories"
+        let url = "http://120.55.124.53:8206/api/product/getFullCategories"
         let that = this
-        axios.post(url, {}, {
+                axios.post(url, {}, {
           headers: {
             'Content-Type': 'application/json',
-            "companyId": that.company_id
+            "companyID": that.company_id
           }
         }).then(function (res) {
-          //console.log(res)
-          if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
-            that.getSubCategoriesList(res.data.data.categories_id)
-          } else {
-            that.$message({
-              message: '没有获取到根分类！',
-              center: true,
-              duration: 1000
-            });
+          console.log(res)
+          for(let i=0;i<res.data.data.children.length;i++){
+            that.menu.push(res.data.data.children[i])
           }
+          // if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
+          //   that.getSubCategoriesList(res.data.data.categories_id)
+          // } else {
+          //   that.$message({
+          //     message: '没有获取到根分类！',
+          //     center: true,
+          //     duration: 1000
+          //   });
+          // }
 
         })
+        // axios.post(url, {}, {
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     "companyId": that.company_id
+        //   }
+        // }).then(function (res) {
+        //   //console.log(res)
+        //   if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
+        //     that.getSubCategoriesList(res.data.data.categories_id)
+        //   } else {
+        //     that.$message({
+        //       message: '没有获取到根分类！',
+        //       center: true,
+        //       duration: 1000
+        //     });
+        //   }
+
+        // })
       },
-      getSubCategoriesList(id) { //获取子分类
-        let that = this
-        let url2 = "http://120.55.124.53:8206/api/product/getSubCategoriesList"
+      // getSubCategoriesList(id) { //获取子分类
+      //   let that = this
+      //   let url2 = "http://120.55.124.53:8206/api/product/getSubCategoriesList"
 
-        axios.post(url2, {
-          categories_id: id
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            "companyId": that.company_id
-          }
-        }).then(function (res) {
-          if (res.data.data.categoriesModel.length > 0) {
-            for (let i = 0; i < res.data.data.categoriesModel.length; i++) {
-              res.data.data.categoriesModel[i].label = res.data.data.categoriesModel[i].name
-              res.data.data.categoriesModel[i].value = res.data.data.categoriesModel[i].name
-            }
-            that.menu = res.data.data.categoriesModel //设置好下拉菜单选项
+      //   axios.post(url2, {
+      //     categories_id: id
+      //   }, {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       "companyId": that.company_id
+      //     }
+      //   }).then(function (res) {
+      //     if (res.data.data.categoriesModel.length > 0) {
+      //       for (let i = 0; i < res.data.data.categoriesModel.length; i++) {
+      //         res.data.data.categoriesModel[i].label = res.data.data.categoriesModel[i].name
+      //         res.data.data.categoriesModel[i].value = res.data.data.categoriesModel[i].name
+      //       }
+      //       that.menu = res.data.data.categoriesModel //设置好下拉菜单选项
 
-            that.categories_id = that.menu[0].categories_id //存储第一个默认选项的id
-            that.getInventory()
-          } else {
+      //       that.categories_id = that.menu[0].categories_id //存储第一个默认选项的id
+      //       that.getInventory()
+      //     } else {
 
-            that.$message({
-              message: '没有获取到子分类！',
-              center: true,
-              duration: 1000
-            });
-          }
-        })
-      },
+      //       that.$message({
+      //         message: '没有获取到子分类！',
+      //         center: true,
+      //         duration: 1000
+      //       });
+      //     }
+      //   })
+      // },
 
       sub(id) { //点减号将当前记录的库存数量-1
         //console.log(id)
 
         for (let i = 0; i < this.datalist.length; i++) {
-          if (this.datalist[i].id == id) {
+          if (this.datalist[i].product_id == id) {
             if (this.datalist[i].stockQuantityShow > 0) {
               this.datalist[i].stockQuantity = this.datalist[i].stockQuantity + 1
               this.datalist[i].stockQuantityShow = this.datalist[i].stockQuantityShow - 1
@@ -399,7 +420,7 @@
       },
       add(id) { //点加号将当前记录的库存数量+1
         for (let i = 0; i < this.datalist.length; i++) {
-          if (this.datalist[i].id == id) {
+          if (this.datalist[i].product_id == id) {
             if (this.datalist[i].stockQuantity <= 0) {
               this.$message({
                 message: '数量不能大于库存数量！',
@@ -417,7 +438,7 @@
       },
       changeStatus(val, id) {
         for (let i = 0; i < this.datalist.length; i++) {
-          if (this.datalist[i].id == id) {
+          if (this.datalist[i].product_id == id) {
             if (val > this.datalist[i].stockQuantitydata) {
               this.$message({
                 message: '数量不能大于库存数量！',
@@ -436,7 +457,7 @@
       },
       Inputshow(id) {
         for (let i = 0; i < this.datalist.length; i++) {
-          if (this.datalist[i].id == id) {
+          if (this.datalist[i].product_id == id) {
 
             this.datalist[i].isinputShow = !this.datalist[i].isinputShow
 
@@ -495,7 +516,7 @@
           })
         } else { //非当前项目页面调用此页面执行代码
         console.log( JSON.stringify(list) )
-           nativeMethod.setMaterial(JSON.stringify(list) );
+          //  nativeMethod.setMaterial(JSON.stringify(list) );
         }
       },
       cancel() { //点取消返回上一个页面，只发送设备信息数据
@@ -545,6 +566,7 @@
     mounted() {
       this.datalist = [] //初始化数据
       this.pageNum = 1
+      console.log(this.options)
       console.log(this.$route.params)
       this.getParams() //获取其他页面传的数据
       history.pushState(null, null, window.location.href);
@@ -821,7 +843,8 @@
 
   .card {
     width: 95%;
-    height: 62px;
+      height: 80px;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
     background: white;
@@ -833,7 +856,8 @@
 
   .card_border {
     width: 95%;
-    height: 62px;
+        height: 80px;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
     background: white;

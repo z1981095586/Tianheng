@@ -2,37 +2,183 @@
   <div class="allPage">
     <div class="header">
       <div class="header_left">
-        <el-avatar :size="60" src="https://empty" @error="errorHandler">
-          <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+        <el-avatar :size="50">
+          <img src="../../static/img/logo.png" />
         </el-avatar>
         <span>天衡织机工位操作系统</span>
       </div>
-      <div class="header_right"></div>
+      <div class="header_right"><span>挡车工：陈某人</span>
+        <div class="icon_info">
+          <img src="../../static/img/remind.png" />
+
+          <img src="../../static/img/unremind.png" />
+
+          <img src="../../static/img/refresh.png" />
+
+          <img src="../../static/img/question.png" />
+        </div>
+      </div>
     </div>
     <div class="tabPane">
       <div class="tabPane_con">
-        <div class="oneTab">上轴</div>
-        <div class="oneTab">插片</div>
-        <div class="oneTab">挡车</div>
-        <div class="oneTab">下轴</div>
-        <div class="oneTab">机修</div>
-      </div>
-    </div>
-    <div class="operationPane">
-      <div class="operationPane_con">
+        <div :class="item.class" @click="changeTab(item.label)" :style="item.style" v-for="(item,index) in tabList"
+          :key="index">{{item.label}}</div>
 
       </div>
     </div>
+    <uppershaft v-show="isShangZhou"></uppershaft>
+    <illustration v-show="isChaPian"></illustration>
+    <stopcar v-show="isStopCar"></stopcar>
+    <loweraxis v-show="isLower"></loweraxis>
+    <machinemaintenance v-show="isMachine"></machinemaintenance>
   </div>
 </template>
 
 <script>
+  import Uppershaft from "./Uppershaft"; //上轴操作面板
+  import illustration from "./illustration"; //扫码插片操作面板
+  import Stopcar from "./Stopcar"; //挡车操作面板
+  import Loweraxis from "./Loweraxis"; //下轴操作面板
+  import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
   export default {
+    components: {
+      illustration,
+      Uppershaft,
+      Stopcar,
+      Loweraxis,
+      Machinemaintenance
+    },
     name: 'index',
     data() {
       return {
+        tabList: [{
+            label: "上轴",
+            class: "oneTab_Choosed",
+            style: "color:white"
+          },
+          {
+            label: "插片",
+            class: "oneTab",
+            style: "background:white;color:#18BC83"
+          },
+          {
+            label: "挡车",
+            class: "oneTab",
+            style: "background:white;color:#FF943E"
+          },
+          {
+            label: "下轴",
+            class: "oneTab",
+            style: "background:white;color:#9373EF"
+          },
+
+          {
+            label: "机修",
+            class: "oneTab",
+            style: "background:white;color:#F25643"
+          },
+
+        ],
+        activeTab: "",
+        isShangZhou: true,
+        isChaPian: false,
+        isStopCar:false,
+        isMachine:false,
+        isLower:false
 
       }
+    },
+    methods: {
+      changeTab(label) { //tab栏切换事件
+        this.activeTab = label
+        for (let i = 0; i < this.tabList.length; i++) {
+          this.tabList[i].class = "oneTab"
+          if (this.tabList[i].label == "上轴") {
+            this.tabList[i].style = "background:white;color:#3296FA;"
+
+
+          }
+          if (this.tabList[i].label == "插片") {
+            this.tabList[i].style = "background:white;color:#18BC83;"
+
+
+          }
+          if (this.tabList[i].label == "挡车") {
+            this.tabList[i].style = "background:white;color:#FF943E;"
+
+          }
+          if (this.tabList[i].label == "下轴") {
+            this.tabList[i].style = "background:white;color:#9373EF;"
+
+          }
+          if (this.tabList[i].label == "机修") {
+            this.tabList[i].style = "background:white;color:#F25643;"
+
+          }
+        }
+        for (let i = 0; i < this.tabList.length; i++) {
+          if (this.tabList[i].label == label) {
+            this.tabList[i].class = "oneTab_Choosed"
+            if (this.tabList[i].label == "上轴") {
+              this.tabList[i].style = "background:#3296FA;color:white;"
+            
+                    
+           
+              this.isLower=false
+        this.isMachine=false
+              this.isStopCar=false
+
+              this.isChaPian = false
+                this.isShangZhou = true
+              return
+            }
+            if (this.tabList[i].label == "插片") {
+              this.tabList[i].style = "background:#18BC83;color:white;"
+               this.isShangZhou = false
+           
+              this.isLower=false
+        this.isMachine=false
+              this.isStopCar=false
+
+              this.isChaPian = true
+              return
+
+            }
+            if (this.tabList[i].label == "挡车") {
+              this.tabList[i].style = "background:#FF943E;color:white;"
+                this.isShangZhou = false
+              this.isChaPian = false
+              this.isLower=false
+        this.isMachine=false
+              this.isStopCar=true
+              
+              return
+            }
+            if (this.tabList[i].label == "下轴") {
+              this.tabList[i].style = "background:#9373EF;color:white;"
+              this.isShangZhou = false
+              this.isChaPian = false
+              this.isStopCar=false
+        this.isMachine=false
+              this.isLower=true
+              return
+            }
+            if (this.tabList[i].label == "机修") {
+              this.tabList[i].style = "background:#F25643;color:white;"
+               this.isShangZhou = false
+              this.isChaPian = false
+              this.isStopCar=false
+              this.isLower=false
+        this.isMachine=true
+              
+              return
+            }
+          }
+        }
+      }
+    },
+    mounted() {
+
     }
   }
 
@@ -56,11 +202,11 @@
   }
 
   .header_left {
-    width: 30%;
+    width: 35%;
     height: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid black;
+
     color: white;
     font-size: 1.5rem;
   }
@@ -70,11 +216,32 @@
   }
 
   .header_right {
-    width: 60%;
+    width: 62%;
     height: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid black;
+    justify-content: flex-end;
+
+  }
+
+  .header_right span {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: 4rem;
+  }
+
+  .icon_info {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .icon_info img {
+    width: 30px;
+    height: 30px;
   }
 
   .tabPane {
@@ -99,38 +266,29 @@
     height: 80%;
     background: white;
     display: flex;
+
+    font-family: FZCYJ;
+
     align-items: center;
     justify-content: center;
     font-size: 3.5rem;
     border-radius: 16px;
-    font-weight: 600;
+
   }
 
   .oneTab_Choosed {
     width: 19%;
     height: 80%;
-    font-weight: 600;
+
+    font-family: FZCYJ;
+
+
+    color: white;
     background: #3296FA;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3.5rem;
-    border-radius: 16px;
-  }
-
-  .operationPane {
-    width: 100%;
-    height: 66%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    background: #E2E7ED;
-  }
-
-  .operationPane_con {
-    width: 98%;
-    height: 96%;
-    background: white;
     border-radius: 16px;
   }
 

@@ -121,7 +121,7 @@
             <div v-for="(item,index) in consume_list" :key="index">
               <div class="contain">
                 <div class="contain-son" style="margin-left:5px;">
-                  <span>备品名称：{{item.name}}</span>
+                  <span>备品名称：{{item.product_name}}</span>
                   <span style="margin-right:20px;">备品规格：{{item.specification}}</span>
 
                 </div>
