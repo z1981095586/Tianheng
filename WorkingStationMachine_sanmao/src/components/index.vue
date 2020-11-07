@@ -82,9 +82,9 @@
         activeTab: "",
         isShangZhou: true,
         isChaPian: false,
-        isStopCar:false,
-        isMachine:false,
-        isLower:false
+        isStopCar: false,
+        isMachine: false,
+        isLower: false
 
       }
     },
@@ -121,24 +121,24 @@
             this.tabList[i].class = "oneTab_Choosed"
             if (this.tabList[i].label == "上轴") {
               this.tabList[i].style = "background:#3296FA;color:white;"
-            
-                    
-           
-              this.isLower=false
-        this.isMachine=false
-              this.isStopCar=false
+
+
+
+              this.isLower = false
+              this.isMachine = false
+              this.isStopCar = false
 
               this.isChaPian = false
-                this.isShangZhou = true
+              this.isShangZhou = true
               return
             }
             if (this.tabList[i].label == "插片") {
               this.tabList[i].style = "background:#18BC83;color:white;"
-               this.isShangZhou = false
-           
-              this.isLower=false
-        this.isMachine=false
-              this.isStopCar=false
+              this.isShangZhou = false
+
+              this.isLower = false
+              this.isMachine = false
+              this.isStopCar = false
 
               this.isChaPian = true
               return
@@ -146,31 +146,31 @@
             }
             if (this.tabList[i].label == "挡车") {
               this.tabList[i].style = "background:#FF943E;color:white;"
-                this.isShangZhou = false
+              this.isShangZhou = false
               this.isChaPian = false
-              this.isLower=false
-        this.isMachine=false
-              this.isStopCar=true
-              
+              this.isLower = false
+              this.isMachine = false
+              this.isStopCar = true
+
               return
             }
             if (this.tabList[i].label == "下轴") {
               this.tabList[i].style = "background:#9373EF;color:white;"
               this.isShangZhou = false
               this.isChaPian = false
-              this.isStopCar=false
-        this.isMachine=false
-              this.isLower=true
+              this.isStopCar = false
+              this.isMachine = false
+              this.isLower = true
               return
             }
             if (this.tabList[i].label == "机修") {
               this.tabList[i].style = "background:#F25643;color:white;"
-               this.isShangZhou = false
+              this.isShangZhou = false
               this.isChaPian = false
-              this.isStopCar=false
-              this.isLower=false
-        this.isMachine=true
-              
+              this.isStopCar = false
+              this.isLower = false
+              this.isMachine = true
+
               return
             }
           }
