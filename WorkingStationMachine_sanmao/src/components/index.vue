@@ -7,7 +7,11 @@
         </el-avatar>
         <span>天衡织机工位操作系统</span>
       </div>
-      <div class="header_right"><span>挡车工：陈某人</span>
+      <div class="header_right"><span v-show="isShangZhou" v-for="(item,index) in nameList"
+          :key="'sz_'+index">{{item.label}}：{{item.staffName}}</span>
+        <span v-show="isChaPian" v-for="(item,index) in nameList2"
+          :key="'cp_'+index">{{item.label}}：{{item.staffName}}</span>
+        <span v-show="isStopCar || isMachine ">{{nameList3}}</span>
         <div class="icon_info">
           <img src="../../static/img/remind.png" />
 
@@ -26,9 +30,9 @@
 
       </div>
     </div>
-    <uppershaft v-show="isShangZhou"></uppershaft>
-    <illustration v-show="isChaPian"></illustration>
-    <stopcar v-show="isStopCar"></stopcar>
+    <uppershaft v-show="isShangZhou" @szChange="szChange"></uppershaft>
+    <illustration v-show="isChaPian" @cpChange="cpChange"></illustration>
+    <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
     <machinemaintenance v-show="isMachine"></machinemaintenance>
   </div>
@@ -84,19 +88,58 @@
         isChaPian: false,
         isStopCar: false,
         isMachine: false,
-        isLower: false
-
+        isLower: false,
+        nameList: [],//上轴顶部栏名字列表
+        nameList2: [],//插片顶部栏名字列表
+        nameList3: ''//挡车顶部栏名字列表
       }
     },
     methods: {
+      szChange(nameList) { //上轴换班事件
+
+        let str = "";
+        for (let i = 0; i < nameList.length; i++) {
+          if (nameList[i].label == "开出工" && (nameList[i].staffName != "")) {
+            this.nameList.push(nameList[i]);
+          }
+          if ((nameList[i].label.indexOf("上轴工") != -1) && (nameList[i].staffName != "")) {
+            str = str + nameList[i].staffName + "，";
+          }
+        }
+        str = str.substr(0, str.length - 1);
+        this.nameList.push({
+          label: "上轴工",
+          staffName: str,
+
+        })
+
+      },
+      cpChange(nameList) { //插片换班事件
+
+        let str = ""
+        for (let i = 0; i < nameList.length; i++) {
+
+          if ((nameList[i].label.indexOf("插片工") != -1) && (nameList[i].staffName != "")) {
+            str = str + nameList[i].staffName + "，"
+          }
+        }
+        str = str.substr(0, str.length - 1);
+        this.nameList2.push({
+          label: "插片工",
+          staffName: str,
+
+        })
+
+      },
+      dcChange(nameList) { //挡车换班事件
+        this.nameList3 = "挡车工：" + nameList
+      },
       changeTab(label) { //tab栏切换事件
         this.activeTab = label
         for (let i = 0; i < this.tabList.length; i++) {
           this.tabList[i].class = "oneTab"
           if (this.tabList[i].label == "上轴") {
             this.tabList[i].style = "background:white;color:#3296FA;"
-
-
           }
           if (this.tabList[i].label == "插片") {
             this.tabList[i].style = "background:white;color:#18BC83;"
@@ -121,13 +164,9 @@
             this.tabList[i].class = "oneTab_Choosed"
             if (this.tabList[i].label == "上轴") {
               this.tabList[i].style = "background:#3296FA;color:white;"
-
-
-
               this.isLower = false
               this.isMachine = false
               this.isStopCar = false
-
               this.isChaPian = false
               this.isShangZhou = true
               return
@@ -135,14 +174,11 @@
             if (this.tabList[i].label == "插片") {
               this.tabList[i].style = "background:#18BC83;color:white;"
               this.isShangZhou = false
-
               this.isLower = false
               this.isMachine = false
               this.isStopCar = false
-
               this.isChaPian = true
               return
-
             }
             if (this.tabList[i].label == "挡车") {
               this.tabList[i].style = "background:#FF943E;color:white;"
@@ -151,9 +187,9 @@
               this.isLower = false
               this.isMachine = false
               this.isStopCar = true
-
               return
             }
+        
             if (this.tabList[i].label == "下轴") {
               this.tabList[i].style = "background:#9373EF;color:white;"
               this.isShangZhou = false
@@ -170,7 +206,6 @@
               this.isStopCar = false
               this.isLower = false
               this.isMachine = true
-
               return
             }
           }
@@ -178,7 +213,7 @@
       }
     },
     mounted() {
-
+     
     }
   }
 
@@ -188,8 +223,6 @@
   .allPage {
     width: 100%;
     height: 100vh;
-
-
   }
 
   .header {
@@ -206,7 +239,6 @@
     height: 100%;
     display: flex;
     align-items: center;
-
     color: white;
     font-size: 1.5rem;
   }
@@ -226,9 +258,9 @@
 
   .header_right span {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-right: 4rem;
+    margin-right: 1rem;
   }
 
   .icon_info {
@@ -266,23 +298,17 @@
     height: 80%;
     background: white;
     display: flex;
-
     font-family: FZCYJ;
-
     align-items: center;
     justify-content: center;
     font-size: 3.5rem;
     border-radius: 16px;
-
   }
 
   .oneTab_Choosed {
     width: 19%;
     height: 80%;
-
     font-family: FZCYJ;
-
-
     color: white;
     background: #3296FA;
     display: flex;

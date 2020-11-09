@@ -312,6 +312,8 @@
         this.PzShow = false
         this.isMainShow = true
         this.checkMachine = []
+        this.$emit("dcChange",this.checkedName)
+        console.log(this.checkedName)
       },
       checkShutdown(label) { //选中机台准备开机或者关机
 
@@ -442,7 +444,7 @@
 
         if (this.checkMachine.length > 0) {
           for (let i = 0; i < this.checkMachine.length; i++) {
-            console.log(this.checkMachine[i])
+         
             let k = {
               label: this.checkMachine[i],
               isChecked: false,

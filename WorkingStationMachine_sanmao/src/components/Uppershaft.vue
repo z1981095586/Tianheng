@@ -191,6 +191,8 @@
           this.szShiftShow = false;
           this.szMainShow = true;
           this.isStartChange = false
+   
+          this.$emit('szChange',this.staffList)
         }
 
       },

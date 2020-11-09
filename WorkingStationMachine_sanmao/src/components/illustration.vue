@@ -119,22 +119,22 @@
         isStartChange: false, //换班是否开始修改
         issaoma: false,
         staffList: [{
-            label: "开出工",
+            label: "插片工01",
             staffName: "",
             isSelected: false
           },
           {
-            label: "上轴工01",
+            label: "插片工02",
             staffName: "",
             isSelected: false
           },
           {
-            label: "上轴工02",
+            label: "插片工03",
             staffName: "",
             isSelected: false
           },
           {
-            label: "上轴工03",
+            label: "插片工04",
             staffName: "",
             isSelected: false
           },
@@ -187,6 +187,7 @@
           this.szShiftShow = false;
           this.szMainShow = true;
           this.isStartChange = false
+            this.$emit('cpChange',this.staffList)
         }
 
       },
