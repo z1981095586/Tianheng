@@ -17,7 +17,7 @@
 
           <img src="../../static/img/unremind.png" />
 
-          <img src="../../static/img/refresh.png" />
+          <img src="../../static/img/refresh.png" @click="reload()" />
 
           <img src="../../static/img/question.png" />
         </div>
@@ -53,6 +53,7 @@
       Machinemaintenance
     },
     name: 'index',
+    inject:['reload'],
     data() {
       return {
         tabList: [{
@@ -89,14 +90,14 @@
         isStopCar: false,
         isMachine: false,
         isLower: false,
-        nameList: [],//上轴顶部栏名字列表
-        nameList2: [],//插片顶部栏名字列表
-        nameList3: ''//挡车顶部栏名字列表
+        nameList: [], //上轴顶部栏名字列表
+        nameList2: [], //插片顶部栏名字列表
+        nameList3: '' //挡车顶部栏名字列表
       }
     },
     methods: {
       szChange(nameList) { //上轴换班事件
-
+        this.nameList = []
         let str = "";
         for (let i = 0; i < nameList.length; i++) {
           if (nameList[i].label == "开出工" && (nameList[i].staffName != "")) {
@@ -107,11 +108,26 @@
           }
         }
         str = str.substr(0, str.length - 1);
-        this.nameList.push({
-          label: "上轴工",
-          staffName: str,
+  
+        if (this.nameList.length > 1) {
+          if (str != "" && (this.nameList[1].staffName != str)) {
+            this.nameList[1] = {
+              label: "上轴工",
+              staffName: str,
 
-        })
+            }
+
+          }
+        } else {
+          if (str != "") {
+            this.nameList.push({
+              label: "上轴工",
+              staffName: str,
+
+            })
+          }
+        }
+
 
       },
       cpChange(nameList) { //插片换班事件
@@ -124,15 +140,32 @@
           }
         }
         str = str.substr(0, str.length - 1);
-        this.nameList2.push({
-          label: "插片工",
-          staffName: str,
+        if (this.nameList2.length > 0) {
+          if (str != "" && (this.nameList2[0].staffName != str)) {
+            this.nameList2 = []
+            this.nameList2.push({
+              label: "插片工",
+              staffName: str,
 
-        })
+            })
+          }
+        } else {
+          if (str != "") {
+            this.nameList2.push({
+              label: "插片工",
+              staffName: str,
+
+            })
+          }
+        }
+
 
       },
       dcChange(nameList) { //挡车换班事件
-        this.nameList3 = "挡车工：" + nameList
+        if (nameList != "" && (this.nameList3 != nameList)) {
+          this.nameList3 = "挡车工：" + nameList
+        }
+
       },
       changeTab(label) { //tab栏切换事件
         this.activeTab = label
@@ -143,20 +176,15 @@
           }
           if (this.tabList[i].label == "插片") {
             this.tabList[i].style = "background:white;color:#18BC83;"
-
-
           }
           if (this.tabList[i].label == "挡车") {
             this.tabList[i].style = "background:white;color:#FF943E;"
-
           }
           if (this.tabList[i].label == "下轴") {
             this.tabList[i].style = "background:white;color:#9373EF;"
-
           }
           if (this.tabList[i].label == "机修") {
             this.tabList[i].style = "background:white;color:#F25643;"
-
           }
         }
         for (let i = 0; i < this.tabList.length; i++) {
@@ -189,7 +217,7 @@
               this.isStopCar = true
               return
             }
-        
+
             if (this.tabList[i].label == "下轴") {
               this.tabList[i].style = "background:#9373EF;color:white;"
               this.isShangZhou = false
@@ -213,7 +241,7 @@
       }
     },
     mounted() {
-     
+
     }
   }
 
@@ -253,7 +281,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
   }
 
   .header_right span {

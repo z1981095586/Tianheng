@@ -171,7 +171,7 @@
     components: {
       keyboard
     },
-    name: 'index',
+    name: 'Stopcar',
     data() {
       return {
         isMainShow: true,//页面显示隐藏

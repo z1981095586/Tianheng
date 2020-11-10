@@ -107,6 +107,7 @@
 
 <script>
   export default {
+        name: 'illustration',
     data() {
       return {
         szMainShow: true, //上轴主页面显示隐藏

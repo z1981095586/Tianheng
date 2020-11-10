@@ -1,43 +1,39 @@
 <template>
-  <div class="allPage">
+  <div class="operationPane">
 
+    <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center;"
+     >
 
+      <img src="../../static/img/close.png" />
+    </div>
   </div>
 </template>
 
 <script>
-import keyboard from '@/components/keyboard'
+  import keyboard from '@/components/keyboard'
   export default {
-components:{keyboard},
-    name: 'index',
+    components: {
+      keyboard
+    },
+    name: 'Loweraxis',
     data() {
       return {
-
+  
       }
     },
     methods: {
-
+   
     },
     mounted() {
 
+    },
+    watch: {
+ 
     }
   }
 
 </script>
 
 <style scoped>
-  .allPage {
-    width: 100%;
-    height: 100vh;
-
-
-  }
-.keyboard{
-  width: 33rem;
-  height: 16rem;
-}
-.keyboard /deep/ .el-checkbox-button__inner{
-  font-size: 5rem;
-  margin: 0.5rem;
-}
+ 
 </style>
