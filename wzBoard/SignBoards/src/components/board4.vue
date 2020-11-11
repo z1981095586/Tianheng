@@ -248,6 +248,7 @@ getdata(){
             data:{
              
               "workshopId":that.workshopId,
+              "groups":that.$route.params.groups,
                   "limitSize":6
             }
 

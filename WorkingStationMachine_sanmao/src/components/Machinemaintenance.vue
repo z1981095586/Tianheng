@@ -88,7 +88,8 @@
         checkedMachineNum: "",
         isChecked: false,
         checkMachine: [], //上轴选中机台列表
-        questionList: [{
+        questionList: [
+          {
             id: 1,
             title: "我是问题",
             question: "我是问题描述问题描述问题描述问题描述问题备份",
@@ -124,8 +125,6 @@
             question: "我是问题描述问题描述问题描述问题描述问题备份",
             isChecked: false
           },
-
-
         ],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
@@ -138,18 +137,12 @@
           if (this.questionList[i].id == id) {
             this.questionList[i].isChecked = !this.questionList[i].isChecked
           }
-      
-          
-
         }
       },
       chooseMachine() {
         this.isMachine = true
-       
-
       },
       checkedMachine(e) { //选择机台事件
-
         this.checkedMachineNum = e[0]
       },
       cancel() {
@@ -171,9 +164,6 @@
 <style scoped>
   .allPage_M {
     width: 100%;
-
-
-
     position: relative;
     height: 66%;
     display: flex;

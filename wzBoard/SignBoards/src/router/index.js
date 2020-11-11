@@ -59,7 +59,7 @@ export default new Router({
       component:board3
     },
     {
-      path:"/board4/:id",
+      path:"/board4/:id/:groups",
       name:'board4',
       component:board4
     },

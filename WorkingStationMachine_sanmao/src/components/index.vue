@@ -123,7 +123,6 @@
             this.nameList.push({
               label: "上轴工",
               staffName: str,
-
             })
           }
         }
@@ -217,7 +216,6 @@
               this.isStopCar = true
               return
             }
-
             if (this.tabList[i].label == "下轴") {
               this.tabList[i].style = "background:#9373EF;color:white;"
               this.isShangZhou = false
@@ -242,7 +240,10 @@
     },
     mounted() {
 
+
+  
     }
+  
   }
 
 </script>

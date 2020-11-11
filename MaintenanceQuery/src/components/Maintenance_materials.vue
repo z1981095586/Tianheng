@@ -3,24 +3,24 @@
 
     <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">{{pageName}}</span>
     <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i>
-    <div class="select" style="padding-top:2rem">
+    <!-- <div class="select" style="padding-top:2rem">
 
 
 
-      <!-- <select name="bbxb" id="selecte" class="shortselect" @change="change">
-        <option :value="item.categories_id" v-for="item in menu">{{item.label}}</option>
+      <select name="bbxb" id="selecte" class="shortselect" @change="change">
+        <option :value="item.categories_id" :id="item.categories_id" v-for="(item,index) in menu"  :key="index">{{item.label}}</option>
 
-      </select> -->
+      </select> 
 
-  <el-cascader
-     size="medium"
-    :options="menu"
-    @change="change"   :props="props" :show-all-levels="false"></el-cascader>
-    </div>
+
+    </div> -->
     <!--出库单详细-->
     <div class="all-page">
-      <div class="input"><input @keyup.13="seachinfo" type="search" ref="input1" placeholder="输入物料名称"
-          v-model="searchinfo" /> <i class="el-icon-search" style="font-size:15px;"></i>
+      <div class="input"> <el-cascader
+     size="medium"
+    :options="menu"
+    @change="change" style="width:47%"   :props="props" :show-all-levels="false"></el-cascader><input  @keyup.13="seachinfo" type="search" ref="input1" placeholder="输入物料名称"
+          v-model="searchinfo" /> <i class="el-icon-search" style="font-size:1.3rem;"></i>
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div style="height:80%;overflow:auto;">
@@ -81,7 +81,7 @@
     name: 'Maintenance_materials',
     data() {
       return {
-        props:{ value:'categories_id',checkStrictly : true },
+        props:{ value:'categories_id',checkStrictly : false,expandTrigger:"click" },
         pageName:"",
         operator: "",
         maintain_type_id: null,
@@ -121,8 +121,9 @@
       },
      
       change(e) { //下拉菜单值发生变化监听事件
-        console.log(e[e.length-1])
-        this.categories_id = e[e.length-1]
+      console.log(e)
+        // console.log(e[e.length-1])
+         this.categories_id = e[e.length-1]
         this.datalist = []
         this.pageNum = 1
         this.getInventory(this.searchinfo) //如果搜索框有数据，依旧会搜索当前选择的下拉值下的搜索数据
@@ -143,7 +144,7 @@
               page: that.pageNum,
               pageNum: 10,
              
-              categories_id: this.categories_id,
+              categories_id: 8,
               product_name: searchinfo
             }
           } else { //查询当前选择的下拉选项下的数据
@@ -164,7 +165,7 @@
                 page: that.pageNum,
               pageNum: 10,
              
-              categories_id: this.categories_id,
+              categories_id: 8,
               product_name: searchinfo
             }
           } else {
@@ -334,9 +335,14 @@
           }
         }).then(function (res) {
           console.log(res)
+       
           for(let i=0;i<res.data.data.children.length;i++){
-            that.menu.push(res.data.data.children[i])
+               if(res.data.data.children[i].categories_id==8){
+   that.menu=res.data.data.children[i].children
+               }
+         
           }
+          console.log(that.menu)
           // if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
           //   that.getSubCategoriesList(res.data.data.categories_id)
           // } else {
@@ -624,7 +630,7 @@
 
   .all-page /deep/ ._v-container {
     position: absolute;
-    top: 45px;
+    top: 50px;
     left: 0;
 
   }
@@ -758,6 +764,7 @@
   .input-number {
     width: 29%;
     display: flex;
+   
     justify-content: space-around;
     align-items: center;
   }
@@ -766,19 +773,22 @@
 
   .input {
     width: 100%;
-    height: 25px;
+    height: 42px;
+     padding-top: 5px;
+    padding-bottom: 5px;
     background: white;
-    margin-top: 5px;
+   
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     position: relative;
   }
 
   .input input {
-    width: 70%;
-    height: 25px;
-    border: none;
+    width: 47%;
+    height: 36px;
+  border-radius: 4px;
+    border: 1px solid #DCDFE6;
   }
 
   .input input:focus {
@@ -788,9 +798,10 @@
 
   .input i {
     position: absolute;
-    right: 14px;
+    right: 35px;
     color: rgba(0, 0, 0, 0.5);
     font-weight: 700;
+   
   }
 
   .input input::-webkit-input-placeholder {
