@@ -24,7 +24,7 @@
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div style="height:80%;overflow:auto;">
-          <div v-for="item in datalist">
+          <div v-for="(item,index) in datalist" :key="'data_'+index" >
             <div class="contain" style="margin-top:10px">
               <div :class="item.checked ? 'card_border' : 'card'">
                 <div class="check">
