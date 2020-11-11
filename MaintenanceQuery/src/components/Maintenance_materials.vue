@@ -16,15 +16,14 @@
     </div> -->
     <!--出库单详细-->
     <div class="all-page">
-      <div class="input"> <el-cascader
-     size="medium"
-    :options="menu"
-    @change="change" style="width:47%"   :props="props" :show-all-levels="false"></el-cascader><input  @keyup.13="seachinfo" type="search" ref="input1" placeholder="输入物料名称"
-          v-model="searchinfo" /> <i class="el-icon-search" style="font-size:1.3rem;"></i>
+      <div class="input">
+        <el-cascader size="medium" :options="menu" @change="change" style="width:47%" :props="props"
+          :show-all-levels="false"></el-cascader><input @keyup.13="seachinfo" type="search" ref="input1"
+          placeholder="输入物料名称" v-model="searchinfo" /> <i class="el-icon-search" style="font-size:1.3rem;"></i>
       </div>
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div style="height:80%;overflow:auto;">
-          <div v-for="(item,index) in datalist" :key="'data_'+index" >
+          <div v-for="(item,index) in datalist" :key="'data_'+index">
             <div class="contain" style="margin-top:10px">
               <div :class="item.checked ? 'card_border' : 'card'">
                 <div class="check">
@@ -33,34 +32,35 @@
                 <div class="card-content">
                   <div class="content-one">
                     <span>备品名称:{{item.product_name}}</span>
-                   
+
                   </div>
 
                 </div>
                 <div class="card-content">
                   <div class="content-one">
-                     <span>备品规格:{{item.specification}}</span>
+                    <span>备品规格:{{item.specification}}</span>
 
                   </div>
 
                 </div>
                 <div class="card-content">
-                     <div class="contain">
-              <div class="add"><span>数量：</span>
-                <div class="input-number"><i class="el-icon-remove" @click="sub(item.product_id)"
-                    style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.product_id)"
-                    v-show="!item.isinputShow">{{item.stockQuantityShow}}</span>
-                  <el-input size="small" @change="((val)=>{changeStatus(val, item.product_id)})" @blur="Inputshow(item.product_id)"
-                    v-model="item.stockQuantityShow" v-show="item.isinputShow"></el-input> <i
-                    class="el-icon-circle-plus" @click="add(item.product_id)" style="color:rgb(49,153,102)"></i>
-                </div>
-              </div>
-            </div>
+                  <div class="contain">
+                    <div class="add"><span>数量：</span>
+                      <div class="input-number"><i class="el-icon-remove" @click="sub(item.product_id)"
+                          style="color:rgb(255,153,102)"></i><span @click="Inputshow(item.product_id)"
+                          v-show="!item.isinputShow">{{item.stockQuantityShow}}</span>
+                        <el-input size="small" @change="((val)=>{changeStatus(val, item.product_id)})"
+                          @blur="Inputshow(item.product_id)" v-model="item.stockQuantityShow" v-show="item.isinputShow">
+                        </el-input> <i class="el-icon-circle-plus" @click="add(item.product_id)"
+                          style="color:rgb(49,153,102)"></i>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
             </div>
-         
+
           </div>
         </div>
       </scroller>
@@ -81,12 +81,16 @@
     name: 'Maintenance_materials',
     data() {
       return {
-        props:{ value:'categories_id',checkStrictly : false,expandTrigger:"click" },
-        pageName:"",
+        props: {
+          value: 'categories_id',
+          checkStrictly: false,
+          expandTrigger: "click"
+        },
+        pageName: "",
         operator: "",
         maintain_type_id: null,
         isClickIn: "",
-    
+
         company_id: '', //公司id
         mac_type_id: null, //设备类型id
         flag: null, //
@@ -98,9 +102,9 @@
         categories_id: "", //
         searchinfo: "", //搜索框信息
         workshop_id: "",
-        
+
         datalist2: [],
-        mac_type_id:this.$route.params.mac_type_id,
+        mac_type_id: this.$route.params.mac_type_id,
         machine_id_list: [],
         isThisApp: this.$route.params.isThisApp //是否是当前项目的页面跳转到本页面
       }
@@ -119,11 +123,11 @@
         }
 
       },
-     
+
       change(e) { //下拉菜单值发生变化监听事件
-      console.log(e)
+        console.log(e)
         // console.log(e[e.length-1])
-         this.categories_id = e[e.length-1]
+        this.categories_id = e[e.length - 1]
         this.datalist = []
         this.pageNum = 1
         this.getInventory(this.searchinfo) //如果搜索框有数据，依旧会搜索当前选择的下拉值下的搜索数据
@@ -143,17 +147,17 @@
             datas = { //查询当前选择的下拉选项下的搜索数据
               page: that.pageNum,
               pageNum: 10,
-             
+
               categories_id: 8,
               product_name: searchinfo
             }
           } else { //查询当前选择的下拉选项下的数据
             datas = {
-             page: that.pageNum,
+              page: that.pageNum,
               pageNum: 10,
-             
+
               categories_id: this.categories_id,
-            
+
             }
           }
 
@@ -162,9 +166,9 @@
             let datas = {
 
 
-                page: that.pageNum,
+              page: that.pageNum,
               pageNum: 10,
-             
+
               categories_id: 8,
               product_name: searchinfo
             }
@@ -172,9 +176,9 @@
             datas = {
 
 
-            page: that.pageNum,
+              page: that.pageNum,
               pageNum: 10,
-             
+
               categories_id: this.categories_id,
               // queryConditions:""
             }
@@ -208,11 +212,11 @@
               res.data.data.productModel[i].stockQuantityShow = 0
               that.datalist.push(res.data.data.productModel[i])
             }
-             if(that.datalist.length==that.totalDataNum){
-             that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
-          }else{
-             that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
-          }
+            if (that.datalist.length == that.totalDataNum) {
+              that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+            } else {
+              that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
+            }
           }
 
 
@@ -236,30 +240,30 @@
 
         this.machine_id_list = this.$route.params.machine_id_list
 
-        if (this.$route.params.isThisApp == "false"||this.$route.params.isThisApp == false) {
+        if (this.$route.params.isThisApp == "false" || this.$route.params.isThisApp == false) {
           this.mac_type_id = ""
           this.type_name = ""
-          this.pageName="保养物料"
+          this.pageName = "保养物料"
         } else {
           this.mac_type_id = this.$route.params.dataObj2.mac_type_id
           this.type_name = this.$route.params.dataObj2.type_name
-             this.pageName="选择物料"
+          this.pageName = "选择物料"
         }
 
         this.flag = this.$route.params.flag
 
-        
+
         this.operator = this.$route.params.operator
         this.workshop_id = this.$route.params.workshop_id
         this.company_id = this.$route.params.company_id
-      
+
         this.datalist2 = this.$route.params.datalist
         this.maintain_type_id = this.$route.params.maintain_type_id
         this.isClickIn = this.$route.params.isClickIn
 
       },
       back() { //点取消返回上一个页面
-        if (this.isThisApp == "false"||this.isThisApp == false) {
+        if (this.isThisApp == "false" || this.isThisApp == false) {
           nativeMethod.closeActivity()
         } else {
           this.$router.push({
@@ -271,12 +275,12 @@
                 mac_type_id: this.mac_type_id,
                 flag: this.flag,
               },
-              mac_type_id:this.mac_type_id,
+              mac_type_id: this.mac_type_id,
               machine_id_list: this.machine_id_list,
               operator: this.operator,
               workshop_id: this.workshop_id,
               company_id: this.company_id,
-        
+
               datalist: this.datalist2,
               maintain_type_id: this.maintain_type_id,
               isClickIn: this.isClickIn
@@ -328,19 +332,19 @@
       getRootCategories() { //获取分类根目录
         let url = "http://120.55.124.53:8206/api/product/getFullCategories"
         let that = this
-                axios.post(url, {}, {
+        axios.post(url, {}, {
           headers: {
             'Content-Type': 'application/json',
             "companyID": that.company_id
           }
         }).then(function (res) {
           console.log(res)
-       
-          for(let i=0;i<res.data.data.children.length;i++){
-               if(res.data.data.children[i].categories_id==8){
-   that.menu=res.data.data.children[i].children
-               }
-         
+
+          for (let i = 0; i < res.data.data.children.length; i++) {
+            if (res.data.data.children[i].categories_id == 8) {
+              that.menu = res.data.data.children[i].children
+            }
+
           }
           console.log(that.menu)
           // if (res.data.data.categories_id) { //如果存在id，就去获取子分类了
@@ -485,7 +489,7 @@
           list[i].stockQuantity = list[i].stockQuantityShow
         }
         console.log(list)
-        if (this.isThisApp == "true"||this.isThisApp == true) { //当前项目页面调用此页面执行代码
+        if (this.isThisApp == "true" || this.isThisApp == true) { //当前项目页面调用此页面执行代码
           for (let i = 0; i < this.datalist2.length; i++) {
             if (typeof (this.datalist2[i].filelist) != "undefined") {
               if (this.datalist2[i].filelist.length > 0) {
@@ -515,19 +519,19 @@
               type_name: this.type_name,
               mac_type_id: this.mac_type_id,
               flag: this.flag,
- 
+
               datalist: this.datalist2
             }
 
           })
         } else { //非当前项目页面调用此页面执行代码
-        console.log( JSON.stringify(list) )
-         nativeMethod.setMaterial(JSON.stringify(list) );
+          console.log(JSON.stringify(list))
+          nativeMethod.setMaterial(JSON.stringify(list));
         }
       },
       cancel() { //点取消返回上一个页面，只发送设备信息数据
 
-        if (this.isThisApp == "false"||this.isThisApp == false) {
+        if (this.isThisApp == "false" || this.isThisApp == false) {
           nativeMethod.closeActivity();
         } else {
           for (let i = 0; i < this.datalist2.length; i++) {
@@ -557,11 +561,11 @@
               },
               machine_id_list: this.machine_id_list,
               datalist: this.datalist2,
-        
+
               operator: this.operator,
               workshop_id: this.workshop_id,
               company_id: this.company_id,
-              mac_type_id:this.mac_type_id,
+              mac_type_id: this.mac_type_id,
             }
           })
         }
@@ -764,7 +768,7 @@
   .input-number {
     width: 29%;
     display: flex;
-   
+
     justify-content: space-around;
     align-items: center;
   }
@@ -774,10 +778,10 @@
   .input {
     width: 100%;
     height: 42px;
-     padding-top: 5px;
+    padding-top: 5px;
     padding-bottom: 5px;
     background: white;
-   
+
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -787,7 +791,7 @@
   .input input {
     width: 47%;
     height: 36px;
-  border-radius: 4px;
+    border-radius: 4px;
     border: 1px solid #DCDFE6;
   }
 
@@ -801,7 +805,7 @@
     right: 35px;
     color: rgba(0, 0, 0, 0.5);
     font-weight: 700;
-   
+
   }
 
   .input input::-webkit-input-placeholder {
@@ -854,7 +858,7 @@
 
   .card {
     width: 95%;
-      height: 80px;
+    height: 80px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
@@ -867,7 +871,7 @@
 
   .card_border {
     width: 95%;
-        height: 80px;
+    height: 80px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
