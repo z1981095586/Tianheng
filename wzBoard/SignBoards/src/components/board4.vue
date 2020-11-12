@@ -40,7 +40,7 @@
               <div class="board_con_right_top_con2_right">
                 <div class="board_con_right_top_con2_right_con" v-for="(item,index) in djxlList" :key="index"><span
                     style="font-size:2.5rem;width:50%;text-align:left;margin-left:10%">#{{item.machineid}}</span><span
-                    style="font-size:2.5rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.shiftEfficiencyF}}%</span></div>
+                    style="font-size:2.5rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.e24hEfficiencyF}}%</span></div>
                               
               </div>
             </div>
@@ -190,15 +190,16 @@ dtpmList:[],//断头排名数据
 getdata(){
   let that=this
          axios({
-            url: host1+':7070/s/getEfficiency',// 效率落后（低效机台）
+            url: host1+':7070/s/getEfficiencyE24',// 效率落后（低效机台）
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
                'companyId':that.companyId
             },
             data:{
-              "problemId":"1",
-              "workshopId":that.workshopId
+              "problemId":"6",
+              "workshopId":that.workshopId,
+               "groups":that.$route.params.groups,
             }
 
           })
@@ -214,15 +215,19 @@ getdata(){
           
           })
                  axios({
-            url:  host1+':7070/ab/getLiaoJiWithWorkshop',// 了机时间
+            url:  host1+':7070/ab/getLiaoJiWithWorkshops',// 了机时间
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
                'companyId':that.companyId
             },
             data:{
-             
-              "workshopId":that.workshopId
+               "workshops": "'"+that.workshopId+"'",
+    "limitTime":"1000",
+    "limitSize":"12",
+ "groups":that.$route.params.groups,
+    
+              // "workshopId":that.workshopId
             }
 
           })
@@ -266,7 +271,7 @@ getdata(){
           
           })
                    axios({
-            url: host1+':7070/ab/getWorkshopABAndYield?workshops='+that.workshopId, // 当班效率，折标产量，平均车速
+            url: host1+':7070/ab/getMultiWorkshopABAndYield?workshops='+"'"+that.workshopId+"'"+ "&groups="+that.$route.params.groups, // 当班效率，折标产量，平均车速
             method: 'get',
             headers: {
               'Content-Type': 'application/json',

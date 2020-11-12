@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "element-ui": "^2.14.0",
     "vue": "^2.5.2",
     "vue-number-keyboard": "^1.0.0",

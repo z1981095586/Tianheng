@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
     <!-- 上轴部分主菜单-->
     <!-- 上轴部分选机台-->
@@ -60,7 +60,7 @@
       <div class="leftLabel"><span>选机台</span></div>
       <div class="search"><span style="font-size:1.7rem">搜索：</span><input placeholder="输入机台号" /><span
           style="color:red;margin-left:1rem">选中机台：{{this.checkedMachineNum}}</span></div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
     <!-- 上轴部分选机台-->
     <!-- 上轴换班-->
@@ -98,7 +98,7 @@
       </div>
       <div class="leftLabel"><span>换班</span></div>
 
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
     <!-- 上轴换班-->
     <!-- 上轴部分操作栏组件-->
@@ -148,6 +148,26 @@
       };
     },
     methods: {
+           closeCurrentPage(){
+        console.log(this.szMachineShow)
+       if(this.szMachineShow==true){
+            this.isCheckedMachine = false;
+        this.checkedMachineNum = "";
+        this.checkMachine = []
+        this.szMachineShow = false;
+        this.szShiftShow = false;
+        this.szMainShow = true;
+        return
+       }
+           if(this.szShiftShow==true){
+        this.szMachineShow = false;
+          this.szShiftShow = false;
+          this.szMainShow = true;
+          this.isStartChange = false
+        return
+       }
+       
+      },
       saoma() {
         this.issaoma = true
       },
@@ -189,6 +209,7 @@
           this.szMainShow = true;
           this.isStartChange = false
             this.$emit('cpChange',this.staffList)
+            console.log(this.staffList)
         }
 
       },

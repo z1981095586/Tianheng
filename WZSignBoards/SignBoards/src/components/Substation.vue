@@ -3,7 +3,7 @@
     <header>
       <div class="title"></div>
       <h1 class="tip">
-    <a style="margin-left: 23%;cursor: pointer" @click="dialogFormVisible2=true">变电所图</a></a>
+    <a style="margin-left: 23%;cursor: pointer" @click="dialogFormVisible2=true">变电所图</a>
                 <el-dialog id="dialog" center width="22%" :modal="false" :visible.sync="dialogFormVisible2">
           <el-button
             style="height: 4rem;width: 100%;margin: 0;font-weight: bolder;font-size: 1.8rem;border-radius: 10px;background-color: #61abeb;color: white;"
@@ -14,13 +14,25 @@
                @click="toSubstation('电力空压')" >电力空压
           </el-button>
         </el-dialog>
+        
         <span style="float: right;margin-right: 19.5%">{{date | formatDate}} </span>
       </h1>
     </header>
+    <div style="position:fixed;z-index:999;right:10rem;top:2rem;font-size:1.6rem;font-weight:bolder;width:10rem;height:3rem;" >   <a style="margin-left: 23%;cursor: pointer" @click="showEle" >{{isnei}}</a>
+                <el-dialog id="dialog" center width="22%" :modal="false" :visible.sync="dialogFormVisible3">
+          <el-button
+            style="height: 4rem;width: 100%;margin: 0;font-weight: bolder;font-size: 1.8rem;border-radius: 10px;background-color: #61abeb;color: white;"
+            @click="net('内网')">内网
+          </el-button>
+              <el-button
+            style="height: 4rem;width: 100%;margin: 0;font-weight: bolder;font-size: 1.8rem;border-radius: 10px;background-color: #61abeb;color: white;"
+               @click="net('外网')" >外网
+          </el-button>
+        </el-dialog></div>
     <div class="main_content ">
 
       <div class="boxes">
-        <div class="left_box">
+        <!-- <div class="left_box">
           <div class="machine_img"></div>
 
           <div class="e-chart-card box" id="echart1">
@@ -38,9 +50,9 @@
               <div class="card_content_one">07-13 08：13 三星440方 出口压力 6.34</div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="right_box">
-        <iframe id="iframe1" src="http://60.191.197.50:18080/share?url=displays/af442f8f-04ef-11ea-a114-20040ff30b87.json"  width="100%" height="100%"
+        <iframe id="iframe1" :src="Elesrc"  width="100%" height="100%"
                        frameborder="0">
               </iframe>
   <!-- <div class="card_four">
@@ -197,11 +209,14 @@
   import {
     formatDate
   } from "../static/js/date"; //引入时间格式化js
-
+  
   export default {
     name: "productMonitor",
     data() {
       return {
+        Elesrc:"http://60.191.197.50:18080/share?url=displays/af442f8f-04ef-11ea-a114-20040ff30b87.json",
+        isnei:"外网",
+           dialogFormVisible3:false,
         // zjList: [],
         // jsList: [],
         // zxt_data: [],
@@ -505,6 +520,32 @@
       }
     },
     methods: {
+      showEle(){
+      
+   this.dialogFormVisible3=true
+      },
+      net(value){
+    if(value=="内网"){
+   this.dialogFormVisible3=false
+       
+   this. isnei="内网"
+   this.Elesrc="http://192.168.12.230:8080/share?url=displays/ed53e148-1e71-11eb-9b94-20040ff30b87.json"
+        this.$message({
+          
+            message: '已经切换到内网！',
+            type: 'success'
+          });
+        }else{
+        this.dialogFormVisible3=false
+           this. isnei="外网"
+   this.Elesrc="http://60.191.197.50:18080/share?url=displays/af442f8f-04ef-11ea-a114-20040ff30b87.json"
+        this.$message({
+          
+            message: '已经切换到外网！',
+            type: 'success'
+          });
+        }
+      },
        toSubstation(value) {
         this.chooseItem=value
         if(value=="变电所图"){
@@ -1364,6 +1405,7 @@
 
 
     mounted() {
+  
       let _this = this; // 声明一个变量指向Vue实例this，保证作用域一致
       for (let i = 1; i <= 60; i++) {
         _this.powerHisX.push(i)
@@ -1497,7 +1539,7 @@
   }
 
   .right_box {
-    width: 70%;
+    width: 100%;
     overflow: auto;
     height: 100%;
 

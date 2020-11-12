@@ -22,7 +22,7 @@
       <div class="leftLabel"><span>选机台</span></div>
       <div class="search"><span style="font-size:2rem">搜索：</span><input placeholder="输入机台号" /><span
           style="color:red;margin-left:1rem">选中机台：{{this.checkedMachineNum}}</span></div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png" @click="cancel()" />
     </div>
     <div class="allPage_con" v-show="!isMachine">
       <div class="allPage_con_left">

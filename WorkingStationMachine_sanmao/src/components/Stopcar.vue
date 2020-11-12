@@ -8,7 +8,7 @@
 
       <div class="main_btn" @click="toShift">换班</div>
       <div class="main_btn" @click="toCar">挡车</div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
@@ -33,7 +33,7 @@
       <div class="search" style="left:4rem;width:95%;top:18px"><span style="font-size:1.5rem">搜索：</span><input
           style="font-size:1.5rem" placeholder="输入机台号" /><span
           style="color:red;margin-left:1rem;">选中机台：{{String(this.checkMachine).replace(/ /g, "")}}</span></div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png"  @click="goback()" />
     </div>
 
     <div class="operationPane_con"
@@ -53,7 +53,7 @@
         <div class="checked_machine_btn_one" @click="toPz">改品种</div>
         <div class="checked_machine_btn_one" style=" margin-left: 12rem;background:#808080" @click="goback2()">返回</div>
       </div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png"  @click="goback2()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
@@ -83,7 +83,7 @@
         <div></div>
       </div>
 
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png"  @click="ShiftBack()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center"
@@ -125,7 +125,7 @@
           </div>
         </div>
       </div>
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png"  @click="cancelPz()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center"
@@ -159,7 +159,7 @@
         </div>
       </div>
 
-      <img src="../../static/img/close.png" />
+      <img src="../../static/img/close.png"  @click="cancelLb()" />
     </div>
 
   </div>
@@ -198,6 +198,26 @@
       }
     },
     methods: {
+      //        closeCurrentPage(){
+      //   console.log(this.szMachineShow)
+      //  if(this.szMachineShow==true){
+      //       this.isCheckedMachine = false;
+      //   this.checkedMachineNum = "";
+      //   this.checkMachine = []
+      //   this.szMachineShow = false;
+      //   this.szShiftShow = false;
+      //   this.szMainShow = true;
+      //   return
+      //  }
+      //      if(this.szShiftShow==true){
+      //   this.szMachineShow = false;
+      //     this.szShiftShow = false;
+      //     this.szMainShow = true;
+      //     this.isStartChange = false
+      //   return
+      //  }
+       
+      // },
       islb() { //点击落布div键盘输入
         this.lbFocus = !this.lbFocus
         if (this.lbFocus == true) {
@@ -530,6 +550,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+        border-top: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-bottom: 3px solid #717171;
+    border-right: 3px solid #717171;
   }
 
   .pz_left_bottom_btn_unactive {
@@ -540,6 +564,10 @@
     color: white;
     align-items: center;
     justify-content: center;
+        border-top: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-bottom: 3px solid #717171;
+    border-right: 3px solid #717171;
   }
 
   .pz_right {
@@ -580,6 +608,7 @@
     align-content: center;
     justify-content: flex-start;
     border: 1px solid black;
+    
   }
 
   .pz_right_top_input_active {

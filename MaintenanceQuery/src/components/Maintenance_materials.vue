@@ -602,14 +602,12 @@
   }
 
 </script>
-
 <style scoped>
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-
   .shortselect {
     border: 0;
     display: block;
