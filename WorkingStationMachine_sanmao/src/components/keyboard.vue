@@ -12,7 +12,7 @@
 
     data() {
       return {
-
+//小键盘
   
         number: [],
         list: [{

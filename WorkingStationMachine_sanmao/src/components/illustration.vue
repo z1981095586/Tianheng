@@ -1,8 +1,8 @@
 <template>
   <div class="operationPane">
 
-    <!-- 上轴部分操作栏组件-->
-    <!-- 上轴部分主菜单-->
+    <!-- 插片部分操作栏组件-->
+    <!-- 插片部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
       v-show="szMainShow">
 
@@ -37,8 +37,8 @@
       </div>
       <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
-    <!-- 上轴部分主菜单-->
-    <!-- 上轴部分选机台-->
+    <!-- 插片部分主菜单-->
+    <!-- 插片部分选机台-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szMachineShow">
       <div class="operationPane_con_machineList">
@@ -62,8 +62,8 @@
           style="color:red;margin-left:1rem">选中机台：{{this.checkedMachineNum}}</span></div>
       <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
-    <!-- 上轴部分选机台-->
-    <!-- 上轴换班-->
+    <!-- 插片部分选机台-->
+    <!-- 插片换班-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
@@ -100,8 +100,8 @@
 
       <img src="../../static/img/close.png" @click="  closeCurrentPage" />
     </div>
-    <!-- 上轴换班-->
-    <!-- 上轴部分操作栏组件-->
+    <!-- 插片换班-->
+    <!-- 插片部分操作栏组件-->
   </div>
 </template>
 
@@ -110,11 +110,11 @@
         name: 'illustration',
     data() {
       return {
-        szMainShow: true, //上轴主页面显示隐藏
-        szMachineShow: false, //上轴选择机台显示隐藏
-        szShiftShow: false, //上轴换班显示隐藏
-        checkMachine: [], //上轴选中机台列表
-        checkStaffName: [], //上轴选中的员工名字
+        szMainShow: true, //插片主页面显示隐藏
+        szMachineShow: false, //插片选择机台显示隐藏
+        szShiftShow: false, //插片换班显示隐藏
+        checkMachine: [], //插片选中机台列表
+        checkStaffName: [], //插片选中的员工名字
         checkedMachineNum: "", //选中的机台号
         isCheckedMachine: false, //是否选中机台
         isStartChange: false, //换班是否开始修改
@@ -143,7 +143,7 @@
         StaffNameList: ['周品道', '周品娥', '周我道', '我品道', '娥品道', '周而且', '娥去道', '偶尔娥', '汽配娥', '我我完', '请求道', ],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
-        ] //上轴机台列表
+        ] //插片机台列表
 
       };
     },

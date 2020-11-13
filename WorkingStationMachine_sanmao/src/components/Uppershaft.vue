@@ -85,7 +85,7 @@
     <!-- 上轴部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
       v-show="szMainShow">
-
+       <div class="pch" v-show="issaoma"><input placeholder="我是扫码号" v-model="pch" /></div>
       <div class="operationPane_con_uppershaft">
 
         <div class="chooseBtn">
@@ -226,6 +226,7 @@
             isSelected: false
           },
         ],
+     
         StaffNameList: ['周品道', '周品娥', '周我道', '我品道', '娥品道', '周而且', '娥去道', '偶尔娥', '汽配娥', '我我完', '请求道', ],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
@@ -261,6 +262,8 @@
           szg2: '上我请',
           szg3: '破恶趣',
         },
+           pch:"",
+          
       };
     },
     methods: {
@@ -560,6 +563,23 @@
 </script>
 
 <style>
+.pch{
+    position: absolute;
+    left: 3rem;
+    top: 1.5rem;
+    width: 14rem;
+    height: 3.5rem;
+
+}
+.pch input{
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+}
+.pch input::-webkit-input-placeholder{
+  font-size: 1.3rem;
+  
+}
   .currentClass {
     position: absolute;
     top: 0;

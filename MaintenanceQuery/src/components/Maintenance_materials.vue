@@ -487,6 +487,9 @@
         }
         for (let i = 0; i < list.length; i++) {
           list[i].stockQuantity = list[i].stockQuantityShow
+          if(list[i].stockQuantity==0){
+            list[i].stockQuantity=1
+          }
         }
         console.log(list)
         if (this.isThisApp == "true" || this.isThisApp == true) { //当前项目页面调用此页面执行代码

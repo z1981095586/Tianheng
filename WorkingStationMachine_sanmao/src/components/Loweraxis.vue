@@ -111,17 +111,17 @@
           <div class="tz_main_left_left">
             <div class="tz_main_left_left_top">
               <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem">
-                <div class="chooseBtn_con_label" style="width:85%"><span v-show="!isCheckedMachine"
-                    style="font-size:1.2rem;">机台</span><span v-show="isCheckedMachine">{{checkedMachineNum}}</span>
+                <div class="chooseBtn_con_label" style="width:85%"><span v-show="!isCheckedMachine2"
+                    style="font-size:1.2rem;">机台</span><span v-show="isCheckedMachine2">{{checkedMachineNum2}}</span>
                 </div>
-                <div class="chooseBtn_con_btn" @click="toChooseMachine()" style="font-size:1.3rem;width:85%">
+                <div class="chooseBtn_con_btn" @click="toChooseMachine2()" style="font-size:1.3rem;width:85%">
                   <span>请选择</span></div>
               </div>
               <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem">
-                <div class="chooseBtn_con_label" style="width:85%"><span v-show="!isCheckedMachine"
-                    style="font-size:1.2rem;">班组信息</span><span v-show="isCheckedMachine">{{checkedMachineNum}}</span>
+                <div class="chooseBtn_con_label" style="width:85%"><span
+                    style="font-size:1.2rem;">{{chooseClassName2}}</span>
                 </div>
-                <div class="chooseBtn_con_btn" @click="toChooseMachine()" style="font-size:1.3rem;width:85%">
+                <div class="chooseBtn_con_btn" @click="toClass2()" style="font-size:1.3rem;width:85%">
                   <span>请选择</span></div>
               </div>
             </div>
@@ -164,7 +164,7 @@
       <img src="../../static/img/close.png" @click="toMain()" />
     </div>
     <!-- 退轴主界面-->
-     <!-- 退轴部分选机台-->
+    <!-- 退轴部分选机台-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="tzMachineShow">
       <div class="operationPane_con_machineList">
@@ -243,9 +243,18 @@
         isIndexShow: true,
         xzMachineShow: false,
         xzShiftShow: false,
-         tzMachineShow: false,
+        tzMachineShow: false,
         tzShiftShow: false,
+              mac_type_id: "030100",
+        company_id: "10000025",
+
+        zbFocus: false, //div选中聚焦
+        jzFocus: false,
+        zbLength: "", //div内容
+        jzLength: "",
+/**下轴数据 */
         isChooseAclass: true,
+        staffList: [],
         chooseClassName: "A组",
         isCheckedMachine: false, //是否选中机台
         Aclass: {
@@ -265,10 +274,11 @@
         machineList: [],
         page_size: 21,
         page_num: 1,
-         total_num: null,
-         
-
-             isChooseAclass2: true,
+        total_num: null,
+/**下轴数据 */
+/**退轴数据 */
+          staffList2: [],
+        isChooseAclass2: true,
         chooseClassName2: "A组",
         isCheckedMachine2: false, //是否选中机台
         Aclass2: {
@@ -288,19 +298,188 @@
         machineList2: [],
         page_size2: 21,
         page_num2: 1,
-         total_num2: null,
-
-        mac_type_id: "030100",
-        company_id: "10000025",
-       
-        zbFocus: false, //div选中聚焦
-        jzFocus: false,
-        zbLength: "", //div内容
-        jzLength: "",
+        total_num2: null,
+/**退轴数据 */
+  
 
       }
     },
     methods: {
+      /**退轴函数 */
+      sureClass2() {
+        this.xzShiftShow = false
+
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+        this.tzShiftShow = false
+        this.tzMachineShow = false
+        this.tzMainShow = true
+
+        if (this.isChooseAclass2 == true) {
+          this.chooseClassName2 = 'A组'
+        } else {
+          this.chooseClassName2 = 'B组'
+        }
+        console.log(this.chooseClassName2)
+        //  this.$emit('szChange', this.staffList)
+      },
+      cancelClass2() {
+        this.xzShiftShow = false
+
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+        this.tzShiftShow = false
+        this.tzMachineShow = false
+        this.tzMainShow = true
+      },
+      changeClass2(e) {
+        if (e == "a") {
+          this.isChooseAclass2 = true
+          this.staffList2 = [{
+              label: "开出工",
+              staffName: this.Aclass2.kcg,
+              isSelected: false
+            },
+            {
+              label: "上轴工01",
+              staffName: this.Aclass2.szg1,
+              isSelected: false
+            },
+            {
+              label: "上轴工02",
+              staffName: this.Aclass2.szg2,
+              isSelected: false
+            },
+            {
+              label: "上轴工03",
+              staffName: this.Aclass2.szg3,
+              isSelected: false
+            },
+          ]
+
+
+        } else {
+          this.isChooseAclass2 = false
+          this.staffList2 = [{
+              label: "开出工",
+              staffName: this.Bclass2.kcg,
+              isSelected: false
+            },
+            {
+              label: "上轴工01",
+              staffName: this.Bclass2.szg1,
+              isSelected: false
+            },
+            {
+              label: "上轴工02",
+              staffName: this.Bclass2.szg2,
+              isSelected: false
+            },
+            {
+              label: "上轴工03",
+              staffName: this.Bclass2.szg3,
+              isSelected: false
+            },
+          ]
+
+        }
+      },
+      checkedMachine2(e) { //选择机台事件
+
+        this.checkedMachineNum2 = e[0]
+      },
+      CurrentChange2(e) {
+        console.log(e)
+        this.page_num2 = e
+        this.getMachineList2()
+      },
+      getMachineList2() {
+        let that = this;
+        let url = host + "/api/stationMachine/getMachines";
+        let method =
+
+          axios({
+            url: url,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+                page_size: that.page_size2,
+                page_num: that.page_num2
+              },
+              mac_type_id: that.mac_type_id
+            },
+            // headers: headers
+          })
+          .then(response => {
+            console.log(response)
+            that.total_num2 = response.data.result.total_num
+            let array = response.data.result.models
+            that.machineList2 = []
+            array.forEach(element => {
+              that.machineList2.push(element)
+            });
+
+          })
+      },
+      sureMachine2() {
+        this.checkMachine2 = []
+        this.xzShiftShow = false
+
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+        this.tzShiftShow = false
+        this.tzMachineShow = false
+        this.tzMainShow = true
+        this.isCheckedMachine2 = true
+        console.log(this.checkedMachineNum2)
+
+
+      },
+      cancel2() { //取消按钮事件
+        this.xzShiftShow = false
+
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+        this.tzShiftShow = false
+        this.tzMachineShow = false
+        this.tzMainShow = true
+
+
+        this.checkMachine2 = []
+
+      },
+      toChooseMachine2() {
+        this.xzShiftShow = false
+        this.tzMainShow = false
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+        this.tzShiftShow = false
+        this.tzMachineShow = true
+        this.getMachineList2()
+      },
+      toClass2() {
+        this.xzShiftShow = false
+        this.tzMainShow = false
+
+        this.xzMainShow = false
+        this.isIndexShow = false
+        this.xzMachineShow = false
+
+        this.tzMachineShow = false
+        this.tzShiftShow = true
+      },
+        /**退轴函数 */
       getNumber2(number) { //织布经纱div确认按键事件
         console.log(number)
         if (this.zbFocus == true) {
@@ -367,6 +546,7 @@
           }
         }
       },
+        /**下轴函数 */
       sureClass() {
         this.xzShiftShow = false
 
@@ -441,27 +621,7 @@
         this.xzMachineShow = true
         this.getMachineList()
       },
-      xiazhou() {
-
-      },
-      toMain() {
-        this.tzMainShow = false
-        this.xzShiftShow = false
-        this.xzMachineShow = false
-
-        this.xzMainShow = false
-        this.isIndexShow = true
-      },
-      toLoweraxis() {
-        this.tzMainShow = false
-        this.isIndexShow = false
-        this.xzShiftShow = false
-        this.xzMachineShow = false
-
-        this.xzMainShow = true
-
-      },
-      changeClass(e) {
+         changeClass(e) {
         if (e == "a") {
           this.isChooseAclass = true
           this.staffList = [{
@@ -551,6 +711,28 @@
 
           })
       },
+      /**下轴函数 */
+      xiazhou() {
+
+      },
+      toMain() {
+        this.tzMainShow = false
+        this.xzShiftShow = false
+        this.xzMachineShow = false
+
+        this.xzMainShow = false
+        this.isIndexShow = true
+      },
+      toLoweraxis() {
+        this.tzMainShow = false
+        this.isIndexShow = false
+        this.xzShiftShow = false
+        this.xzMachineShow = false
+
+        this.xzMainShow = true
+
+      },
+   
     },
     mounted() {
 

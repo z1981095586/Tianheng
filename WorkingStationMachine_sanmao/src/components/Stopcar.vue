@@ -1,8 +1,8 @@
 <template>
   <div class="operationPane">
 
-    <!-- 上轴部分操作栏组件-->
-    <!-- 上轴部分主菜单-->
+    <!-- 挡车部分操作栏组件-->
+    <!-- 挡车部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center;"
       v-show="isMainShow">
 
@@ -183,12 +183,12 @@
 
 
         checkedName: "", 
-        checkMachine: [], //上轴选中机台列表
-        checkMachineColor: [], //上轴选中机台列表颜色
+        checkMachine: [], //挡车选中机台列表
+        checkMachineColor: [], //挡车选中机台列表颜色
         NameList: ['跑品德', '而且跑', '张三百'],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
-        ], //上轴机台列表
+        ], //挡车机台列表
         zbFocus: false, //div选中聚焦
         jzFocus: false,
         zbLength: "", //div内容

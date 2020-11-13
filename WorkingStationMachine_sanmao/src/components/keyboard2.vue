@@ -7,7 +7,7 @@
 
 <script>
   export default {
-
+//大键盘
     name: 'keyboard',
 
     data() {
