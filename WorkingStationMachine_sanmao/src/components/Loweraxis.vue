@@ -117,7 +117,7 @@
                 <div class="chooseBtn_con_btn" @click="toChooseMachine2()" style="font-size:1.3rem;width:85%">
                   <span>请选择</span></div>
               </div>
-              <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem">
+              <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem" >
                 <div class="chooseBtn_con_label" style="width:85%"><span
                     style="font-size:1.2rem;">{{chooseClassName2}}</span>
                 </div>
@@ -245,14 +245,14 @@
         xzShiftShow: false,
         tzMachineShow: false,
         tzShiftShow: false,
-              mac_type_id: "030100",
+        mac_type_id: "030100",
         company_id: "10000025",
 
         zbFocus: false, //div选中聚焦
         jzFocus: false,
         zbLength: "", //div内容
         jzLength: "",
-/**下轴数据 */
+        /**下轴数据 */
         isChooseAclass: true,
         staffList: [],
         chooseClassName: "A组",
@@ -275,9 +275,9 @@
         page_size: 21,
         page_num: 1,
         total_num: null,
-/**下轴数据 */
-/**退轴数据 */
-          staffList2: [],
+        /**下轴数据 */
+        /**退轴数据 */
+        staffList2: [],
         isChooseAclass2: true,
         chooseClassName2: "A组",
         isCheckedMachine2: false, //是否选中机台
@@ -299,8 +299,8 @@
         page_size2: 21,
         page_num2: 1,
         total_num2: null,
-/**退轴数据 */
-  
+        /**退轴数据 */
+
 
       }
     },
@@ -308,8 +308,6 @@
       /**退轴函数 */
       sureClass2() {
         this.xzShiftShow = false
-
-
         this.xzMainShow = false
         this.isIndexShow = false
         this.xzMachineShow = false
@@ -327,8 +325,6 @@
       },
       cancelClass2() {
         this.xzShiftShow = false
-
-
         this.xzMainShow = false
         this.isIndexShow = false
         this.xzMachineShow = false
@@ -339,7 +335,8 @@
       changeClass2(e) {
         if (e == "a") {
           this.isChooseAclass2 = true
-          this.staffList2 = [{
+          this.staffList2 = [
+            {
               label: "开出工",
               staffName: this.Aclass2.kcg,
               isSelected: false
@@ -416,21 +413,18 @@
             // headers: headers
           })
           .then(response => {
-            console.log(response)
+          
             that.total_num2 = response.data.result.total_num
             let array = response.data.result.models
             that.machineList2 = []
             array.forEach(element => {
               that.machineList2.push(element)
             });
-
           })
       },
       sureMachine2() {
         this.checkMachine2 = []
         this.xzShiftShow = false
-
-
         this.xzMainShow = false
         this.isIndexShow = false
         this.xzMachineShow = false
@@ -439,12 +433,9 @@
         this.tzMainShow = true
         this.isCheckedMachine2 = true
         console.log(this.checkedMachineNum2)
-
-
       },
       cancel2() { //取消按钮事件
         this.xzShiftShow = false
-
 
         this.xzMainShow = false
         this.isIndexShow = false
@@ -452,15 +443,12 @@
         this.tzShiftShow = false
         this.tzMachineShow = false
         this.tzMainShow = true
-
-
         this.checkMachine2 = []
 
       },
       toChooseMachine2() {
         this.xzShiftShow = false
         this.tzMainShow = false
-
         this.xzMainShow = false
         this.isIndexShow = false
         this.xzMachineShow = false
@@ -479,7 +467,7 @@
         this.tzMachineShow = false
         this.tzShiftShow = true
       },
-        /**退轴函数 */
+      /**退轴函数 */
       getNumber2(number) { //织布经纱div确认按键事件
         console.log(number)
         if (this.zbFocus == true) {
@@ -502,7 +490,6 @@
           // this.zbLength=number
           //     }
           this.zbLength = number
-
         } else if (this.jzFocus == true) {
           this.jzLength = number
         } else {
@@ -511,11 +498,7 @@
         }
       },
       isjz() { //点击经纱div键盘输入
-
-
-
         this.jzFocus = !this.jzFocus
-
         this.zbFocus = false
         if (this.jzFocus == true) {
           this.$refs.board3.number = []
@@ -546,7 +529,7 @@
           }
         }
       },
-        /**下轴函数 */
+      /**下轴函数 */
       sureClass() {
         this.xzShiftShow = false
 
@@ -592,21 +575,15 @@
       },
       cancel() { //取消按钮事件
         this.xzShiftShow = false
-
-
         this.tzMainShow = false
         this.isIndexShow = false
         this.xzMachineShow = false
         this.xzMainShow = true
         this.checkedMachineNum = "";
         this.checkMachine = []
-
       },
       toOutaxis() {
         this.xzShiftShow = false
-
-
-
         this.isIndexShow = false
         this.xzMachineShow = false
         this.xzMainShow = false
@@ -621,7 +598,7 @@
         this.xzMachineShow = true
         this.getMachineList()
       },
-         changeClass(e) {
+      changeClass(e) {
         if (e == "a") {
           this.isChooseAclass = true
           this.staffList = [{
@@ -732,11 +709,9 @@
         this.xzMainShow = true
 
       },
-   
+
     },
     mounted() {
-
-
 
     },
     watch: {

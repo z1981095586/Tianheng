@@ -8,7 +8,8 @@
 
 
 
-      <div class="main_btn" @click="toClass">换班</div>
+      <div class="main_btn" @click="toClass">运转班</div>
+      <div class="main_btn" @click="toClass">长白班</div>
       <div class="main_btn" @click="toSz">上轴</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
 
@@ -18,7 +19,7 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-        <div class="currentClass">当前班次：A班</div>
+        <div class="currentClass" v-html="isChooseAclass?'当前班次：A班':'当前班次：B班'"></div>
         <div class="classA">
           <div @click="changeClass('a')" :class="isChooseAclass ? 'classA_left_chossed':'classA_left'">
             <span>上轴工组A</span></div>
@@ -52,7 +53,7 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow2">
       <div class="operationPane_con_machineList">
-        <div class="currentClass">当前班次：A班</div>
+        <div class="currentClass" v-html="isChooseAclass?'当前班次：A班':'当前班次：B班'"></div>
         <div class="classA">
           <div @click="changeClass2('a')" :class="isChooseAclass2 ? 'classA_left_chossed':'classA_left'">
             <span>上轴工组A</span></div>
@@ -85,7 +86,7 @@
     <!-- 上轴部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
       v-show="szMainShow">
-       <div class="pch" v-show="issaoma"><input placeholder="我是扫码号" v-model="pch" /></div>
+      <div class="pch" v-show="issaoma"><input placeholder="我是扫码号" v-model="pch" /></div>
       <div class="operationPane_con_uppershaft">
 
         <div class="chooseBtn">
@@ -96,7 +97,8 @@
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>上轴组</span></div>
-            <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span v-text="isChooseAclass2?'A组':'B组'"></span></div>
+            <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
+                v-text="isChooseAclass2?'A组':'B组'"></span></div>
           </div>
         </div>
         <div class="pane">
@@ -130,7 +132,7 @@
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
           <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn"  @click="cancel()">取消</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">取消</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next"
@@ -145,12 +147,13 @@
     </div>
     <!-- 上轴部分选机台-->
     <!-- 上轴换班-->
-    <!-- <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="szShiftShow">
+    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
+      v-show="UpdatePeopleShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange">
+          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" :value="isChooseAclass? 'A班':'B班'">
               <option value="A班">A班</option>
+              <option value="B班">B班</option>
             </select></div>
           <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
             <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
@@ -158,8 +161,8 @@
           </div>
 
         </div>
-       
-        <el-checkbox-group :max="1"  :disabled="!isStartChange" v-model="checkName" @change="checkedName"
+
+        <el-checkbox-group :max="1" :disabled="!isStartChange" v-model="checkName" @change="checkedName"
           style="width:100%;height:100%;">
           <el-checkbox-button size="medium" v-for="(item,index) in StaffNameList" style="magin:1rem;font-size:2rem"
             :label="item" :key="index">{{item}}</el-checkbox-button>
@@ -170,8 +173,7 @@
           <div class=" operationPane_con_machineList_btn_leftBtn" @click="startChange()"
             :style="isStartChange?'background:#8C8C8C':'background:#A3D897'">开始修改</div>
           <div class="operationPane_con_machineList_btn_leftBtn"
-            :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'"
-            @click="save()">保存</div>
+            :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'" @click="save()">保存</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination background small layout="prev, pager, next" :total="50">
@@ -181,7 +183,7 @@
       <div class="leftLabel"><span>换班</span></div>
 
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
-    </div> -->
+    </div>
     <!-- 上轴换班-->
     <!-- 上轴部分操作栏组件-->
   </div>
@@ -199,6 +201,7 @@
         szMachineShow: false, //上轴选择机台显示隐藏
         szShiftShow: false, //上轴换班显示隐藏 
         szShiftShow2: false, //上轴换班显示隐藏
+        UpdatePeopleShow: false,
         checkMachine: [], //上轴选中机台列表
         checkName: [], //上轴选中的员工名字
         checkedMachineNum: "", //选中的机台号
@@ -226,7 +229,7 @@
             isSelected: false
           },
         ],
-     
+
         StaffNameList: ['周品道', '周品娥', '周我道', '我品道', '娥品道', '周而且', '娥去道', '偶尔娥', '汽配娥', '我我完', '请求道', ],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
@@ -262,14 +265,14 @@
           szg2: '上我请',
           szg3: '破恶趣',
         },
-           pch:"",
-          
+        pch: "",
+
       };
     },
     methods: {
       toSz() {
         this.szShiftShow = false
-
+        this.UpdatePeopleShow = false
         this.szMainShow = false
         this.szIndexShow = false
         this.szMachineShow = false;
@@ -277,7 +280,7 @@
       },
       sureClass2() {
 
-
+        this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szShiftShow2 = false
         this.szMainShow = false
@@ -286,7 +289,8 @@
         this.getMachineList()
       },
       cancelClass2() {
-        this.szShiftShow2=false
+        this.szShiftShow2 = false
+        this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szMainShow = false
         this.szMachineShow = false;
@@ -346,14 +350,16 @@
       },
       sureClass() {
 
-        this.$emit('szChange', this.staffList)
+        // this.$emit('szChange', this.staffList)
         this.szShiftShow = false
+
         this.szMachineShow = false;
         this.szMainShow = false
-        this.szIndexShow = true
+        this.szIndexShow = false
+        this.UpdatePeopleShow = true
       },
       cancelClass() {
-
+        this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szMainShow = false
         this.szMachineShow = false;
@@ -450,6 +456,7 @@
         if (this.szMachineShow == true) {
           this.isCheckedMachine = false;
           this.checkedMachineNum = "";
+          this.UpdatePeopleShow = false
           this.checkMachine = []
           this.szMachineShow = false;
           this.szShiftShow = false;
@@ -460,15 +467,27 @@
           this.szMachineShow = false;
           this.szShiftShow = false;
           this.szMainShow = true;
+          this.UpdatePeopleShow = false
           this.isStartChange = false
           return
         }
-               if (this.szMainShow == true) {
+        if (this.szMainShow == true) {
           this.szMachineShow = false;
           this.szShiftShow = false;
           this.szMainShow = false;
-          this.szShiftShow2=false
-         this.szIndexShow=true
+          this.UpdatePeopleShow = false
+          this.szShiftShow2 = false
+          this.szIndexShow = true
+          return
+        }
+        if (this.UpdatePeopleShow == true) {
+          this.szMachineShow = false;
+          this.szShiftShow = false;
+          this.szMainShow = false;
+          this.UpdatePeopleShow = false
+          this.szShiftShow2 = false
+          this.szIndexShow = true
+          this.isStartChange = false
           return
         }
 
@@ -481,6 +500,7 @@
       },
       toChooseMachine() {
         this.szMainShow = false;
+        this.UpdatePeopleShow = false
         this.szShiftShow = false;
         this.szMachineShow = true;
         this.getMachineList()
@@ -491,15 +511,17 @@
         this.szMainShow = false;
         this.szMachineShow = false;
         this.szIndexShow = false
-             this.szShiftShow2 = false;
+        this.UpdatePeopleShow = false
+        this.szShiftShow2 = false;
         this.szShiftShow = true;
 
       },
-   
+
       sureMachine() {
         this.isCheckedMachine = true
         this.checkMachine = []
         this.szMachineShow = false;
+        this.UpdatePeopleShow = false
         this.szShiftShow = false;
         this.szMainShow = true;
       },
@@ -508,6 +530,7 @@
         this.checkedMachineNum = "";
         this.checkMachine = []
         this.szMachineShow = false;
+        this.UpdatePeopleShow = false
         this.szShiftShow = false;
         this.szMainShow = true;
       },
@@ -515,9 +538,23 @@
         if (this.isStartChange == true) {
           this.szMachineShow = false;
           this.szShiftShow = false;
-          this.szMainShow = true;
+          this.UpdatePeopleShow = false
+          this.szMainShow = false;
           this.isStartChange = false
-
+          this.szIndexShow = true
+          console.log(this.isChooseAclass)
+          console.log(this.staffList)
+          if (this.isChooseAclass == true) {
+            this.Aclass.kcg = this.staffList[0].staffName
+            this.Aclass.szg1 = this.staffList[1].staffName
+            this.Aclass.szg2 = this.staffList[2].staffName
+            this.Aclass.szg3 = this.staffList[3].staffName
+          } else {
+            this.Bclass.kcg = this.staffList[0].staffName
+            this.Bclass.szg1 = this.staffList[1].staffName
+            this.Bclass.szg2 = this.staffList[2].staffName
+            this.Bclass.szg3 = this.staffList[3].staffName
+          }
           this.$emit('szChange', this.staffList)
         }
 
@@ -563,23 +600,26 @@
 </script>
 
 <style>
-.pch{
+  .pch {
     position: absolute;
     left: 3rem;
     top: 1.5rem;
     width: 14rem;
     height: 3.5rem;
 
-}
-.pch input{
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-}
-.pch input::-webkit-input-placeholder{
-  font-size: 1.3rem;
-  
-}
+  }
+
+  .pch input {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+  }
+
+  .pch input::-webkit-input-placeholder {
+    font-size: 1.3rem;
+
+  }
+
   .currentClass {
     position: absolute;
     top: 0;
@@ -638,8 +678,8 @@
   }
 
   .main_btn {
-    width: 40%;
-    height: 60%;
+    width: 30%;
+    height: 50%;
     background: #A3D897;
     display: flex;
 
