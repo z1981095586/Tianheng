@@ -337,7 +337,7 @@
             {
               label: "上轴工02",
               staffName: this.Bclass.szg2,
-              isSelected: false
+              isSelected: false        
             },
             {
               label: "上轴工03",
@@ -349,10 +349,9 @@
         }
       },
       sureClass() {
-
+   
         // this.$emit('szChange', this.staffList)
         this.szShiftShow = false
-
         this.szMachineShow = false;
         this.szMainShow = false
         this.szIndexShow = false

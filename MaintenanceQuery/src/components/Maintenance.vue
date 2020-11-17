@@ -213,7 +213,7 @@
         machine_id_list: "",
         flag: null, //用于存放当前设备是大保养还是小保养
         company_id: '',
-        limit: 5, //最多5张照片
+        limit: 4, //最多5张照片
         autoUpload: true, //选择图片后自动上传服务器获取url
         datalist: [], //保养列表
         company_id: "",
@@ -703,7 +703,7 @@
         }
       },
       handleRemove(file, fileList, id) { //移除图片
-        let url = "http://120.55.124.53:81"
+        let url = "http://120.55.124.53"
         let k = url + file.response.result
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
@@ -730,7 +730,7 @@
       },
       // 上传图片-成功
       handleAvatarSuccess(response, file, fileList, id) {
-        let url = "http://120.55.124.53:81"
+        let url = "http://120.55.124.53"
         console.log(response)
         for (let i = 0; i < this.datalist.length; i++) {
           if (this.datalist[i].id == id) {
@@ -744,7 +744,7 @@
 
           }
         }
-        //console.log(this.datalist)
+        console.log(this.datalist)
         if (response.message != "成功") {
 
 

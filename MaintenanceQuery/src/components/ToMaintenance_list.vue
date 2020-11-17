@@ -57,10 +57,32 @@
     },
     methods: {
       toCheck(){
-          
+       this.$router.push({ //跳转并传参数
+          path: '/check',
+          name: 'check',
+          params: {
+            //machine_id:this.macRelation.machine_id,
+            operator: this.operator,
+            //workshop_id:this.macRelation.workshop_id,
+            company_id: this.selectInfo.company_id,
+            staff_id: this.staff_id
+          }
+
+        })     
       }, 
       toCheckHistory(){ //跳转到检查历史记录
+  this.$router.push({ //跳转并传参数
+          path: '/checkHistory',
+          name: 'checkHistory',
+          params: {
+            //machine_id:this.macRelation.machine_id,
+            operator: this.operator,
+            //workshop_id:this.macRelation.workshop_id,
+            company_id: this.selectInfo.company_id,
+            staff_id: this.staff_id
+          }
 
+        })   
       },
       back() {
         nativeMethod.closeActivity();
