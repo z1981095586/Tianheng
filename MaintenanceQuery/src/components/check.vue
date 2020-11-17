@@ -165,7 +165,7 @@
         console.log(e.target.value)
         this.checkedWorkshop = e.target.value
       },
-      changeMacType(e) {
+      changeMactype(e) {
         console.log(e.target.value)
         this.checkedMacType = e.target.value
       },
