@@ -103,7 +103,7 @@ export default new Router({
       component: checkHistory
     },
     {
-      path: '/checkHistoryDetail/:company_id/:operator/:staff_id',
+      path: '/checkHistoryDetail/:company_id/:operator/:staff_id/:data',
       name: 'checkHistoryDetail',
       component: checkHistoryDetail
     },

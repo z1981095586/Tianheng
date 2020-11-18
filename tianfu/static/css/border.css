@@ -1,0 +1,7 @@
+﻿/*标准边框*/
+.standard_border{
+  border-radius: 5px;
+  border-style: ridge;
+  border-color: #c2c4cb;
+  border-width: 1px;
+}

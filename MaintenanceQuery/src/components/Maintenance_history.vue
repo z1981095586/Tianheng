@@ -14,7 +14,7 @@
           placeholder="选择日期">
         </el-date-picker>
         <span style="margin:18px;font-size:0.5em">机台号</span>
-        <el-input v-model="  macRelation.machine_id" size="small" style="width:20%;"></el-input>
+        <el-input id="myInput2" v-model="  macRelation.machine_id" size="small" style="width:20%;"></el-input>
       </div>
       <div class="query">
         <span style="margin:10px;font-size:0.5em">结束时间</span>
@@ -23,13 +23,13 @@
         </el-date-picker>
         <el-button type="primary" style="width:20%;" @click="query()">查询</el-button>
       </div>
-      <div class="query">
+      <!-- <div class="query">
         <span style="margin:10px;font-size:0.5em">员工筛选</span>
         <select name="bbxb" id="selecte" class="shortselect3" @change="change">
           <option :value="item.id" v-for="item in staffList">{{item.staff_name}}</option>
 
         </select>
-      </div>
+      </div> -->
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div class="scroller">
           <div class="card" @click="toDetail(item.id,item.maintain_type_name)" v-for="(item,index) in dataList" :key="index">
@@ -224,6 +224,7 @@
 
     },
     mounted() {
+ 
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);

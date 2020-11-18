@@ -10,13 +10,13 @@
         <div class="checkOption_con">
           <span>鑫海一厂织机车间每日保养</span>
           <span>二级检查</span>
-          <img src="../images/hege.png" />
+        <img :style="data.check_result=='1'?'':'width:3rem;right:0rem'" :src="data.check_result=='1'? img1:img2" /> 
         </div>
       </div>
       <div class="checkOption">
         <div class="checkOption_con">
-          <span>检查人：xhapp</span>
-          <span>2020/10/10</span>
+      <span>检查人：{{data.check_person}}</span> 
+      <span>{{data.check_time}}</span> 
           <span style="width:25%"></span>
         </div>
       </div>
@@ -28,8 +28,8 @@
       </div>
       <div class="checkOption" style="height:15%">
         <div class="checkOption_con">
-          <el-input type="textarea" :disabled="false" :rows="5" placeholder="请输入内容" v-model="textarea">
-          </el-input>
+       <el-input type="textarea" :disabled="true" :rows="5" placeholder="" v-model="data.detail">
+          </el-input> 
 
 
         </div>
@@ -41,10 +41,10 @@
         </div>
       </div>
       <div class="checkOption" style="height:40%">
-        <div class="checkOption_con2">
-          <el-image v-for="(item,index) in picList" :key="index"
-            style="width: 100px; height: 100px;float:left;margin:5px" :preview-src-list="picList" :src="item.url"
-            :fit="fit"></el-image>
+        <div class="checkOption_con2"  v-if="showPic">
+         <el-image v-for="(item,index) in data.picture" :key="index"
+            style="width: 100px; height: 100px;float:left;margin:5px" :preview-src-list="data.picture" :src="item"
+            fit="fit"></el-image> 
 
 
         </div>
@@ -62,14 +62,15 @@
     name: 'checkHistoryDetail',
     data() {
       return {
-        picList: [],
-        textarea: "",
+        img1: require('../images/hege.png'),
+        img2: require('../images/buhege.png'),
         selectInfo: {
           company_id: this.$route.params.company_id
         },
         staff_id: this.$route.params.staff_id,
         operator: this.$route.params.operator,
-
+        data: null,
+        showPic:false
       }
     },
     methods: {
@@ -80,7 +81,7 @@
           params: {
 
             operator: this.operator,
-        
+
             company_id: this.selectInfo.company_id,
             staff_id: this.staff_id
           }
@@ -89,6 +90,19 @@
       },
     },
     mounted() {
+      let data = this.$route.params.data
+    if(data.picture[0]){
+    
+           this.showPic=true
+       data.picture = data.picture.split(',');
+    }else{
+   this.showPic=false
+    }
+
+      this.data = data
+      console.log(data)
+      console.log(data.picture[0])
+      console.log(this.showPic)
 
     }
   }
