@@ -19,19 +19,26 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass?'当前班次：A班':'当前班次：B班'"></div>
-        <div class="classA">
-          <div @click="changeClass('a')" :class="isChooseAclass ? 'classA_left_chossed':'classA_left'">
+        <div class="currentClass" v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :isChooseAclass==2? '当前班次：C班':''"></div>
+          <div class="classA">
+          <div @click="changeClass('a')" :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
             <span>上轴工组A</span></div>
           <div class="classA_right">
             <span>开出工：{{Aclass.kcg}}</span><span>上轴工01：{{Aclass.szg1}}</span><span>上轴工02：{{Aclass.szg2}}</span><span>上轴工03：{{Aclass.szg3}}</span>
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass('b')" :class="isChooseAclass ? 'classA_left':'classA_left_chossed'">
+          <div @click="changeClass('b')" :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
             <span>上轴工组B</span></div>
           <div class="classA_right">
             <span>开出工：{{Bclass.kcg}}</span><span>上轴工01：{{Bclass.szg1}}</span><span>上轴工02：{{Bclass.szg2}}</span><span>上轴工03：{{Bclass.szg3}}</span>
+          </div>
+        </div>
+            <div class="classA">
+          <div @click="changeClass('c')" :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
+            <span>上轴工组C</span></div>
+          <div class="classA_right">
+            <span>开出工：{{Cclass.kcg}}</span><span>上轴工01：{{Cclass.szg1}}</span><span>上轴工02：{{Cclass.szg2}}</span><span>上轴工03：{{Cclass.szg3}}</span>
           </div>
         </div>
       </div>
@@ -53,19 +60,26 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow2">
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass?'当前班次：A班':'当前班次：B班'"></div>
+        <div class="currentClass" v-html="isChooseAclass2==0?'当前班次：A班':isChooseAclass2==1 ? '当前班次：B班' :isChooseAclass2==2? '当前班次：C班':''"></div>
         <div class="classA">
-          <div @click="changeClass2('a')" :class="isChooseAclass2 ? 'classA_left_chossed':'classA_left'">
+          <div @click="changeClass2('a')" :class="isChooseAclass2==0?'classA_left_chossed':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left':''">
             <span>上轴工组A</span></div>
           <div class="classA_right">
             <span>开出工：{{Aclass2.kcg}}</span><span>上轴工01：{{Aclass2.szg1}}</span><span>上轴工02：{{Aclass2.szg2}}</span><span>上轴工03：{{Aclass2.szg3}}</span>
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('b')" :class="isChooseAclass2 ? 'classA_left':'classA_left_chossed'">
+          <div @click="changeClass2('b')" :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left_chossed' :isChooseAclass2==2? 'classA_left':''">
             <span>上轴工组B</span></div>
           <div class="classA_right">
             <span>开出工：{{Bclass2.kcg}}</span><span>上轴工01：{{Bclass2.szg1}}</span><span>上轴工02：{{Bclass2.szg2}}</span><span>上轴工03：{{Bclass2.szg3}}</span>
+          </div>
+        </div>
+            <div class="classA">
+          <div @click="changeClass2('c')" :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left_chossed':''">
+            <span>上轴工组C</span></div>
+          <div class="classA_right">
+            <span>开出工：{{Cclass2.kcg}}</span><span>上轴工01：{{Cclass2.szg1}}</span><span>上轴工02：{{Cclass2.szg2}}</span><span>上轴工03：{{Cclass2.szg3}}</span>
           </div>
         </div>
       </div>
@@ -86,19 +100,19 @@
     <!-- 上轴部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
       v-show="szMainShow">
-      <div class="pch" v-show="issaoma"><input placeholder="我是扫码号" v-model="pch" /></div>
+    
       <div class="operationPane_con_uppershaft">
-
+  <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span v-show="!isCheckedMachine">机台</span><span
-                v-show="isCheckedMachine">{{checkedMachineNum}}</span></div>
-            <div class="chooseBtn_con_btn" @click="toChooseMachine()"><span>请选择</span></div>
+            <div class="chooseBtn_con_label"><span>机台</span></div>
+            <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
+                v-show="!isCheckedMachine">请扫码</span><span v-show="isCheckedMachine">{{checkedMachineNum}}</span></div>
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>上轴组</span></div>
             <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
-                v-text="isChooseAclass2?'A组':'B组'"></span></div>
+                v-text="isChooseAclass2==0?'A组':isChooseAclass2==1 ? 'B组' :isChooseAclass2==2? 'C组':''"></span></div>
           </div>
         </div>
         <div class="pane">
@@ -151,9 +165,10 @@
       v-show="UpdatePeopleShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" :value="isChooseAclass? 'A班':'B班'">
+          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" :value="isChooseAclass==0?'A班':isChooseAclass==1 ? 'B班' :isChooseAclass==2? 'C班':''">
               <option value="A班">A班</option>
               <option value="B班">B班</option>
+               <option value="C班">C班</option>
             </select></div>
           <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
             <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
@@ -239,7 +254,7 @@
         mac_type_id: "030100",
         company_id: "10000025",
         total_num: null,
-        isChooseAclass: true,
+        isChooseAclass: 0,
         Aclass: {
           kcg: "张三百",
           szg1: '搜房放',
@@ -252,7 +267,13 @@
           szg2: '上我请',
           szg3: '破恶趣',
         },
-        isChooseAclass2: true,
+             Cclass: {
+          kcg: "张三百",
+          szg1: '搜房放',
+          szg2: '上我请',
+          szg3: '破恶趣',
+        },
+        isChooseAclass2: 0,
         Aclass2: {
           kcg: "张三百",
           szg1: '搜房放',
@@ -265,7 +286,13 @@
           szg2: '上我请',
           szg3: '破恶趣',
         },
-        pch: "",
+              Cclass2: {
+          kcg: "张三百",
+          szg1: '搜房放',
+          szg2: '上我请',
+          szg3: '破恶趣',
+        },
+        pch: "SZ2020010240001-1",
 
       };
     },
@@ -283,10 +310,11 @@
         this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szShiftShow2 = false
-        this.szMainShow = false
+
         this.szIndexShow = false
-        this.szMachineShow = true;
-        this.getMachineList()
+        this.szMainShow = true
+        // this.szMachineShow = true;
+        // this.getMachineList()
       },
       cancelClass2() {
         this.szShiftShow2 = false
@@ -298,50 +326,74 @@
       },
       changeClass2(e) {
         if (e == "a") {
-          this.isChooseAclass2 = true
+          this.isChooseAclass2 =0
           this.staffList2 = [{
               label: "开出工",
-              staffName: this.Aclass.kcg,
+              staffName: this.Aclass2.kcg,
               isSelected: false
             },
             {
               label: "上轴工01",
-              staffName: this.Aclass.szg1,
+              staffName: this.Aclass2.szg1,
               isSelected: false
             },
             {
               label: "上轴工02",
-              staffName: this.Aclass.szg2,
+              staffName: this.Aclass2.szg2,
               isSelected: false
             },
             {
               label: "上轴工03",
-              staffName: this.Aclass.szg3,
+              staffName: this.Aclass2.szg3,
               isSelected: false
             },
           ]
 
 
-        } else {
-          this.isChooseAclass2 = false
+        } else if(e=="b") {
+          this.isChooseAclass2 =1
           this.staffList2 = [{
               label: "开出工",
-              staffName: this.Bclass.kcg,
+              staffName: this.Bclass2.kcg,
               isSelected: false
             },
             {
               label: "上轴工01",
-              staffName: this.Bclass.szg1,
+              staffName: this.Bclass2.szg1,
               isSelected: false
             },
             {
               label: "上轴工02",
-              staffName: this.Bclass.szg2,
-              isSelected: false        
+              staffName: this.Bclass2.szg2,
+              isSelected: false
             },
             {
               label: "上轴工03",
-              staffName: this.Bclass.szg3,
+              staffName: this.Bclass2.szg3,
+              isSelected: false
+            },
+          ]
+
+        }else if(e=="c") {
+          this.isChooseAclass2 =2
+          this.staffList2 = [{
+              label: "开出工",
+              staffName: this.Cclass2.kcg,
+              isSelected: false
+            },
+            {
+              label: "上轴工01",
+              staffName: this.Cclass2.szg1,
+              isSelected: false
+            },
+            {
+              label: "上轴工02",
+              staffName: this.Cclass2.szg2,
+              isSelected: false
+            },
+            {
+              label: "上轴工03",
+              staffName: this.Cclass2.szg3,
               isSelected: false
             },
           ]
@@ -349,7 +401,7 @@
         }
       },
       sureClass() {
-   
+
         // this.$emit('szChange', this.staffList)
         this.szShiftShow = false
         this.szMachineShow = false;
@@ -366,7 +418,7 @@
       },
       changeClass(e) {
         if (e == "a") {
-          this.isChooseAclass = true
+          this.isChooseAclass = 0
           this.staffList = [{
               label: "开出工",
               staffName: this.Aclass.kcg,
@@ -390,8 +442,8 @@
           ]
 
 
-        } else {
-          this.isChooseAclass = false
+        } else if(e=='b'){
+          this.isChooseAclass =1
           this.staffList = [{
               label: "开出工",
               staffName: this.Bclass.kcg,
@@ -414,6 +466,30 @@
             },
           ]
 
+        } else if(e=='c'){
+          this.isChooseAclass =2
+          this.staffList = [{
+              label: "开出工",
+              staffName: this.Cclass.kcg,
+              isSelected: false
+            },
+            {
+              label: "上轴工01",
+              staffName: this.Cclass.szg1,
+              isSelected: false
+            },
+            {
+              label: "上轴工02",
+              staffName: this.Cclass.szg2,
+              isSelected: false
+            },
+            {
+              label: "上轴工03",
+              staffName: this.Cclass.szg3,
+              isSelected: false
+            },
+          ]
+
         }
       },
       CurrentChange(e) {
@@ -424,7 +500,7 @@
       getMachineList() {
         let that = this;
         let url = host + "/api/stationMachine/getMachines";
-        let method =
+      
 
           axios({
             url: url,
@@ -543,16 +619,21 @@
           this.szIndexShow = true
           console.log(this.isChooseAclass)
           console.log(this.staffList)
-          if (this.isChooseAclass == true) {
+          if (this.isChooseAclass == 0) {
             this.Aclass.kcg = this.staffList[0].staffName
             this.Aclass.szg1 = this.staffList[1].staffName
             this.Aclass.szg2 = this.staffList[2].staffName
             this.Aclass.szg3 = this.staffList[3].staffName
-          } else {
+          } else if(this.isChooseAclass == 1) {
             this.Bclass.kcg = this.staffList[0].staffName
             this.Bclass.szg1 = this.staffList[1].staffName
             this.Bclass.szg2 = this.staffList[2].staffName
             this.Bclass.szg3 = this.staffList[3].staffName
+          }else if(this.isChooseAclass == 2) {
+            this.Cclass.kcg = this.staffList[0].staffName
+            this.Cclass.szg1 = this.staffList[1].staffName
+            this.Cclass.szg2 = this.staffList[2].staffName
+            this.Cclass.szg3 = this.staffList[3].staffName
           }
           this.$emit('szChange', this.staffList)
         }
@@ -592,26 +673,71 @@
       }
     },
     mounted() {
+       
+    },
+    watch: {
+       szShiftShow(val) { //当选择上轴组页面显示时加载数据
+        if(val==true){
+             let that = this;
+        let url = host + "/api/group/getFullGroupTree";
 
+
+          axios({
+            url: url,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+            
+              },
+        
+            },
+            // headers: headers
+          })
+          .then(response => {
+            // console.log(response.data.result[0].id)
+         axios({
+            url: url,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+              shiftGroup:{
+                id:response.data.result[0].id
+              }
+              },
+        
+            },
+            // headers: headers
+          })
+          .then(res => {
+            console.log(res)
+
+          })
+
+          })
+        }
+      }
     }
+   
   };
 
 </script>
 
 <style>
   .pch {
-    position: absolute;
-    left: 3rem;
-    top: 1.5rem;
-    width: 14rem;
-    height: 3.5rem;
-
+      position: absolute;
+    left: 1rem;
+    top: -3.5rem;
+    width: 19.5rem;
+    height: 3rem;
   }
 
   .pch input {
     width: 100%;
     height: 100%;
-    border: 1px solid black;
+    border: none;
+    font-size: 1.5rem;
   }
 
   .pch input::-webkit-input-placeholder {
@@ -640,7 +766,7 @@
     width: 47%;
     background: rgb(128, 128, 128);
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
     height: 70%;
     display: flex;
     align-items: center;
@@ -651,7 +777,7 @@
     width: 47%;
     background: rgb(50, 150, 250);
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
     height: 70%;
     display: flex;
     align-items: center;
@@ -672,7 +798,7 @@
     width: 100%;
     height: 20%;
     text-align: left;
-    font-size: 1.3rem;
+    font-size: 1rem;
 
   }
 
@@ -760,6 +886,7 @@
 
     display: flex;
     justify-content: space-between;
+    position: relative;
   }
 
   .text {

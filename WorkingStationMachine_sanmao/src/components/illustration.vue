@@ -7,7 +7,7 @@
       v-show="szMainShow">
 
       <div class="operationPane_con_uppershaft">
-
+ <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span v-show="!isCheckedMachine">机台</span><span
@@ -143,8 +143,8 @@
         StaffNameList: ['周品道', '周品娥', '周我道', '我品道', '娥品道', '周而且', '娥去道', '偶尔娥', '汽配娥', '我我完', '请求道', ],
         machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
           '115', '116', '117', '118',
-        ] //插片机台列表
-
+        ], //插片机台列表
+    pch: "SZ2020010240001-1",
       };
     },
     methods: {
@@ -254,6 +254,25 @@
 </script>
 
 <style>
+  .pch {
+      position: absolute;
+    left: 1rem;
+    top: -3.5rem;
+    width: 19.5rem;
+    height: 3rem;
+  }
+
+  .pch input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 1.5rem;
+  }
+
+  .pch input::-webkit-input-placeholder {
+    font-size: 1.3rem;
+
+  }
   .operationPane {
     width: 100%;
     height: 66%;
@@ -321,6 +340,7 @@
 
     display: flex;
     justify-content: space-between;
+    position: relative;
   }
 
   .text {
