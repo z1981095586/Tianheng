@@ -1,0 +1,55 @@
+﻿/*大标题*/
+.b_title{
+    color: #573E41;
+    font-size: 30px;
+    font-weight: bolder;
+}
+/*小标题*/
+.s_title{
+    color: #856A6E;
+    font-size: 16px;
+    font-weight: bolder;
+}
+/*正文*/
+.text{
+    color: #856A6E;
+    font-size: 14px;
+}
+/*普通提示*/
+.n_prompt{
+    color: #856A6E;
+    font-size: 12px;
+}
+/*特别提示*/
+.s_prompt{
+    color: #573E41;
+    font-size: 24px;
+}
+/*超出隐藏*/
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/*左边距5px加粗*/
+.small_title{
+  margin-left:5px;
+  font-weight: bolder;
+  font-size: 20px;
+}
+/*不可选与可选input标题*/
+.blueInputTitle{
+  color: blue;
+  display: inline-block;
+  margin-left: 2px;
+  width: 100px;
+  text-align: right;
+  font-size: 24px;
+}
+.inputTitle{
+  display: inline-block;
+  margin-left: 2px;
+  width: 100px;
+  text-align: right;
+  font-size: 24px;
+}

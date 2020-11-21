@@ -191,6 +191,7 @@
           </el-button>
         </div>
       </el-dialog>
+       
       <!--打印经轴-->
       <!--<el-dialog-->
         <!--:visible.sync="printAxisTable"-->
@@ -204,6 +205,15 @@
       <printAxis style="display: none" ref="printAxisTable"></printAxis>
       <printClothCard style="display: none" ref="printClothCard" @printReturn="printReturn"></printClothCard>
       <!--头部-->
+          <el-dialog
+      :visible.sync="otherProduceDialogShow"
+      width="1600px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <otherProductTable ref="otherProductTable" @cancel="otherProduceDialogShow=false" ></otherProductTable>
+    </el-dialog>
+       <!--其他产量对话框-->
       <div style="height: 80px;background-color: #29374b;width: 100%">
         <headComponent ref="headComponent" @selectWorker="selectWorker" @getData="getDataRefresh" @getStaffNameById="getStaffNameById" @returnFunc="returnFunc"></headComponent>
       </div>
@@ -219,7 +229,7 @@
             </el-card>
           </div>
           <div :style="{height: scrollerHeightTop,width:scrollerWidthRight}" style="display: inline-block;margin-left: 10px">
-            <el-card style="width: 100%;" :style="{height: scrollerHeightTop,width:scrollerWidthRight}" shadow="hover">
+            <el-card style="width: 100%;position:relative" :style="{height: scrollerHeightTop,width:scrollerWidthRight}" shadow="hover">
               <table cellspacing='0' cellpadding='0' border="0" width="100%" style="display: inline-block;">
                 <tr>
                   <td style="width: 400px" class="standard_font">
@@ -277,8 +287,25 @@
                   <td colspan="3" class="standard_font">
                     备注：{{order_list.remark}}
                   </td>
+                     
                 </tr>
+              
+                
+                
+                  
+                     
+               
+              
               </table>
+             
+                  <el-button type="warning" style="height: 100px;position: absolute;   width: 11rem;
+    height: 4rem;
+        right: 52rem;
+    top: 10rem;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
+              <div :style="{height:button_height}" style="display: inline-block">
+                <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 13%">其他产量</p>
+              </div>
+            </el-button>
             </el-card>
           </div>
         </div>
@@ -450,10 +477,12 @@
     import printAxis from './printAxis.vue';
     import printClothCard from './printClothCard.vue';
     import screenfull from "screenfull";
+     import otherProductTable from './otherProductTable2.vue';
     export default {
-      components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printAxis,printClothCard},
+      components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printAxis,printClothCard,otherProductTable},
         data () {
         return {
+          otherProduceDialogShow:false,
           buttonSetting:"",
           companyId:10000015,
           workShopId:null,
@@ -1670,6 +1699,25 @@
 </script>
 
 <style lang="less" scoped>
+.otherProduct{
+    width: 11rem;
+    height: 3rem;
+        right: 52rem;
+    top: 10rem;
+    background: red;
+    font-size: 1.3rem;
+
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+
+    font-weight: 600;
+}
   .big_font{
     color: #616164;
     font-weight: bold;

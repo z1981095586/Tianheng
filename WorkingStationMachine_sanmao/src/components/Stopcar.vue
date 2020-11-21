@@ -16,7 +16,7 @@
       <div class="operationPane_con_machineList">
         <el-checkbox-group v-model="checkMachine" style="width:100%;height:100%;" :max="8">
           <el-checkbox-button size="medium" v-for="(item,index) in machineList" style="magin:1rem;font-size:2rem"
-            :label="item" :key="index">{{item}}</el-checkbox-button>
+            :label="item.machine_id" :key="index">{{item.machine_id}}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -24,16 +24,17 @@
           <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">保存</div>
           <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="goback()">返回</div>
         </div>
-        <!-- <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :total="50">
+        <div class="operationPane_con_machineList_btn_right">
+          <el-pagination background small :pager-count="3" @current-change="CurrentChange" layout="prev, pager, next"
+            :total="total_num">
           </el-pagination>
-        </div> -->
+        </div>
       </div>
 
       <div class="search" style="left:4rem;width:95%;top:18px"><span style="font-size:1.5rem">搜索：</span><input
           style="font-size:1.5rem" placeholder="输入机台号" /><span
           style="color:red;margin-left:1rem;">选中机台：{{String(this.checkMachine).replace(/ /g, "")}}</span></div>
-      <img src="../../static/img/close.png"  @click="goback()" />
+      <img src="../../static/img/close.png" @click="goback()" />
     </div>
 
     <div class="operationPane_con"
@@ -49,11 +50,13 @@
       <div class="checked_machine_btn">
         <div class="checked_machine_btn_one" @click="openMachine()">开机</div>
         <div class="checked_machine_btn_one" @click="shutdownMachine()">关机</div>
-        <div class="checked_machine_btn_one" @click="toLuobu">落布</div>
-        <div class="checked_machine_btn_one" @click="toPz">改品种</div>
+        <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">落布</div>
+        <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">改品种</div>
+        <div class="checked_machine_btn_one" style=" background:#808080" v-show="!enabled">落布</div>
+        <div class="checked_machine_btn_one" style=" background:#808080" v-show="!enabled">改品种</div>
         <div class="checked_machine_btn_one" style=" margin-left: 12rem;background:#808080" @click="goback2()">返回</div>
       </div>
-      <img src="../../static/img/close.png"  @click="goback2()" />
+      <img src="../../static/img/close.png" @click="goback2()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
@@ -71,7 +74,7 @@
             @click="ShiftBack()">返回</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :total="50">
+          <el-pagination background small :pager-count="3" layout="prev, pager, next" :total="40">
           </el-pagination>
         </div>
       </div>
@@ -83,7 +86,7 @@
         <div></div>
       </div>
 
-      <img src="../../static/img/close.png"  @click="ShiftBack()" />
+      <img src="../../static/img/close.png" @click="ShiftBack()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center"
@@ -125,7 +128,7 @@
           </div>
         </div>
       </div>
-      <img src="../../static/img/close.png"  @click="cancelPz()" />
+      <img src="../../static/img/close.png" @click="cancelPz()" />
     </div>
 
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center"
@@ -159,13 +162,15 @@
         </div>
       </div>
 
-      <img src="../../static/img/close.png"  @click="cancelLb()" />
+      <img src="../../static/img/close.png" @click="cancelLb()" />
     </div>
 
   </div>
 </template>
 
 <script>
+  let host = "http://120.55.124.53:12140"
+  import axios from 'axios'
   import keyboard from '@/components/keyboard'
   export default {
     components: {
@@ -174,7 +179,8 @@
     name: 'Stopcar',
     data() {
       return {
-        isMainShow: true,//页面显示隐藏
+        company_id: "10000025",
+        isMainShow: true, //页面显示隐藏
         isMachine: false,
         shiftShow: false,
         PzShow: false,
@@ -182,7 +188,7 @@
         LbShow: false,
 
 
-        checkedName: "", 
+        checkedName: "",
         checkMachine: [], //挡车选中机台列表
         checkMachineColor: [], //挡车选中机台列表颜色
         NameList: ['跑品德', '而且跑', '张三百'],
@@ -195,6 +201,10 @@
         jzLength: "",
         lbFocus: false,
         lbLength: "",
+        enabled: false,
+        page_size: 21,
+        page_num: 1,
+        mac_type_id: "030100",
       }
     },
     methods: {
@@ -216,8 +226,41 @@
       //     this.isStartChange = false
       //   return
       //  }
-       
+
       // },
+      CurrentChange(e) {
+        console.log(e)
+        this.page_num = e
+        this.getMachineList()
+      },
+      getMachineList() {
+        let that = this;
+        let url = host + "/api/stationMachine/getMachines";
+        let method =
+
+          axios({
+            url: url,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+                page_size: that.page_size,
+                page_num: that.page_num
+              },
+              mac_type_id: that.mac_type_id
+            },
+            // headers: headers
+          })
+          .then(response => {
+
+            that.total_num = response.data.result.total_num
+            let array = response.data.result.models
+            that.machineList = []
+            array.forEach(element => {
+              that.machineList.push(element)
+            });
+          })
+      },
       islb() { //点击落布div键盘输入
         this.lbFocus = !this.lbFocus
         if (this.lbFocus == true) {
@@ -239,9 +282,37 @@
           this.lbLength = number
         }
         this.lbFocus = false
+        console.log(number)
+        console.log(this.checkMachineColor)
+        this.checkMachineColor.forEach(element => {
+          if (element.isChecked == true) {
+
+            let url = host + "/api/stationMachine/luoBu"
+            let that = this
+            axios({
+                url: url,
+                method: "post",
+                data: {
+                  selectInfo: {
+                    company_id: that.company_id,
+                  },
+                  pce_cloth_each: {
+                    machine_id: element.label,
+                    yield_meter: String(number)
+                  }
+                },
+
+
+                // headers: headers
+              })
+              .then(res => {
+                console.log(res)
+              })
+          }
+        });
 
       },
-      NumberChange2(number) {//点击落布div键盘输入值数字键盘数值改变事件
+      NumberChange2(number) { //点击落布div键盘输入值数字键盘数值改变事件
 
         if (this.lbFocus == true) {
 
@@ -287,7 +358,7 @@
         }
 
       },
-      getNumber(number) {  //织布经纱div确认按键事件
+      getNumber(number) { //织布经纱div确认按键事件
         console.log(number)
         if (this.zbFocus == true) {
           this.zbLength = number
@@ -297,7 +368,7 @@
         this.zbFocus = false
         this.jzFocus = false
       },
-      NumberChange(number) {//织布经纱div数字键盘事件事件
+      NumberChange(number) { //织布经纱div数字键盘事件事件
         console.log(number)
         if (this.zbFocus == true) {
           //     if(this.zbLength.length>0){
@@ -325,14 +396,14 @@
         this.isMainShow = true
         this.checkMachine = []
       },
-      sureShift() {//换班确认按钮
+      sureShift() { //换班确认按钮
         this.isCar = false
         this.isMachine = false
         this.shiftShow = false
         this.PzShow = false
         this.isMainShow = true
         this.checkMachine = []
-        this.$emit("dcChange",this.checkedName)
+        this.$emit("dcChange", this.checkedName)
         console.log(this.checkedName)
       },
       checkShutdown(label) { //选中机台准备开机或者关机
@@ -358,6 +429,14 @@
         this.checkMachineColor.pop()
         //防止数据更新视图不更新
       },
+      // 对象排序
+      sortByKey(array, key) {
+        return array.sort(function (a, b) {
+          let x = a[key];
+          let y = b[key];
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+      },
       shutdownMachine() { //关机
         for (let i = 0; i < this.checkMachineColor.length; i++) {
           if (this.checkMachineColor[i].isChecked == true) {
@@ -369,7 +448,7 @@
         this.checkMachineColor.pop()
         //防止数据更新视图不更新
       },
-      cancelPz() {  //品种取消返回
+      cancelPz() { //品种取消返回
 
 
 
@@ -380,7 +459,7 @@
         this.isMachine = false
         this.isCar = true
       },
-      toLuobu() {  //显示落布界面
+      toLuobu() { //显示落布界面
         this.shiftShow = false
 
         this.PzShow = false
@@ -407,7 +486,7 @@
         this.isMachine = false
         this.PzShow = true
       },
-      toCar() {  //机台选择界面
+      toCar() { //机台选择界面
         this.isMainShow = false
         this.isCar = false
         this.LbShow = false
@@ -442,13 +521,22 @@
 
 
       },
-      sureMachine() {  //确认机台
-        this.PzShow = false
-        this.isMachine = false
-        this.isMainShow = false
-        this.LbShow = false
-        this.shiftShow = false
-        this.isCar = true
+      sureMachine() { //确认机台
+
+        console.log(this.checkMachineColor)
+        if (this.checkMachineColor.length == 0) {
+          this.$message({
+            message: '请先选择至少一台！',
+            type: 'warning'
+          });
+        } else {
+          this.PzShow = false
+          this.isMachine = false
+          this.isMainShow = false
+          this.LbShow = false
+          this.shiftShow = false
+          this.isCar = true
+        }
 
       },
       checkName(e) { //选择机台事件
@@ -461,10 +549,10 @@
     },
     watch: {
       checkMachine(e) {
-
+        this.checkMachineColor = []
         if (this.checkMachine.length > 0) {
           for (let i = 0; i < this.checkMachine.length; i++) {
-         
+
             let k = {
               label: this.checkMachine[i],
               isChecked: false,
@@ -474,9 +562,32 @@
 
           }
         }
+        this.checkMachineColor = this.sortByKey(this.checkMachineColor, 'label')
 
         console.log(this.checkMachineColor)
       },
+      checkMachineColor(e) {
+
+        console.log(this.checkMachineColor)
+        let num = 0
+        for (let i = 0; i < this.checkMachineColor.length; i++) {
+          if (this.checkMachineColor[i].isChecked == true) {
+            num++;
+          }
+        }
+        console.log(num)
+        if (num > 1 || num == 0) {
+          this.enabled = false
+        } else {
+          this.enabled = true
+        }
+      },
+      isMachine(e) {
+        if (e == true) {
+          this.page_num = 1
+          this.getMachineList()
+        }
+      }
     }
   }
 
@@ -550,7 +661,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-        border-top: 3px solid #ffffff;
+    border-top: 3px solid #ffffff;
     border-left: 3px solid #ffffff;
     border-bottom: 3px solid #717171;
     border-right: 3px solid #717171;
@@ -564,7 +675,7 @@
     color: white;
     align-items: center;
     justify-content: center;
-        border-top: 3px solid #ffffff;
+    border-top: 3px solid #ffffff;
     border-left: 3px solid #ffffff;
     border-bottom: 3px solid #717171;
     border-right: 3px solid #717171;
@@ -608,7 +719,7 @@
     align-content: center;
     justify-content: flex-start;
     border: 1px solid black;
-    
+
   }
 
   .pz_right_top_input_active {

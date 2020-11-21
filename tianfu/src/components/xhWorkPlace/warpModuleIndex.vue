@@ -154,7 +154,11 @@
         <div :style="{height: scrollerHeightTop,width:scrollerWidthLeft}" style="display: inline-block;margin-left: 10px;">
          
           <el-card style="width: 100%;position:relative" :style="{height: scrollerHeightTop,width:scrollerWidthRight}" shadow="hover">
-             <div class="otherProduct" @click="otherProduceDialogShow=true"><span>其他产量</span></div>
+               <el-button type="warning" style="height: 100px;position: absolute;top: 45px;right: 20px;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
+              <div :style="{height:button_height}" style="display: inline-block">
+                <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 12%">其他<br/><br/>产量</p>
+              </div>
+            </el-button>
             <table cellspacing='0' cellpadding='0' border="0" width="100%">
               <tr>
                 <td style="width: 40%" class="standard_font">
@@ -354,6 +358,7 @@
   import outputSubmitTable from './produceComfirm.vue';
   import outputPrintTable from './../warpCardPrint.vue';
   import otherProductTable from './otherProductTable.vue';
+   
   import changeStaffMessage from './changeStaffMessage.vue';
   import screenfull from "screenfull"
   export default {
