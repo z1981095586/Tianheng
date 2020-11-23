@@ -84,8 +84,104 @@
       </div>
     </div>
  <div class="baogong" v-show="baogongShow">
-      
+          <div class="head" :style="enabled ? 'background:rgba(49,124,205,0.6)':''"><span
+          style=" justify-content: flex-start;"></span><span style="font-size:2rem">穿综记录</span><span
+          style="    justify-content: flex-end;">2020-11-20 19:23:12</span></div>
+          <div class="con1">
+              <div class="con1_top">
+                <div class="con1_top_con"><span style="margin-right:9rem;margin-left:3rem">品号：扫码后显示</span><span>色号</span><span>轴号</span><span>整经长度</span></div>
+                    <div class="con1_top_con"><span style="margin-right:9rem;margin-left:3rem">品号：扫码后显示</span><span>色号</span><span>轴号</span><span>整经长度</span></div>
+              </div>
+                <div class="con1_bottom">
+                    <div class="con1_bottom_con">
+            <span >穿综工号1</span>
+            <input  />
+          </div>
+                   <div class="con1_bottom_con">
+       <span >穿综工号2</span>
+            <input  />
+          </div>
+                   <div class="con1_bottom_con">
+       <span >穿综工号3</span>
+            <input  />
+          </div>
+                   <div class="con1_bottom_con">
+              <span >穿综工号4</span>
+            <input  />
+          </div>
+                </div>
+            </div> 
+          <div class="con2">
+                  <div class="con2_con">
+                           <div class="con1_bottom_con" style="height:50%">
+            <span >根数</span>
+            <input  />
+          </div>
+                 <div class="con1_bottom_con" style="height:50%">
+            <span style="width:10rem">复查人(工长)</span>
+            <input  />
+          </div>
+                  </div>
+               <div class="con2_con" style="width:40%;">
+                            <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
+            <span style="margin-right:2rem;margin-top:3rem">难度系数</span>
+            <input style="margin-top:3rem" />
+          </div>
+                       <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
+            <span style="margin-right:2rem;margin-top:3rem">加班系数</span>
+            <input style="margin-top:3rem" />
+          </div>
+               </div>
+                    <div class="con2_con">
+                      <span style="    margin-bottom: 1.5rem;
+    margin-top: 1rem;">备注</span>
+                      <textarea ></textarea>
+                    </div>
+          </div>
+             <div class="bottom_btn">
+        <div class="btns"  :style=" enabled ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+          @click="dialogVisible=true">扫码穿综</div>
+        <div class="btns" :style=" enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+          @click="save()">保存</div>
+             <div class="btns" :style=" !enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+          @click="update()">修改</div>
+        <div class="btns"
+          @click="dialogVisible2=true" :style=" enabled3 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'">完成</div>
+        <div class="btns" style="margin-left:5rem;background:#808080;color:white" @click=" back">返回</div>
+      </div>
+          <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
+      <div
+        style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
+        <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem;border:none;" />
+        <img src="../../static/img/saomiao.gif" style="width:10rem;" />
+
+        <div class="stopBtn" @click="dialogVisible = false">停止扫码</div>
+      </div>
+
+
+
+
+
+    </el-dialog>
+        <el-dialog title="确认提交" :visible.sync="dialogVisible2" width="45%">
+      <div
+        style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
+
+        <img src="../../static/img/face.png" style="width:10rem;" />
+        <span style="font-size:1.6rem">是否提交</span>
+        <div style="width:100%;display:flex;justify-content: space-around;">
+          <div class="stopBtn" @click="Finish()">确认</div>
+          <div class="stopBtn" style="background:#808080;color:white;" @click="dialogVisible2 = false">取消</div>
+        </div>
+      </div>
+
+
+
+
+
+    </el-dialog>
     </div>
+    
   </div>
 </template>
 
@@ -97,10 +193,16 @@
 
     data() {
       return {
+        printCode:"",
         border:false,
         mainShow:false,
-        queryShow:true,
-        baogongShow:false,
+        queryShow:false,
+        baogongShow:true,
+        enabled:true,
+        enabled2:false,
+        enabled3:false,
+        dialogVisible:false,
+        dialogVisible2:false,
         pageNum:1,
         pageSize:8,
         companyId:"10000025",
@@ -151,6 +253,20 @@
       }
     },
     methods: {
+      Finish(){
+this.dialogVisible2=false
+
+this.baogongShow=false
+this.mainShow=true
+      },
+      save(){
+this.enabled2=!this.enabled2
+this.enabled3=true
+      },
+      update(){
+this.enabled2=!this.enabled2
+this.enabled3=false
+      },
       getData(){
        let url = 'http://106.12.219.66:8227/report/getSimpleReport';
         let headers = {
@@ -209,6 +325,15 @@
   
     },
        watch: {
+            printCode(val) {
+        if (val.length == 10) {
+          this.dialogVisible = false
+          this.enabled=false
+          this.enabled2=true
+          this.enabled3=false
+     this.printCode=""
+        }
+      },
      queryShow(val) { //当选择上轴组页面显示时加载数据
         if (val == true) {
               this.getData()
@@ -225,6 +350,9 @@
 </script>
 
 <style scoped>
+body{
+  padding: 0;
+}
 .header{
   background: #317CCD;
   color: white;
@@ -232,6 +360,7 @@
   .allPage {
     width: 100%;
     height: 100vh;
+    
   }
 
   .header {
@@ -288,8 +417,10 @@
   height: 92%;
   display: flex;
   align-items: center;
+  
   justify-content: space-around;
 }
+
 .query{
   width: 100%;
   height: 92%;
@@ -326,9 +457,101 @@
 .baogong{
   width: 100%;
   height: 92%;
+    background: #E2E7ED;
   display: flex;
+flex-direction: column;
+   align-items: center;
+}
+ .con1_bottom_con {
+    width: 30%;
+    height: 100%;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 
- 
+  }
+
+  .con1_bottom_con input {
+    width: 11rem;
+    height: 3.5rem;
+    border: 1px solid black;
+    font-size: 1.6rem;
+  }
+
+  .head{
+    width: 100%;
+    margin-bottom: 1.5rem;
+    height: 4rem;
+    background: #317CCD;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .head span {
+    font-size: 1.5rem;
+    color: white;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+.con1{
+  width: 100%;
+  height: 16rem;
+  margin-bottom: 1rem;
+background: white;
+
+}
+.con1_top{
+width: 100%;
+height: 50%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+.con1_top_con{
+  width: 100%;
+  height: 3rem;
+  display: flex;
+}
+.con1_top_con span{
+  width: 20%;
+  height: 100%;
+  font-size: 1.6rem;
+  color: rgba(0,0,0,0.6);
+}
+.con1_bottom{
+width: 100%;
+height: 46%;
+display: flex;
+justify-content: space-around;
+align-items: center;
+}
+.con2{
+  width: 100%;
+  height: 16rem;
+background: white;
+display: flex;
+}
+.con2_con{
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.con2_con span{
+ font-size: 1.6rem;
+}
+.con2_con textarea{
+  width: 90%;
+  height: 10rem;
+  border: 1px solid black;
 }
 .btn{
   width: 45%;
@@ -346,6 +569,44 @@
     font-size: 3rem;
 }
 
+  .bottom_btn {
+    width: 100%;
+    height: 9rem;
 
+    display: flex;
+    align-items: center;
 
+  }
+
+  .btns {
+    width: 10rem;
+    height: 70%;
+    background: #A3D897;
+    border-top: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-bottom: 3px solid #717171;
+    border-right: 3px solid #717171;
+    display: flex;
+    margin-left: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 2rem;
+  }
+
+  .stopBtn {
+    width: 10rem;
+    height: 4rem;
+    font-size: 1.6rem;
+    background: #A3D897;
+    border-top: 3px solid #ffffff;
+    border-left: 3px solid #ffffff;
+    border-bottom: 3px solid #717171;
+    border-right: 3px solid #717171;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+  }
 </style>

@@ -30,7 +30,7 @@
 
       </div>
     </div>
-    <uppershaft v-show="isShangZhou" @szChange="szChange"></uppershaft>
+    <uppershaft v-show="isShangZhou" @szChange=" getGroup()"></uppershaft>
     <illustration v-show="isChaPian" @cpChange="cpChange"></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  var host = "http://120.55.124.53:12140"
   import Uppershaft from "./Uppershaft"; //上轴操作面板
   import illustration from "./illustration"; //扫码插片操作面板
   import Stopcar from "./Stopcar"; //挡车操作面板
@@ -56,6 +58,7 @@
     inject:['reload'],
     data() {
       return {
+          company_id: "10000025",
         tabList: [{
             label: "上轴",
             class: "oneTab_Choosed",
@@ -96,6 +99,38 @@
       }
     },
     methods: {
+         getGroup(){//获取当前班次(当班分组)(倒数第二级分组)
+           console.log("get")
+             let url2 = host + "/api/group/getOnDutyShift"
+          let that = this
+          axios({
+              url: url2,
+              method: "post",
+              data: {
+                selectInfo: {
+                  company_id: that.company_id,
+                },
+                shiftGroup: {
+                  id: 6
+                }
+              },
+
+
+             
+            })
+            .then(res => {
+              console.log(res)
+              let nameList=res.data.result.staffList
+              nameList.forEach(element => {
+                element.label=element.staff_organization_name+"0"+element.order_num
+                element.staffName=element.staff_name
+
+              });
+           
+              this.szChange(nameList)
+
+            })
+           },
       szChange(nameList) { //上轴换班事件
         this.nameList = []
         let str = "";
@@ -239,7 +274,7 @@
       }
     },
     mounted() {
-
+this.getGroup()
 
   
     }

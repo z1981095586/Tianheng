@@ -125,7 +125,7 @@
         </div>
         <div class="pane">
           <div class="text">
-            <div class="text_con"><span>品名：扫码号显示....</span><span>品名：扫码号显示....</span></div>
+            <div class="text_con"><span>品名：{{axis_no}}</span><span>品名：{{product_name}}</span></div>
             <div class="text_con"><span>品名：扫码号显示....</span></div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
@@ -200,7 +200,7 @@
             :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'" @click="save()">保存</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :total="50">
+          <el-pagination background small layout="prev, pager, next" :pager-count="4" @current-change="CurrentNameChange" :total="total_num2">
           </el-pagination>
         </div>
       </div>
@@ -332,7 +332,9 @@
           szg3Id: null,
           id: null
         },
-        pch: "SZ2020010240001-1",
+        pch: "",
+        product_name:"",
+        axis_no:""
 
       };
     },
@@ -346,13 +348,15 @@
         this.szShiftShow2 = true
       },
       sureClass2() {
-
+           
         this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szShiftShow2 = false
 
         this.szIndexShow = false
         this.szMainShow = true
+     console.log(this.staffList2)
+   
         // this.szMachineShow = true;
         // this.getMachineList()
       },
@@ -371,17 +375,20 @@
             {
               label: "上轴工01",
               staffName: this.Aclass2.szg1,
-              isSelected: false
+              isSelected: false,
+                    groupId:this.Aclass2.id
             },
             {
               label: "上轴工02",
               staffName: this.Aclass2.szg2,
-              isSelected: false
+              isSelected: false,
+                    groupId:this.Aclass2.id
             },
             {
               label: "上轴工03",
               staffName: this.Aclass2.szg3,
-              isSelected: false
+              isSelected: false,
+                    groupId:this.Aclass2.id
             },
           ]
 
@@ -392,17 +399,20 @@
             {
               label: "上轴工01",
               staffName: this.Bclass2.szg1,
-              isSelected: false
+              isSelected: false,
+                    groupId:this.Bclass2.id
             },
             {
               label: "上轴工02",
               staffName: this.Bclass2.szg2,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Bclass2.id
             },
             {
               label: "上轴工03",
               staffName: this.Bclass2.szg3,
-              isSelected: false
+              isSelected: false,
+                    groupId:this.Bclass2.id
             },
           ]
 
@@ -412,21 +422,25 @@
             {
               label: "上轴工01",
               staffName: this.Cclass2.szg1,
-              isSelected: false
+              isSelected: false,
+                   groupId:this.Cclass2.id
             },
             {
               label: "上轴工02",
               staffName: this.Cclass2.szg2,
-              isSelected: false
+              isSelected: false,
+                       groupId:this.Cclass2.id
             },
             {
               label: "上轴工03",
               staffName: this.Cclass2.szg3,
-              isSelected: false
+              isSelected: false,
+                   groupId:this.Cclass2.id
             },
           ]
 
         }
+       
       },
       sureClass() {
 
@@ -454,17 +468,20 @@
             {
               label: "上轴工01",
               staffName: this.Aclass.szg1,
-              isSelected: false
+              isSelected: false,
+              groupId:this.Aclass.id
             },
             {
               label: "上轴工02",
               staffName: this.Aclass.szg2,
-              isSelected: false
+              isSelected: false,
+                groupId:this.Aclass.id
             },
             {
               label: "上轴工03",
               staffName: this.Aclass.szg3,
-              isSelected: false
+              isSelected: false,
+                groupId:this.Aclass.id
             },
           ]
 
@@ -475,17 +492,20 @@
             {
               label: "上轴工01",
               staffName: this.Bclass.szg1,
-              isSelected: false
+              isSelected: false,
+                groupId:this.Bclass.id
             },
             {
               label: "上轴工02",
               staffName: this.Bclass.szg2,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Bclass.id
             },
             {
               label: "上轴工03",
               staffName: this.Bclass.szg3,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Bclass.id
             },
           ]
 
@@ -495,17 +515,20 @@
             {
               label: "上轴工01",
               staffName: this.Cclass.szg1,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Cclass.id
             },
             {
               label: "上轴工02",
               staffName: this.Cclass.szg2,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Cclass.id
             },
             {
               label: "上轴工03",
               staffName: this.Cclass.szg3,
-              isSelected: false
+              isSelected: false,
+                  groupId:this.Cclass.id
             },
           ]
 
@@ -516,6 +539,11 @@
         console.log(e)
         this.page_num = e
         this.getMachineList()
+      },
+           CurrentNameChange(e) {
+        console.log(e)
+        this.page_num2 = e
+        this.getStaffList()
       },
       getMachineList() {
         let that = this;
@@ -631,31 +659,75 @@
       },
       save() { //确认按钮事件
         if (this.isStartChange == true) {
-          this.szMachineShow = false;
+     
+          console.log(this.Aclass)
+          console.log(this.Bclass)
+          console.log(this.staffList)
+          let id;
+          let staffList=[{id:null,order_num:null},{id:null,order_num:null},{id:null,order_num:null},];
+     
+          if (this.isChooseAclass == 0) {
+          id=this.Aclass.id
+         
+         
+
+          } else if (this.isChooseAclass == 1) {
+            id=this.Bclass.id
+     
+          } else if (this.isChooseAclass == 2) {
+            id=this.Cclass.id
+      
+          }
+ 
+
+             staffList[0].id=this.staffList[0].id
+            staffList[0].order_num=1
+                 staffList[1].id=this.staffList[1].id
+            staffList[1].order_num=2
+                 staffList[2].id=this.staffList[2].id
+            staffList[2].order_num=3
+            let url = host+'/api/group/shift';
+            let data={
+              selectInfo:{
+                company_id:this.company_id
+              },
+              shiftGroup:{
+               id:id
+              },
+              staffList:staffList
+              
+            }
+            let that=this
+              axios({
+            url: url,
+            method:"post",
+            data: data,
+         
+          })
+          .then(response => {
+            console.log(response)
+            if(response.data.message=="成功"){
+                that.$message({
+          message: '换班成功！',
+          type: 'success'
+        });
+        
+                    this.szMachineShow = false;
           this.szShiftShow = false;
           this.UpdatePeopleShow = false
           this.szMainShow = false;
           this.isStartChange = false
           this.szIndexShow = true
-          console.log(this.isChooseAclass)
-          console.log(this.staffList)
-          if (this.isChooseAclass == 0) {
-          
-            this.Aclass.szg1 = this.staffList[0].staffName
-            this.Aclass.szg2 = this.staffList[1].staffName
-            this.Aclass.szg3 = this.staffList[2].staffName
-          } else if (this.isChooseAclass == 1) {
-          
-            this.Bclass.szg1 = this.staffList[0].staffName
-            this.Bclass.szg2 = this.staffList[1].staffName
-            this.Bclass.szg3 = this.staffList[2].staffName
-          } else if (this.isChooseAclass == 2) {
-          
-            this.Cclass.szg1 = this.staffList[0].staffName
-            this.Cclass.szg2 = this.staffList[1].staffName
-            this.Cclass.szg3 = this.staffList[2].staffName
-          }
-          this.$emit('szChange', this.staffList)
+                this.$emit('szChange', this.staffList)
+            }else{
+                this.$message({
+          message: '发生错误！',
+          type: 'warning'
+        });
+            }
+          })
+         
+     
         }
 
       },
@@ -672,10 +744,38 @@
         for (let i = 0; i < this.staffList.length; i++) {
           if (this.staffList[i].isSelected == true) {
             this.staffList[i].staffName =e[0]
+                      let url = 'http://106.12.219.66:8227/report/getSimpleReport';
+        let headers = {
+          'Content-Type': 'application/json',
+          'companyID': this.company_id
+        };
+        let method = "post";
+        let data = {
+          "tableName": "s_staff",
+          "pageNum": 1,
+          "pageSize": 1000,
+          query:{
+            staff_name:e[0]
+          }
+
+        };
+
+        let that = this
+      
+        axios({
+            url: url,
+            method: method,
+            data: data,
+            headers: headers
+          })
+          .then(response => {
+     console.log(response)
+      this.staffList[i].id=response.data.data[0].id //绑定员工id
+          })
           }
         }
-        console.log(this.staffList)
-        this.checkName = []
+        //此处查询staff表的对应e【0】的id
+  
 
       },
       chooseStaff(label) { //换班选中其中输入框的事件
@@ -692,6 +792,7 @@
         }
 
       },
+        
       getGroup(){//获取组员信息
         
           let url2 = host + "/api/group/getGroupDetail"
@@ -714,7 +815,8 @@
             .then(res => {
            console.log(res)
               that.Aclass.id = res.data.result[0].id
-             
+               that.Bclass.id = res.data.result[1].id
+                 that.Cclass.id = res.data.result[2].id
               res.data.result[0].staffList.forEach(element => {
                 if (element.order_num == "1") {
                      that.Aclass.szg1Id =element.id
@@ -751,23 +853,28 @@
               that.Cclass.szg3 = element.staff_name
                 }
               });
-                     this.staffList = [
+                     that.staffList = [
             {
+           
               label: "上轴工01",
-              staffName: this.Aclass.szg1,
-              isSelected: false
+              staffName: that.Aclass.szg1,
+              isSelected: false,
+              id:that.Aclass.szg1Id
             },
             {
               label: "上轴工02",
-              staffName: this.Aclass.szg2,
-              isSelected: false
+              staffName: that.Aclass.szg2,
+              isSelected: false,
+                     id:that.Aclass.szg2Id
             },
             {
               label: "上轴工03",
-              staffName: this.Aclass.szg3,
-              isSelected: false
+              staffName: that.Aclass.szg3,
+              isSelected: false,
+                     id:that.Aclass.szg3Id
             },
           ]
+          that.staffList2=that.staffList
               that.Aclass2=that.Aclass
               that.Bclass2=that.Bclass
               that.Cclass2=that.Cclass
@@ -776,6 +883,7 @@
       getStaffList(){
        let url="http://120.55.124.53:8206/api/staff/getStaffListByOrganization" 
        let data={"page":this.page_num2,"pageNum":this.page_size2,"staff_organization_id":1,"query_condition":""}
+       this.StaffNameList=[]
        let that=this
             axios({
               url: url,
@@ -794,7 +902,8 @@ let arr=res.data.data.staffModel
 for(let i=0;i<arr.length;i++){
   that.StaffNameList.push(arr[i])
 }
-that.total_num2=res.data.data.totalDataNum
+that.total_num2=res.data.totalDataNum
+console.log(that.total_num2)
 
             })
       }
@@ -803,6 +912,31 @@ that.total_num2=res.data.data.totalDataNum
 
     },
     watch: {
+       pch(val){//批轴号事件
+           let url=host+"/api/stationMachine/getAxisInfo"
+               let that=this
+   if(val!=""){
+              axios({
+              url: url,
+              method: "post",
+            
+              data: {
+                selectInfo:{
+                  company_id:that.company_id
+                },
+                print_code:val
+              },
+
+
+              // headers: headers
+            })
+            .then(res => {
+console.log(res)
+that.axis_no=res.data.result.axis_no
+that.product_name=res.data.result.product_name
+            })
+   }
+       },
       UpdatePeopleShow(val){
       
       if(val==true){
