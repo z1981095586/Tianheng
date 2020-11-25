@@ -118,7 +118,8 @@
         maintain_type_name: this.$route.params.maintain_type_name,
         operator: '', //操作人
         dataList: [],
-        consumeList: []
+        consumeList: [],
+         staff_id :this.$route.params.staff_id,
       }
     },
     methods: {
@@ -130,7 +131,8 @@
             machine_id: this.macRelation.machine_id,
             operator: this.operator,
             workshop_id: this.macRelation.workshop_id,
-            company_id: this.selectInfo.company_id
+            company_id: this.selectInfo.company_id,
+             staff_id :this.staff_id,
           }
 
         })
@@ -154,7 +156,7 @@
             that.$message({
               message: '没有数据！',
               center: true,
-              duration: 2000
+              duration: 1000
             });
 
             return

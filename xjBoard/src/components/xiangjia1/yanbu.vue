@@ -44,23 +44,23 @@
               <div class="card5_con">
                 <span class="jin">今</span>
                 <span class="zong">今日疵点总数</span>
-                <!-- <span class="num">{{ lacksum}}</span> -->
-                        <span class="num">36</span>
+                <span class="num">{{ lacksum}}</span>
+                        <!-- <span class="num">36</span> -->
               </div>
             </div>
             <div class="card4">
               <div class="card4_con">
                 <span class="jin">昨</span>
                 <span class="zong">昨日验布米数</span>
-                <!-- <span class="num" style="color:#00FF08;right:1.2rem">{{yersum}}</span> -->
-                <span class="num" style="color:#00FF08;right:1.2rem">33461</span>
+                <span class="num" style="color:#00FF08;right:1.2rem">{{yersum}}</span>
+                <!-- <span class="num" style="color:#00FF08;right:1.2rem">33461</span> -->
            
               </div>
             </div>
             <div class="font"><span style="font-size:0.9rem;color:white">今日验布米数
               </span>
-              <!-- <span style="font-size:1.1rem;color:#EEFF00">{{daysum}}</span> -->
-                <span style="font-size:2.3rem;color:#EEFF00">24875</span>
+              <span style="font-size:1.1rem;color:#EEFF00">{{daysum}}</span>
+                <!-- <span style="font-size:2.3rem;color:#EEFF00">24875</span> -->
               </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
       return {
         timer: null,
         companyId: this.$route.params.id, //公司库表Id
-        workshop_id: "",
+        workshop_id: "2",
         companyname:"",
         jsjzs: null,
         daysum: null,
@@ -119,7 +119,7 @@
         var nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
         return nowDate;
       },
-      getyb() {
+     getyb() {
         let that = this
         let xlist = []
         let ylist = []
@@ -128,10 +128,8 @@
         const yestoday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
         let date = new Date()
 
-        //console.log(that.getdate(yestoday))
-        //console.log(that.getdate(date))
-        //console.log(that.companyId)
-        //console.log(that.workshop_id)
+        //////////console.log(that.getdate(yestoday))
+        //////////console.log(that.getdate(date))
         axios({ //今日验布
             url: 'http://47.99.156.243:8227/report/getSimpleReport',
             method: 'post',
@@ -146,6 +144,7 @@
               selectLikeFields: {
                 update_time: that.getdate(date)
               },
+               
               groupByColumn: ["user_id1"],
               selectFields: ["sum(yield) as sum", "user_id1"]
 
@@ -157,112 +156,131 @@
 
           })
           .then(response => {
-   
+            ////////console.log(response)
             for (let i = 0; i < response.data.data.length; i++) {
-              axios({
-                  url: 'http://47.99.156.243:8227/report/getSimpleReport',
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'companyId': that.companyId
-                  },
+              if (response.data.data[i].user_id1 != "0") {
+                axios({
+                    url: 'http://47.99.156.243:8227/report/getSimpleReport',
+                    method: 'post',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'companyId': that.companyId
+                    },
 
-                  data: {
+                    data: {
 
-                    tableName: "s_staff",
-                    query: {
-                      id: response.data.data[i].user_id1
+                      tableName: "s_staff",
+                      query: {
+                        id: response.data.data[i].user_id1,
+                  
+                      }
+
+
+
+
+
                     }
 
+                  })
+                  .then(res => {
+
+//console.log(res)
+                    response.data.data[i].staff_name = res.data.data[0].staff_name
+
+
+                    list.push(response.data.data[i])
+
+
+                    // xlist.push(res.data.data[0].staff_name)
+                  })
+              } else {
+                //  response.data.data[i].staff_name = "周滴滴"
+                //      list.push(response.data.data[i])
+                //  xlist.push( "周滴滴")
+              }
 
 
 
-
-                  }
-
-                })
-                .then(res => {
-                  response.data.data[i].staff_name = res.data.data[0].staff_name
-                  xlist.push(res.data.data[0].staff_name)
-                })
-            }
-            for (let i = 0; i < response.data.data.length; i++) {
-              list.push(response.data.data[i])
-
-            }
-
-          }).then(() => {
-    
-            let list2 = that.sortByKey(list, "sum")
-
-            let arr = []
-  console.log(list2)
- if(list2.length>0){
-              for (let j = list2.length - 1; j >= list2.length - 5; j--) {
-              arr.push(list2[j])
-            
-                ylist.push(list2[j].sum)
-// if(typeof(list2[j].sum) == "undefined"){
-//  ylist.push(0)
-// }else{
-//   ylist.push(list2[j].sum)
-// }
-
-             
-            }
- }
-            //console.log(arr)
-      
-
-            for (let i = 0; i < arr.length; i++) {
-
-
-              axios({ //昨日验布
-                  url: 'http://47.99.156.243:8227/report/getSimpleReport',
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'companyId': that.companyId
-                  },
-
-                  data: {
-
-                    tableName: "exam_defect_his",
-                    selectLikeFields: {
-                      update_time: that.getdate(yestoday)
-                    },
-                    query: {
-                      user_id1: arr[i].user_id1
-                    },
-                    selectFields: ["sum(yield) as sum", ]
-
-
-
-
-
-                  }
-
-                })
-                .then(response => {
-                       if(!response.data.data[0]){
-                 ylist2[i] =0
-                    }else{
-                       ylist2[i] = response.data.data[0].sum
-                         
-                    }
-                
-                })
             }
             setTimeout(() => {
-              // that.echart2(xlist, ylist, ylist2)
-              console.log(xlist)
-              console.log(ylist)
-              console.log(ylist2)
-              let name = xlist[0]
-              console.log(name)
+              ////console.log(list.length)
+              ////console.log("wd")
+              let list2 = that.sortByKey(list, "sum")
 
-              that.echart2(xlist, ylist, ylist2, name)
-            }, 1000);
+              let arr = []
+              ////console.log( JSON.stringify(list2))
+              for (let j = list2.length - 1; j >= 0; j--) {
+
+                arr.push(list2[j])
+                xlist.push(list2[j].staff_name)
+                ylist.push(list2[j].sum)
+              }
+              ////console.log(xlist)
+              ////console.log(ylist)
+
+
+
+
+              for (let i = 0; i < arr.length; i++) {
+
+
+                axios({ //昨日验布
+                    url: 'http://47.99.156.243:8227/report/getSimpleReport',
+                    method: 'post',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'companyId': that.companyId
+                    },
+
+                    data: {
+
+                      tableName: "exam_defect_his",
+                      selectLikeFields: {
+                        update_time: that.getdate(yestoday)
+                      },
+                      query: {
+                        user_id1: arr[i].user_id1,
+                  
+                      },
+                       
+                      selectFields: ["sum(yield) as sum", ]
+
+
+
+
+
+                    }
+
+                  })
+                  .then(response => {
+
+                    if (!response.data.data[0]) {
+                      ylist2[i] = 0
+                    } else {
+                      ylist2[i] = response.data.data[0].sum
+
+                    }
+                  })
+              }
+              setTimeout(() => {
+                // that.echart2(xlist, ylist, ylist2)
+                ////console.log(xlist)
+                ////console.log(ylist)
+                ////console.log(ylist2)
+                let name = xlist[0]
+                // //////console.log(name)
+
+                that.echart2(xlist, ylist, ylist2, name)
+              }, 1000);
+
+
+            }, 1000)
+
+
+
+          }).then(() => {
+
+
 
           })
       },
@@ -274,111 +292,82 @@
           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
       },
-      getElertic() {
+     getElertic() {
 
         let ylist4 = []
         let that = this;
-        let datelist = that.gethourarr(6);
-        // axios({
-        //     url: 'http://47.99.156.243:8227/report/getSimpleReport',
-        //     method: 'post',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //       'companyId': that.companyId
-        //     },
-
-        //     data: {
-
-        //       tableName: "looplist_info",
-
-
-        //       query: {
-        //         'workshop_id': that.workshop_id,
-        //         'name': '成品车间'
-        //       },
+        let datelist = that.gethourarr(24);
 
 
 
-        //     }
+        setTimeout(() => {
+          //////////console.log(datelist)
+          let xlist = []
+          let ylist3 = []
 
-        //   })
-        //   .then(response => {
-        //   console.log(response)
-            ////console.log(that.gethourarr(6))
-
-            // for (let i = 0; i < response.data.data.length; i++) {
-
-            //   for (let j = 0; j < datelist.length; j++) {
-            //     axios({
-            //         url: 'http://47.99.156.243:8227/report/getSimpleReport',
-            //         method: 'post',
-            //         headers: {
-            //           'Content-Type': 'application/json',
-            //           'companyId': that.companyId
-            //         },
-
-            //         data: {
-
-            //           tableName: "electric_history_h",
-
-
-            //           query: {
-            //             looplistId: response.data.data[i].id
-
-            //           },
-            //           selectLikeFields: {
-            //             startTime: datelist[j]
-            //           }
-
-
-            //         }
-
-            //       })
-            //       .then(response => {
-            //      console.log(response.data.data)
-            //         ////console.log(datelist[j])
-            //         if (response.data.data.length == 0) { //说明那天日期的电为0
-            //           ylist4[j] = 0
-            //         } else {
-            //           ylist4[j] = parseInt(response.data.data[0].electric)
-            //         }
-            //       })
-            //   }
-
-            // }
-
-
+          for (let i = 0; i < datelist.length; i++) {
+            xlist.push((datelist[i].substr(11, 2) + ":00"))
+          }
          
-              //console.log(datelist)
-              let xlist = []
-              let ylist3 = []
-              for (let i = 0; i < datelist.length; i++) {
-                xlist.push((datelist[i].substr(11, 2) + ":00"))
-              }
-              let datelist2 = []
-              for (let i = 0; i < datelist.length; i++) {
-                //  if(datelist[i].substr(11,2))
+          let datelist2 = []
+          for (let i = 0; i < datelist.length; i++) {
+            //  if(datelist[i].substr(11,2))
 
-                let obj = {}
-                let endTime = ""
-                let hour = ""
-                let k = parseInt(datelist[i].substr(11, 2))
-                let k2 = datelist[i].substr(0, 11)
-                if (k + 1 > 24) {
-                  endTime = k2 + "00"
-                } else {
-                  endTime = k2 + String(k + 1)
+            let obj = {}
+            let endTime = ""
+            let hour = ""
+            let k = parseInt(datelist[i].substr(11, 2))
+            let k2 = datelist[i].substr(0, 11)
+            if (k + 1 > 24) {
+              endTime = k2 + "00"
+            } else {
+              endTime = k2 + String(k + 1)
+            }
+            datelist2.push({
+              startTime: datelist[i],
+              endTime: endTime
+            })
+
+
+
+          }
+          for (let i = 0; i < datelist2.length; i++) {
+            let sum = 0
+            axios({
+                url: 'http://47.99.156.243:8227/report/getSimpleReport',
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'companyId': that.companyId
+                },
+
+                data: {
+
+                  tableName: "exam_defect_his",
+   query:{
+                         workshop_id:that.workshop_id
+                       },
+
+                  selectFields: ['sum(yield) as sum', "update_time"],
+                  selectLikeFields: {
+                    update_time: datelist2[i].startTime,
+
+                  }
+
+
                 }
-                datelist2.push({
-                  startTime: datelist[i],
-                  endTime: endTime
-                })
 
+              })
+              .then(response => {
 
+                if (!response.data.data[0]) {
+                  sum = sum + 0
+                } else {
+                  sum = sum + response.data.data[0].sum
 
-              }
-              for (let i = 0; i < datelist2.length; i++) {
-                let sum = 0
+                }
+
+              }).then(() => {
                 axios({
                     url: 'http://47.99.156.243:8227/report/getSimpleReport',
                     method: 'post',
@@ -389,12 +378,14 @@
 
                     data: {
 
-                      tableName: "exam_defect",
-
+                      tableName: "exam_defect_his",
+                       query:{
+                         workshop_id:that.workshop_id
+                       },
 
                       selectFields: ['sum(yield) as sum', "update_time"],
                       selectLikeFields: {
-                        update_time: datelist2[i].startTime,
+                        update_time: datelist2[i].endTime,
 
                       }
 
@@ -403,64 +394,42 @@
 
                   })
                   .then(response => {
-                    if(!response.data.data[0]){
-              sum = sum + 0
-                    }else{
-                         sum = sum + response.data.data[0].sum
-                                 
+
+                    if (!response.data.data[0]) {
+                      sum = sum + 0
+                    } else {
+                      sum = sum + response.data.data[0].sum
+
                     }
-      
 
                   }).then(() => {
-                    axios({
-                        url: 'http://47.99.156.243:8227/report/getSimpleReport',
-                        method: 'post',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          'companyId': that.companyId
-                        },
+                    //////console.log(sum)
+                    ylist3.push({
+                      time: parseInt(datelist2[i].endTime.slice(11)),
+                      sum: sum
+                    })
 
-                        data: {
-
-                          tableName: "exam_defect",
-
-
-                          selectFields: ['sum(yield) as sum', "update_time"],
-                          selectLikeFields: {
-                            update_time: datelist2[i].endTime,
-
-                          }
-
-
-                        }
-
-                      })
-                      .then(response => {
-                  
-      if(!response.data.data[0]){
-              sum = sum + 0
-                    }else{
-                             sum = sum + response.data.data[0].sum
-                                 
+                    ylist3 = that.sortByKey(ylist3, "time")
+                    //console.log(ylist3)
+                    if (ylist3.length == 24) {
+                      let zcarr = []
+                      ylist3.forEach(element => {
+                        zcarr.push(element.sum)
+                      });
+//console.log(zcarr)
+//console.log(xlist)
+                      that.echart(xlist, zcarr)
                     }
-                      }).then(() => {
-                        //console.log(sum)
-                        ylist3.push(sum)
-                      })
                   })
-              }
-              setTimeout(() => {
-                console.log(xlist)
-                console.log(ylist3)
-                console.log(ylist4)
-                that.echart(xlist, ylist4, ylist3)
-              }, 1000);
+              })
+          }
 
-              ////console.log(ylist4)
 
-      
+          ////////////console.log(ylist4)
 
-          
+        }, 1000);
+
+        // })
       },
       gethourarr(num) {
 
@@ -488,12 +457,12 @@
         }
         return arr2
       },
-      echart(xlist, ylist4, ylist3) {
+      echart(xlist,  ylist3) {
 
         let myChart1 = this.$echarts.init(document.getElementById('echart1'));
         // 绘制图表
         myChart1.clear();
-  console.log(xlist)
+  //console.log(xlist)
         let that = this
         let option = {
           tooltip: {
@@ -544,7 +513,7 @@
           xAxis: [{
             type: 'category',
             data: xlist,
-             data:["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00",],
+            //  data:["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00",],
             axisPointer: {
               type: 'shadow'
             },
@@ -608,8 +577,8 @@
               name: '产量',
               type: 'bar',
               yAxisIndex: 0,
-              // data: ylist3
-               data:[3249,3573,2894,2319,2103,2302,2889,3009,3893,3258]
+               data: ylist3
+              //  data:[3249,3573,2894,2319,2103,2302,2889,3009,3893,3258]
             },
        
 
@@ -677,12 +646,12 @@
               fontSize: 17,
               fontWeight: "normal"
             },
-            text: "验布小能手-伍纪宏" + name
+            text: "验布小能手-" + name
           },
           xAxis: [{
             type: 'category',
-            // data: xlist,
-                data:["王崖荣","傅金女","陈秀均","伍纪宏","周继红","李文胜","黎红娟",],
+             data: xlist,
+                // data:["王崖荣","傅金女","陈秀均","伍纪宏","周继红","李文胜","黎红娟",],
             axisPointer: {
               type: 'shadow'
             },
@@ -746,13 +715,13 @@
               name: '今日验布',
               type: 'bar',
 
-              // data: ylist
-              data:[3100,2300,2000,4000,2400,3041,4010]
+               data: ylist
+              // data:[3100,2300,2000,4000,2400,3041,4010]
             },
             {
               name: '昨日验布',
               type: 'bar',
-   data:[2100,3300,3000,3400,1400,2041,3010],
+  //  data:[2100,3300,3000,3400,1400,2041,3010],
 
               data: ylist2
             },
@@ -766,7 +735,7 @@
           myChart1.resize();
         })
       },
-      getMachine() {
+   getMachine() {
         let that = this
         let url = "http://47.99.156.243:8227/report/getSimpleReport"
         axios({
@@ -777,7 +746,10 @@
               'companyId': this.companyId
             },
             data: {
-              tableName: "exam_day_info"
+              tableName: "exam_day_info",
+              query:{
+                workshop_id:that.workshop_id
+              }
             }
           })
           .then(response => {
@@ -792,14 +764,14 @@
               daysum = daysum + response.data.data[i].yield //浆纱机总数
               lacksum = lacksum + response.data.data[i].lack //疵点总数
             }
-            that.daysum = daysum
-            that.lacksum = lacksum
+            that.daysum = daysum.toFixed(1)
+            that.lacksum = lacksum.toFixed(1)
           })
       },
       getYesterday() { //昨日验布
         let that = this
         let day = that.getYerFormatDate()
-        ////console.log(day)
+        //////console.log(day)
         let url = "http://47.99.156.243:8227/report/getSimpleReport"
         axios({
             url: url,
@@ -811,12 +783,13 @@
             data: {
               tableName: "exam_day_info_his",
               query: {
-                shift_date: day
+                shift_date: day,
+                      workshop_id:that.workshop_id
               }
             }
           })
           .then(response => {
-            ////console.log(response)
+           //console.log(response)
             let yersum = 0
             for (let i = 0; i < response.data.data.length; i++) {
               yersum = yersum + response.data.data[i].yield
@@ -849,11 +822,13 @@
       },
             getWarningPushDataTiming: function () {
         const timer = setInterval(() => {
-       this.getyb()
-      this.echart2()
-      this.getMachine()
-       this.getElertic()
-      this.getYesterday()
+   
+     
+          this.getyb()
+          this.echart2()
+          this.getMachine()
+          this.getElertic()
+          this.getYesterday()
         }, 15000);
         // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
         this.$once('hook:beforeDestroy', () => {
@@ -877,6 +852,8 @@
     
           this.companyname="祥嘉"
       
+     
+    
       this.getyb()
       this.echart2()
       this.getMachine()

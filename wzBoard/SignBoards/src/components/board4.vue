@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <header style="height: 3rem">
-      <div class="title">佳而美——万舟织造车间电视看板</div>
+      <div class="title">佳而美{{workname}}——万舟织造车间电视看板</div>
 
     </header>
     <div class="board">
@@ -121,6 +121,7 @@
       return {
         lang: 'zh',
         workshopId: '1',
+        workname:"",
  companyId: this.$route.params.id,//公司库表Id
 
 workshopLabel:"",
@@ -305,14 +306,16 @@ getdata(){
               selectFields:["MachineID","weft_t"],
               pageNum:1,
               pageSize:15,
+              
               query:{
-                "WorkShopID":that.workshopId
+                "WorkShopID":that.workshopId,
+                 "group_id":that.$route.params.groups,
               }
             }
 
           })
           .then(response => {
-          //console.log(response)
+          console.log(response)
             let list=[]
              for(let i=0;i<response.data.data.length;i++){
               
@@ -338,7 +341,8 @@ getdata(){
               pageNum:1,
               pageSize:15,
                  query:{
-                "WorkShopID":that.workshopId
+                "WorkShopID":that.workshopId,
+                  "group_id":that.$route.params.groups,
               }
             }
 
@@ -370,7 +374,8 @@ getdata(){
             sortColumn:"weft_c",
             sort:"DESC",
               query:{
-              WorkShopID:that.workshopId
+              WorkShopID:that.workshopId,
+                "group_id":that.$route.params.groups,
             }
 
             }
@@ -424,6 +429,11 @@ getdata(){
     //this. changeWorkshopTiming()
          this.getdata()
     this.changeWorkshopTiming()
+    if(this.$route.params.groups==1){
+      this.workname="一分厂"
+    }else if(this.$route.params.groups==2){
+  this.workname="二分厂"
+    }
 
     },
     beforeDestroy() {

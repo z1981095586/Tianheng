@@ -7,7 +7,7 @@
       v-show="szMainShow">
 
       <div class="operationPane_con_uppershaft">
- <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
+        <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span v-show="!isCheckedMachine">机台</span><span
@@ -44,7 +44,7 @@
       <div class="operationPane_con_machineList">
         <el-checkbox-group :max="1" @change="checkedMachine" v-model="checkMachine" style="width:100%;height:100%;">
           <el-checkbox-button size="medium" v-for="(item,index) in machineList" style="magin:1rem;font-size:2rem"
-            :label="item" :key="index">{{item}}</el-checkbox-button>
+            :label="item.machine_id" :key="index">{{item.machine_id}}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -53,7 +53,8 @@
           <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="cancel()">取消</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :total="50">
+          <el-pagination background small layout="prev, pager, next" :pager-count="4" :total="total_num"
+            @current-change="CurrentNameChange2">
           </el-pagination>
         </div>
       </div>
@@ -77,10 +78,10 @@
           </div>
 
         </div>
-        <el-checkbox-group :max="1" :disabled="!isStartChange" text-color="#ffffff" fill="#3296FA" v-model="checkStaffName" @change="checkedName"
-          style="width:100%;height:100%;">
+        <el-checkbox-group :max="1" :disabled="!isStartChange" text-color="#ffffff" fill="#3296FA"
+          v-model="checkStaffName" @change="checkedName" style="width:100%;height:100%;">
           <el-checkbox-button size="medium" v-for="(item,index) in StaffNameList" style="magin:1rem;font-size:2rem"
-            :label="item" :key="index">{{item}}</el-checkbox-button>
+            :label="item.staff_name" :key="index">{{item.staff_name}}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -88,11 +89,11 @@
           <div class=" operationPane_con_machineList_btn_leftBtn" @click="startChange()"
             :style="isStartChange?'background:#8C8C8C':'background:#A3D897'">开始修改</div>
           <div class="operationPane_con_machineList_btn_leftBtn"
-            :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'"
-            @click="save()">保存</div>
+            :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'" @click="save()">保存</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :total="50">
+          <el-pagination background small layout="prev, pager, next" :pager-count="4" @current-change="CurrentNameChange"
+            :total="total_num2">
           </el-pagination>
         </div>
       </div>
@@ -106,10 +107,13 @@
 </template>
 
 <script>
+  let host = "http://120.55.124.53:12140"
+  import axios from 'axios'
   export default {
-        name: 'illustration',
+    name: 'illustration',
     data() {
       return {
+        company_id: "10000025",
         szMainShow: true, //插片主页面显示隐藏
         szMachineShow: false, //插片选择机台显示隐藏
         szShiftShow: false, //插片换班显示隐藏
@@ -140,33 +144,108 @@
             isSelected: false
           },
         ],
-        StaffNameList: ['周品道', '周品娥', '周我道', '我品道', '娥品道', '周而且', '娥去道', '偶尔娥', '汽配娥', '我我完', '请求道', ],
-        machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
-          '115', '116', '117', '118',
-        ], //插片机台列表
-    pch: "SZ2020010240001-1",
+        StaffNameList: [],
+        machineList: [], //插片机台列表
+        pch: "SZ2020010240001-1",
+        total_num: null,
+        page_size: 21,
+        page_num: 1,
+        total_num2: null,
+        page_size2: 21,
+        page_num2: 1,
+        mac_type_id: "030100",
       };
     },
     methods: {
-           closeCurrentPage(){
+      getMachineList() {//获取机台列表
+        let that = this;
+        let url = host + "/api/stationMachine/getMachines";
+        let method =
+
+          axios({
+            url: url,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+                page_size: that.page_size,
+                page_num: that.page_num
+              },
+              mac_type_id: that.mac_type_id
+            },
+      
+          })
+          .then(response => {
+
+            that.total_num = response.data.result.total_num
+            let array = response.data.result.models
+            that.machineList = []
+            array.forEach(element => {
+              that.machineList.push(element)
+            });
+          })
+      },
+      CurrentNameChange2(e) {  //machinelist页面改变事件
+        console.log(e)
+        this.page_num = e
+        this.getMachineList()
+      },
+      CurrentNameChange(e) {//namelist页面改变事件
+        console.log(e)
+        this.page_num2 = e
+        this.getStaffList()
+      },
+      getStaffList() { //获取员工列表
+        let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+        let data = {
+          "page": this.page_num2,
+          "pageNum": this.page_size2,
+          "staff_organization_id": 1,
+          "query_condition": ""
+        }
+        this.NameList = []
+        let that = this
+        axios({
+            url: url,
+            method: "post",
+            headers: {
+              companyID: that.company_id
+            },
+            data: data,
+
+
+            // headers: headers
+          })
+          .then(res => {
+
+            let arr = res.data.data.staffModel
+            for (let i = 0; i < arr.length; i++) {
+              that.StaffNameList.push(arr[i])
+            }
+            that.total_num2 = res.data.totalDataNum
+
+
+          })
+      },
+      closeCurrentPage() { 
         console.log(this.szMachineShow)
-       if(this.szMachineShow==true){
-            this.isCheckedMachine = false;
-        this.checkedMachineNum = "";
-        this.checkMachine = []
-        this.szMachineShow = false;
-        this.szShiftShow = false;
-        this.szMainShow = true;
-        return
-       }
-           if(this.szShiftShow==true){
-        this.szMachineShow = false;
+        if (this.szMachineShow == true) {
+          this.isCheckedMachine = false;
+          this.checkedMachineNum = "";
+          this.checkMachine = []
+          this.szMachineShow = false;
+          this.szShiftShow = false;
+          this.szMainShow = true;
+          return
+        }
+        if (this.szShiftShow == true) {
+          this.szMachineShow = false;
           this.szShiftShow = false;
           this.szMainShow = true;
           this.isStartChange = false
-        return
-       }
-       
+          return
+        }
+
       },
       saoma() {
         this.issaoma = true
@@ -208,8 +287,8 @@
           this.szShiftShow = false;
           this.szMainShow = true;
           this.isStartChange = false
-            this.$emit('cpChange',this.staffList)
-            console.log(this.staffList)
+          this.$emit('cpChange', this.staffList)
+          console.log(this.staffList)
         }
 
       },
@@ -248,6 +327,20 @@
     },
     mounted() {
 
+    },
+    watch: {
+      szShiftShow(val) {
+        if (val == true) {
+          this.page_num2 = 1
+          this.getStaffList()
+        }
+      },
+      szMachineShow(val) {
+        if (val == true) {
+          this.page_num2 = 1
+          this.getMachineList()
+        }
+      }
     }
   };
 
@@ -255,7 +348,7 @@
 
 <style>
   .pch {
-      position: absolute;
+    position: absolute;
     left: 1rem;
     top: -3.5rem;
     width: 19.5rem;
@@ -271,8 +364,10 @@
 
   .pch input::-webkit-input-placeholder {
     font-size: 1.3rem;
+    
 
   }
+
   .operationPane {
     width: 100%;
     height: 66%;
@@ -330,14 +425,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+  
+
   }
 
   .operationPane_con_uppershaft {
     width: 85%;
-
     height: 70%;
     margin-bottom: 3%;
-
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -351,7 +447,6 @@
     height: 20%;
     display: flex;
     flex-direction: column;
-
   }
 
   .text_con {
@@ -425,7 +520,7 @@
   }
 
   .operationPane_con_machineList {
-  width: 90%;
+    width: 90%;
     height: 60%;
     margin-top: 9%;
 
@@ -443,7 +538,7 @@
     /* background: #8C8C8C; */
   }
 
- 
+
 
   .el-pagination--small .btn-next,
   .el-pagination--small .btn-prev,

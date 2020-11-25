@@ -5,7 +5,7 @@
         <el-avatar :size="50">
           <img src="../../static/img/logo.png" />
         </el-avatar>
-        <span>天衡穿综工位操作系统</span>
+        <span>天衡整经工位操作系统</span>
       </div>
       <div class="header_right">
         <!-- <span v-show="isShangZhou" v-for="(item,index) in nameList"
@@ -31,7 +31,7 @@
     <div class="query" v-show="queryShow">
       <div class="head" :style="enabled ? 'background:rgba(49,124,205,0.6)':''"><span
           style=" justify-content: flex-start;"></span><span style="font-size:2rem">上纱记录</span><span
-          style="    justify-content: flex-end;">2020-11-20 19:23:12</span></div>
+          style="    justify-content: flex-end;">{{time}}</span></div>
       <div class="con1">
         <div class="con1_left">
           <div class="con1_left_con">
@@ -174,6 +174,8 @@
 
     data() {
       return {
+        timer:"",
+        time:"",
         enabled: false,
         isZJ1: true,
         printCode: "",
@@ -260,11 +262,36 @@
 
         this.queryShow = false
         this.mainShow = true
-      }
+        
+      },
+          getTime() { //获取时间
+        //定义一个日期对象;
+        var dateTime = new Date();
+        //获得系统年份;
+        var year = dateTime.getFullYear();
+        //获得系统月份;
+        var month = dateTime.getMonth() + 1;
+        //获得系统当月分天数;
+        var day = dateTime.getDate();
+        //获得系统小时;
+        var hours = dateTime.getHours();
+        //获得系统分钟;
+        var minutes = dateTime.getMinutes();
+        //获得系统秒数;
+        var second = dateTime.getSeconds();
+        day < 10 ? day = '0' + day : day;
+        month < 10 ? month = '0' + month : month;
+        hours < 10 ? hours = '0' + hours : hours;
+        minutes < 10 ? minutes = '0' + minutes : minutes;
+        second < 10 ? second = '0' + second : second;
+
+        let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
+        this.time = dateStr
+      },
     },
     mounted() {
 
-
+     this.timer = setInterval(this.getTime, 1000);
 
     },
     watch: {

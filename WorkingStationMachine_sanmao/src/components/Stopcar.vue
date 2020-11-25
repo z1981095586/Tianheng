@@ -64,7 +64,7 @@
       <div class="operationPane_con_machineList">
         <el-checkbox-group :max="1" @change="checkName" v-model="checkMachine" style="width:100%;height:100%;">
           <el-checkbox-button size="medium" v-for="(item,index) in NameList" style="magin:1rem;font-size:2rem"
-            :label="item" :key="index">{{item}}</el-checkbox-button>
+            :label="item.staff_name" :key="index">{{item.staff_name}}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -74,7 +74,7 @@
             @click="ShiftBack()">返回</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" layout="prev, pager, next" :total="40">
+          <el-pagination background small :pager-count="3" @current-change="CurrentNameChange"  layout="prev, pager, next" :total="total_num2">
           </el-pagination>
         </div>
       </div>
@@ -191,9 +191,8 @@
         checkedName: "",
         checkMachine: [], //挡车选中机台列表
         checkMachineColor: [], //挡车选中机台列表颜色
-        NameList: ['跑品德', '而且跑', '张三百'],
-        machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
-          '115', '116', '117', '118',
+        NameList: [],
+        machineList: [
         ], //挡车机台列表
         zbFocus: false, //div选中聚焦
         jzFocus: false,
@@ -204,10 +203,45 @@
         enabled: false,
         page_size: 21,
         page_num: 1,
+         page_size2: 21,
+        page_num2: 1,
+total_num2:null,
         mac_type_id: "030100",
       }
     },
     methods: {
+          CurrentNameChange(e) {
+        console.log(e)
+        this.page_num2 = e
+        this.getStaffList()
+      },
+          getStaffList(){
+       let url="http://120.55.124.53:8206/api/staff/getStaffListByOrganization" 
+       let data={"page":this.page_num2,"pageNum":this.page_size2,"staff_organization_id":1,"query_condition":""}
+       this.NameList=[]
+       let that=this
+            axios({
+              url: url,
+              method: "post",
+              headers:{
+                companyID:that.company_id
+              },
+              data: data,
+
+
+              // headers: headers
+            })
+            .then(res => {
+
+let arr=res.data.data.staffModel
+for(let i=0;i<arr.length;i++){
+  that.NameList.push(arr[i])
+}
+that.total_num2=res.data.totalDataNum
+
+
+            })
+      },
       //        closeCurrentPage(){
       //   console.log(this.szMachineShow)
       //  if(this.szMachineShow==true){
@@ -565,6 +599,13 @@
         this.checkMachineColor = this.sortByKey(this.checkMachineColor, 'label')
 
         console.log(this.checkMachineColor)
+      },
+      shiftShow(e){
+        if(e==true){
+          this.page_num2=1
+          this.getStaffList()
+        }
+
       },
       checkMachineColor(e) {
 

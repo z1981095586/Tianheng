@@ -48,8 +48,8 @@
               <div class="card5_con">
                 <span class="jin">今</span>
                 <span class="zong">今日疵点总数</span>
-                <!-- <span class="num">{{ lacksum}}</span> -->
-                <span class="num">36</span>
+                <span class="num">{{ lacksum}}</span>
+                <!-- <span class="num">36</span> -->
 
               </div>
             </div>

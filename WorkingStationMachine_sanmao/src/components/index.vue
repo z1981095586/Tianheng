@@ -35,6 +35,7 @@
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
     <machinemaintenance v-show="isMachine"></machinemaintenance>
+    <out v-show="isKaiChu"></out>
   </div>
 </template>
 
@@ -46,13 +47,15 @@
   import Stopcar from "./Stopcar"; //挡车操作面板
   import Loweraxis from "./Loweraxis"; //下轴操作面板
   import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
+    import Out from "./Out"; //机修操作面板
   export default {
     components: {
       illustration,
       Uppershaft,
       Stopcar,
       Loweraxis,
-      Machinemaintenance
+      Machinemaintenance,
+      Out
     },
     name: 'index',
     inject:['reload'],
@@ -66,6 +69,11 @@
           },
           {
             label: "插片",
+            class: "oneTab",
+            style: "background:white;color:#18BC83"
+          },
+            {
+            label: "开出",
             class: "oneTab",
             style: "background:white;color:#18BC83"
           },
@@ -90,6 +98,7 @@
         activeTab: "",
         isShangZhou: true,
         isChaPian: false,
+        isKaiChu:false,
         isStopCar: false,
         isMachine: false,
         isLower: false,
@@ -220,6 +229,9 @@
           if (this.tabList[i].label == "机修") {
             this.tabList[i].style = "background:white;color:#F25643;"
           }
+            if (this.tabList[i].label == "开出") {
+            this.tabList[i].style = "background:white;color:#4352F2;"
+          }
         }
         for (let i = 0; i < this.tabList.length; i++) {
           if (this.tabList[i].label == label) {
@@ -230,6 +242,7 @@
               this.isMachine = false
               this.isStopCar = false
               this.isChaPian = false
+              this.isKaiChu=false
               this.isShangZhou = true
               return
             }
@@ -239,6 +252,7 @@
               this.isLower = false
               this.isMachine = false
               this.isStopCar = false
+                 this.isKaiChu=false
               this.isChaPian = true
               return
             }
@@ -247,6 +261,7 @@
               this.isShangZhou = false
               this.isChaPian = false
               this.isLower = false
+                 this.isKaiChu=false
               this.isMachine = false
               this.isStopCar = true
               return
@@ -257,6 +272,7 @@
               this.isChaPian = false
               this.isStopCar = false
               this.isMachine = false
+                 this.isKaiChu=false
               this.isLower = true
               return
             }
@@ -266,7 +282,19 @@
               this.isChaPian = false
               this.isStopCar = false
               this.isLower = false
+                 this.isKaiChu=false
               this.isMachine = true
+              return
+            }
+             if (this.tabList[i].label == "开出") {
+              this.tabList[i].style = "background:#4352F2;color:white;"
+              this.isShangZhou = false
+              this.isChaPian = false
+              this.isStopCar = false
+              this.isLower = false
+            
+              this.isMachine = false
+                   this.isKaiChu=true
               return
             }
           }
@@ -357,7 +385,7 @@ this.getGroup()
   }
 
   .oneTab {
-    width: 19%;
+    width: 15.5%;
     height: 80%;
     background: white;
     display: flex;
@@ -369,7 +397,7 @@ this.getGroup()
   }
 
   .oneTab_Choosed {
-    width: 19%;
+   width: 15.5%;
     height: 80%;
     font-family: FZCYJ;
     color: white;

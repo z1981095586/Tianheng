@@ -114,6 +114,7 @@
             workshop_id: this.macRelation.workshop_id,
             company_id: this.selectInfo.company_id,
             id: id,
+           staff_id :this.staff_id,
             maintain_type_name:maintain_type_name
           }
 

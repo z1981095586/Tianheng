@@ -45,6 +45,7 @@
           workshop_id: '',
           
         },
+         staff_id: this.$route.params.staff_id,
         mac_type_id:"",
         workshop_id:"",
         maintain_type_id: "",
@@ -255,7 +256,8 @@ let blnCheck = false;
           name: 'Maintenance_list',
           params: {
             company_id: this.selectInfo.company_id,
-            operator: this.operator
+            operator: this.operator,
+             staff_id: this.staff_id
           }
         })
       },
@@ -277,7 +279,7 @@ if(this.checkboxGroup1.length<1){
             operator: this.operator,
             workshop_id: this.macRelation.workshop_id,
             flag: this.flag,
-       
+        staff_id: this.staff_id,
             maintain_type_id: this.maintain_type_id,
             isClickIn: true,
                 mac_type_id:this.mac_type_id,

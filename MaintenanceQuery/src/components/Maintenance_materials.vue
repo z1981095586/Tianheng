@@ -90,7 +90,7 @@
         operator: "",
         maintain_type_id: null,
         isClickIn: "",
-
+ staff_id: this.$route.params.staff_id,
         company_id: '', //公司id
         mac_type_id: null, //设备类型id
         flag: null, //
@@ -275,6 +275,7 @@
                 mac_type_id: this.mac_type_id,
                 flag: this.flag,
               },
+               staff_id: this.staff_id,
               mac_type_id: this.mac_type_id,
               machine_id_list: this.machine_id_list,
               operator: this.operator,

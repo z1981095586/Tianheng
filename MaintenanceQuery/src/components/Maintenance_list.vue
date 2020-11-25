@@ -84,7 +84,7 @@
     name: 'Maintenance_list',
     data() {
       return {
-        staff_id: "",
+   
         workshop_name: '', //存放车间名称
         macRelation: {
           machine_id: '',
@@ -97,6 +97,7 @@
         mac_type: [
 
         ],
+         staff_id: this.$route.params.staff_id,
         selectInfo: {
           company_id: ''
         },
@@ -176,6 +177,9 @@
       },
 
       back() {
+        console.log(this.operator)
+        console.log(this.selectInfo)
+        console.log(this.staff_id)
         this.$router.push({ //跳转并传参数
           path: '/ToMaintenance_list',
           name: 'ToMaintenance_list',
@@ -224,6 +228,7 @@
             mac_type_id: this.macRelation.mac_type_id,
             workshop_id: this.macRelation.workshop_id,
             flag: flag,
+ staff_id: this.staff_id,
 
             maintain_type_id: maintain_type_id,
             isClickIn: true

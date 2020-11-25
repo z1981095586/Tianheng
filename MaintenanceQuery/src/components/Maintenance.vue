@@ -204,6 +204,7 @@
         dialogVisible: false,
         maintain_type_id: "",
         isClickIn: "",
+         staff_id: this.$route.params.staff_id,
         maintainTypeList: [], //保养类型选项
         isclickIn: null,
         mac_type_id: null, //设备类型id
@@ -262,7 +263,7 @@
             dataObj2: dataObj2,
             mac_type_id: this.mac_type_id,
             machine_id_list: this.machine_id_list,
-
+ staff_id: this.staff_id,
             workshop_id: this.workshop_id,
             company_id: this.company_id,
             maintain_type_id: this.maintain_type_id,
@@ -278,6 +279,7 @@
           mac_type_id: this.mac_type_id,
           workshop_id: this.workshop_id,
           company_id: this.company_id,
+           staff_id: this.staff_id
 
         }
         console.log(p)
@@ -312,7 +314,7 @@
             workshop_id: this.workshop_id,
             company_id: this.company_id,
             flag: this.flag,
-
+    staff_id: this.staff_id,
             maintain_type_id: this.maintain_type_id,
             isClickIn: this.isClickIn,
             machine_id_list: this.machine_id_list,
