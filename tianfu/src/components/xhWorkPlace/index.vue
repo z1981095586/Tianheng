@@ -287,18 +287,9 @@
                   <td colspan="3" class="standard_font">
                     备注：{{order_list.remark}}
                   </td>
-                     
                 </tr>
-              
-                
-                
-                  
-                     
-               
-              
               </table>
-             
-                  <el-button type="warning" style="height: 100px;position: absolute;   width: 11rem;
+                   <el-button type="warning" style="height: 100px;position: absolute;   width: 11rem;
     height: 4rem;
         right: 52rem;
     top: 10rem;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
@@ -830,8 +821,10 @@
           if(emitData.status){
             let data = {};
             data.id = this.dataSelect.id;
-            data.axisNo = emitData.data;
+            data.axisNo = emitData.axleNumber;
             data.staffId = this.staff_id;
+            data.vatNums = emitData.cylindersNumber;
+            data.beamNums = emitData.axisNumber;
             let shiftObject = this.$refs.headComponent.getShiftName();
             if(shiftObject&&shiftObject.id){
               data.shiftWork = shiftObject.id-1;
@@ -851,7 +844,7 @@
                   this.getDataByCardNumber(this.barCode);
                   this.showSetAxleTable = false;
                 }
-                this.$store.state.showLoadingLog = false; this.$store.state.showLoadingLog = false;
+                this.$store.state.showLoadingLog = false;
               })
               .catch(error => {
                 console.log(error);
@@ -899,6 +892,7 @@
             this.dataSelect = item;
             this.showSetAxleTable = true;
             this.$nextTick(() => {
+              this.$refs.setAxleTable.getIfIsJs(true);
               this.$refs.setAxleTable.getButtonList(this.buttonSetting);
             });
           }else{
@@ -1702,8 +1696,6 @@
 .otherProduct{
     width: 11rem;
     height: 3rem;
-        right: 52rem;
-    top: 10rem;
     background: red;
     font-size: 1.3rem;
 
@@ -1715,7 +1707,8 @@
     -ms-flex-pack: center;
     justify-content: center;
     position: absolute;
-
+    right: 52rem;
+    top: 10rem;
     font-weight: 600;
 }
   .big_font{

@@ -30,8 +30,8 @@
 
       </div>
     </div>
-    <uppershaft v-show="isShangZhou" @szChange=" getGroup()"></uppershaft>
-    <illustration v-show="isChaPian" @cpChange="cpChange"></illustration>
+    <uppershaft v-show="isShangZhou" @szChange=" getGroup(6)"></uppershaft>
+    <illustration v-show="isChaPian" @cpChange="getGroup(10)"></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
     <machinemaintenance v-show="isMachine"></machinemaintenance>
@@ -108,7 +108,7 @@
       }
     },
     methods: {
-         getGroup(){//获取当前班次(当班分组)(倒数第二级分组)
+         getGroup(id){//获取当前班次(当班分组)(倒数第二级分组)
            console.log("get")
              let url2 = host + "/api/group/getOnDutyShift"
           let that = this
@@ -120,7 +120,7 @@
                   company_id: that.company_id,
                 },
                 shiftGroup: {
-                  id: 6
+                  id: id
                 }
               },
 
@@ -302,9 +302,21 @@
       }
     },
     mounted() {
-this.getGroup()
+this.getGroup(6)
 
   
+    },
+    watch:{
+         isShangZhou(val){
+           if(val==true){
+             this.getGroup(6)
+           }
+         },
+         isChaPian(val){
+             if(val==true){
+             this.getGroup(10)
+           }
+         }
     }
   
   }
@@ -312,6 +324,12 @@ this.getGroup()
 </script>
 
 <style scoped>
+ body /deep/ .el-message .el-icon-success{
+    font-size: 3rem;
+}
+ body /deep/ .el-message--success .el-message__content{
+  font-size: 3rem;
+}
   .allPage {
     width: 100%;
     height: 100vh;

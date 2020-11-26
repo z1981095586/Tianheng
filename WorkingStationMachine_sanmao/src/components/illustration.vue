@@ -69,8 +69,10 @@
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange">
-              <option value="A班">A班</option>
+          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="cpz">
+              <option value="11">A组</option>
+              <option value="12">B组</option>
+              <option value="13">C组</option>
             </select></div>
           <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
             <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
@@ -92,8 +94,8 @@
             :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'" @click="save()">保存</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :pager-count="4" @current-change="CurrentNameChange"
-            :total="total_num2">
+          <el-pagination background small layout="prev, pager, next" :pager-count="4"
+            @current-change="CurrentNameChange" :total="total_num2">
           </el-pagination>
         </div>
       </div>
@@ -154,10 +156,11 @@
         page_size2: 21,
         page_num2: 1,
         mac_type_id: "030100",
+        cpz: "11"
       };
     },
     methods: {
-      getMachineList() {//获取机台列表
+      getMachineList() { //获取机台列表
         let that = this;
         let url = host + "/api/stationMachine/getMachines";
         let method =
@@ -173,7 +176,7 @@
               },
               mac_type_id: that.mac_type_id
             },
-      
+
           })
           .then(response => {
 
@@ -185,12 +188,12 @@
             });
           })
       },
-      CurrentNameChange2(e) {  //machinelist页面改变事件
+      CurrentNameChange2(e) { //machinelist页面改变事件
         console.log(e)
         this.page_num = e
         this.getMachineList()
       },
-      CurrentNameChange(e) {//namelist页面改变事件
+      CurrentNameChange(e) { //namelist页面改变事件
         console.log(e)
         this.page_num2 = e
         this.getStaffList()
@@ -227,7 +230,7 @@
 
           })
       },
-      closeCurrentPage() { 
+      closeCurrentPage() {
         console.log(this.szMachineShow)
         if (this.szMachineShow == true) {
           this.isCheckedMachine = false;
@@ -248,10 +251,102 @@
 
       },
       saoma() {
-        this.issaoma = true
+        if (this.issaoma == false) {
+          if (this.checkedMachineNum == "") {
+            this.$message({
+              message: '请先选一台机器！',
+              type: 'warning'
+            });
+          } else {
+            console.log(this.staffList)
+            let staffList = []
+            this.staffList.forEach(element => {
+              staffList.push(element.staffName)
+            });
+            let url = host + '/api/stationMachine/caPian';
+
+            let method = "post";
+            let data = {
+              selectInfo: {
+                company_id: this.company_id,
+
+              },
+              machine_id: this.checkedMachineNum,
+              ca_pian_ren: String(staffList)
+
+            };
+
+            let that = this
+
+            axios({
+                url: url,
+                method: method,
+                data: data,
+
+              })
+              .then(response => {
+                if (response.data.message == "成功") {
+                  this.$message({
+                    message: '操作成功！',
+                    type: 'success'
+                  });
+                  this.issaoma = true
+                } else {
+                  this.$message.error(response.data.message);
+                }
+              })
+          }
+        }
+
       },
       wanchen() {
-        this.issaoma = false
+        if (this.issaoma == true) {
+          if (this.checkedMachineNum == "") {
+            this.$message({
+              message: '请先选择一台机器！',
+              type: 'warning'
+            });
+          } else {
+            console.log(this.staffList)
+            let staffList = []
+            this.staffList.forEach(element => {
+              staffList.push(element.staffName)
+            });
+            let url = host + '/api/stationMachine/caPian';
+
+            let method = "post";
+            let data = {
+              selectInfo: {
+                company_id: this.company_id,
+
+              },
+              machine_id: this.checkedMachineNum,
+              ca_pian_ren: String(staffList)
+
+            };
+
+            let that = this
+
+            axios({
+                url: url,
+                method: method,
+                data: data,
+
+              })
+              .then(response => {
+                if (response.data.message == "成功") {
+                  this.$message({
+                    message: '插片成功！',
+                    type: 'success'
+                  });
+                  this.issaoma = false
+                } else {
+                  this.$message.error(response.data.message);
+                }
+              })
+          }
+        }
+
       },
       toChooseMachine() {
         this.szMainShow = false;
@@ -283,12 +378,54 @@
       },
       save() { //确认按钮事件
         if (this.isStartChange == true) {
-          this.szMachineShow = false;
-          this.szShiftShow = false;
-          this.szMainShow = true;
-          this.isStartChange = false
-          this.$emit('cpChange', this.staffList)
-          console.log(this.staffList)
+
+          let url = host + "/api/group/shift"
+          let staffList = []
+          for (let i = 0; i < this.staffList.length; i++) {
+            staffList.push({
+              id: this.staffList[i].id,
+              order_num: i + 1
+            })
+          }
+
+
+          let data = {
+            selectInfo: {
+              company_id: this.company_id
+            },
+            shiftGroup: {
+              id: 10
+            },
+            staffList: staffList
+          }
+
+          let that = this
+          axios({
+              url: url,
+              method: "post",
+
+              data: data,
+
+
+              // headers: headers
+            })
+            .then(res => {
+              if (res.data.message == "成功") {
+                this.$message({
+                  message: '换班成功！',
+                  type: 'success'
+                });
+              } else {
+                this.$message.error('换班失败！');
+              }
+              this.szMachineShow = false;
+              this.szShiftShow = false;
+              this.szMainShow = true;
+              this.isStartChange = false
+              this.$emit('cpChange', this.staffList)
+            })
+          console.log(staffList)
+          console.log(this.cpz)
         }
 
       },
@@ -304,6 +441,34 @@
         for (let i = 0; i < this.staffList.length; i++) {
           if (this.staffList[i].isSelected == true) {
             this.staffList[i].staffName = e[0]
+            let url = 'http://106.12.219.66:8227/report/getSimpleReport';
+            let headers = {
+              'Content-Type': 'application/json',
+              'companyID': this.company_id
+            };
+            let method = "post";
+            let data = {
+              "tableName": "s_staff",
+              "pageNum": 1,
+              "pageSize": 1000,
+              query: {
+                staff_name: e[0]
+              }
+
+            };
+
+            let that = this
+
+            axios({
+                url: url,
+                method: method,
+                data: data,
+                headers: headers
+              })
+              .then(response => {
+                console.log(response)
+                this.staffList[i].id = response.data.data[0].id //绑定员工id
+              })
 
           }
         }
@@ -364,7 +529,7 @@
 
   .pch input::-webkit-input-placeholder {
     font-size: 1.3rem;
-    
+
 
   }
 
@@ -426,7 +591,7 @@
     align-items: center;
     justify-content: center;
 
-  
+
 
   }
 

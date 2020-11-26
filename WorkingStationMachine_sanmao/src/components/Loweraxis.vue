@@ -3,8 +3,8 @@
     <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center;"
       v-show="isIndexShow">
 
-      <div class="main_btn" style="width:40%;height:60%" @click="toLoweraxis">下轴</div>
-      <div class="main_btn" style="width:40%;height:60%" @click="toOutaxis">退轴</div>
+      <div class="main_btn" style="width:40%;height:60%" @click="toLoweraxis">了机</div>
+      <div class="main_btn" style="width:40%;height:60%" @click="toOutaxis">换轴</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 下轴主界面-->
@@ -160,7 +160,7 @@
               <div :class="jzFocus?'pz_right_top_input_active':'pz_right_top_input_unactive' " @click="isjz">
                 <span>{{jzLength}}</span></div>
             </div>
-            <div class="chooseBtn_con_btn" @click="toChooseMachine()" style="width:98%;height:4rem"><span>退轴</span>
+            <div class="chooseBtn_con_btn" @click="toChooseMachine()" style="width:98%;height:4rem"><span>换轴</span>
             </div>
             <div class="chooseBtn_con_btn" @click="toMain()" style="width:98%;background:rgb(128,128,128);height:4rem">
               <span>取消</span></div>
@@ -926,6 +926,12 @@
 </script>
 
 <style scoped>
+ body /deep/ .el-message .el-icon-success{
+    font-size: 3rem;
+}
+ body /deep/ .el-message--success .el-message__content{
+  font-size: 3rem;
+}
   .tz_main {
     width: 95%;
     height: 90%;

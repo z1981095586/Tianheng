@@ -145,9 +145,9 @@
               placeholder="扫描后显示..."></textarea></div>
           <div class="pane_btn">
             <div class="pane_btn_one" @click="saoma()" :style="issaoma?'background:#808080':'background:#A3D897'">
-              <span>扫码上轴</span></div>
+              <span>扫码开出</span></div>
             <div class="pane_btn_one" @click="wanchen()" :style="issaoma?'background:#A3D897':'background:#808080'">
-              <span>上轴完成</span></div>
+              <span>开出完成</span></div>
           </div>
         </div>
       </div>

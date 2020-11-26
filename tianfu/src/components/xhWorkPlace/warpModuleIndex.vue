@@ -154,7 +154,7 @@
         <div :style="{height: scrollerHeightTop,width:scrollerWidthLeft}" style="display: inline-block;margin-left: 10px;">
          
           <el-card style="width: 100%;position:relative" :style="{height: scrollerHeightTop,width:scrollerWidthRight}" shadow="hover">
-               <el-button type="warning" style="height: 100px;position: absolute;top: 45px;right: 20px;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
+                <el-button type="warning" style="height: 100px;position: absolute;top: 45px;right: 20px;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
                 <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 12%">其他<br/><br/>产量</p>
               </div>
@@ -281,8 +281,25 @@
                       </el-button>
                       <el-popover
                         placement="top"
-                        width="800"
+                        width="600"
                         style="margin-left: 10px"
+                        trigger="click">
+                        <el-button slot="reference" :style="{backgroundColor:getColor(item.status,[null])}" style="height: 80px;display: inline-block" v-show="item.status===null">
+                          <div :style="{height:button_height}" style="display: inline-block">
+                            <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">删除织轴</p>
+                          </div>
+                        </el-button>
+                        <div style="width: 100%;text-align: center">
+                          <div class="big_font">这条经轴的设定米长是{{item.workQty}}米，确定要删除吗</div>
+                          <br><br>
+                          <el-button type="danger" style="height: 80px;margin-right:5px;margin-bottom: 5px" size="medium" @click="cutDownAxle(item)">
+                            <p  style="font-weight: bolder;font-size: 1.5vw;width: 100%">确认删除</p>
+                          </el-button>
+                        </div>
+                      </el-popover>
+                      <el-popover
+                        placement="top"
+                        width="800"
                         trigger="click">
                         <table style="" cellpadding='0' border="0" width="100%">
                           <tr v-for="details in produce_details_list" :key="details.id">
@@ -317,7 +334,7 @@
                             </div>
                           </el-button>
                         </div>
-                        <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 80px;display: inline-block;background-color: #417804" slot="reference" :disabled="item.status===0||item.status===null" @click="showDetails(item)">
+                        <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 80px;display: inline-block;background-color: #417804" slot="reference" :disabled="item.status===0||item.status===null" v-show="item.status!==null" @click="showDetails(item)">
                           <div :style="{height:button_height}" style="display: inline-block">
                             <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">更多操作</p>
                           </div>
@@ -625,7 +642,7 @@
         if(emitData.status){
           let data = {};
           data.id = this.dataSelect.id;
-          data.axisNo = emitData.data;
+          data.axisNo = emitData.axleNumber;
           data.staffId = this.staff_id;
           let shiftObject = this.$refs.headComponent.getShiftName();
           if(shiftObject&&shiftObject.id){
@@ -1008,7 +1025,7 @@
               //console.log(response.data);
               if(response.data.result === "ok"){
                 this.showAddAxisTable = false;
-                this.$message.success("新增经轴成功");
+                this.$message.success(response.data.message);
                 this.getDetails(this.order_list.id);
               }else{
                 this.$message.success("新增经轴失败")

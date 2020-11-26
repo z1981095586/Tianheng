@@ -155,10 +155,7 @@
             <div class="stopBtn" style="background:#808080;color:white;" @click="dialogVisible2 = false">取消</div>
           </div>
         </div>
-
-
-
-
+        
 
       </el-dialog>
     </div>
@@ -244,6 +241,7 @@
       }
     },
     methods: {
+     
       Finish() {
         this.dialogVisible2 = false
         this.baogongShow = false
@@ -298,6 +296,7 @@
       showQuery() {
         this.mainShow = false
         this.baogongShow = false
+      
         this.queryShow = true
       },
       showBaogong() {
@@ -322,11 +321,14 @@
         //获得系统当月分天数;
         var day = dateTime.getDate();
         //获得系统小时;
+
+ 
         var hours = dateTime.getHours();
         //获得系统分钟;
         var minutes = dateTime.getMinutes();
         //获得系统秒数;
         var second = dateTime.getSeconds();
+    
         day < 10 ? day = '0' + day : day;
         month < 10 ? month = '0' + month : month;
         hours < 10 ? hours = '0' + hours : hours;
