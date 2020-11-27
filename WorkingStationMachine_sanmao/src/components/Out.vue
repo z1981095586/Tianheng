@@ -15,7 +15,51 @@
 
     </div>
     <!-- 开出首页-->
+    <!-- 开出部分选班次-->
+    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
+      v-show="szShiftShow">
+      <div class="operationPane_con_machineList">
+        <div class="currentClass"
+          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :isChooseAclass==2? '当前班次：C班':''"></div>
+        <div class="classA">
+          <div @click="changeClass('a')"
+            :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
+            <span>开出工组A</span></div>
+          <div class="classA_right">
+            <span>开出工01：{{Aclass.szg1}}</span><span>开出工02：{{Aclass.szg2}}</span><span>开出工03：{{Aclass.szg3}}</span>
+          </div>
+        </div>
+        <div class="classA">
+          <div @click="changeClass('b')"
+            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
+            <span>开出工组B</span></div>
+          <div class="classA_right">
+            <span>开出工01：{{Bclass.szg1}}</span><span>开出工02：{{Bclass.szg2}}</span><span>开出工03：{{Bclass.szg3}}</span>
+          </div>
+        </div>
+        <div class="classA">
+          <div @click="changeClass('c')"
+            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
+            <span>开出工组C</span></div>
+          <div class="classA_right">
+            <span>开出工01：{{Cclass.szg1}}</span><span>开出工02：{{Cclass.szg2}}</span><span>开出工03：{{Cclass.szg3}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">确认</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="cancelClass()">取消</div>
+        </div>
+        <div class="operationPane_con_machineList_btn_right">
 
+        </div>
+      </div>
+      <div class="leftLabel" style="width:170px;"><span>选择开出组</span></div>
+
+      <img src="../../static/img/close.png" @click="cancelClass()" />
+    </div>
+    <!-- 开出部分选班次-->
     <!-- 开出部分选班次-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow2">
@@ -25,25 +69,25 @@
         <div class="classA">
           <div @click="changeClass2('a')"
             :class="isChooseAclass2==0?'classA_left_chossed':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left':''">
-            <span>上轴工组A</span></div>
+            <span>开出工组A</span></div>
           <div class="classA_right">
-            <span>上轴工01：{{Aclass2.szg1}}</span><span>上轴工02：{{Aclass2.szg2}}</span><span>上轴工03：{{Aclass2.szg3}}</span>
+            <span>开出工01：{{Aclass2.szg1}}</span><span>开出工02：{{Aclass2.szg2}}</span><span>开出工03：{{Aclass2.szg3}}</span>
           </div>
         </div>
         <div class="classA">
           <div @click="changeClass2('b')"
             :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left_chossed' :isChooseAclass2==2? 'classA_left':''">
-            <span>上轴工组B</span></div>
+            <span>开出工组B</span></div>
           <div class="classA_right">
-            <span>上轴工01：{{Bclass2.szg1}}</span><span>上轴工02：{{Bclass2.szg2}}</span><span>上轴工03：{{Bclass2.szg3}}</span>
+            <span>开出工01：{{Bclass2.szg1}}</span><span>开出工02：{{Bclass2.szg2}}</span><span>开出工03：{{Bclass2.szg3}}</span>
           </div>
         </div>
         <div class="classA">
           <div @click="changeClass2('c')"
             :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left_chossed':''">
-            <span>上轴工组C</span></div>
+            <span>开出工组C</span></div>
           <div class="classA_right">
-            <span>上轴工01：{{Cclass2.szg1}}</span><span>上轴工02：{{Cclass2.szg2}}</span><span>上轴工03：{{Cclass2.szg3}}</span>
+            <span>开出工01：{{Cclass2.szg1}}</span><span>开出工02：{{Cclass2.szg2}}</span><span>开出工03：{{Cclass2.szg3}}</span>
           </div>
         </div>
       </div>
@@ -56,7 +100,7 @@
 
         </div>
       </div>
-      <div class="leftLabel" style="width:170px;"><span>选择上轴组</span></div>
+      <div class="leftLabel" style="width:170px;"><span>选择开出组</span></div>
 
       <img src="../../static/img/close.png" @click="cancelClass2()" />
     </div>
@@ -85,12 +129,12 @@
 
       <div class="search" style="left:4rem;width:95%;top:18px"><span style="font-size:1.5rem">开出工：</span><input
           style="font-size:1.5rem;width:10rem;" disabled v-model="String(this.checkName).replace(/ /g, '')" /><span
-          style="color:red;margin-left:1rem;">当前选中：长白班C组</span></div>
+          style="color:red;margin-left:1rem;"  v-html="isChooseAclass==0?'当前选中：'+isYunzhuan+'A组':isChooseAclass==1 ? '当前选中：'+isYunzhuan+'B组' :isChooseAclass==2? '当前选中：'+isYunzhuan+'C组':''"></span></div>
       <img src="../../static/img/close.png" @click="goback()" />
     </div>
     <!-- 开出部分换班-->
     <!-- 开出部分换班-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
+    <!-- <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="isShift2">
 
       <div class="operationPane_con_machineList">
@@ -115,7 +159,7 @@
           style="font-size:1.5rem;width:10rem;" disabled v-model="String(this.checkName2).replace(/ /g, '')" /><span
           style="color:red;margin-left:1rem;">当前选中：运转班C组</span></div>
       <img src="../../static/img/close.png" @click="goback2()" />
-    </div>
+    </div> -->
     <!-- 开出部分换班-->
     <!-- 开出部分主菜单-->
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
@@ -130,7 +174,7 @@
                 v-show="!isCheckedMachine">请扫码</span><span v-show="isCheckedMachine">{{checkedMachineNum}}</span></div>
           </div>
           <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span>上轴组</span></div>
+            <div class="chooseBtn_con_label"><span>开出组</span></div>
             <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
                 v-text="isChooseAclass2==0?'A组':isChooseAclass2==1 ? 'B组' :isChooseAclass2==2? 'C组':''"></span></div>
           </div>
@@ -173,28 +217,44 @@
         isShift: false, //开出换班显示隐藏
         isShift2: false, //开出换班显示隐藏
         szShiftShow2: false,
+        szShiftShow:false,
         isCheckedMachine: false,
         checkedMachineNum: "",
         checkName: [], //开出选中的员工名字
         checkName2: [], //开出选中的员工名字
         issaoma: false,
         staffList: [{
-            label: "上轴工01",
+            label: "开出工01",
             staffName: "",
             isSelected: false
           },
           {
-            label: "上轴工02",
+            label: "开出工02",
             staffName: "",
             isSelected: false
           },
           {
-            label: "上轴工03",
+            label: "开出工03",
             staffName: "",
             isSelected: false
           },
         ],
-
+     staffList2: [{
+            label: "开出工01",
+            staffName: "",
+            isSelected: false
+          },
+          {
+            label: "开出工02",
+            staffName: "",
+            isSelected: false
+          },
+          {
+            label: "开出工03",
+            staffName: "",
+            isSelected: false
+          },
+        ],
         StaffNameList: [],
         page_size2: 21,
         page_num2: 1,
@@ -205,7 +265,39 @@
         mac_type_id: "030100",
         company_id: "10000025",
 
+    isChooseAclass: 0,
+        Aclass: {
 
+
+          szg1: '',
+          szg1Id: null,
+          szg2: '',
+          szg2Id: null,
+          szg3: '',
+          szg3Id: null,
+          id: null
+        },
+        Bclass: {
+
+          szg1: '',
+          szg1Id: null,
+          szg2: '',
+          szg2Id: null,
+          szg3: '',
+          szg3Id: null,
+          id: null
+        },
+        Cclass: {
+
+
+          szg1: '',
+          szg1Id: null,
+          szg2: '',
+          szg2Id: null,
+          szg3: '',
+          szg3Id: null,
+          id: null
+        },
         isChooseAclass2: 0,
         Aclass2: {
 
@@ -241,7 +333,8 @@
         },
         pch: "",
         product_name: "",
-        axis_no: ""
+        axis_no: "",
+        isYunzhuan:'运转班'// 当前选择的班
 
       };
     },
@@ -251,45 +344,50 @@
 
         this.szShiftShow2 = false
         this.isShift = false
+            this.szShiftShow=false
         this.szIndexShow = true
+    
       },
       goback() {
-        this.szMainShow = false
+      this.szMainShow = false
 
         this.szShiftShow2 = false
         this.isShift = false
-        this.szIndexShow = true
+        this.szIndexShow = false
+        this.szShiftShow=true
       },
-      sureName2() {
-        this.szMainShow = false
+      // sureName2() {
+      //   this.szMainShow = false
 
-        this.szShiftShow2 = false
-        this.isShift = false
-        this.isShift2 = false
-        this.szIndexShow = true
-      },
-      goback2() {
-        this.szMainShow = false
-        this.isShift2 = false
-        this.szShiftShow2 = false
-        this.isShift = false
-        this.szIndexShow = true
-      },
+      //   this.szShiftShow2 = false
+      //   this.isShift = false
+      //   this.isShift2 = false
+      //   this.szIndexShow = true
+      // },
+      // goback2() {
+      //   this.szMainShow = false
+      //   this.isShift2 = false
+      //   this.szShiftShow2 = false
+      //   this.isShift = false
+      //   this.szIndexShow = true
+      // },
       toClass2() {
         this.szMainShow = false
         this.szIndexShow = false
         this.szShiftShow2 = false
         this.isShift = false
-        this.isShift2 = true
-
+        this.isShift2 = false
+         this.szShiftShow=true
+            this.isYunzhuan='长白班'
       },
       toClass() {
         this.szMainShow = false
         this.szIndexShow = false
         this.szShiftShow2 = false
         this.isShift2 = false
-        this.isShift = true
-
+        this.isShift = false
+           this.szShiftShow=true
+               this.isYunzhuan='运转班'
       },
       toSz() {
 
@@ -320,23 +418,40 @@
         this.szMachineShow = false;
         this.szIndexShow = true
       },
+         sureClass() {
+
+        // this.$emit('szChange', this.staffList)
+        this.szShiftShow = false
+        this.szMachineShow = false;
+        this.szMainShow = false
+        this.szIndexShow = false
+        this.UpdatePeopleShow = true
+        this.isShift=true
+      },
+      cancelClass() {
+        this.UpdatePeopleShow = false
+        this.szShiftShow = false
+        this.szMainShow = false
+        this.szMachineShow = false;
+        this.szIndexShow =true
+      },
       changeClass2(e) {
         if (e == "a") {
           this.isChooseAclass2 = 0
           this.staffList2 = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Aclass2.szg1,
               isSelected: false,
               groupId: this.Aclass2.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Aclass2.szg2,
               isSelected: false,
               groupId: this.Aclass2.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Aclass2.szg3,
               isSelected: false,
               groupId: this.Aclass2.id
@@ -347,19 +462,19 @@
         } else if (e == "b") {
           this.isChooseAclass2 = 1
           this.staffList2 = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Bclass2.szg1,
               isSelected: false,
               groupId: this.Bclass2.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Bclass2.szg2,
               isSelected: false,
               groupId: this.Bclass2.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Bclass2.szg3,
               isSelected: false,
               groupId: this.Bclass2.id
@@ -369,19 +484,19 @@
         } else if (e == "c") {
           this.isChooseAclass2 = 2
           this.staffList2 = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Cclass2.szg1,
               isSelected: false,
               groupId: this.Cclass2.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Cclass2.szg2,
               isSelected: false,
               groupId: this.Cclass2.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Cclass2.szg3,
               isSelected: false,
               groupId: this.Cclass2.id
@@ -391,42 +506,25 @@
         }
 
       },
-      sureClass() {
-
-        // this.$emit('szChange', this.staffList)
-        this.szShiftShow = false
-        this.szMachineShow = false;
-        this.szMainShow = false
-        this.szIndexShow = false
-        this.UpdatePeopleShow = true
-        console.log(this.isChooseAclass)
-        console.log(this.staffList)
-      },
-      cancelClass() {
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false
-        this.szMainShow = false
-        this.szMachineShow = false;
-        this.szIndexShow = true
-      },
+ 
       changeClass(e) {
         if (e == "a") {
           this.isChooseAclass = 0
 
           this.staffList = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Aclass.szg1,
               isSelected: false,
               groupId: this.Aclass.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Aclass.szg2,
               isSelected: false,
               groupId: this.Aclass.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Aclass.szg3,
               isSelected: false,
               groupId: this.Aclass.id
@@ -437,19 +535,19 @@
         } else if (e == 'b') {
           this.isChooseAclass = 1
           this.staffList = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Bclass.szg1,
               isSelected: false,
               groupId: this.Bclass.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Bclass.szg2,
               isSelected: false,
               groupId: this.Bclass.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Bclass.szg3,
               isSelected: false,
               groupId: this.Bclass.id
@@ -459,19 +557,19 @@
         } else if (e == 'c') {
           this.isChooseAclass = 2
           this.staffList = [{
-              label: "上轴工01",
+              label: "开出工01",
               staffName: this.Cclass.szg1,
               isSelected: false,
               groupId: this.Cclass.id
             },
             {
-              label: "上轴工02",
+              label: "开出工02",
               staffName: this.Cclass.szg2,
               isSelected: false,
               groupId: this.Cclass.id
             },
             {
-              label: "上轴工03",
+              label: "开出工03",
               staffName: this.Cclass.szg3,
               isSelected: false,
               groupId: this.Cclass.id
@@ -761,66 +859,69 @@
           })
           .then(res => {
             console.log(res)
-            that.Aclass2.id = res.data.result[0].id
-            that.Bclass2.id = res.data.result[1].id
-            that.Cclass2.id = res.data.result[2].id
+            that.Aclass.id = res.data.result[0].id
+            that.Bclass.id = res.data.result[1].id
+            that.Cclass.id = res.data.result[2].id
             res.data.result[0].staffList.forEach(element => {
               if (element.order_num == "1") {
-                that.Aclass2.szg1Id = element.id
-                that.Aclass2.szg1 = element.staff_name
+                that.Aclass.szg1Id = element.id
+                that.Aclass.szg1 = element.staff_name
               } else if (element.order_num == "2") {
-                that.Aclass2.szg2Id = element.id
-                that.Aclass2.szg2 = element.staff_name
+                that.Aclass.szg2Id = element.id
+                that.Aclass.szg2 = element.staff_name
               } else if (element.order_num == "3") {
-                that.Aclass2.szg3Id = element.id
-                that.Aclass2.szg3 = element.staff_name
+                that.Aclass.szg3Id = element.id
+                that.Aclass.szg3 = element.staff_name
               }
             });
             res.data.result[1].staffList.forEach(element => {
               if (element.order_num == "1") {
-                that.Bclass2.szg1Id = element.id
-                that.Bclass2.szg1 = element.staff_name
+                that.Bclass.szg1Id = element.id
+                that.Bclass.szg1 = element.staff_name
               } else if (element.order_num == "2") {
-                that.Bclass2.szg2Id = element.id
-                that.Bclass2.szg2 = element.staff_name
+                that.Bclass.szg2Id = element.id
+                that.Bclass.szg2 = element.staff_name
               } else if (element.order_num == "3") {
-                that.Bclass2.szg3Id = element.id
-                that.Bclass2.szg3 = element.staff_name
+                that.Bclass.szg3Id = element.id
+                that.Bclass.szg3 = element.staff_name
               }
             });
             res.data.result[2].staffList.forEach(element => {
               if (element.order_num == "1") {
-                that.Cclass2.szg1Id = element.id
-                that.Cclass2.szg1 = element.staff_name
+                that.Cclass.szg1Id = element.id
+                that.Cclass.szg1 = element.staff_name
               } else if (element.order_num == "2") {
-                that.Cclass2.szg2Id = element.id
-                that.Cclass2.szg2 = element.staff_name
+                that.Cclass.szg2Id = element.id
+                that.Cclass.szg2 = element.staff_name
               } else if (element.order_num == "3") {
-                that.Cclass2.szg3Id = element.id
-                that.Cclass2.szg3 = element.staff_name
+                that.Cclass.szg3Id = element.id
+                that.Cclass.szg3 = element.staff_name
               }
             });
             that.staffList = [{
 
-                label: "上轴工01",
-                staffName: that.Aclass2.szg1,
+                label: "开出工01",
+                staffName: that.Aclass.szg1,
                 isSelected: false,
-                id: that.Aclass2.szg1Id
+                id: that.Aclass.szg1Id
               },
               {
-                label: "上轴工02",
-                staffName: that.Aclass2.szg2,
+                label: "开出工02",
+                staffName: that.Aclass.szg2,
                 isSelected: false,
-                id: that.Aclass2.szg2Id
+                id: that.Aclass.szg2Id
               },
               {
-                label: "上轴工03",
-                staffName: that.Aclass2.szg3,
+                label: "开出工03",
+                staffName: that.Aclass.szg3,
                 isSelected: false,
-                id: that.Aclass2.szg3Id
+                id: that.Aclass.szg3Id
               },
             ]
-
+            that.staffList2 = that.staffList
+            that.Aclass2 = that.Aclass
+            that.Bclass2 = that.Bclass
+            that.Cclass2 = that.Cclass
           })
       },
       getStaffList() {
@@ -900,15 +1001,24 @@
           this.page_num2 = 1
           this.StaffNameList = []
           this.getStaffList()
+       
         }
       },
 
-      szShiftShow2(val) { //当选择上轴组页面显示时加载数据
+      szShiftShow2(val) { //当选择开出组页面显示时加载数据
         if (val == true) {
           this.getGroup()
 
 
-          // })
+    
+        }
+      },
+           szShiftShow(val) { //当选择开出组页面显示时加载数据
+        if (val == true) {
+          this.getGroup()
+
+
+
         }
       },
     }
@@ -918,6 +1028,7 @@
 </script>
 
 <style scoped>
+
   .pch {
     position: absolute;
     left: 1rem;
@@ -925,7 +1036,6 @@
     width: 19.5rem;
     height: 3rem;
   }
-
   .pch input {
     width: 100%;
     height: 100%;

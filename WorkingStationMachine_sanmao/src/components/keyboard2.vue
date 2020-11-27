@@ -1,19 +1,20 @@
 <template>
   <div class="allPage">
-    <el-button @click="danji(item.label)" :key="index" :style="item.style" v-for="(item,index) in list">{{item.label}}</el-button>
+    <el-button @click="danji(item.label)" :key="index" :style="item.style" v-for="(item,index) in list">{{item.label}}
+    </el-button>
 
   </div>
 </template>
 
 <script>
   export default {
-//大键盘
+    //大键盘
     name: 'keyboard',
 
     data() {
       return {
 
-  
+
         number: [],
         list: [{
             label: 1,
@@ -74,21 +75,23 @@
     methods: {
       danji(label) {
 
-        if (typeof label == "number") {
-          this.number.push(label)
 
+        if (typeof label == "number") { //如果是数字就放进数组
+          this.number.push(label)
+          return
         }
+     
         if (label == "退格") {
           if (this.number.length >= 1) {
             this.number.pop()
           }
-
+      return
         }
         if (label == "确认") {
 
           this.$emit('sure', String(this.number).replace(/,/g, ""))
           this.number = []
-
+      return
         }
 
       }

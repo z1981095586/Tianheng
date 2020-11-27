@@ -204,6 +204,7 @@
       <!--</el-dialog>-->
       <printAxis style="display: none" ref="printAxisTable"></printAxis>
       <printClothCard style="display: none" ref="printClothCard" @printReturn="printReturn"></printClothCard>
+      <!--头部-->
           <el-dialog
       :visible.sync="otherProduceDialogShow"
       width="950px"
@@ -212,7 +213,6 @@
     >
       <otherProductTable ref="otherProductTable" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
-      <!--头部-->
       <div style="height: 80px;background-color: #29374b;width: 100%">
         <headComponent ref="headComponent" @selectWorker="selectWorker" @getData="getDataRefresh" @getStaffNameById="getStaffNameById" @returnFunc="returnFunc"></headComponent>
       </div>
@@ -467,13 +467,13 @@
     import changeStaffMessage from './changeStaffMessage.vue';
     import printAxis from './printAxis.vue';
     import printClothCard from './printClothCard.vue';
-     import otherProductTable from './otherProductTable.vue';
     import screenfull from "screenfull";
+     import otherProductTable from './otherProductTable2.vue';
     export default {
       components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printAxis,printClothCard,otherProductTable},
         data () {
         return {
-            otherProduceDialogShow:false,
+           otherProduceDialogShow:false,
           buttonSetting:"",
           companyId:10000015,
           workShopId:null,
@@ -821,8 +821,10 @@
           if(emitData.status){
             let data = {};
             data.id = this.dataSelect.id;
-            data.axisNo = emitData.data;
+            data.axisNo = emitData.axleNumber;
             data.staffId = this.staff_id;
+            data.vatNums = emitData.cylindersNumber;
+            data.beamNums = emitData.axisNumber;
             let shiftObject = this.$refs.headComponent.getShiftName();
             if(shiftObject&&shiftObject.id){
               data.shiftWork = shiftObject.id-1;
@@ -842,7 +844,7 @@
                   this.getDataByCardNumber(this.barCode);
                   this.showSetAxleTable = false;
                 }
-                this.$store.state.showLoadingLog = false; this.$store.state.showLoadingLog = false;
+                this.$store.state.showLoadingLog = false;
               })
               .catch(error => {
                 console.log(error);

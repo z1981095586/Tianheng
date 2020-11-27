@@ -161,7 +161,6 @@
     </el-button>
   </div>
   </el-dialog>
-      
     <!--数量页面-->
     <el-dialog
       :visible.sync="showBeheadednumber"
@@ -215,7 +214,7 @@
         </tr>
       </table>
     </el-dialog>
-      <el-dialog
+        <el-dialog
       :visible.sync="otherProduceDialogShow"
       width="950px"
       append-to-body
@@ -288,7 +287,7 @@
                 </td>
               </tr>
             </table>
-            <el-button type="warning" style="height: 70px;position: absolute;top: 45px;right: 20px;" size="medium" @click="otherProduceDialogShow=true">
+              <el-button type="warning" style="height: 70px;position: absolute;top: 45px;right: 20px;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
                 <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 12%">其他<br/><br/>产量</p>
               </div>
@@ -444,8 +443,8 @@
   import outputSubmitTable from './produceComfirm.vue';
   import outputPrintTable from './../warpCardPrint.vue';
   import changeStaffMessage from './changeStaffMessage.vue';
+      import otherProductTable from './otherProductTable.vue';
   import screenfull from "screenfull"
-    import otherProductTable from './otherProductTable.vue';
   export default {
     components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,otherProductTable},
     data () {
@@ -711,7 +710,7 @@
         if(emitData.status){
           let data = {};
           data.id = this.dataSelect.id;
-          data.axisNo = emitData.data;
+          data.axisNo = emitData.axleNumber;
           data.staffId = this.staff_id;
           let shiftObject = this.$refs.headComponent.getShiftName();
           if(shiftObject&&shiftObject.id){
@@ -1102,7 +1101,7 @@
               //console.log(response.data);
               if(response.data.result === "ok"){
                 this.showAddAxisTable = false;
-                this.$message.success("新增经轴成功");
+                this.$message.success(response.data.message);
                 this.getDetails(this.order_list.id);
               }else{
                 this.$message.success("新增经轴失败")

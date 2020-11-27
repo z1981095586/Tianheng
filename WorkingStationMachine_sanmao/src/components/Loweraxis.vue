@@ -12,7 +12,7 @@
       v-show="xzMainShow">
 
       <div class="operationPane_con_uppershaft">
-
+        <div class="pch"><input style="width:15rem;" v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span v-show="!isCheckedMachine">机台</span><span
@@ -27,7 +27,8 @@
         </div>
         <div class="pane">
           <div class="text" style="width:100%;">
-            <div class="text_con"><span>品名：扫码号显示....</span><span>品名：扫码号显示....</span><span>品名：扫码号显示....</span></div>
+            <div class="text_con"><span>色号：{{se_hao}}</span><span>品名：{{product_name}}</span><span>品号：{{pin_hao}}</span>
+            </div>
 
           </div>
           <div class="pane_title"><span>规格</span></div>
@@ -262,6 +263,11 @@
     name: 'Loweraxis',
     data() {
       return {
+        pch: "",
+        product_name: "",
+        pin_hao: "",
+        se_hao: "",
+
         tzMainShow: false,
         xzMainShow: false,
         isIndexShow: true,
@@ -853,33 +859,48 @@
       /**下轴函数 */
       xiazhou() {
         console.log(this.checkedMachineNum)
-        let url = host + "/api/stationMachine/downAxis";
+        if (this.pch == "") {
+          this.$message({
+            message: '请先扫码！',
+            type: 'warning'
+          });
+        } else if (this.checkedMachineNum == "") {
+          this.$message({
+            message: '请选择机台！',
+            type: 'warning'
+          });
+        } else {
+          let url = host + "/api/stationMachine/downAxis";
 
-        let that = this
-        axios({
-            url: url,
-            method: "post",
-            data: {
-              selectInfo: {
-                company_id: that.company_id,
+          let that = this
+          axios({
+              url: url,
+              method: "post",
+              data: {
+                selectInfo: {
+                  company_id: that.company_id,
 
+                },
+                remain_length: "0",
+                print_code: that.pch,
+                machine_id: that.checkedMachineNum,
               },
-              machine_id: that.checkedMachineNum
-            },
-            // headers: headers
-          })
-          .then(response => {
-            console.log(response)
-            if (response.data.message == "成功") {
-              this.$message({
-                message: '下轴成功！',
-                type: 'success'
-              });
-            } else {
-              this.$message.error('下轴失败！');
-            }
+              // headers: headers
+            })
+            .then(response => {
+              console.log(response)
+              if (response.data.message == "成功") {
+                this.$message({
+                  message: '下轴成功！',
+                  type: 'success'
+                });
+              } else {
+                this.$message.error('下轴失败！');
+              }
 
-          })
+            })
+        }
+
       },
       toMain() {
         this.tzMainShow = false
@@ -904,6 +925,33 @@
 
     },
     watch: {
+      pch(val) { //批轴号事件
+        let url = host + "/api/stationMachine/getAxisInfo"
+        let that = this
+        if (val != "") {
+          axios({
+              url: url,
+              method: "post",
+
+              data: {
+                selectInfo: {
+                  company_id: that.company_id
+                },
+                print_code: val
+              },
+
+
+              // headers: headers
+            })
+            .then(res => {
+              console.log(res)
+              that.se_hao = res.data.result.se_hao
+              that.pin_hao = res.data.result.pin_hao
+              that.product_name = res.data.result.product_name
+              that.machine_id = res.data.result.machine_id
+            })
+        }
+      },
       xzShiftShow(val) { //当选择上轴组页面显示时加载数据
         if (val == true) {
           this.getGroup()
@@ -926,12 +974,34 @@
 </script>
 
 <style scoped>
- body /deep/ .el-message .el-icon-success{
+  body /deep/ .el-message .el-icon-success {
     font-size: 3rem;
-}
- body /deep/ .el-message--success .el-message__content{
-  font-size: 3rem;
-}
+  }
+
+  body /deep/ .el-message--success .el-message__content {
+    font-size: 3rem;
+  }
+
+  .pch {
+    position: absolute;
+    left: 1rem;
+    top: -3.5rem;
+    width: 19.5rem;
+    height: 3rem;
+  }
+
+  .pch input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 1.5rem;
+  }
+
+  .pch input::-webkit-input-placeholder {
+    font-size: 1.3rem;
+
+  }
+
   .tz_main {
     width: 95%;
     height: 90%;

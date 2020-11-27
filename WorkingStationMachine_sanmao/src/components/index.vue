@@ -47,7 +47,7 @@
   import Stopcar from "./Stopcar"; //挡车操作面板
   import Loweraxis from "./Loweraxis"; //下轴操作面板
   import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
-    import Out from "./Out"; //机修操作面板
+    import Out from "./Out"; //开出操作面板
   export default {
     components: {
       illustration,
@@ -299,10 +299,14 @@
             }
           }
         }
-      }
+      },
+ 
     },
     mounted() {
 this.getGroup(6)
+
+
+
 
   
     },

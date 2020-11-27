@@ -1,6 +1,7 @@
 <template>
   <div class="allPage">
-    <el-button @click="danji(item.label)" :key="index" :style="item.style" v-for="(item,index) in list">{{item.label}}</el-button>
+    <el-button @click="danji(item.label)" :key="index" :style="item.style" v-for="(item,index) in list">{{item.label}}
+    </el-button>
 
   </div>
 </template>
@@ -12,8 +13,8 @@
 
     data() {
       return {
-//小键盘
-  
+        //小键盘
+
         number: [],
         list: [{
             label: 1,
@@ -76,18 +77,19 @@
 
         if (typeof label == "number") {
           this.number.push(label)
-
+          return
         }
         if (label == "退格") {
           if (this.number.length >= 1) {
             this.number.pop()
           }
-
+          return
         }
         if (label == "确认") {
 
           this.$emit('sure', String(this.number).replace(/,/g, ""))
           this.number = []
+          return
 
         }
 
@@ -99,10 +101,12 @@
     watch: {
       number(e) {
         this.$emit('change', String(e).replace(/,/g, ""))
-
       },
 
-    }
+      
+
+    },
+    
   }
 
 </script>
