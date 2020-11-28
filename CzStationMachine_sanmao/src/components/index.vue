@@ -346,7 +346,7 @@
     },
     watch: {
       printCode(val) {
-        if (val.length == 10) {
+        if (val.length == 9) {
           this.dialogVisible = false
           this.enabled = false
           this.enabled2 = true
@@ -383,7 +383,7 @@ body{
 
   .allPage {
     width: 100%;
-    height: 100vh;
+    height: 768px;
 
   }
 

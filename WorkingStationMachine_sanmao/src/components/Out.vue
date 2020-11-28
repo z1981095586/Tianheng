@@ -19,9 +19,11 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-        <div class="currentClass"
-          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :isChooseAclass==2? '当前班次：C班':''"></div>
-        <div class="classA">
+       <div class="currentClass"
+          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :''" v-show="isYunzhuan=='运转班'"></div>
+            <div class="currentClass"
+          v-show="isYunzhuan=='长白班'">当前班次：C班</div>
+        <div class="classA"  v-show="isYunzhuan=='运转班'">
           <div @click="changeClass('a')"
             :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
             <span>开出工组A</span></div>
@@ -29,7 +31,7 @@
             <span>开出工01：{{Aclass.szg1}}</span><span>开出工02：{{Aclass.szg2}}</span><span>开出工03：{{Aclass.szg3}}</span>
           </div>
         </div>
-        <div class="classA">
+        <div class="classA"  v-show="isYunzhuan=='运转班'">
           <div @click="changeClass('b')"
             :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
             <span>开出工组B</span></div>
@@ -37,7 +39,7 @@
             <span>开出工01：{{Bclass.szg1}}</span><span>开出工02：{{Bclass.szg2}}</span><span>开出工03：{{Bclass.szg3}}</span>
           </div>
         </div>
-        <div class="classA">
+        <div class="classA"     v-show="isYunzhuan=='长白班'">
           <div @click="changeClass('c')"
             :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
             <span>开出工组C</span></div>
@@ -375,10 +377,14 @@
         this.szMainShow = false
         this.szIndexShow = false
         this.szShiftShow2 = false
-        this.isShift = false
-        this.isShift2 = false
-         this.szShiftShow=true
+     
+  
+         this.szShiftShow=false
+        
+                  this.isShift = true
+                     this.isChooseAclass='2'
             this.isYunzhuan='长白班'
+
       },
       toClass() {
         this.szMainShow = false
@@ -387,6 +393,7 @@
         this.isShift2 = false
         this.isShift = false
            this.szShiftShow=true
+           this.isChooseAclass='0'
                this.isYunzhuan='运转班'
       },
       toSz() {
@@ -989,7 +996,7 @@
 
       isShift(val) {
         if (val == true) {
-          console.log(val)
+   
           this.page_num2 = 1
           this.StaffNameList = []
           this.getStaffList()
@@ -997,7 +1004,7 @@
       },
       isShift2(val) {
         if (val == true) {
-          console.log(val)
+         
           this.page_num2 = 1
           this.StaffNameList = []
           this.getStaffList()
@@ -1033,13 +1040,15 @@
     position: absolute;
     left: 1rem;
     top: -3.5rem;
-    width: 19.5rem;
+    width: 15.5rem;
     height: 3rem;
+     
   }
+
   .pch input {
     width: 100%;
     height: 100%;
-    border: none;
+ border:1px solid black;
     font-size: 1.5rem;
   }
 

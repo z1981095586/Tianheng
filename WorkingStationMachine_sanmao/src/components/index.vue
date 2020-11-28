@@ -34,7 +34,7 @@
     <illustration v-show="isChaPian" @cpChange="getGroup(10)"></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
-    <machinemaintenance v-show="isMachine"></machinemaintenance>
+    <machinemaintenance v-show="isMachine" :problem="problem"></machinemaintenance>
     <out v-show="isKaiChu"></out>
   </div>
 </template>
@@ -104,7 +104,8 @@
         isLower: false,
         nameList: [], //上轴顶部栏名字列表
         nameList2: [], //插片顶部栏名字列表
-        nameList3: '' //挡车顶部栏名字列表
+        nameList3: '', //挡车顶部栏名字列表
+       problem:null
       }
     },
     methods: {
@@ -300,6 +301,30 @@
           }
         }
       },
+      getMachine(){
+            let url2 = host + "/api/repair/getRepairType"
+          let that = this
+          axios({
+              url: url2,
+              method: "post",
+              data: {
+                selectInfo: {
+                  company_id: that.company_id,
+                  page_num:1,
+                  page_size:6
+                },
+              
+              },
+
+
+             
+            })
+            .then(res => {
+              console.log(res)
+           this.problem=res.data.result
+
+            })
+      }
  
     },
     mounted() {
@@ -320,6 +345,12 @@ this.getGroup(6)
              if(val==true){
              this.getGroup(10)
            }
+         },
+         isMachine(val){
+           if(val==true){
+          
+    this.getMachine()
+           }
          }
     }
   
@@ -336,7 +367,7 @@ this.getGroup(6)
 }
   .allPage {
     width: 100%;
-    height: 100vh;
+    height: 768px;
   }
 
   .header {

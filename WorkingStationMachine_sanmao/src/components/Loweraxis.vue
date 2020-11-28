@@ -124,18 +124,19 @@
           <div class="tz_main_left_left">
             <div class="tz_main_left_left_top">
               <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem">
-                <div class="chooseBtn_con_label" style="width:85%"><span v-show="!isCheckedMachine2"
-                    style="font-size:1.2rem;">机台</span><span v-show="isCheckedMachine2">{{checkedMachineNum2}}</span>
+                <div class="chooseBtn_con_label" style="width:85%"><span
+                    style="font-size:1.2rem;">机台</span>
                 </div>
                 <div class="chooseBtn_con_btn" @click="toChooseMachine2()" style="font-size:1.3rem;width:85%">
-                  <span>请选择</span></div>
+                  <span v-show="!isCheckedMachine2">请选择</span><span v-show="isCheckedMachine2">{{checkedMachineNum2}}</span></div>
               </div>
               <div class="chooseBtn_con" style="height:90%;margin-top:0.3rem">
                 <div class="chooseBtn_con_label" style="width:85%"><span style="font-size:1.2rem;"
-                    v-text="isChooseAclass==0?'A组':isChooseAclass==1 ? 'B组' :isChooseAclass==2? 'C组':''"></span>
+                  >班组</span>
                 </div>
                 <div class="chooseBtn_con_btn" @click="toClass2()" style="font-size:1.3rem;width:85%">
-                  <span>请选择</span></div>
+                  <span v-show="isChooseAclass==null">请选择</span><span v-show="!(isChooseAclass==null)" style="font-size:1.2rem;"
+                    v-text="isChooseAclass==0?'A组':isChooseAclass==1 ? 'B组' :isChooseAclass==2? 'C组':''"></span></div>
               </div>
             </div>
             <div class="tz_main_left_left_bottom">
@@ -208,10 +209,10 @@
       v-show="tzShiftShow">
       <div class="operationPane_con_machineList">
         <div class="currentClass"
-          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :isChooseAclass==2? '当前班次：C班':''"></div>
+          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :isChooseAclass==2? '当前班次：C班':'未选择当前班次'"></div>
         <div class="classA">
           <div @click="changeClass('a')"
-            :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
+            :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':'classA_left'">
             <span>下轴工组A</span></div>
           <div class="classA_right">
             <span>下轴工01：{{Aclass.szg1}}</span><span>下轴工02：{{Aclass.szg2}}</span><span>下轴工03：{{Aclass.szg3}}</span>
@@ -219,7 +220,7 @@
         </div>
         <div class="classA">
           <div @click="changeClass('b')"
-            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
+            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':'classA_left'">
             <span>下轴工组B</span></div>
           <div class="classA_right">
             <span>下轴工01：{{Bclass.szg1}}</span><span>下轴工02：{{Bclass.szg2}}</span><span>下轴工03：{{Bclass.szg3}}</span>
@@ -227,7 +228,7 @@
         </div>
         <div class="classA">
           <div @click="changeClass('c')"
-            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
+            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':'classA_left'">
             <span>下轴工组C</span></div>
           <div class="classA_right">
             <span>下轴工01：{{Cclass.szg1}}</span><span>下轴工02：{{Cclass.szg2}}</span><span>下轴工03：{{Cclass.szg3}}</span>
@@ -287,7 +288,7 @@
         staffList: [],
         chooseClassName: "A组",
         isCheckedMachine: false, //是否选中机台
-        isChooseAclass: 0,
+        isChooseAclass:null,
         Aclass: {
 
           szg1: '',
@@ -464,11 +465,7 @@
         this.tzMachineShow = false
         this.tzMainShow = true
 
-        if (this.isChooseAclass2 == true) {
-          this.chooseClassName2 = 'A组'
-        } else {
-          this.chooseClassName2 = 'B组'
-        }
+
         console.log(this.chooseClassName2)
         // this.$emit('szChange', this.staffList)
       },
@@ -590,8 +587,14 @@
         this.tzShiftShow = false
         this.tzMachineShow = false
         this.tzMainShow = true
-        this.isCheckedMachine2 = true
-        console.log(this.checkedMachineNum2)
+     
+           if( typeof this.checkedMachineNum2== "undefined"){
+          this.isCheckedMachine2=false
+           
+        }else{
+              this.isCheckedMachine2 = true
+        }
+      
       },
       cancel2() { //取消按钮事件
         this.xzShiftShow = false
@@ -889,6 +892,7 @@
             })
             .then(response => {
               console.log(response)
+         
               if (response.data.message == "成功") {
                 this.$message({
                   message: '下轴成功！',
@@ -986,14 +990,15 @@
     position: absolute;
     left: 1rem;
     top: -3.5rem;
-    width: 19.5rem;
+    width: 15.5rem;
     height: 3rem;
+     
   }
 
   .pch input {
     width: 100%;
     height: 100%;
-    border: none;
+ border:1px solid black;
     font-size: 1.5rem;
   }
 

@@ -10,9 +10,9 @@
         <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span v-show="!isCheckedMachine">机台</span><span
+            <div class="chooseBtn_con_label"><span >机台</span></div>
+            <div class="chooseBtn_con_btn" @click="toChooseMachine()"><span v-show="!isCheckedMachine">请选择</span><span
                 v-show="isCheckedMachine">{{checkedMachineNum}}</span></div>
-            <div class="chooseBtn_con_btn" @click="toChooseMachine()"><span>请选择</span></div>
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>A班&B班</span></div>
@@ -70,9 +70,9 @@
       <div class="operationPane_con_machineList">
         <div class="shift">
           <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="cpz">
-              <option value="11">A组</option>
-              <option value="12">B组</option>
-              <option value="13">C组</option>
+              <option value="11">A班</option>
+              <option value="12">B班</option>
+              <option value="13">C班</option>
             </select></div>
           <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
             <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
@@ -362,7 +362,13 @@
 
       },
       sureMachine() {
-        this.isCheckedMachine = true
+    
+           if( typeof this.checkedMachineNum== "undefined"){
+          this.isCheckedMachine=false
+           
+        }else{
+              this.isCheckedMachine = true
+        }
         this.checkMachine = []
         this.szMachineShow = false;
         this.szShiftShow = false;
@@ -436,6 +442,8 @@
       checkedMachine(e) { //选择机台事件
 
         this.checkedMachineNum = e[0]
+     
+     
       },
       checkedName(e) { //选择员工
         for (let i = 0; i < this.staffList.length; i++) {
@@ -512,18 +520,20 @@
 </script>
 
 <style>
+
   .pch {
     position: absolute;
     left: 1rem;
     top: -3.5rem;
-    width: 19.5rem;
+    width: 15.5rem;
     height: 3rem;
+     
   }
 
   .pch input {
     width: 100%;
     height: 100%;
-    border: none;
+ border:1px solid black;
     font-size: 1.5rem;
   }
 
