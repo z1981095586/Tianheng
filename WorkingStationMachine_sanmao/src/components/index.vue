@@ -7,11 +7,15 @@
         </el-avatar>
         <span>天衡织机工位操作系统</span>
       </div>
-      <div class="header_right"><span v-show="isShangZhou" v-for="(item,index) in nameList"
-          :key="'sz_'+index">{{item.label}}：{{item.staffName}}</span>
-        <span v-show="isChaPian" v-for="(item,index) in nameList2"
-          :key="'cp_'+index">{{item.label}}：{{item.staffName}}</span>
-        <span v-show="isStopCar || isMachine ">{{nameList3}}</span>
+      <div class="header_right">
+        <div class="header_right_con">
+          <span v-show="isShangZhou ||isChaPian||isKaiChu">{{className}}</span><span
+            v-show="isShangZhou ||isChaPian||isKaiChu">开出工:{{kcgName}}</span><span v-show="isShangZhou||isKaiChu"
+            v-for="(item,index) in nameList" :key="'sz_'+index">{{item.label}}：{{item.staffName}}</span>
+          <span v-show="isChaPian" v-for="(item,index) in nameList2"
+            :key="'cp_'+index">{{item.label}}：{{item.staffName}}</span><span v-show="isMachine ">机台：701@王某人</span>
+          <span v-show="isStopCar || isMachine ">{{dcClass}}&nbsp;&nbsp;挡车工:{{dcName}}</span>
+        </div>
         <div class="icon_info">
           <img src="../../static/img/remind.png" />
 
@@ -30,12 +34,12 @@
 
       </div>
     </div>
-    <uppershaft v-show="isShangZhou" @szChange=" getGroup(6)"></uppershaft>
-    <illustration v-show="isChaPian" @cpChange="getGroup(10)"></illustration>
+    <uppershaft v-show="isShangZhou" @szChange=" getGroup(4,'sz')"></uppershaft>
+    <illustration v-show="isChaPian" @cpChange="getGroup(15,'cp')"></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
     <machinemaintenance v-show="isMachine" :problem="problem"></machinemaintenance>
-    <out v-show="isKaiChu"></out>
+    <out v-show="isKaiChu" @kcChange=" getGroup(4,'sz')"></out>
   </div>
 </template>
 
@@ -47,7 +51,7 @@
   import Stopcar from "./Stopcar"; //挡车操作面板
   import Loweraxis from "./Loweraxis"; //下轴操作面板
   import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
-    import Out from "./Out"; //开出操作面板
+  import Out from "./Out"; //开出操作面板
   export default {
     components: {
       illustration,
@@ -58,10 +62,10 @@
       Out
     },
     name: 'index',
-    inject:['reload'],
+    inject: ['reload'],
     data() {
       return {
-          company_id: "10000025",
+        company_id: "10000025",
         tabList: [{
             label: "上轴",
             class: "oneTab_Choosed",
@@ -72,7 +76,7 @@
             class: "oneTab",
             style: "background:white;color:#18BC83"
           },
-            {
+          {
             label: "开出",
             class: "oneTab",
             style: "background:white;color:#18BC83"
@@ -98,62 +102,77 @@
         activeTab: "",
         isShangZhou: true,
         isChaPian: false,
-        isKaiChu:false,
+        isKaiChu: false,
         isStopCar: false,
         isMachine: false,
         isLower: false,
         nameList: [], //上轴顶部栏名字列表
+
         nameList2: [], //插片顶部栏名字列表
-        nameList3: '', //挡车顶部栏名字列表
-       problem:null
+        dcClass: '',
+        dcName: '',
+        problem: null,
+        className: "",
+        kcgName: ""
       }
     },
     methods: {
-         getGroup(id){//获取当前班次(当班分组)(倒数第二级分组)
-           console.log("get")
-             let url2 = host + "/api/group/getOnDutyShift"
-          let that = this
-          axios({
-              url: url2,
-              method: "post",
-              data: {
-                selectInfo: {
-                  company_id: that.company_id,
-                },
-                shiftGroup: {
-                  id: id
-                }
+      getGroup(id, page) { //获取当前班次(当班分组)(倒数第二级分组)
+        console.log("get")
+        let url2 = host + "/api/group/getOnDutyShift"
+        let that = this
+        axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
               },
+              shiftGroup: {
+                id: id
+              }
+            },
 
 
-             
-            })
-            .then(res => {
-              console.log(res)
-              let nameList=res.data.result.staffList
-              nameList.forEach(element => {
-                element.label=element.staff_organization_name+"0"+element.order_num
-                element.staffName=element.staff_name
 
-              });
-           
+          })
+          .then(res => {
+            console.log(res)
+            let nameList = res.data.result.staffList
+            that.className = res.data.result.group_name
+            nameList.forEach(element => {
+              element.label = element.staff_organization_name + "0" + element.order_num
+              element.staffName = element.staff_name
+
+            });
+
+            if (page == 'sz') {
               this.szChange(nameList)
+            } else if (page == 'cp') {
+              this.cpChange(nameList)
+            } else if (page == 'dc') {
+              this.dcClass = res.data.result.group_name
+              this.dcName = res.data.result.staffList[0].staff_name
+            }
 
-            })
-           },
+          })
+      },
       szChange(nameList) { //上轴换班事件
         this.nameList = []
         let str = "";
+        console.log(nameList)
         for (let i = 0; i < nameList.length; i++) {
-          if (nameList[i].label == "开出工" && (nameList[i].staffName != "")) {
-            this.nameList.push(nameList[i]);
+          if (nameList[i].label == "开出工01" && (nameList[i].staffName != "")) {
+            this.kcgName = nameList[i].staffName
+            console.log(this.kcgName)
           }
           if ((nameList[i].label.indexOf("上轴工") != -1) && (nameList[i].staffName != "")) {
             str = str + nameList[i].staffName + "，";
           }
+
         }
         str = str.substr(0, str.length - 1);
-  
+        console.log(str)
         if (this.nameList.length > 1) {
           if (str != "" && (this.nameList[1].staffName != str)) {
             this.nameList[1] = {
@@ -206,9 +225,7 @@
 
       },
       dcChange(nameList) { //挡车换班事件
-        if (nameList != "" && (this.nameList3 != nameList)) {
-          this.nameList3 = "挡车工：" + nameList
-        }
+        this.getGroup(16, 'dc')
 
       },
       changeTab(label) { //tab栏切换事件
@@ -230,7 +247,7 @@
           if (this.tabList[i].label == "机修") {
             this.tabList[i].style = "background:white;color:#F25643;"
           }
-            if (this.tabList[i].label == "开出") {
+          if (this.tabList[i].label == "开出") {
             this.tabList[i].style = "background:white;color:#4352F2;"
           }
         }
@@ -243,7 +260,7 @@
               this.isMachine = false
               this.isStopCar = false
               this.isChaPian = false
-              this.isKaiChu=false
+              this.isKaiChu = false
               this.isShangZhou = true
               return
             }
@@ -253,7 +270,7 @@
               this.isLower = false
               this.isMachine = false
               this.isStopCar = false
-                 this.isKaiChu=false
+              this.isKaiChu = false
               this.isChaPian = true
               return
             }
@@ -262,7 +279,7 @@
               this.isShangZhou = false
               this.isChaPian = false
               this.isLower = false
-                 this.isKaiChu=false
+              this.isKaiChu = false
               this.isMachine = false
               this.isStopCar = true
               return
@@ -273,7 +290,7 @@
               this.isChaPian = false
               this.isStopCar = false
               this.isMachine = false
-                 this.isKaiChu=false
+              this.isKaiChu = false
               this.isLower = true
               return
             }
@@ -283,88 +300,95 @@
               this.isChaPian = false
               this.isStopCar = false
               this.isLower = false
-                 this.isKaiChu=false
+              this.isKaiChu = false
               this.isMachine = true
               return
             }
-             if (this.tabList[i].label == "开出") {
+            if (this.tabList[i].label == "开出") {
               this.tabList[i].style = "background:#4352F2;color:white;"
               this.isShangZhou = false
               this.isChaPian = false
               this.isStopCar = false
               this.isLower = false
-            
+
               this.isMachine = false
-                   this.isKaiChu=true
+              this.isKaiChu = true
               return
             }
           }
         }
       },
-      getMachine(){
-            let url2 = host + "/api/repair/getRepairType"
-          let that = this
-          axios({
-              url: url2,
-              method: "post",
-              data: {
-                selectInfo: {
-                  company_id: that.company_id,
-                  page_num:1,
-                  page_size:6
-                },
-              
+      getMachine() {
+        let url2 = host + "/api/repair/getRepairType"
+        let that = this
+        axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+                page_num: 1,
+                page_size: 6
               },
 
+            },
 
-             
-            })
-            .then(res => {
-              console.log(res)
-           this.problem=res.data.result
 
-            })
+
+          })
+          .then(res => {
+            console.log(res)
+            this.problem = res.data.result
+
+          })
       }
- 
+
     },
     mounted() {
-this.getGroup(6)
+      this.getGroup(4, 'sz')
 
 
 
 
-  
+
     },
-    watch:{
-         isShangZhou(val){
-           if(val==true){
-             this.getGroup(6)
-           }
-         },
-         isChaPian(val){
-             if(val==true){
-             this.getGroup(10)
-           }
-         },
-         isMachine(val){
-           if(val==true){
-          
-    this.getMachine()
-           }
-         }
+    watch: {
+      isShangZhou(val) {
+        if (val == true) {
+          this.getGroup(4, 'sz')
+        }
+      },
+      isChaPian(val) {
+        if (val == true) {
+          this.getGroup(15, 'cp')
+        }
+      },
+      isStopCar(val) {
+        if (val == true) {
+          this.getGroup(16, 'dc')
+        }
+      },
+      isMachine(val) {
+        if (val == true) {
+
+          this.getMachine()
+        }
+      }
     }
-  
+
   }
 
 </script>
 
 <style scoped>
- body /deep/ .el-message .el-icon-success{
+  body /deep/ .el-message .el-icon-success {
     font-size: 3rem;
-}
- body /deep/ .el-message--success .el-message__content{
-  font-size: 3rem;
-}
+  }
+
+  body /deep/ .el-message--success .el-message__content {
+    font-size: 3rem;
+  }
+
   .allPage {
     width: 100%;
     height: 768px;
@@ -400,10 +424,22 @@ this.getGroup(6)
     justify-content: flex-end;
   }
 
-  .header_right span {
+  .header_right_con {
     color: white;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
+
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .header_right_con span {
     margin-right: 1rem;
   }
 
@@ -450,7 +486,7 @@ this.getGroup(6)
   }
 
   .oneTab_Choosed {
-   width: 15.5%;
+    width: 15.5%;
     height: 80%;
     font-family: FZCYJ;
     color: white;

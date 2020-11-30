@@ -6,7 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-
+//项目表名 s_staff_10000025   s_staff_organization_10000025   shift_group_10000025   shift_group_staff_10000025
 
 // VUE use
 

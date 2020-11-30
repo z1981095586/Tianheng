@@ -19,32 +19,31 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-       <div class="currentClass"
-          v-html="isChooseAclass==0?'当前班次：A班':isChooseAclass==1 ? '当前班次：B班' :''" v-show="isYunzhuan=='运转班'"></div>
-            <div class="currentClass"
-          v-show="isYunzhuan=='长白班'">当前班次：C班</div>
-        <div class="classA"  v-show="isYunzhuan=='运转班'">
+        <div class="currentClass" v-html="isChooseAclass==0?'当前班次：运转班A组':isChooseAclass==1 ? '当前班次：运转班B组' :''"
+          v-show="isYunzhuan=='运转班'"></div>
+        <div class="currentClass" v-show="isYunzhuan=='长白班'">当前班次：运转班C组</div>
+        <div class="classA" v-show="isYunzhuan=='运转班'">
           <div @click="changeClass('a')"
             :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
-            <span>开出工组A</span></div>
+            <span>运转班A组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Aclass.szg1}}</span><span>开出工02：{{Aclass.szg2}}</span><span>开出工03：{{Aclass.szg3}}</span>
+            <span></span><span>开出工01：{{Aclass.szg1}}</span><span></span>
           </div>
         </div>
-        <div class="classA"  v-show="isYunzhuan=='运转班'">
+        <div class="classA" v-show="isYunzhuan=='运转班'">
           <div @click="changeClass('b')"
             :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
-            <span>开出工组B</span></div>
+            <span>运转班B组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Bclass.szg1}}</span><span>开出工02：{{Bclass.szg2}}</span><span>开出工03：{{Bclass.szg3}}</span>
+            <span></span> <span>开出工01：{{Bclass.szg1}}</span><span></span>
           </div>
         </div>
-        <div class="classA"     v-show="isYunzhuan=='长白班'">
+        <div class="classA" v-show="isYunzhuan=='长白班'">
           <div @click="changeClass('c')"
             :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
-            <span>开出工组C</span></div>
+            <span>运转班C组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Cclass.szg1}}</span><span>开出工02：{{Cclass.szg2}}</span><span>开出工03：{{Cclass.szg3}}</span>
+            <span>开出工01：{{Cclass.szg1}}</span>
           </div>
         </div>
       </div>
@@ -67,29 +66,30 @@
       v-show="szShiftShow2">
       <div class="operationPane_con_machineList">
         <div class="currentClass"
-          v-html="isChooseAclass2==0?'当前班次：A班':isChooseAclass2==1 ? '当前班次：B班' :isChooseAclass2==2? '当前班次：C班':''"></div>
+          v-html="isChooseAclass2==0?'当前班次：运转班A组':isChooseAclass2==1 ? '当前班次：运转班B组' :isChooseAclass2==2? '当前班次：运转班C组':''">
+        </div>
         <div class="classA">
           <div @click="changeClass2('a')"
             :class="isChooseAclass2==0?'classA_left_chossed':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left':''">
-            <span>开出工组A</span></div>
+            <span>运转班A组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Aclass2.szg1}}</span><span>开出工02：{{Aclass2.szg2}}</span><span>开出工03：{{Aclass2.szg3}}</span>
+            <span></span> <span>开出工01：{{Aclass2.szg1}}</span><span></span>
           </div>
         </div>
         <div class="classA">
           <div @click="changeClass2('b')"
             :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left_chossed' :isChooseAclass2==2? 'classA_left':''">
-            <span>开出工组B</span></div>
+            <span>运转班B组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Bclass2.szg1}}</span><span>开出工02：{{Bclass2.szg2}}</span><span>开出工03：{{Bclass2.szg3}}</span>
+            <span></span> <span>开出工01：{{Bclass2.szg1}}</span><span></span>
           </div>
         </div>
         <div class="classA">
           <div @click="changeClass2('c')"
             :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left_chossed':''">
-            <span>开出工组C</span></div>
+            <span>运转班C组</span></div>
           <div class="classA_right">
-            <span>开出工01：{{Cclass2.szg1}}</span><span>开出工02：{{Cclass2.szg2}}</span><span>开出工03：{{Cclass2.szg3}}</span>
+            <span></span> <span>开出工01：{{Cclass2.szg1}}</span><span></span>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureName()">保存</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="save()">保存</div>
           <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="goback()">返回</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
@@ -130,8 +130,10 @@
       </div>
 
       <div class="search" style="left:4rem;width:95%;top:18px"><span style="font-size:1.5rem">开出工：</span><input
-          style="font-size:1.5rem;width:10rem;" disabled v-model="String(this.checkName).replace(/ /g, '')" /><span
-          style="color:red;margin-left:1rem;"  v-html="isChooseAclass==0?'当前选中：'+isYunzhuan+'A组':isChooseAclass==1 ? '当前选中：'+isYunzhuan+'B组' :isChooseAclass==2? '当前选中：'+isYunzhuan+'C组':''"></span></div>
+          style="font-size:1.5rem;width:10rem;" disabled v-model="String(this.checkedName).replace(/ /g, '')" /><span
+          style="color:red;margin-left:1rem;"
+          v-html="isChooseAclass==0?'当前选中：'+isYunzhuan+'A组':isChooseAclass==1 ? '当前选中：'+isYunzhuan+'B组' :isChooseAclass==2? '当前选中：'+isYunzhuan+'C组':''"></span>
+      </div>
       <img src="../../static/img/close.png" @click="goback()" />
     </div>
     <!-- 开出部分换班-->
@@ -219,7 +221,7 @@
         isShift: false, //开出换班显示隐藏
         isShift2: false, //开出换班显示隐藏
         szShiftShow2: false,
-        szShiftShow:false,
+        szShiftShow: false,
         isCheckedMachine: false,
         checkedMachineNum: "",
         checkName: [], //开出选中的员工名字
@@ -230,32 +232,14 @@
             staffName: "",
             isSelected: false
           },
-          {
-            label: "开出工02",
-            staffName: "",
-            isSelected: false
-          },
-          {
-            label: "开出工03",
-            staffName: "",
-            isSelected: false
-          },
+
         ],
-     staffList2: [{
+        staffList2: [{
             label: "开出工01",
             staffName: "",
             isSelected: false
           },
-          {
-            label: "开出工02",
-            staffName: "",
-            isSelected: false
-          },
-          {
-            label: "开出工03",
-            staffName: "",
-            isSelected: false
-          },
+
         ],
         StaffNameList: [],
         page_size2: 21,
@@ -267,7 +251,7 @@
         mac_type_id: "030100",
         company_id: "10000025",
 
-    isChooseAclass: 0,
+        isChooseAclass: 0,
         Aclass: {
 
 
@@ -336,27 +320,22 @@
         pch: "",
         product_name: "",
         axis_no: "",
-        isYunzhuan:'运转班'// 当前选择的班
-
+        isYunzhuan: '运转班', // 当前选择的班
+        checkedName: ""
       };
     },
     methods: {
-      sureName() {
-        this.szMainShow = false
 
-        this.szShiftShow2 = false
-        this.isShift = false
-            this.szShiftShow=false
-        this.szIndexShow = true
-    
-      },
+
       goback() {
-      this.szMainShow = false
+
 
         this.szShiftShow2 = false
         this.isShift = false
-        this.szIndexShow = false
-        this.szShiftShow=true
+
+        this.szShiftShow = false
+        this.szMainShow = false
+        this.szIndexShow = true
       },
       // sureName2() {
       //   this.szMainShow = false
@@ -377,13 +356,13 @@
         this.szMainShow = false
         this.szIndexShow = false
         this.szShiftShow2 = false
-     
-  
-         this.szShiftShow=false
-        
-                  this.isShift = true
-                     this.isChooseAclass='2'
-            this.isYunzhuan='长白班'
+
+
+        this.szShiftShow = false
+
+        this.isShift = true
+        this.isChooseAclass = '2'
+        this.isYunzhuan = '长白班'
 
       },
       toClass() {
@@ -392,9 +371,9 @@
         this.szShiftShow2 = false
         this.isShift2 = false
         this.isShift = false
-           this.szShiftShow=true
-           this.isChooseAclass='0'
-               this.isYunzhuan='运转班'
+        this.szShiftShow = true
+        this.isChooseAclass = '0'
+        this.isYunzhuan = '运转班'
       },
       toSz() {
 
@@ -425,7 +404,7 @@
         this.szMachineShow = false;
         this.szIndexShow = true
       },
-         sureClass() {
+      sureClass() {
 
         // this.$emit('szChange', this.staffList)
         this.szShiftShow = false
@@ -433,14 +412,14 @@
         this.szMainShow = false
         this.szIndexShow = false
         this.UpdatePeopleShow = true
-        this.isShift=true
+        this.isShift = true
       },
       cancelClass() {
         this.UpdatePeopleShow = false
         this.szShiftShow = false
         this.szMainShow = false
         this.szMachineShow = false;
-        this.szIndexShow =true
+        this.szIndexShow = true
       },
       changeClass2(e) {
         if (e == "a") {
@@ -513,7 +492,7 @@
         }
 
       },
- 
+
       changeClass(e) {
         if (e == "a") {
           this.isChooseAclass = 0
@@ -701,19 +680,15 @@
         this.szMainShow = true;
       },
       save() { //确认按钮事件
-        if (this.isStartChange == true) {
+        if (this.checkedName != "") {
 
           console.log(this.Aclass)
           console.log(this.Bclass)
+          console.log(this.Cclass)
           console.log(this.staffList)
+          console.log(this.isChooseAclass)
           let id;
           let staffList = [{
-            id: null,
-            order_num: null
-          }, {
-            id: null,
-            order_num: null
-          }, {
             id: null,
             order_num: null
           }, ];
@@ -734,10 +709,7 @@
 
           staffList[0].id = this.staffList[0].id
           staffList[0].order_num = 1
-          staffList[1].id = this.staffList[1].id
-          staffList[1].order_num = 2
-          staffList[2].id = this.staffList[2].id
-          staffList[2].order_num = 3
+
           let url = host + '/api/group/shift';
           let data = {
             selectInfo: {
@@ -750,6 +722,7 @@
 
           }
           let that = this
+          console.log(data)
           axios({
               url: url,
               method: "post",
@@ -769,8 +742,10 @@
                 this.UpdatePeopleShow = false
                 this.szMainShow = false;
                 this.isStartChange = false
+                this.isShift = false
                 this.szIndexShow = true
-                this.$emit('szChange', this.staffList)
+
+                this.$emit('kcChange', this.staffList)
               } else {
                 this.$message({
                   message: '发生错误！',
@@ -780,6 +755,11 @@
             })
 
 
+        } else {
+          this.$message({
+            message: '请选择一个名字！',
+            type: 'warning'
+          });
         }
 
       },
@@ -846,7 +826,8 @@
       },
 
       getGroup() { //获取组员信息
-
+        console.log('getGroup')
+        console.log(this.isYunzhuan)
         let url2 = host + "/api/group/getGroupDetail"
         let that = this
         axios({
@@ -857,7 +838,7 @@
                 company_id: that.company_id,
               },
               shiftGroup: {
-                id: 6
+                id: 4
               }
             },
 
@@ -865,44 +846,29 @@
             // headers: headers
           })
           .then(res => {
-            console.log(res)
-            that.Aclass.id = res.data.result[0].id
-            that.Bclass.id = res.data.result[1].id
-            that.Cclass.id = res.data.result[2].id
-            res.data.result[0].staffList.forEach(element => {
-              if (element.order_num == "1") {
-                that.Aclass.szg1Id = element.id
-                that.Aclass.szg1 = element.staff_name
-              } else if (element.order_num == "2") {
-                that.Aclass.szg2Id = element.id
-                that.Aclass.szg2 = element.staff_name
-              } else if (element.order_num == "3") {
-                that.Aclass.szg3Id = element.id
-                that.Aclass.szg3 = element.staff_name
-              }
-            });
-            res.data.result[1].staffList.forEach(element => {
-              if (element.order_num == "1") {
-                that.Bclass.szg1Id = element.id
-                that.Bclass.szg1 = element.staff_name
-              } else if (element.order_num == "2") {
-                that.Bclass.szg2Id = element.id
-                that.Bclass.szg2 = element.staff_name
-              } else if (element.order_num == "3") {
-                that.Bclass.szg3Id = element.id
-                that.Bclass.szg3 = element.staff_name
-              }
-            });
-            res.data.result[2].staffList.forEach(element => {
-              if (element.order_num == "1") {
-                that.Cclass.szg1Id = element.id
-                that.Cclass.szg1 = element.staff_name
-              } else if (element.order_num == "2") {
-                that.Cclass.szg2Id = element.id
-                that.Cclass.szg2 = element.staff_name
-              } else if (element.order_num == "3") {
-                that.Cclass.szg3Id = element.id
-                that.Cclass.szg3 = element.staff_name
+            console.log(res.data.result)
+            res.data.result.forEach(element => {
+
+              if (element.group_name == "运转班A组") {
+                this.Aclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "开出工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Aclass.szg1 = element.staffList[i].staff_name
+                      this.Aclass.szg1Id = element.staffList[i].id
+                    }
+                  }
+                }
+              } else if (element.group_name == "运转班B组") {
+                this.Bclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "开出工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Bclass.szg1 = element.staffList[i].staff_name
+                      this.Bclass.szg1Id = element.staffList[i].id
+                    }
+                  }
+                }
               }
             });
             that.staffList = [{
@@ -912,41 +878,150 @@
                 isSelected: false,
                 id: that.Aclass.szg1Id
               },
-              {
-                label: "开出工02",
-                staffName: that.Aclass.szg2,
-                isSelected: false,
-                id: that.Aclass.szg2Id
-              },
-              {
-                label: "开出工03",
-                staffName: that.Aclass.szg3,
-                isSelected: false,
-                id: that.Aclass.szg3Id
-              },
+
             ]
-            that.staffList2 = that.staffList
             that.Aclass2 = that.Aclass
             that.Bclass2 = that.Bclass
+            that.staffList2 = that.staffList
+
+            // that.Aclass.id = res.data.result[0].id
+            // that.Bclass.id = res.data.result[1].id
+            // that.Cclass.id = res.data.result[2].id
+            // res.data.result[0].staffList.forEach(element => {
+            //   if (element.order_num == "1") {
+            //     that.Aclass.szg1Id = element.id
+            //     that.Aclass.szg1 = element.staff_name
+            //   } else if (element.order_num == "2") {
+            //     that.Aclass.szg2Id = element.id
+            //     that.Aclass.szg2 = element.staff_name
+            //   } else if (element.order_num == "3") {
+            //     that.Aclass.szg3Id = element.id
+            //     that.Aclass.szg3 = element.staff_name
+            //   }
+            // });
+            // res.data.result[1].staffList.forEach(element => {
+            //   if (element.order_num == "1") {
+            //     that.Bclass.szg1Id = element.id
+            //     that.Bclass.szg1 = element.staff_name
+            //   } else if (element.order_num == "2") {
+            //     that.Bclass.szg2Id = element.id
+            //     that.Bclass.szg2 = element.staff_name
+            //   } else if (element.order_num == "3") {
+            //     that.Bclass.szg3Id = element.id
+            //     that.Bclass.szg3 = element.staff_name
+            //   }
+            // });
+            // res.data.result[2].staffList.forEach(element => {
+            //   if (element.order_num == "1") {
+            //     that.Cclass.szg1Id = element.id
+            //     that.Cclass.szg1 = element.staff_name
+            //   } else if (element.order_num == "2") {
+            //     that.Cclass.szg2Id = element.id
+            //     that.Cclass.szg2 = element.staff_name
+            //   } else if (element.order_num == "3") {
+            //     that.Cclass.szg3Id = element.id
+            //     that.Cclass.szg3 = element.staff_name
+            //   }
+            // });
+            // that.staffList = [{
+
+            //     label: "上轴工01",
+            //     staffName: that.Aclass.szg1,
+            //     isSelected: false,
+            //     id: that.Aclass.szg1Id
+            //   },
+            //   {
+            //     label: "上轴工02",
+            //     staffName: that.Aclass.szg2,
+            //     isSelected: false,
+            //     id: that.Aclass.szg2Id
+            //   },
+            //   {
+            //     label: "上轴工03",
+            //     staffName: that.Aclass.szg3,
+            //     isSelected: false,
+            //     id: that.Aclass.szg3Id
+            //   },
+            // ]
+            // that.staffList2 = that.staffList
+            // that.Aclass2 = that.Aclass
+            // that.Bclass2 = that.Bclass
+            // that.Cclass2 = that.Cclass
+          })
+        axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+              },
+              shiftGroup: {
+                id: 5
+              }
+            },
+
+
+            // headers: headers
+          })
+          .then(res => {
+            console.log(res.data.result)
+            res.data.result.forEach(element => {
+              if (element.group_name == "长白班C组") {
+                this.Cclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "开出工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Cclass.szg1 = element.staffList[i].staff_name
+                      this.Cclass.szg1Id = element.staffList[i].id
+
+                    }
+                  }
+                }
+              }
+            });
             that.Cclass2 = that.Cclass
+            console.log(this.isYunzhuan)
+            if (this.isYunzhuan == '长白班') {
+
+              this.staffList = [{
+                  label: "开出工01",
+                  staffName: this.Cclass.szg1,
+                  isSelected: false,
+                  groupId: this.Cclass.id
+                },
+
+              ]
+              this.checkedName = this.staffList[0].staffName
+              that.staffList2 = that.staffList
+
+
+              console.log(this.checkName)
+            }
           })
       },
       getStaffList() {
-        let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+        let url = "http://106.12.219.66:8227/report/getSimpleReport"
         let data = {
-          "page": this.page_num2,
-          "pageNum": this.page_size2,
-          "staff_organization_id": 1,
-          "query_condition": ""
+
+          tableName: "s_staff",
+          sort: 'DESC',
+          sortCloumn: 'id',
+          selectFields: ['id', 'staff_name'],
+          pageNum: this.page_num2,
+          pageSize: this.page_size2,
+          query: {
+            staff_organization_id: 36 //上轴工
+          }
+        }
+        let headers = {
+          companyId: this.company_id
         }
         this.StaffNameList = []
         let that = this
         axios({
             url: url,
             method: "post",
-            headers: {
-              companyID: that.company_id
-            },
+            headers: headers,
             data: data,
 
 
@@ -954,12 +1029,12 @@
           })
           .then(res => {
             console.log(res)
-            let arr = res.data.data.staffModel
+            let arr = res.data.data
             for (let i = 0; i < arr.length; i++) {
               that.StaffNameList.push(arr[i])
             }
-            that.total_num2 = res.data.totalDataNum
-            console.log(that.total_num2)
+            that.total_num2 = res.data.total
+            //   console.log(that.total_num2)
 
           })
       }
@@ -968,6 +1043,14 @@
 
     },
     watch: {
+      checkName(val) {
+
+        if (val == "") {
+          this.getGroup()
+        } else {
+          this.checkedName = val
+        }
+      },
       pch(val) { //批轴号事件
         let url = host + "/api/stationMachine/getAxisInfo"
         let that = this
@@ -996,19 +1079,20 @@
 
       isShift(val) {
         if (val == true) {
-   
+
           this.page_num2 = 1
           this.StaffNameList = []
           this.getStaffList()
+          this.getGroup()
         }
       },
       isShift2(val) {
         if (val == true) {
-         
+
           this.page_num2 = 1
           this.StaffNameList = []
           this.getStaffList()
-       
+
         }
       },
 
@@ -1017,10 +1101,10 @@
           this.getGroup()
 
 
-    
+
         }
       },
-           szShiftShow(val) { //当选择开出组页面显示时加载数据
+      szShiftShow(val) { //当选择开出组页面显示时加载数据
         if (val == true) {
           this.getGroup()
 
@@ -1035,20 +1119,19 @@
 </script>
 
 <style scoped>
-
   .pch {
     position: absolute;
     left: 1rem;
     top: -3.5rem;
     width: 15.5rem;
     height: 3rem;
-     
+
   }
 
   .pch input {
     width: 100%;
     height: 100%;
- border:1px solid black;
+    border: 1px solid black;
     font-size: 1.5rem;
   }
 

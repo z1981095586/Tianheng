@@ -10,7 +10,7 @@
         <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span >机台</span></div>
+            <div class="chooseBtn_con_label"><span>机台</span></div>
             <div class="chooseBtn_con_btn" @click="toChooseMachine()"><span v-show="!isCheckedMachine">请选择</span><span
                 v-show="isCheckedMachine">{{checkedMachineNum}}</span></div>
           </div>
@@ -69,10 +69,11 @@
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="cpz">
-              <option value="11">A班</option>
-              <option value="12">B班</option>
-              <option value="13">C班</option>
+          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="className"
+              @change="classnameChange">
+              <option value="6">A班</option>
+              <option value="7">B班</option>
+              <option value="8">C班</option>
             </select></div>
           <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
             <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
@@ -128,22 +129,26 @@
         staffList: [{
             label: "插片工01",
             staffName: "",
-            isSelected: false
+            isSelected: false,
+            id: null
           },
           {
             label: "插片工02",
             staffName: "",
-            isSelected: false
+            isSelected: false,
+            id: null
           },
           {
             label: "插片工03",
             staffName: "",
-            isSelected: false
+            isSelected: false,
+            id: null
           },
           {
             label: "插片工04",
             staffName: "",
-            isSelected: false
+            isSelected: false,
+            id: null
           },
         ],
         StaffNameList: [],
@@ -156,10 +161,169 @@
         page_size2: 21,
         page_num2: 1,
         mac_type_id: "030100",
-        cpz: "11"
+        className: "6",
+
       };
     },
     methods: {
+      classnameChange(e) {
+        console.log(e.target.value)
+        if (e.target.value == '6') {
+          this.getcurrentGroup(15, 'A班')
+        } else if (e.target.value == '7') {
+          this.getcurrentGroup(15, 'B班')
+        } else if (e.target.value == '8') {
+          this.getcurrentGroup(15, 'C班')
+        }
+      },
+      getcurrentGroup(id, className) {
+        let url2 = host + "/api/group/getGroupDetail"
+        let that = this
+        that.staffList = []
+        axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+              },
+              shiftGroup: {
+                id: id
+              }
+            },
+
+
+            // headers: headers
+          })
+          .then(res => {
+            console.log(res)
+            if (className == 'A班') {
+              res.data.result.forEach(element => {
+                if (element.group_name == "插片班A组") {
+                  element.staffList = that.sortByKey(element.staffList, 'order_num')
+                  element.staffList.forEach(elements => {
+                    if (elements.order_num == "1") {
+                      that.staffList.push({
+                        label: "插片工01",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "2") {
+                      that.staffList.push({
+                        label: "插片工02",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "3") {
+                      that.staffList.push({
+                        label: "插片工03",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "4") {
+                      that.staffList.push({
+                        label: "插片工04",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    }
+                  });
+
+                }
+              });
+            } else if (className == 'B班') {
+              res.data.result.forEach(element => {
+                if (element.group_name == "插片班B组") {
+                  element.staffList = that.sortByKey(element.staffList, 'order_num')
+                  element.staffList.forEach(elements => {
+                    if (elements.order_num == "1") {
+                      that.staffList.push({
+                        label: "插片工01",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "2") {
+                      that.staffList.push({
+                        label: "插片工02",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "3") {
+                      that.staffList.push({
+                        label: "插片工03",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "4") {
+                      that.staffList.push({
+                        label: "插片工04",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    }
+                  });
+
+                }
+              });
+            }
+            if (className == 'C班') {
+              res.data.result.forEach(element => {
+                if (element.group_name == "插片班C组") {
+                  element.staffList = that.sortByKey(element.staffList, 'order_num')
+                  element.staffList.forEach(elements => {
+                    if (elements.order_num == "1") {
+                      that.staffList.push({
+                        label: "插片工01",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "2") {
+                      that.staffList.push({
+                        label: "插片工02",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "3") {
+                      that.staffList.push({
+                        label: "插片工03",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    } else if (elements.order_num == "4") {
+                      that.staffList.push({
+                        label: "插片工04",
+                        staffName: elements.staff_name,
+                        isSelected: false,
+                        id: elements.id
+                      })
+                    }
+                  });
+
+                }
+              });
+            }
+            console.log(that.staffList)
+          })
+      },
+      // 对象排序
+      sortByKey(array, key) {
+        return array.sort(function (a, b) {
+          let x = a[key];
+          let y = b[key];
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+      },
       getMachineList() { //获取机台列表
         let that = this;
         let url = host + "/api/stationMachine/getMachines";
@@ -199,36 +363,73 @@
         this.getStaffList()
       },
       getStaffList() { //获取员工列表
-        let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+        let url = "http://106.12.219.66:8227/report/getSimpleReport"
         let data = {
-          "page": this.page_num2,
-          "pageNum": this.page_size2,
-          "staff_organization_id": 1,
-          "query_condition": ""
+
+          tableName: "s_staff",
+          sort: 'DESC',
+          sortCloumn: 'id',
+          selectFields: ['id', 'staff_name'],
+          pageNum: this.page_num2,
+          pageSize: this.page_size2,
+          query: {
+            staff_organization_id: 38 //插片工
+          }
         }
-        this.NameList = []
+        let headers = {
+          companyId: this.company_id
+        }
+        this.StaffNameList = []
         let that = this
         axios({
             url: url,
             method: "post",
-            headers: {
-              companyID: that.company_id
-            },
+            headers: headers,
             data: data,
 
 
             // headers: headers
           })
           .then(res => {
-
-            let arr = res.data.data.staffModel
+            console.log(res)
+            let arr = res.data.data
             for (let i = 0; i < arr.length; i++) {
               that.StaffNameList.push(arr[i])
             }
-            that.total_num2 = res.data.totalDataNum
-
+            that.total_num2 = res.data.total
+            //   console.log(that.total_num2)
 
           })
+        // let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+        // let data = {
+        //   "page": this.page_num2,
+        //   "pageNum": this.page_size2,
+        //   "staff_organization_id": 1,
+        //   "query_condition": ""
+        // }
+        // this.NameList = []
+        // let that = this
+        // axios({
+        //     url: url,
+        //     method: "post",
+        //     headers: {
+        //       companyID: that.company_id
+        //     },
+        //     data: data,
+
+
+        //     // headers: headers
+        //   })
+        //   .then(res => {
+
+        //     let arr = res.data.data.staffModel
+        //     for (let i = 0; i < arr.length; i++) {
+        //       that.StaffNameList.push(arr[i])
+        //     }
+        //     that.total_num2 = res.data.totalDataNum
+
+
+        //   })
       },
       closeCurrentPage() {
         console.log(this.szMachineShow)
@@ -362,12 +563,12 @@
 
       },
       sureMachine() {
-    
-           if( typeof this.checkedMachineNum== "undefined"){
-          this.isCheckedMachine=false
-           
-        }else{
-              this.isCheckedMachine = true
+
+        if (typeof this.checkedMachineNum == "undefined") {
+          this.isCheckedMachine = false
+
+        } else {
+          this.isCheckedMachine = true
         }
         this.checkMachine = []
         this.szMachineShow = false;
@@ -400,10 +601,11 @@
               company_id: this.company_id
             },
             shiftGroup: {
-              id: 10
+              id: parseInt(this.className)
             },
             staffList: staffList
           }
+          console.log(data)
 
           let that = this
           axios({
@@ -430,8 +632,9 @@
               this.isStartChange = false
               this.$emit('cpChange', this.staffList)
             })
+          this.className = '6'
           console.log(staffList)
-          console.log(this.cpz)
+
         }
 
       },
@@ -442,8 +645,8 @@
       checkedMachine(e) { //选择机台事件
 
         this.checkedMachineNum = e[0]
-     
-     
+
+
       },
       checkedName(e) { //选择员工
         for (let i = 0; i < this.staffList.length; i++) {
@@ -496,7 +699,8 @@
           }
         }
 
-      }
+      },
+
     },
     mounted() {
 
@@ -506,6 +710,7 @@
         if (val == true) {
           this.page_num2 = 1
           this.getStaffList()
+          this.getcurrentGroup(15, 'A班')
         }
       },
       szMachineShow(val) {
@@ -520,20 +725,19 @@
 </script>
 
 <style>
-
   .pch {
     position: absolute;
     left: 1rem;
     top: -3.5rem;
     width: 15.5rem;
     height: 3rem;
-     
+
   }
 
   .pch input {
     width: 100%;
     height: 100%;
- border:1px solid black;
+    border: 1px solid black;
     font-size: 1.5rem;
   }
 

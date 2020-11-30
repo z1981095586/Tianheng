@@ -19,11 +19,10 @@
     <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
       v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-        <div class="currentClass"
-          v-html="isChooseAclass==0?'当前班次：运转班A组':isChooseAclass==1 ? '当前班次：运转班B组' :''" v-show="isYunzhuan"></div>
-            <div class="currentClass"
-          v-show="!isYunzhuan">当前班次：长白班C组</div>
-        <div class="classA"  v-show="isYunzhuan">
+        <div class="currentClass" v-html="isChooseAclass==0?'当前班次：运转班A组':isChooseAclass==1 ? '当前班次：运转班B组' :''"
+          v-show="isYunzhuan"></div>
+        <div class="currentClass" v-show="!isYunzhuan">当前班次：长白班C组</div>
+        <div class="classA" v-show="isYunzhuan">
           <div @click="changeClass('a')"
             :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
             <span>上轴工组A</span></div>
@@ -31,7 +30,7 @@
             <span>上轴工01：{{Aclass.szg1}}</span><span>上轴工02：{{Aclass.szg2}}</span><span>上轴工03：{{Aclass.szg3}}</span>
           </div>
         </div>
-        <div class="classA"  v-show="isYunzhuan">
+        <div class="classA" v-show="isYunzhuan">
           <div @click="changeClass('b')"
             :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
             <span>上轴工组B</span></div>
@@ -67,7 +66,8 @@
       v-show="szShiftShow2">
       <div class="operationPane_con_machineList">
         <div class="currentClass"
-          v-html="isChooseAclass2==0?'当前班次：A班':isChooseAclass2==1 ? '当前班次：B班' :isChooseAclass2==2? '当前班次：C班':''"></div>
+          v-html="isChooseAclass2==0?'当前班次：运转班A组':isChooseAclass2==1 ? '当前班次：运转班B组' :isChooseAclass2==2 ? '当前班次：运转班C组' :''">
+        </div>
         <div class="classA">
           <div @click="changeClass2('a')"
             :class="isChooseAclass2==0?'classA_left_chossed':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left':''">
@@ -112,7 +112,7 @@
       v-show="szMainShow">
 
       <div class="operationPane_con_uppershaft">
-        <div class="pch" ><input v-model="pch" v-show="issaoma"/></div>
+        <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
@@ -175,8 +175,8 @@
       v-show="UpdatePeopleShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange"
-              :value="isChooseAclass==0?'A班':isChooseAclass==1 ? 'B班' :isChooseAclass==2? 'C班':''">
+          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="className"
+              @change="classChange">
               <option value="A班">A班</option>
               <option value="B班">B班</option>
               <option value="C班">C班</option>
@@ -339,10 +339,82 @@
         pin_hao: "",
         se_hao: "",
         machine_id: "",
-isYunzhuan:null
+        isYunzhuan: null,
+        className: ""
       };
     },
     methods: {
+      classChange(e) {
+        console.log(e.target.value)
+        let that = this
+        if (e.target.value == 'A班') {
+          that.isChooseAclass = '0'
+          that.staffList = [{
+
+              label: "上轴工01",
+              staffName: that.Aclass.szg1,
+              isSelected: false,
+              id: that.Aclass.szg1Id
+            },
+            {
+              label: "上轴工02",
+              staffName: that.Aclass.szg2,
+              isSelected: false,
+              id: that.Aclass.szg2Id
+            },
+            {
+              label: "上轴工03",
+              staffName: that.Aclass.szg3,
+              isSelected: false,
+              id: that.Aclass.szg3Id
+            },
+          ]
+        } else if (e.target.value == 'B班') {
+          that.isChooseAclass = '1'
+          that.staffList = [{
+
+              label: "上轴工01",
+              staffName: that.Bclass.szg1,
+              isSelected: false,
+              id: that.Bclass.szg1Id
+            },
+            {
+              label: "上轴工02",
+              staffName: that.Bclass.szg2,
+              isSelected: false,
+              id: that.Bclass.szg2Id
+            },
+            {
+              label: "上轴工03",
+              staffName: that.Bclass.szg3,
+              isSelected: false,
+              id: that.Bclass.szg3Id
+            },
+          ]
+        } else if (e.target.value == 'C班') {
+          that.isChooseAclass = '2'
+          that.staffList = [{
+
+              label: "上轴工01",
+              staffName: that.Cclass.szg1,
+              isSelected: false,
+              id: that.Cclass.szg1Id
+            },
+            {
+              label: "上轴工02",
+              staffName: that.Cclass.szg2,
+              isSelected: false,
+              id: that.Cclass.szg2Id
+            },
+            {
+              label: "上轴工03",
+              staffName: that.Cclass.szg3,
+              isSelected: false,
+              id: that.Cclass.szg3Id
+            },
+          ]
+        }
+      },
       toSz() {
         this.szShiftShow = false
         this.UpdatePeopleShow = false
@@ -625,7 +697,7 @@ isYunzhuan:null
         });
         console.log(String(nameList))
         if (this.issaoma == true) {
-          if (this.print_code != ""&&(this.machine_id!="")) {
+          if (this.print_code != "" && (this.machine_id != "")) {
             let url = host + '/api/stationMachine/onAxis';
             let data = {
               selectInfo: {
@@ -680,26 +752,26 @@ isYunzhuan:null
       },
 
       toClass(isYunzhuan) {
-        this.isYunzhuan=isYunzhuan
-        if(isYunzhuan==true){
-          this.isChooseAclass='0'
-             this.szMainShow = false;
-        this.szMachineShow = false;
-        this.szIndexShow = false
-        this.UpdatePeopleShow = false
-        this.szShiftShow2 = false;
-        this.szShiftShow = true;
-        }else{
-               this.szMainShow = false;
-        this.szMachineShow = false;
-        this.szIndexShow = false
+        this.isYunzhuan = isYunzhuan
+        if (isYunzhuan == true) {
+          this.isChooseAclass = '0'
+          this.szMainShow = false;
+          this.szMachineShow = false;
+          this.szIndexShow = false
+          this.UpdatePeopleShow = false
+          this.szShiftShow2 = false;
+          this.szShiftShow = true;
+        } else {
+          this.szMainShow = false;
+          this.szMachineShow = false;
+          this.szIndexShow = false
 
-        this.szShiftShow2 = false;
-        this.szShiftShow = false;
-        this.UpdatePeopleShow = true
-          this.isChooseAclass='2'
+          this.szShiftShow2 = false;
+          this.szShiftShow = false;
+          this.UpdatePeopleShow = true
+          this.isChooseAclass = '2'
         }
-     
+
 
       },
 
@@ -797,6 +869,7 @@ isYunzhuan:null
                   type: 'warning'
                 });
               }
+              this.checkName = ""
             })
 
 
@@ -866,8 +939,8 @@ isYunzhuan:null
       },
 
       getGroup() { //获取组员信息
-console.log('getGroup')
-console.log(this.isYunzhuan)
+        console.log('getGroup')
+        console.log(this.isYunzhuan)
         let url2 = host + "/api/group/getGroupDetail"
         let that = this
         axios({
@@ -888,38 +961,65 @@ console.log(this.isYunzhuan)
           .then(res => {
             console.log(res.data.result)
             res.data.result.forEach(element => {
-           if(element.group_name=="运转班A组"){
-             for(let i=0;i<element.staffList.length;i++){
-               if(element.staffList[i].staff_organization_name=="上轴工"){
-                 if(element.staffList[i].order_num=="1"){
-                   this.Aclass.szg1=element.staffList[i].staff_name
-                    this.Aclass.szg1Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="2"){
-                      this.Aclass.szg2=element.staffList[i].staff_name
-                    this.Aclass.szg2Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="3"){
-                      this.Aclass.szg3=element.staffList[i].staff_name
-                    this.Aclass.szg3Id=element.staffList[i].id
-                 }
-               }
-             }
-           }else if(element.group_name=="运转班B组"){
-             for(let i=0;i<element.staffList.length;i++){
-               if(element.staffList[i].staff_organization_name=="上轴工"){
-                 if(element.staffList[i].order_num=="1"){
-                   this.Bclass.szg1=element.staffList[i].staff_name
-                    this.Bclass.szg1Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="2"){
-                      this.Bclass.szg2=element.staffList[i].staff_name
-                    this.Bclass.szg2Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="3"){
-                      this.Bclass.szg3=element.staffList[i].staff_name
-                    this.Bclass.szg3Id=element.staffList[i].id
-                 }
-               }
-             }
-           }
+
+              if (element.group_name == "运转班A组") {
+                this.Aclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "上轴工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Aclass.szg1 = element.staffList[i].staff_name
+                      this.Aclass.szg1Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "2") {
+                      this.Aclass.szg2 = element.staffList[i].staff_name
+                      this.Aclass.szg2Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "3") {
+                      this.Aclass.szg3 = element.staffList[i].staff_name
+                      this.Aclass.szg3Id = element.staffList[i].id
+                    }
+                  }
+                }
+              } else if (element.group_name == "运转班B组") {
+                this.Bclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "上轴工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Bclass.szg1 = element.staffList[i].staff_name
+                      this.Bclass.szg1Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "2") {
+                      this.Bclass.szg2 = element.staffList[i].staff_name
+                      this.Bclass.szg2Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "3") {
+                      this.Bclass.szg3 = element.staffList[i].staff_name
+                      this.Bclass.szg3Id = element.staffList[i].id
+                    }
+                  }
+                }
+              }
             });
+            that.staffList = [{
+
+                label: "上轴工01",
+                staffName: that.Aclass.szg1,
+                isSelected: false,
+                id: that.Aclass.szg1Id
+              },
+              {
+                label: "上轴工02",
+                staffName: that.Aclass.szg2,
+                isSelected: false,
+                id: that.Aclass.szg2Id
+              },
+              {
+                label: "上轴工03",
+                staffName: that.Aclass.szg3,
+                isSelected: false,
+                id: that.Aclass.szg3Id
+              },
+            ]
+            that.Aclass2 = that.Aclass
+            that.Bclass2 = that.Bclass
+            that.staffList2 = that.staffList
+
             // that.Aclass.id = res.data.result[0].id
             // that.Bclass.id = res.data.result[1].id
             // that.Cclass.id = res.data.result[2].id
@@ -984,7 +1084,7 @@ console.log(this.isYunzhuan)
             // that.Bclass2 = that.Bclass
             // that.Cclass2 = that.Cclass
           })
-                axios({
+        axios({
             url: url2,
             method: "post",
             data: {
@@ -1000,66 +1100,77 @@ console.log(this.isYunzhuan)
             // headers: headers
           })
           .then(res => {
-       console.log(res.data.result)
+            console.log(res.data.result)
             res.data.result.forEach(element => {
-           if(element.group_name=="长白班C组"){
-             for(let i=0;i<element.staffList.length;i++){
-               if(element.staffList[i].staff_organization_name=="上轴工"){
-                 if(element.staffList[i].order_num=="1"){
-                   this.Cclass.szg1=element.staffList[i].staff_name
-                    this.Cclass.szg1Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="2"){
-                      this.Cclass.szg2=element.staffList[i].staff_name
-                    this.Cclass.szg2Id=element.staffList[i].id
-                 }else if(element.staffList[i].order_num=="3"){
-                      this.Cclass.szg3=element.staffList[i].staff_name
-                    this.Cclass.szg3Id=element.staffList[i].id
-                 }
-               }
-             }
-           }
+              if (element.group_name == "长白班C组") {
+                this.Cclass.id = element.id
+                for (let i = 0; i < element.staffList.length; i++) {
+                  if (element.staffList[i].staff_organization_name == "上轴工") {
+                    if (element.staffList[i].order_num == "1") {
+                      this.Cclass.szg1 = element.staffList[i].staff_name
+                      this.Cclass.szg1Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "2") {
+                      this.Cclass.szg2 = element.staffList[i].staff_name
+                      this.Cclass.szg2Id = element.staffList[i].id
+                    } else if (element.staffList[i].order_num == "3") {
+                      this.Cclass.szg3 = element.staffList[i].staff_name
+                      this.Cclass.szg3Id = element.staffList[i].id
+                    }
+                  }
+                }
+              }
             });
-            if(this.isYunzhuan==false){
-     
-                            this.staffList = [{
-              label: "上轴工01",
-              staffName: this.Cclass.szg1,
-              isSelected: false,
-              groupId: this.Cclass.id
-            },
-            {
-              label: "上轴工02",
-              staffName: this.Cclass.szg2,
-              isSelected: false,
-              groupId: this.Cclass.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Cclass.szg3,
-              isSelected: false,
-              groupId: this.Cclass.id
-            },
-          ]
-          console.log(this.staffList)
+            that.Cclass2 = that.Cclass
+            if (this.isYunzhuan == false) {
+
+              this.staffList = [{
+                  label: "上轴工01",
+                  staffName: this.Cclass.szg1,
+                  isSelected: false,
+                  groupId: this.Cclass.id
+                },
+                {
+                  label: "上轴工02",
+                  staffName: this.Cclass.szg2,
+                  isSelected: false,
+                  groupId: this.Cclass.id
+                },
+                {
+                  label: "上轴工03",
+                  staffName: this.Cclass.szg3,
+                  isSelected: false,
+                  groupId: this.Cclass.id
+                },
+              ]
+              that.staffList2 = that.staffList
+
+              console.log(this.staffList)
             }
           })
       },
       getStaffList() {
-        let url = "http://120.55.124.53:8206/api/staff/getStaffListByOrganization"
+        let url = "http://106.12.219.66:8227/report/getSimpleReport"
         let data = {
-          "page": this.page_num2,
-          "pageNum": this.page_size2,
-          "staff_organization_id": 1,
-          "query_condition": ""
+
+          tableName: "s_staff",
+          sort: 'DESC',
+          sortCloumn: 'id',
+          selectFields: ['id', 'staff_name'],
+          pageNum: this.page_num2,
+          pageSize: this.page_size2,
+          query: {
+            staff_organization_id: 35 //上轴工
+          }
+        }
+        let headers = {
+          companyId: this.company_id
         }
         this.StaffNameList = []
         let that = this
         axios({
             url: url,
             method: "post",
-            headers: {
-              companyID: that.company_id
-            },
+            headers: headers,
             data: data,
 
 
@@ -1067,18 +1178,18 @@ console.log(this.isYunzhuan)
           })
           .then(res => {
             console.log(res)
-            let arr = res.data.data.staffModel
+            let arr = res.data.data
             for (let i = 0; i < arr.length; i++) {
               that.StaffNameList.push(arr[i])
             }
-            that.total_num2 = res.data.totalDataNum
-            console.log(that.total_num2)
+            that.total_num2 = res.data.total
+            //   console.log(that.total_num2)
 
           })
       }
     },
     mounted() {
-     
+
 
     },
     watch: {
@@ -1117,6 +1228,13 @@ console.log(this.isYunzhuan)
           this.StaffNameList = []
           this.getStaffList()
           this.getGroup()
+          if (this.isChooseAclass == '0') {
+            this.className = 'A班'
+          } else if (this.isChooseAclass == '1') {
+            this.className = 'B班'
+          } else if (this.isChooseAclass == '2') {
+            this.className = 'C班'
+          }
         }
       },
       szShiftShow(val) { //当选择上轴组页面显示时加载数据
@@ -1166,12 +1284,13 @@ console.log(this.isYunzhuan)
 </script>
 
 <style>
-.el-message {
+  .el-message {
     font-size: 3rem;
-}
- .el-message__content{
-  font-size: 3rem;
-}
+  }
+
+  .el-message__content {
+    font-size: 3rem;
+  }
 
   .pch {
     position: absolute;
@@ -1179,13 +1298,13 @@ console.log(this.isYunzhuan)
     top: -3.5rem;
     width: 15.5rem;
     height: 3rem;
-     
+
   }
 
   .pch input {
     width: 100%;
     height: 100%;
- border:1px solid black;
+    border: 1px solid black;
     font-size: 1.5rem;
   }
 

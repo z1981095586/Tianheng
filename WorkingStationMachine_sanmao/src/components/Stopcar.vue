@@ -74,13 +74,16 @@
             @click="ShiftBack()">返回</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" @current-change="CurrentNameChange"  layout="prev, pager, next" :total="total_num2">
+          <el-pagination background small :pager-count="3" @current-change="CurrentNameChange"
+            layout="prev, pager, next" :total="total_num2">
           </el-pagination>
         </div>
       </div>
       <div class="select_shift">
-        <div><span>班次：</span><select>
-            <option value="请选择">请选择</option>
+        <div><span>班次：</span><select v-model="checkedClass">
+            <option value="9">A班</option>
+            <option value="10">B班</option>
+            <option value="11">C班</option>
           </select></div>
         <div><span>挡车工：</span><input disabled :value="checkedName" /></div>
         <div></div>
@@ -187,13 +190,12 @@
         isCar: false,
         LbShow: false,
 
-
+        checkedClass: "9",
         checkedName: "",
         checkMachine: [], //挡车选中机台列表
         checkMachineColor: [], //挡车选中机台列表颜色
         NameList: [],
-        machineList: [
-        ], //挡车机台列表
+        machineList: [], //挡车机台列表
         zbFocus: false, //div选中聚焦
         jzFocus: false,
         zbLength: "", //div内容
@@ -203,44 +205,101 @@
         enabled: false,
         page_size: 21,
         page_num: 1,
-         page_size2: 21,
+        page_size2: 21,
         page_num2: 1,
-total_num2:null,
+        total_num2: null,
         mac_type_id: "030100",
       }
     },
     methods: {
-          CurrentNameChange(e) {
+      CurrentNameChange(e) {
         console.log(e)
         this.page_num2 = e
         this.getStaffList()
       },
-          getStaffList(){
-       let url="http://120.55.124.53:8206/api/staff/getStaffListByOrganization" 
-       let data={"page":this.page_num2,"pageNum":this.page_size2,"staff_organization_id":1,"query_condition":""}
-       this.NameList=[]
-       let that=this
-            axios({
-              url: url,
-              method: "post",
-              headers:{
-                companyID:that.company_id
+      getGroup(classname) { //获取组员信息
+
+        let url2 = host + "/api/group/getGroupDetail"
+        let that = this
+        axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
               },
-              data: data,
+              shiftGroup: {
+                id: 16
+              }
+            },
 
 
-              // headers: headers
-            })
-            .then(res => {
+            // headers: headers
+          })
+          .then(res => {
+            console.log(res)
+            if (classname == "A班") {
+              res.data.result.forEach(element => {
+                if (element.group_name == "挡车班A组") {
+                  console.log(element)
+                  that.checkedName = element.staffList[0].staff_name
+                }
+              });
+            } else if (classname == "B班") {
+              res.data.result.forEach(element => {
+                if (element.group_name == "挡车班B组") {
+                  that.checkedName = element.staffList[0].staff_name
+                }
+              });
+            } else if (classname == "C班") {
+              res.data.result.forEach(element => {
+                if (element.group_name == "挡车班C组") {
+                  that.checkedName = element.staffList[0].staff_name
+                }
+              });
+            }
+            console.log(that.checkedName)
+          })
+      },
+      getStaffList() {
+        let url = "http://106.12.219.66:8227/report/getSimpleReport"
+        let data = {
 
-let arr=res.data.data.staffModel
-for(let i=0;i<arr.length;i++){
-  that.NameList.push(arr[i])
-}
-that.total_num2=res.data.totalDataNum
+          tableName: "s_staff",
+          sort: 'DESC',
+          sortCloumn: 'id',
+          selectFields: ['id', 'staff_name'],
+          pageNum: this.page_num2,
+          pageSize: this.page_size2,
+          query: {
+            staff_organization_id: 39 //挡车工
+          }
+        }
+        let headers = {
+          companyId: this.company_id
+        }
+        this.NameList = []
+        let that = this
+        axios({
+            url: url,
+            method: "post",
+            headers: headers,
+            data: data,
 
 
-            })
+            // headers: headers
+          })
+          .then(res => {
+            console.log(res)
+            let arr = res.data.data
+            for (let i = 0; i < arr.length; i++) {
+              that.NameList.push(arr[i])
+            }
+            console.log(that.NameList)
+            that.total_num2 = res.data.total
+            //   console.log(that.total_num2)
+
+          })
       },
       //        closeCurrentPage(){
       //   console.log(this.szMachineShow)
@@ -431,14 +490,93 @@ that.total_num2=res.data.totalDataNum
         this.checkMachine = []
       },
       sureShift() { //换班确认按钮
-        this.isCar = false
-        this.isMachine = false
-        this.shiftShow = false
-        this.PzShow = false
-        this.isMainShow = true
-        this.checkMachine = []
-        this.$emit("dcChange", this.checkedName)
+
         console.log(this.checkedName)
+        console.log(this.checkedClass)
+        if (this.checkedName != "") {
+
+
+          let url = 'http://106.12.219.66:8227/report/getSimpleReport';
+          let headers = {
+            'Content-Type': 'application/json',
+            'companyID': this.company_id
+          };
+          let method = "post";
+          let data = {
+            "tableName": "s_staff",
+            "pageNum": 1,
+            "pageSize": 1000,
+            query: {
+              staff_name: this.checkedName
+            }
+
+          };
+
+          let that = this
+
+          axios({
+              url: url,
+              method: method,
+              data: data,
+              headers: headers
+            })
+            .then(response => {
+
+              let id = response.data.data[0].id //绑定员工id
+              let staffList = [{
+                id: id,
+                order_num: 1
+              }, ];
+              let url2 = host + '/api/group/shift';
+              let data2 = {
+                selectInfo: {
+                  company_id: that.company_id
+                },
+                shiftGroup: {
+                  id: this.checkedClass
+                },
+                staffList: staffList
+
+              }
+              console.log(data2)
+              axios({
+                  url: url2,
+                  method: "post",
+                  data: data2,
+
+                })
+                .then(res => {
+                  console.log(res)
+                  if (res.data.message == "成功") {
+                    that.$message({
+                      message: '换班成功！',
+                      type: 'success'
+                    });
+
+                    this.isCar = false
+                    this.isMachine = false
+                    this.shiftShow = false
+                    this.PzShow = false
+                    this.isMainShow = true
+                    this.checkMachine = []
+                    this.$emit("dcChange", this.checkedName)
+                    console.log(this.checkedName)
+
+
+                  } else {
+                    this.$message({
+                      message: '发生错误！',
+                      type: 'warning'
+                    });
+                  }
+                })
+            })
+        } else {
+          this.$message({
+            message: '请选择一个人！',
+            type: 'warning'
+          });
+        }
       },
       checkShutdown(label) { //选中机台准备开机或者关机
 
@@ -582,6 +720,15 @@ that.total_num2=res.data.totalDataNum
 
     },
     watch: {
+      checkedClass(e) {
+        if (e == '9') {
+          this.getGroup('A班')
+        } else if (e == '10') {
+          this.getGroup('B班')
+        } else if (e == '11') {
+          this.getGroup('C班')
+        }
+      },
       checkMachine(e) {
         this.checkMachineColor = []
         if (this.checkMachine.length > 0) {
@@ -600,10 +747,11 @@ that.total_num2=res.data.totalDataNum
 
         console.log(this.checkMachineColor)
       },
-      shiftShow(e){
-        if(e==true){
-          this.page_num2=1
+      shiftShow(e) {
+        if (e == true) {
+          this.page_num2 = 1
           this.getStaffList()
+          this.getGroup('A班')
         }
 
       },
