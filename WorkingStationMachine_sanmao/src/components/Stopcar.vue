@@ -208,6 +208,7 @@
         page_size2: 21,
         page_num2: 1,
         total_num2: null,
+        total_num: null,
         mac_type_id: "030100",
       }
     },
@@ -968,6 +969,7 @@
   .select_shift select {
     font-size: 1.8rem;
     height: 50%;
+    width:7rem;
     border: 1px solid black;
   }
 
