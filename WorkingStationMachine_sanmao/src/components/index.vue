@@ -115,8 +115,9 @@ export default {
   },
   methods: {
     getGroup(id, page) {
+      //第一个参数groupId，第二个参数页面缩写
       //获取当前班次(当班分组)(倒数第二级分组)
-      console.log("get");
+
       let url2 = host + "/api/group/getOnDutyShift";
       let that = this;
       axios({
@@ -214,6 +215,7 @@ export default {
     },
     changeTab(label) {
       //tab栏切换事件
+
       this.activeTab = label;
       for (let i = 0; i < this.tabList.length; i++) {
         this.tabList[i].class = "oneTab";
@@ -295,7 +297,6 @@ export default {
             this.isChaPian = false;
             this.isStopCar = false;
             this.isLower = false;
-
             this.isMachine = false;
             this.isKaiChu = true;
             return;
@@ -303,9 +304,11 @@ export default {
         }
       }
     },
-    getMachine() {
+    getProblem() {
+      //获取问题列表
       let url2 = host + "/api/repair/getRepairType";
       let that = this;
+
       axios({
         url: url2,
         method: "post",
@@ -323,7 +326,8 @@ export default {
     },
   },
   mounted() {
-    this.getGroup(4, "sz");
+    this.getGroup(4, "sz"); //默认
+    
   },
   watch: {
     isShangZhou(val) {
@@ -343,7 +347,7 @@ export default {
     },
     isMachine(val) {
       if (val == true) {
-        this.getMachine();
+        this.getProblem();
         this.getGroup(16, "dc");
       }
     },

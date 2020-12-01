@@ -157,7 +157,7 @@
           })
           .then(response => {
             ////////console.log(response)
-            for (let i = 0; i < response.data.data.length; i++) {
+            for (let i = 0; i < 9; i++) {
               if (response.data.data[i].user_id1 != "0") {
                 axios({
                     url: 'http://47.99.156.243:8227/report/getSimpleReport',
@@ -296,18 +296,19 @@
 
         let ylist4 = []
         let that = this;
-        let datelist = that.gethourarr(24);
+        let datelist = that.gethourarr(8);
 
 
 
         setTimeout(() => {
-          //////////console.log(datelist)
+         console.log(datelist)
           let xlist = []
           let ylist3 = []
 
           for (let i = 0; i < datelist.length; i++) {
             xlist.push((datelist[i].substr(11, 2) + ":00"))
           }
+          console.log(xlist)
          
           let datelist2 = []
           for (let i = 0; i < datelist.length; i++) {
@@ -319,10 +320,18 @@
             let k = parseInt(datelist[i].substr(11, 2))
             let k2 = datelist[i].substr(0, 11)
             if (k + 1 > 24) {
+          
               endTime = k2 + "00"
             } else {
-              endTime = k2 + String(k + 1)
+            
+                if(k+1<10){
+                     endTime = k2 +'0'+ String(k + 1)
+                }else{
+   endTime = k2 + String(k + 1)
+                }
+           
             }
+        
             datelist2.push({
               startTime: datelist[i],
               endTime: endTime
@@ -331,6 +340,7 @@
 
 
           }
+          console.log(datelist2)
           for (let i = 0; i < datelist2.length; i++) {
             let sum = 0
             axios({
@@ -359,10 +369,12 @@
 
               })
               .then(response => {
+                console.log(response)
 
                 if (!response.data.data[0]) {
                   sum = sum + 0
                 } else {
+                  
                   sum = sum + response.data.data[0].sum
 
                 }
@@ -405,19 +417,23 @@
                   }).then(() => {
                     //////console.log(sum)
                     ylist3.push({
-                      time: parseInt(datelist2[i].endTime.slice(11)),
+                      // time: parseInt(datelist2[i].endTime.slice(11)),
+                       time:datelist2[i].endTime ,
                       sum: sum
                     })
+                
 
-                    ylist3 = that.sortByKey(ylist3, "time")
-                    //console.log(ylist3)
-                    if (ylist3.length == 24) {
+                    // ylist3 = that.sortByKey(ylist3, "time")
+                    console.log(ylist3)
+                    if (ylist3.length == 8) {
+                      console.log(that.sortByKey(ylist3, "time"))
                       let zcarr = []
+                      let xlist=[]
                       ylist3.forEach(element => {
                         zcarr.push(element.sum)
+                        xlist.push(element.time)
                       });
-//console.log(zcarr)
-//console.log(xlist)
+
                       that.echart(xlist, zcarr)
                     }
                   })
@@ -458,7 +474,11 @@
         return arr2
       },
       echart(xlist,  ylist3) {
-
+for(let i=0;i<xlist.length;i++){
+  xlist[i]=parseInt( xlist[i].slice(11))+":00"
+}
+console.log(xlist)
+console.log(ylist3)
         let myChart1 = this.$echarts.init(document.getElementById('echart1'));
         // 绘制图表
         myChart1.clear();
@@ -736,7 +756,6 @@
         })
       },
    getMachine() {
-     console.log("dsa")
         let that = this
         let url = "http://47.99.156.243:8227/report/getSimpleReport"
         axios({
@@ -754,7 +773,6 @@
             }
           })
           .then(response => {
-            console.log(response)
             let daysum = 0
             let lacksum = 0
             if (response.data.data.length < 10) {
@@ -861,7 +879,7 @@
       this.getMachine()
       this.getElertic()
       this.getYesterday()
-      this.getWarningPushDataTiming()
+       this.getWarningPushDataTiming()
 
 
     },

@@ -1,143 +1,144 @@
 <template>
   <div class="operationPane">
-
     <!-- 上轴部分操作栏组件-->
     <!-- 上轴首页-->
-    <div class="operationPane_con" style="display:flex;justify-content: space-around;align-items: center;"
-      v-show="szIndexShow">
-
-
-
+    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center" v-show="szIndexShow">
       <div class="main_btn" @click="toClass(true)">运转班</div>
       <div class="main_btn" @click="toClass(false)">长白班</div>
       <div class="main_btn" @click="toSz">上轴</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
-
     </div>
     <!-- 上轴首页-->
     <!-- 上轴部分选班次-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="szShiftShow">
+    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow">
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass==0?'当前班次：运转班A组':isChooseAclass==1 ? '当前班次：运转班B组' :''"
-          v-show="isYunzhuan"></div>
+        <div class="currentClass" v-html="isChooseAclass == 0 ? '当前班次：运转班A组' : isChooseAclass == 1 ? '当前班次：运转班B组' : ''" v-show="isYunzhuan"></div>
         <div class="currentClass" v-show="!isYunzhuan">当前班次：长白班C组</div>
         <div class="classA" v-show="isYunzhuan">
-          <div @click="changeClass('a')"
-            :class="isChooseAclass==0?'classA_left_chossed':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left':''">
-            <span>上轴工组A</span></div>
+          <div @click="changeClass('a')" :class="isChooseAclass == 0 ? 'classA_left_chossed' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left' : ''">
+            <span>上轴工组A</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Aclass.szg1}}</span><span>上轴工02：{{Aclass.szg2}}</span><span>上轴工03：{{Aclass.szg3}}</span>
+            <span>上轴工01：{{ Aclass.szg1 }}</span
+            ><span>上轴工02：{{ Aclass.szg2 }}</span
+            ><span>上轴工03：{{ Aclass.szg3 }}</span>
           </div>
         </div>
         <div class="classA" v-show="isYunzhuan">
-          <div @click="changeClass('b')"
-            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left_chossed' :isChooseAclass==2? 'classA_left':''">
-            <span>上轴工组B</span></div>
+          <div @click="changeClass('b')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left_chossed' : isChooseAclass == 2 ? 'classA_left' : ''">
+            <span>上轴工组B</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Bclass.szg1}}</span><span>上轴工02：{{Bclass.szg2}}</span><span>上轴工03：{{Bclass.szg3}}</span>
+            <span>上轴工01：{{ Bclass.szg1 }}</span
+            ><span>上轴工02：{{ Bclass.szg2 }}</span
+            ><span>上轴工03：{{ Bclass.szg3 }}</span>
           </div>
         </div>
         <div class="classA" v-show="!isYunzhuan">
-          <div @click="changeClass('c')"
-            :class="isChooseAclass==0?'classA_left':isChooseAclass==1 ? 'classA_left' :isChooseAclass==2? 'classA_left_chossed':''">
-            <span>上轴工组C</span></div>
+          <div @click="changeClass('c')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left_chossed' : ''">
+            <span>上轴工组C</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Cclass.szg1}}</span><span>上轴工02：{{Cclass.szg2}}</span><span>上轴工03：{{Cclass.szg3}}</span>
+            <span>上轴工01：{{ Cclass.szg1 }}</span
+            ><span>上轴工02：{{ Cclass.szg2 }}</span
+            ><span>上轴工03：{{ Cclass.szg3 }}</span>
           </div>
         </div>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
           <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="cancelClass()">取消</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass()">取消</div>
         </div>
-        <div class="operationPane_con_machineList_btn_right">
-
-        </div>
+        <div class="operationPane_con_machineList_btn_right"></div>
       </div>
-      <div class="leftLabel" style="width:170px;"><span>选择上轴组</span></div>
+      <div class="leftLabel" style="width: 170px"><span>选择上轴组</span></div>
 
       <img src="../../static/img/close.png" @click="cancelClass()" />
     </div>
     <!-- 上轴部分选班次-->
     <!-- 上轴部分选班次-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="szShiftShow2">
+    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow2">
       <div class="operationPane_con_machineList">
-        <div class="currentClass"
-          v-html="isChooseAclass2==0?'当前班次：运转班A组':isChooseAclass2==1 ? '当前班次：运转班B组' :isChooseAclass2==2 ? '当前班次：运转班C组' :''">
-        </div>
+        <div class="currentClass" v-html="isChooseAclass2 == 0 ? '当前班次：运转班A组' : isChooseAclass2 == 1 ? '当前班次：运转班B组' : isChooseAclass2 == 2 ? '当前班次：运转班C组' : ''"></div>
         <div class="classA">
-          <div @click="changeClass2('a')"
-            :class="isChooseAclass2==0?'classA_left_chossed':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left':''">
-            <span>上轴工组A</span></div>
+          <div @click="changeClass2('a')" :class="isChooseAclass2 == 0 ? 'classA_left_chossed' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+            <span>上轴工组A</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Aclass2.szg1}}</span><span>上轴工02：{{Aclass2.szg2}}</span><span>上轴工03：{{Aclass2.szg3}}</span>
+            <span>上轴工01：{{ Aclass2.szg1 }}</span
+            ><span>上轴工02：{{ Aclass2.szg2 }}</span
+            ><span>上轴工03：{{ Aclass2.szg3 }}</span>
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('b')"
-            :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left_chossed' :isChooseAclass2==2? 'classA_left':''">
-            <span>上轴工组B</span></div>
+          <div @click="changeClass2('b')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left_chossed' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+            <span>上轴工组B</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Bclass2.szg1}}</span><span>上轴工02：{{Bclass2.szg2}}</span><span>上轴工03：{{Bclass2.szg3}}</span>
+            <span>上轴工01：{{ Bclass2.szg1 }}</span
+            ><span>上轴工02：{{ Bclass2.szg2 }}</span
+            ><span>上轴工03：{{ Bclass2.szg3 }}</span>
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('c')"
-            :class="isChooseAclass2==0?'classA_left':isChooseAclass2==1 ? 'classA_left' :isChooseAclass2==2? 'classA_left_chossed':''">
-            <span>上轴工组C</span></div>
+          <div @click="changeClass2('c')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left_chossed' : ''">
+            <span>上轴工组C</span>
+          </div>
           <div class="classA_right">
-            <span>上轴工01：{{Cclass2.szg1}}</span><span>上轴工02：{{Cclass2.szg2}}</span><span>上轴工03：{{Cclass2.szg3}}</span>
+            <span>上轴工01：{{ Cclass2.szg1 }}</span
+            ><span>上轴工02：{{ Cclass2.szg2 }}</span
+            ><span>上轴工03：{{ Cclass2.szg3 }}</span>
           </div>
         </div>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
           <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="cancelClass2()">取消</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass2()">取消</div>
         </div>
-        <div class="operationPane_con_machineList_btn_right">
-
-        </div>
+        <div class="operationPane_con_machineList_btn_right"></div>
       </div>
-      <div class="leftLabel" style="width:170px;"><span>选择上轴组</span></div>
+      <div class="leftLabel" style="width: 170px"><span>选择上轴组</span></div>
 
       <img src="../../static/img/close.png" @click="cancelClass2()" />
     </div>
     <!-- 上轴部分选班次-->
     <!-- 上轴部分主菜单-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-end;"
-      v-show="szMainShow">
-
+    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-end" v-show="szMainShow">
       <div class="operationPane_con_uppershaft">
         <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
-            <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
-                v-show="machine_id==''">请扫码</span><span v-show="!(machine_id=='')">{{machine_id}}</span></div>
+            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black">
+              <span v-show="machine_id == ''">请扫码</span><span v-show="!(machine_id == '')">{{ machine_id }}</span>
+            </div>
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>上轴组</span></div>
-            <div class="chooseBtn_con_btn" style="background:white;border:1px solid black;"><span
-                v-text="isChooseAclass2==0?'A组':isChooseAclass2==1 ? 'B组' :isChooseAclass2==2? 'C组':''"></span></div>
+            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black"><span v-text="isChooseAclass2 == 0 ? 'A组' : isChooseAclass2 == 1 ? 'B组' : isChooseAclass2 == 2 ? 'C组' : ''"></span></div>
           </div>
         </div>
         <div class="pane">
           <div class="text">
-            <div class="text_con"><span>色号：{{se_hao}}</span><span>品名：{{product_name}}</span></div>
-            <div class="text_con"><span>品号：{{pin_hao}}</span></div>
+            <div class="text_con">
+              <span>色号：{{ se_hao }}</span
+              ><span>品名：{{ product_name }}</span>
+            </div>
+            <div class="text_con">
+              <span>品号：{{ pin_hao }}</span>
+            </div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
-          <div class="pane_con"><textarea style="background:white" class="textarea" disabled
-              placeholder="扫描后显示..."></textarea></div>
+          <div class="pane_con"><textarea style="background: white" class="textarea" disabled placeholder="扫描后显示..."></textarea></div>
           <div class="pane_btn">
-            <div class="pane_btn_one" @click="saoma()" :style="issaoma?'background:#808080':'background:#A3D897'">
-              <span>扫码上轴</span></div>
-            <div class="pane_btn_one" @click="wanchen()" :style="issaoma?'background:#A3D897':'background:#808080'">
-              <span>上轴完成</span></div>
+            <div class="pane_btn_one" @click="saoma()" :style="issaoma ? 'background:#808080' : 'background:#A3D897'">
+              <span>扫码上轴</span>
+            </div>
+            <div class="pane_btn_one" @click="wanchen()" :style="issaoma ? 'background:#A3D897' : 'background:#808080'">
+              <span>上轴完成</span>
+            </div>
           </div>
         </div>
       </div>
@@ -145,12 +146,10 @@
     </div>
     <!-- 上轴部分主菜单-->
     <!-- 上轴部分选机台-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="szMachineShow">
+    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szMachineShow">
       <div class="operationPane_con_machineList">
-        <el-checkbox-group :max="1" @change="checkedMachine" v-model="checkMachine" style="width:100%;height:100%;">
-          <el-checkbox-button size="medium" v-for="(item,index) in machineList" style="magin:1rem;font-size:2rem"
-            :label="item.machine_id" :key="index">{{item.machine_id}}</el-checkbox-button>
+        <el-checkbox-group :max="1" @change="checkedMachine" v-model="checkMachine" style="width: 100%; height: 100%">
+          <el-checkbox-button size="medium" v-for="(item, index) in machineList" style="magin: 1rem; font-size: 2rem" :label="item.machine_id" :key="index">{{ item.machine_id }}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -159,52 +158,47 @@
           <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">取消</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next"
-            :total="total_num">
-          </el-pagination>
+          <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
         </div>
       </div>
       <div class="leftLabel"><span>选机台</span></div>
-      <div class="search"><span style="font-size:2rem">搜索：</span><input placeholder="输入机台号" /><span
-          style="color:red;margin-left:1rem">选中机台：{{this.checkedMachineNum}}</span></div>
+      <div class="search">
+        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
+      </div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 上轴部分选机台-->
     <!-- 上轴换班-->
-    <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="UpdatePeopleShow">
+    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="UpdatePeopleShow">
       <div class="operationPane_con_machineList">
         <div class="shift">
-          <div class="shift_con"><span>班次：</span><select :disabled="!isStartChange" v-model="className"
-              @change="classChange">
+          <div class="shift_con">
+            <span>班次：</span
+            ><select :disabled="!isStartChange" v-model="className" @change="classChange">
               <option value="A班">A班</option>
               <option value="B班">B班</option>
               <option value="C班">C班</option>
-            </select></div>
-          <div class="shift_con" v-for="(item,index) in staffList" :key="index"><span>{{item.label}}：</span>
-            <div :class="item.isSelected?'staffCheck2': 'staffCheck'" @click="chooseStaff(item.label)">
-              {{item.staffName}}</div>
+            </select>
           </div>
-
+          <div class="shift_con" v-for="(item, index) in staffList" :key="index">
+            <span>{{ item.label }}：</span>
+            <div :class="item.isSelected ? 'staffCheck2' : 'staffCheck'" @click="chooseStaff(item.label)">
+              {{ item.staffName }}
+            </div>
+          </div>
         </div>
 
-        <el-checkbox-group :max="1" :disabled="!isStartChange" v-model="checkName" @change="checkedName"
-          style="width:100%;height:100%;">
-          <el-checkbox-button size="medium" v-for="(item,index) in StaffNameList" style="magin:1rem;font-size:2rem"
-            :label="item.staff_name" :key="index">{{item.staff_name}}</el-checkbox-button>
+        <el-checkbox-group :max="1" :disabled="!isStartChange" v-model="checkName" @change="checkedName" style="width: 100%; height: 100%">
+          <el-checkbox-button size="medium" v-for="(item, index) in StaffNameList" style="magin: 1rem; font-size: 2rem" :label="item.staff_name" :key="index">{{ item.staff_name }}</el-checkbox-button>
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class=" operationPane_con_machineList_btn_leftBtn" @click="startChange()"
-            :style="isStartChange?'background:#8C8C8C':'background:#A3D897'">开始修改</div>
-          <div class="operationPane_con_machineList_btn_leftBtn"
-            :style="isStartChange?'background:#A3D897;':'background:#8C8C8C;'" @click="save()">保存</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="startChange()" :style="isStartChange ? 'background:#8C8C8C' : 'background:#A3D897'">开始修改</div>
+          <div class="operationPane_con_machineList_btn_leftBtn" :style="isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'" @click="save()">保存</div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :pager-count="4"
-            @current-change="CurrentNameChange" :total="total_num2">
-          </el-pagination>
+          <el-pagination background small layout="prev, pager, next" :pager-count="4" @current-change="CurrentNameChange" :total="total_num2"> </el-pagination>
         </div>
       </div>
       <div class="leftLabel"><span>换班</span></div>
@@ -217,1571 +211,1495 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  var host = "http://120.55.124.53:12140"
-  export default {
-    name: 'Uppershaft',
-    data() {
-      return {
-        szIndexShow: true,
-        szMainShow: false, //上轴主页面显示隐藏
-        szMachineShow: false, //上轴选择机台显示隐藏
-        szShiftShow: false, //上轴换班显示隐藏 
-        szShiftShow2: false, //上轴换班显示隐藏
-        UpdatePeopleShow: false,
-        checkMachine: [], //上轴选中机台列表
-        checkName: [], //上轴选中的员工名字
-        checkedMachineNum: "", //选中的机台号
-        isCheckedMachine: false, //是否选中机台
-        isStartChange: false, //换班是否开始修改
-        issaoma: false,
-        staffList: [{
+import axios from "axios";
+var host = "http://120.55.124.53:12140";
+export default {
+  name: "Uppershaft",
+  data() {
+    return {
+      szIndexShow: true,
+      szMainShow: false, //上轴主页面显示隐藏
+      szMachineShow: false, //上轴选择机台显示隐藏
+      szShiftShow: false, //上轴换班显示隐藏
+      szShiftShow2: false, //上轴换班显示隐藏
+      UpdatePeopleShow: false,
+      checkMachine: [], //上轴选中机台列表
+      checkName: [], //上轴选中的员工名字
+      checkedMachineNum: "", //选中的机台号
+      isCheckedMachine: false, //是否选中机台
+      isStartChange: false, //换班是否开始修改
+      issaoma: false,
+      staffList: [
+        {
+          label: "上轴工01",
+          staffName: "",
+          isSelected: false,
+        },
+        {
+          label: "上轴工02",
+          staffName: "",
+          isSelected: false,
+        },
+        {
+          label: "上轴工03",
+          staffName: "",
+          isSelected: false,
+        },
+      ],
+      page_size2: 21,
+      page_num2: 1,
+      total_num2: null,
+      StaffNameList: [],
+      machineList: ["101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118"], //上轴机台列表
+      page_size: 21,
+      page_num: 1,
+      total_num: null,
+      mac_type_id: "030100",
+      company_id: "10000025",
+
+      isChooseAclass: 0,
+      Aclass: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      Bclass: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      Cclass: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      isChooseAclass2: 0,
+      Aclass2: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      Bclass2: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      Cclass2: {
+        szg1: "",
+        szg1Id: null,
+        szg2: "",
+        szg2Id: null,
+        szg3: "",
+        szg3Id: null,
+        id: null,
+      },
+      pch: "",
+      product_name: "",
+      pin_hao: "",
+      se_hao: "",
+      machine_id: "",
+      isYunzhuan: null,
+      className: "",
+    };
+  },
+  methods: {
+    classChange(e) {
+      console.log(e.target.value);
+      let that = this;
+      if (e.target.value == "A班") {
+        that.isChooseAclass = "0";
+        that.staffList = [
+          {
             label: "上轴工01",
-            staffName: "",
-            isSelected: false
+            staffName: that.Aclass.szg1,
+            isSelected: false,
+            id: that.Aclass.szg1Id,
           },
           {
             label: "上轴工02",
-            staffName: "",
-            isSelected: false
+            staffName: that.Aclass.szg2,
+            isSelected: false,
+            id: that.Aclass.szg2Id,
           },
           {
             label: "上轴工03",
-            staffName: "",
-            isSelected: false
+            staffName: that.Aclass.szg3,
+            isSelected: false,
+            id: that.Aclass.szg3Id,
           },
-        ],
-        page_size2: 21,
-        page_num2: 1,
-        total_num2: null,
-        StaffNameList: [],
-        machineList: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114',
-          '115', '116', '117', '118',
-        ], //上轴机台列表
-        page_size: 21,
-        page_num: 1,
-        total_num: null,
-        mac_type_id: "030100",
-        company_id: "10000025",
-
-        isChooseAclass: 0,
-        Aclass: {
-
-
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        Bclass: {
-
-
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        Cclass: {
-
-
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        isChooseAclass2: 0,
-        Aclass2: {
-
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        Bclass2: {
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        Cclass2: {
-
-
-          szg1: '',
-          szg1Id: null,
-          szg2: '',
-          szg2Id: null,
-          szg3: '',
-          szg3Id: null,
-          id: null
-        },
-        pch: "",
-        product_name: "",
-        pin_hao: "",
-        se_hao: "",
-        machine_id: "",
-        isYunzhuan: null,
-        className: ""
-      };
+        ];
+      } else if (e.target.value == "B班") {
+        that.isChooseAclass = "1";
+        that.staffList = [
+          {
+            label: "上轴工01",
+            staffName: that.Bclass.szg1,
+            isSelected: false,
+            id: that.Bclass.szg1Id,
+          },
+          {
+            label: "上轴工02",
+            staffName: that.Bclass.szg2,
+            isSelected: false,
+            id: that.Bclass.szg2Id,
+          },
+          {
+            label: "上轴工03",
+            staffName: that.Bclass.szg3,
+            isSelected: false,
+            id: that.Bclass.szg3Id,
+          },
+        ];
+      } else if (e.target.value == "C班") {
+        that.isChooseAclass = "2";
+        that.staffList = [
+          {
+            label: "上轴工01",
+            staffName: that.Cclass.szg1,
+            isSelected: false,
+            id: that.Cclass.szg1Id,
+          },
+          {
+            label: "上轴工02",
+            staffName: that.Cclass.szg2,
+            isSelected: false,
+            id: that.Cclass.szg2Id,
+          },
+          {
+            label: "上轴工03",
+            staffName: that.Cclass.szg3,
+            isSelected: false,
+            id: that.Cclass.szg3Id,
+          },
+        ];
+      }
     },
-    methods: {
-      classChange(e) {
-        console.log(e.target.value)
-        let that = this
-        if (e.target.value == 'A班') {
-          that.isChooseAclass = '0'
-          that.staffList = [{
+    toSz() {
+      this.szShiftShow = false;
+      this.UpdatePeopleShow = false;
+      this.szMainShow = false;
+      this.szIndexShow = false;
+      this.szMachineShow = false;
+      this.szShiftShow2 = true;
+    },
+    sureClass2() {
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szShiftShow2 = false;
 
-              label: "上轴工01",
-              staffName: that.Aclass.szg1,
-              isSelected: false,
-              id: that.Aclass.szg1Id
-            },
-            {
-              label: "上轴工02",
-              staffName: that.Aclass.szg2,
-              isSelected: false,
-              id: that.Aclass.szg2Id
-            },
-            {
-              label: "上轴工03",
-              staffName: that.Aclass.szg3,
-              isSelected: false,
-              id: that.Aclass.szg3Id
-            },
-          ]
-        } else if (e.target.value == 'B班') {
-          that.isChooseAclass = '1'
-          that.staffList = [{
+      this.szIndexShow = false;
+      this.szMainShow = true;
+      console.log(this.staffList2);
 
-              label: "上轴工01",
-              staffName: that.Bclass.szg1,
-              isSelected: false,
-              id: that.Bclass.szg1Id
-            },
-            {
-              label: "上轴工02",
-              staffName: that.Bclass.szg2,
-              isSelected: false,
-              id: that.Bclass.szg2Id
-            },
-            {
-              label: "上轴工03",
-              staffName: that.Bclass.szg3,
-              isSelected: false,
-              id: that.Bclass.szg3Id
-            },
-          ]
-        } else if (e.target.value == 'C班') {
-          that.isChooseAclass = '2'
-          that.staffList = [{
+      // this.szMachineShow = true;
+      // this.getMachineList()
+    },
+    cancelClass2() {
+      this.szShiftShow2 = false;
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szMainShow = false;
+      this.szMachineShow = false;
+      this.szIndexShow = true;
+    },
+    changeClass2(e) {
+      if (e == "a") {
+        this.isChooseAclass2 = 0;
+        this.staffList2 = [
+          {
+            label: "上轴工01",
+            staffName: this.Aclass2.szg1,
+            isSelected: false,
+            groupId: this.Aclass2.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Aclass2.szg2,
+            isSelected: false,
+            groupId: this.Aclass2.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Aclass2.szg3,
+            isSelected: false,
+            groupId: this.Aclass2.id,
+          },
+        ];
+      } else if (e == "b") {
+        this.isChooseAclass2 = 1;
+        this.staffList2 = [
+          {
+            label: "上轴工01",
+            staffName: this.Bclass2.szg1,
+            isSelected: false,
+            groupId: this.Bclass2.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Bclass2.szg2,
+            isSelected: false,
+            groupId: this.Bclass2.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Bclass2.szg3,
+            isSelected: false,
+            groupId: this.Bclass2.id,
+          },
+        ];
+      } else if (e == "c") {
+        this.isChooseAclass2 = 2;
+        this.staffList2 = [
+          {
+            label: "上轴工01",
+            staffName: this.Cclass2.szg1,
+            isSelected: false,
+            groupId: this.Cclass2.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Cclass2.szg2,
+            isSelected: false,
+            groupId: this.Cclass2.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Cclass2.szg3,
+            isSelected: false,
+            groupId: this.Cclass2.id,
+          },
+        ];
+      }
+    },
+    sureClass() {
+      // this.$emit('szChange', this.staffList)
+      this.szShiftShow = false;
+      this.szMachineShow = false;
+      this.szMainShow = false;
+      this.szIndexShow = false;
+      this.UpdatePeopleShow = true;
+      console.log(this.isChooseAclass);
+      console.log(this.staffList);
+    },
+    cancelClass() {
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szMainShow = false;
+      this.szMachineShow = false;
+      this.szIndexShow = true;
+    },
+    changeClass(e) {
+      if (e == "a") {
+        this.isChooseAclass = 0;
 
-              label: "上轴工01",
-              staffName: that.Cclass.szg1,
-              isSelected: false,
-              id: that.Cclass.szg1Id
+        this.staffList = [
+          {
+            label: "上轴工01",
+            staffName: this.Aclass.szg1,
+            isSelected: false,
+            groupId: this.Aclass.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Aclass.szg2,
+            isSelected: false,
+            groupId: this.Aclass.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Aclass.szg3,
+            isSelected: false,
+            groupId: this.Aclass.id,
+          },
+        ];
+      } else if (e == "b") {
+        this.isChooseAclass = 1;
+        this.staffList = [
+          {
+            label: "上轴工01",
+            staffName: this.Bclass.szg1,
+            isSelected: false,
+            groupId: this.Bclass.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Bclass.szg2,
+            isSelected: false,
+            groupId: this.Bclass.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Bclass.szg3,
+            isSelected: false,
+            groupId: this.Bclass.id,
+          },
+        ];
+      } else if (e == "c") {
+        this.isChooseAclass = 2;
+        this.staffList = [
+          {
+            label: "上轴工01",
+            staffName: this.Cclass.szg1,
+            isSelected: false,
+            groupId: this.Cclass.id,
+          },
+          {
+            label: "上轴工02",
+            staffName: this.Cclass.szg2,
+            isSelected: false,
+            groupId: this.Cclass.id,
+          },
+          {
+            label: "上轴工03",
+            staffName: this.Cclass.szg3,
+            isSelected: false,
+            groupId: this.Cclass.id,
+          },
+        ];
+      }
+      console.log(this.staffList);
+    },
+    CurrentChange(e) {
+      console.log(e);
+      this.page_num = e;
+      this.getMachineList();
+    },
+    CurrentNameChange(e) {
+      console.log(e);
+      this.page_num2 = e;
+      this.getStaffList();
+    },
+    getMachineList() {
+      let that = this;
+      let url = host + "/api/stationMachine/getMachines";
+
+      axios({
+        url: url,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+            page_size: that.page_size,
+            page_num: that.page_num,
+          },
+          mac_type_id: that.mac_type_id,
+        },
+        // headers: headers
+      }).then((response) => {
+        console.log(response);
+        that.total_num = response.data.result.total_num;
+        let array = response.data.result.models;
+        that.machineList = [];
+        array.forEach((element) => {
+          that.machineList.push(element);
+        });
+      });
+    },
+    closeCurrentPage() {
+      console.log(this.szMachineShow);
+      if (this.szMachineShow == true) {
+        this.isCheckedMachine = false;
+        this.checkedMachineNum = "";
+        this.UpdatePeopleShow = false;
+        this.checkMachine = [];
+        this.szMachineShow = false;
+        this.szShiftShow = false;
+        this.szMainShow = true;
+        return;
+      }
+      if (this.szShiftShow == true) {
+        this.szMachineShow = false;
+        this.szShiftShow = false;
+        this.szMainShow = true;
+        this.UpdatePeopleShow = false;
+        this.isStartChange = false;
+        return;
+      }
+      if (this.szMainShow == true) {
+        this.szMachineShow = false;
+        this.szShiftShow = false;
+        this.szMainShow = false;
+        this.UpdatePeopleShow = false;
+        this.szShiftShow2 = false;
+        this.szIndexShow = true;
+        return;
+      }
+      if (this.UpdatePeopleShow == true) {
+        this.szMachineShow = false;
+        this.szShiftShow = false;
+        this.szMainShow = false;
+        this.UpdatePeopleShow = false;
+        this.szShiftShow2 = false;
+        this.szIndexShow = true;
+        this.isStartChange = false;
+        return;
+      }
+    },
+    saoma() {
+      this.issaoma = true;
+    },
+    wanchen() {
+      console.log(this.issaoma);
+      console.log(this.pch);
+      let nameList = [];
+      this.staffList2.forEach((element) => {
+        nameList.push(element.staffName);
+      });
+      console.log(String(nameList));
+      if (this.issaoma == true) {
+        if (this.print_code != "" && this.machine_id != "") {
+          let url = host + "/api/stationMachine/onAxis";
+          let data = {
+            selectInfo: {
+              company_id: this.company_id,
             },
-            {
-              label: "上轴工02",
-              staffName: that.Cclass.szg2,
-              isSelected: false,
-              id: that.Cclass.szg2Id
-            },
-            {
-              label: "上轴工03",
-              staffName: that.Cclass.szg3,
-              isSelected: false,
-              id: that.Cclass.szg3Id
-            },
-          ]
+            machine_id: this.machine_id,
+            print_code: this.pch,
+            shang_zhou_ren: String(nameList),
+          };
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            data: data,
+          }).then((response) => {
+            if (response.data.message == "成功") {
+              this.$message({
+                message: "上轴成功！",
+                type: "success",
+              });
+            } else {
+              this.$message.error(response.data.message);
+            }
+            this.se_hao = "";
+            this.pch = "";
+            this.product_name = "";
+            this.pin_hao = "";
+            this.machine_id = "";
+            that.closeCurrentPage();
+          });
+        } else {
+          this.$message({
+            message: "码没有读取到！",
+            type: "warning",
+          });
         }
-      },
-      toSz() {
-        this.szShiftShow = false
-        this.UpdatePeopleShow = false
-        this.szMainShow = false
-        this.szIndexShow = false
+      }
+      this.issaoma = false;
+    },
+    toChooseMachine() {
+      this.szMainShow = false;
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szMachineShow = true;
+      this.getMachineList();
+    },
+
+    toClass(isYunzhuan) {
+      this.isYunzhuan = isYunzhuan;
+      if (isYunzhuan == true) {
+        this.isChooseAclass = "0";
+        this.szMainShow = false;
         this.szMachineShow = false;
-        this.szShiftShow2 = true
-      },
-      sureClass2() {
-
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false
-        this.szShiftShow2 = false
-
-        this.szIndexShow = false
-        this.szMainShow = true
-        console.log(this.staffList2)
-
-        // this.szMachineShow = true;
-        // this.getMachineList()
-      },
-      cancelClass2() {
-        this.szShiftShow2 = false
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false
-        this.szMainShow = false
+        this.szIndexShow = false;
+        this.UpdatePeopleShow = false;
+        this.szShiftShow2 = false;
+        this.szShiftShow = true;
+      } else {
+        this.szMainShow = false;
         this.szMachineShow = false;
-        this.szIndexShow = true
-      },
-      changeClass2(e) {
-        if (e == "a") {
-          this.isChooseAclass2 = 0
-          this.staffList2 = [{
-              label: "上轴工01",
-              staffName: this.Aclass2.szg1,
-              isSelected: false,
-              groupId: this.Aclass2.id
-            },
-            {
-              label: "上轴工02",
-              staffName: this.Aclass2.szg2,
-              isSelected: false,
-              groupId: this.Aclass2.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Aclass2.szg3,
-              isSelected: false,
-              groupId: this.Aclass2.id
-            },
-          ]
+        this.szIndexShow = false;
 
+        this.szShiftShow2 = false;
+        this.szShiftShow = false;
+        this.UpdatePeopleShow = true;
+        this.isChooseAclass = "2";
+      }
+    },
 
-        } else if (e == "b") {
-          this.isChooseAclass2 = 1
-          this.staffList2 = [{
-              label: "上轴工01",
-              staffName: this.Bclass2.szg1,
-              isSelected: false,
-              groupId: this.Bclass2.id
-            },
-            {
-              label: "上轴工02",
-              staffName: this.Bclass2.szg2,
-              isSelected: false,
-              groupId: this.Bclass2.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Bclass2.szg3,
-              isSelected: false,
-              groupId: this.Bclass2.id
-            },
-          ]
+    sureMachine() {
+      this.isCheckedMachine = true;
+      this.checkMachine = [];
+      this.szMachineShow = false;
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szMainShow = true;
+    },
+    cancel() {
+      //取消按钮事件
+      this.isCheckedMachine = false;
+      this.checkedMachineNum = "";
+      this.checkMachine = [];
+      this.szMachineShow = false;
+      this.UpdatePeopleShow = false;
+      this.szShiftShow = false;
+      this.szMainShow = true;
+    },
+    save() {
+      //确认按钮事件
+      if (this.isStartChange == true) {
+        console.log(this.Aclass);
+        console.log(this.Bclass);
+        console.log(this.staffList);
+        let id;
+        let staffList = [
+          {
+            id: null,
+            order_num: null,
+          },
+          {
+            id: null,
+            order_num: null,
+          },
+          {
+            id: null,
+            order_num: null,
+          },
+        ];
 
-        } else if (e == "c") {
-          this.isChooseAclass2 = 2
-          this.staffList2 = [{
-              label: "上轴工01",
-              staffName: this.Cclass2.szg1,
-              isSelected: false,
-              groupId: this.Cclass2.id
-            },
-            {
-              label: "上轴工02",
-              staffName: this.Cclass2.szg2,
-              isSelected: false,
-              groupId: this.Cclass2.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Cclass2.szg3,
-              isSelected: false,
-              groupId: this.Cclass2.id
-            },
-          ]
-
+        if (this.isChooseAclass == 0) {
+          id = this.Aclass.id;
+        } else if (this.isChooseAclass == 1) {
+          id = this.Bclass.id;
+        } else if (this.isChooseAclass == 2) {
+          id = this.Cclass.id;
         }
 
-      },
-      sureClass() {
+        staffList[0].id = this.staffList[0].id;
+        staffList[0].order_num = 1;
+        staffList[1].id = this.staffList[1].id;
+        staffList[1].order_num = 2;
+        staffList[2].id = this.staffList[2].id;
+        staffList[2].order_num = 3;
+        let url = host + "/api/group/shift";
+        let data = {
+          selectInfo: {
+            company_id: this.company_id,
+          },
+          shiftGroup: {
+            id: id,
+          },
+          staffList: staffList,
+        };
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          data: data,
+        }).then((response) => {
+          console.log(response);
+          if (response.data.message == "成功") {
+            that.$message({
+              message: "换班成功！",
+              type: "success",
+            });
 
-        // this.$emit('szChange', this.staffList)
-        this.szShiftShow = false
-        this.szMachineShow = false;
-        this.szMainShow = false
-        this.szIndexShow = false
-        this.UpdatePeopleShow = true
-        console.log(this.isChooseAclass)
-        console.log(this.staffList)
-      },
-      cancelClass() {
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false
-        this.szMainShow = false
-        this.szMachineShow = false;
-        this.szIndexShow = true
-      },
-      changeClass(e) {
-        if (e == "a") {
-          this.isChooseAclass = 0
+            this.szMachineShow = false;
+            this.szShiftShow = false;
+            this.UpdatePeopleShow = false;
+            this.szMainShow = false;
+            this.isStartChange = false;
+            this.szIndexShow = true;
+            this.$emit("szChange", this.staffList);
+          } else {
+            this.$message({
+              message: "发生错误！",
+              type: "warning",
+            });
+          }
+          this.checkName = "";
+        });
+      }
+    },
+    startChange() {
+      //开始修改按钮单击事件
+      this.isStartChange = true;
+    },
+    checkedMachine(e) {
+      //选择机台事件
 
-          this.staffList = [{
-              label: "上轴工01",
-              staffName: this.Aclass.szg1,
-              isSelected: false,
-              groupId: this.Aclass.id
+      this.checkedMachineNum = e[0];
+    },
+    checkedName(e) {
+      //选择员工
+
+      for (let i = 0; i < this.staffList.length; i++) {
+        if (this.staffList[i].isSelected == true) {
+          this.staffList[i].staffName = e[0];
+          let url = "http://106.12.219.66:8227/report/getSimpleReport";
+          let headers = {
+            "Content-Type": "application/json",
+            companyID: this.company_id,
+          };
+          let method = "post";
+          let data = {
+            tableName: "s_staff",
+            pageNum: 1,
+            pageSize: 1000,
+            query: {
+              staff_name: e[0],
             },
+          };
+
+          let that = this;
+
+          axios({
+            url: url,
+            method: method,
+            data: data,
+            headers: headers,
+          }).then((response) => {
+            console.log(response);
+            this.staffList[i].id = response.data.data[0].id; //绑定员工id
+          });
+        }
+      }
+      //此处查询staff表的对应e【0】的id
+    },
+    chooseStaff(label) {
+      //换班选中其中输入框的事件
+      if (this.isStartChange == true) {
+        for (let i = 0; i < this.staffList.length; i++) {
+          this.staffList[i].isSelected = false;
+        }
+        for (let i = 0; i < this.staffList.length; i++) {
+          if (this.staffList[i].label == label) {
+            this.staffList[i].isSelected = true;
+          }
+        }
+      }
+    },
+
+    getGroup() {
+      //获取组员信息
+      console.log("getGroup");
+      console.log(this.isYunzhuan);
+      let url2 = host + "/api/group/getGroupDetail";
+      let that = this;
+      axios({
+        url: url2,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+          },
+          shiftGroup: {
+            id: 4,
+          },
+        },
+
+        // headers: headers
+      }).then((res) => {
+        console.log(res.data.result);
+        res.data.result.forEach((element) => {
+          if (element.group_name == "运转班A组") {
+            this.Aclass.id = element.id;
+            for (let i = 0; i < element.staffList.length; i++) {
+              if (element.staffList[i].staff_organization_name == "上轴工") {
+                if (element.staffList[i].order_num == "1") {
+                  this.Aclass.szg1 = element.staffList[i].staff_name;
+                  this.Aclass.szg1Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "2") {
+                  this.Aclass.szg2 = element.staffList[i].staff_name;
+                  this.Aclass.szg2Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "3") {
+                  this.Aclass.szg3 = element.staffList[i].staff_name;
+                  this.Aclass.szg3Id = element.staffList[i].id;
+                }
+              }
+            }
+          } else if (element.group_name == "运转班B组") {
+            this.Bclass.id = element.id;
+            for (let i = 0; i < element.staffList.length; i++) {
+              if (element.staffList[i].staff_organization_name == "上轴工") {
+                if (element.staffList[i].order_num == "1") {
+                  this.Bclass.szg1 = element.staffList[i].staff_name;
+                  this.Bclass.szg1Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "2") {
+                  this.Bclass.szg2 = element.staffList[i].staff_name;
+                  this.Bclass.szg2Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "3") {
+                  this.Bclass.szg3 = element.staffList[i].staff_name;
+                  this.Bclass.szg3Id = element.staffList[i].id;
+                }
+              }
+            }
+          }
+        });
+        that.staffList = [
+          {
+            label: "上轴工01",
+            staffName: that.Aclass.szg1,
+            isSelected: false,
+            id: that.Aclass.szg1Id,
+          },
+          {
+            label: "上轴工02",
+            staffName: that.Aclass.szg2,
+            isSelected: false,
+            id: that.Aclass.szg2Id,
+          },
+          {
+            label: "上轴工03",
+            staffName: that.Aclass.szg3,
+            isSelected: false,
+            id: that.Aclass.szg3Id,
+          },
+        ];
+        that.Aclass2 = that.Aclass;
+        that.Bclass2 = that.Bclass;
+        that.staffList2 = that.staffList;
+
+        // that.Aclass.id = res.data.result[0].id
+        // that.Bclass.id = res.data.result[1].id
+        // that.Cclass.id = res.data.result[2].id
+        // res.data.result[0].staffList.forEach(element => {
+        //   if (element.order_num == "1") {
+        //     that.Aclass.szg1Id = element.id
+        //     that.Aclass.szg1 = element.staff_name
+        //   } else if (element.order_num == "2") {
+        //     that.Aclass.szg2Id = element.id
+        //     that.Aclass.szg2 = element.staff_name
+        //   } else if (element.order_num == "3") {
+        //     that.Aclass.szg3Id = element.id
+        //     that.Aclass.szg3 = element.staff_name
+        //   }
+        // });
+        // res.data.result[1].staffList.forEach(element => {
+        //   if (element.order_num == "1") {
+        //     that.Bclass.szg1Id = element.id
+        //     that.Bclass.szg1 = element.staff_name
+        //   } else if (element.order_num == "2") {
+        //     that.Bclass.szg2Id = element.id
+        //     that.Bclass.szg2 = element.staff_name
+        //   } else if (element.order_num == "3") {
+        //     that.Bclass.szg3Id = element.id
+        //     that.Bclass.szg3 = element.staff_name
+        //   }
+        // });
+        // res.data.result[2].staffList.forEach(element => {
+        //   if (element.order_num == "1") {
+        //     that.Cclass.szg1Id = element.id
+        //     that.Cclass.szg1 = element.staff_name
+        //   } else if (element.order_num == "2") {
+        //     that.Cclass.szg2Id = element.id
+        //     that.Cclass.szg2 = element.staff_name
+        //   } else if (element.order_num == "3") {
+        //     that.Cclass.szg3Id = element.id
+        //     that.Cclass.szg3 = element.staff_name
+        //   }
+        // });
+        // that.staffList = [{
+
+        //     label: "上轴工01",
+        //     staffName: that.Aclass.szg1,
+        //     isSelected: false,
+        //     id: that.Aclass.szg1Id
+        //   },
+        //   {
+        //     label: "上轴工02",
+        //     staffName: that.Aclass.szg2,
+        //     isSelected: false,
+        //     id: that.Aclass.szg2Id
+        //   },
+        //   {
+        //     label: "上轴工03",
+        //     staffName: that.Aclass.szg3,
+        //     isSelected: false,
+        //     id: that.Aclass.szg3Id
+        //   },
+        // ]
+        // that.staffList2 = that.staffList
+        // that.Aclass2 = that.Aclass
+        // that.Bclass2 = that.Bclass
+        // that.Cclass2 = that.Cclass
+      });
+      axios({
+        url: url2,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+          },
+          shiftGroup: {
+            id: 5,
+          },
+        },
+
+        // headers: headers
+      }).then((res) => {
+        console.log(res.data.result);
+        res.data.result.forEach((element) => {
+          if (element.group_name == "长白班C组") {
+            this.Cclass.id = element.id;
+            for (let i = 0; i < element.staffList.length; i++) {
+              if (element.staffList[i].staff_organization_name == "上轴工") {
+                if (element.staffList[i].order_num == "1") {
+                  this.Cclass.szg1 = element.staffList[i].staff_name;
+                  this.Cclass.szg1Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "2") {
+                  this.Cclass.szg2 = element.staffList[i].staff_name;
+                  this.Cclass.szg2Id = element.staffList[i].id;
+                } else if (element.staffList[i].order_num == "3") {
+                  this.Cclass.szg3 = element.staffList[i].staff_name;
+                  this.Cclass.szg3Id = element.staffList[i].id;
+                }
+              }
+            }
+          }
+        });
+        that.Cclass2 = that.Cclass;
+        if (this.isYunzhuan == false) {
+          this.staffList = [
             {
-              label: "上轴工02",
-              staffName: this.Aclass.szg2,
-              isSelected: false,
-              groupId: this.Aclass.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Aclass.szg3,
-              isSelected: false,
-              groupId: this.Aclass.id
-            },
-          ]
-
-
-        } else if (e == 'b') {
-          this.isChooseAclass = 1
-          this.staffList = [{
-              label: "上轴工01",
-              staffName: this.Bclass.szg1,
-              isSelected: false,
-              groupId: this.Bclass.id
-            },
-            {
-              label: "上轴工02",
-              staffName: this.Bclass.szg2,
-              isSelected: false,
-              groupId: this.Bclass.id
-            },
-            {
-              label: "上轴工03",
-              staffName: this.Bclass.szg3,
-              isSelected: false,
-              groupId: this.Bclass.id
-            },
-          ]
-
-        } else if (e == 'c') {
-          this.isChooseAclass = 2
-          this.staffList = [{
               label: "上轴工01",
               staffName: this.Cclass.szg1,
               isSelected: false,
-              groupId: this.Cclass.id
+              groupId: this.Cclass.id,
             },
             {
               label: "上轴工02",
               staffName: this.Cclass.szg2,
               isSelected: false,
-              groupId: this.Cclass.id
+              groupId: this.Cclass.id,
             },
             {
               label: "上轴工03",
               staffName: this.Cclass.szg3,
               isSelected: false,
-              groupId: this.Cclass.id
+              groupId: this.Cclass.id,
             },
-          ]
+          ];
+          that.staffList2 = that.staffList;
 
+          console.log(this.staffList);
         }
-        console.log(this.staffList)
-      },
-      CurrentChange(e) {
-        console.log(e)
-        this.page_num = e
-        this.getMachineList()
-      },
-      CurrentNameChange(e) {
-        console.log(e)
-        this.page_num2 = e
-        this.getStaffList()
-      },
-      getMachineList() {
-        let that = this;
-        let url = host + "/api/stationMachine/getMachines";
+      });
+    },
+    getStaffList() {
+      let url = "http://106.12.219.66:8227/report/getSimpleReport";
+      let data = {
+        tableName: "s_staff",
+        sort: "DESC",
+        sortCloumn: "id",
+        selectFields: ["id", "staff_name"],
+        pageNum: this.page_num2,
+        pageSize: this.page_size2,
+        query: {
+          staff_organization_id: 35, //上轴工
+        },
+      };
+      let headers = {
+        companyId: this.company_id,
+      };
+      this.StaffNameList = [];
+      let that = this;
+      axios({
+        url: url,
+        method: "post",
+        headers: headers,
+        data: data,
 
-
+        // headers: headers
+      }).then((res) => {
+        console.log(res);
+        let arr = res.data.data;
+        for (let i = 0; i < arr.length; i++) {
+          that.StaffNameList.push(arr[i]);
+        }
+        that.total_num2 = res.data.total;
+        //   console.log(that.total_num2)
+      });
+    },
+  },
+  mounted() {},
+  watch: {
+    pch(val) {
+      //批轴号事件
+      let url = host + "/api/stationMachine/getAxisInfo";
+      let that = this;
+      if (val != "") {
         axios({
-            url: url,
-            method: "post",
-            data: {
-              selectInfo: {
-                company_id: that.company_id,
-                page_size: that.page_size,
-                page_num: that.page_num
-              },
-              mac_type_id: that.mac_type_id
-            },
-            // headers: headers
-          })
-          .then(response => {
-            console.log(response)
-            that.total_num = response.data.result.total_num
-            let array = response.data.result.models
-            that.machineList = []
-            array.forEach(element => {
-              that.machineList.push(element)
-            });
+          url: url,
+          method: "post",
 
-          })
-      },
-      closeCurrentPage() {
-        console.log(this.szMachineShow)
-        if (this.szMachineShow == true) {
-          this.isCheckedMachine = false;
-          this.checkedMachineNum = "";
-          this.UpdatePeopleShow = false
-          this.checkMachine = []
-          this.szMachineShow = false;
-          this.szShiftShow = false;
-          this.szMainShow = true;
-          return
-        }
-        if (this.szShiftShow == true) {
-          this.szMachineShow = false;
-          this.szShiftShow = false;
-          this.szMainShow = true;
-          this.UpdatePeopleShow = false
-          this.isStartChange = false
-          return
-        }
-        if (this.szMainShow == true) {
-          this.szMachineShow = false;
-          this.szShiftShow = false;
-          this.szMainShow = false;
-          this.UpdatePeopleShow = false
-          this.szShiftShow2 = false
-          this.szIndexShow = true
-          return
-        }
-        if (this.UpdatePeopleShow == true) {
-          this.szMachineShow = false;
-          this.szShiftShow = false;
-          this.szMainShow = false;
-          this.UpdatePeopleShow = false
-          this.szShiftShow2 = false
-          this.szIndexShow = true
-          this.isStartChange = false
-          return
-        }
-
-      },
-      saoma() {
-        this.issaoma = true
-      },
-      wanchen() {
-        console.log(this.issaoma)
-        console.log(this.pch)
-        let nameList = []
-        this.staffList2.forEach(element => {
-          nameList.push(element.staffName)
-        });
-        console.log(String(nameList))
-        if (this.issaoma == true) {
-          if (this.print_code != "" && (this.machine_id != "")) {
-            let url = host + '/api/stationMachine/onAxis';
-            let data = {
-              selectInfo: {
-                company_id: this.company_id
-              },
-              machine_id: this.machine_id,
-              print_code: this.pch,
-              shang_zhou_ren: String(nameList)
-
-
-            }
-            let that = this
-            axios({
-                url: url,
-                method: "post",
-                data: data,
-
-              })
-              .then(response => {
-                if (response.data.message == "成功") {
-                  this.$message({
-                    message: '上轴成功！',
-                    type: 'success'
-                  });
-                } else {
-                  this.$message.error(response.data.message);
-                }
-                this.se_hao = ""
-                this.pch = ''
-                this.product_name = ""
-                this.pin_hao = ""
-                this.machine_id = ""
-                that.closeCurrentPage()
-              })
-          } else {
-            this.$message({
-              message: '码没有读取到！',
-              type: 'warning'
-            });
-          }
-        }
-        this.issaoma = false
-
-      },
-      toChooseMachine() {
-        this.szMainShow = false;
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false;
-        this.szMachineShow = true;
-        this.getMachineList()
-
-      },
-
-      toClass(isYunzhuan) {
-        this.isYunzhuan = isYunzhuan
-        if (isYunzhuan == true) {
-          this.isChooseAclass = '0'
-          this.szMainShow = false;
-          this.szMachineShow = false;
-          this.szIndexShow = false
-          this.UpdatePeopleShow = false
-          this.szShiftShow2 = false;
-          this.szShiftShow = true;
-        } else {
-          this.szMainShow = false;
-          this.szMachineShow = false;
-          this.szIndexShow = false
-
-          this.szShiftShow2 = false;
-          this.szShiftShow = false;
-          this.UpdatePeopleShow = true
-          this.isChooseAclass = '2'
-        }
-
-
-      },
-
-      sureMachine() {
-        this.isCheckedMachine = true
-        this.checkMachine = []
-        this.szMachineShow = false;
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false;
-        this.szMainShow = true;
-      },
-      cancel() { //取消按钮事件
-        this.isCheckedMachine = false;
-        this.checkedMachineNum = "";
-        this.checkMachine = []
-        this.szMachineShow = false;
-        this.UpdatePeopleShow = false
-        this.szShiftShow = false;
-        this.szMainShow = true;
-      },
-      save() { //确认按钮事件
-        if (this.isStartChange == true) {
-
-          console.log(this.Aclass)
-          console.log(this.Bclass)
-          console.log(this.staffList)
-          let id;
-          let staffList = [{
-            id: null,
-            order_num: null
-          }, {
-            id: null,
-            order_num: null
-          }, {
-            id: null,
-            order_num: null
-          }, ];
-
-          if (this.isChooseAclass == 0) {
-            id = this.Aclass.id
-
-
-
-          } else if (this.isChooseAclass == 1) {
-            id = this.Bclass.id
-
-          } else if (this.isChooseAclass == 2) {
-            id = this.Cclass.id
-
-          }
-
-
-          staffList[0].id = this.staffList[0].id
-          staffList[0].order_num = 1
-          staffList[1].id = this.staffList[1].id
-          staffList[1].order_num = 2
-          staffList[2].id = this.staffList[2].id
-          staffList[2].order_num = 3
-          let url = host + '/api/group/shift';
-          let data = {
+          data: {
             selectInfo: {
-              company_id: this.company_id
+              company_id: that.company_id,
             },
-            shiftGroup: {
-              id: id
-            },
-            staffList: staffList
+            print_code: val,
+          },
 
-          }
-          let that = this
-          axios({
-              url: url,
-              method: "post",
-              data: data,
-
-            })
-            .then(response => {
-              console.log(response)
-              if (response.data.message == "成功") {
-                that.$message({
-                  message: '换班成功！',
-                  type: 'success'
-                });
-
-                this.szMachineShow = false;
-                this.szShiftShow = false;
-                this.UpdatePeopleShow = false
-                this.szMainShow = false;
-                this.isStartChange = false
-                this.szIndexShow = true
-                this.$emit('szChange', this.staffList)
-              } else {
-                this.$message({
-                  message: '发生错误！',
-                  type: 'warning'
-                });
-              }
-              this.checkName = ""
-            })
-
-
-        }
-
-      },
-      startChange() { //开始修改按钮单击事件
-        this.isStartChange = true;
-
-      },
-      checkedMachine(e) { //选择机台事件
-
-        this.checkedMachineNum = e[0]
-      },
-      checkedName(e) { //选择员工
-
-        for (let i = 0; i < this.staffList.length; i++) {
-          if (this.staffList[i].isSelected == true) {
-            this.staffList[i].staffName = e[0]
-            let url = 'http://106.12.219.66:8227/report/getSimpleReport';
-            let headers = {
-              'Content-Type': 'application/json',
-              'companyID': this.company_id
-            };
-            let method = "post";
-            let data = {
-              "tableName": "s_staff",
-              "pageNum": 1,
-              "pageSize": 1000,
-              query: {
-                staff_name: e[0]
-              }
-
-            };
-
-            let that = this
-
-            axios({
-                url: url,
-                method: method,
-                data: data,
-                headers: headers
-              })
-              .then(response => {
-                console.log(response)
-                this.staffList[i].id = response.data.data[0].id //绑定员工id
-              })
-          }
-        }
-        //此处查询staff表的对应e【0】的id
-
-
-      },
-      chooseStaff(label) { //换班选中其中输入框的事件
-        if (this.isStartChange == true) {
-          for (let i = 0; i < this.staffList.length; i++) {
-            this.staffList[i].isSelected = false
-          }
-          for (let i = 0; i < this.staffList.length; i++) {
-
-            if (this.staffList[i].label == label) {
-              this.staffList[i].isSelected = true
-            }
-          }
-        }
-
-      },
-
-      getGroup() { //获取组员信息
-        console.log('getGroup')
-        console.log(this.isYunzhuan)
-        let url2 = host + "/api/group/getGroupDetail"
-        let that = this
-        axios({
-            url: url2,
-            method: "post",
-            data: {
-              selectInfo: {
-                company_id: that.company_id,
-              },
-              shiftGroup: {
-                id: 4
-              }
-            },
-
-
-            // headers: headers
-          })
-          .then(res => {
-            console.log(res.data.result)
-            res.data.result.forEach(element => {
-
-              if (element.group_name == "运转班A组") {
-                this.Aclass.id = element.id
-                for (let i = 0; i < element.staffList.length; i++) {
-                  if (element.staffList[i].staff_organization_name == "上轴工") {
-                    if (element.staffList[i].order_num == "1") {
-                      this.Aclass.szg1 = element.staffList[i].staff_name
-                      this.Aclass.szg1Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "2") {
-                      this.Aclass.szg2 = element.staffList[i].staff_name
-                      this.Aclass.szg2Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "3") {
-                      this.Aclass.szg3 = element.staffList[i].staff_name
-                      this.Aclass.szg3Id = element.staffList[i].id
-                    }
-                  }
-                }
-              } else if (element.group_name == "运转班B组") {
-                this.Bclass.id = element.id
-                for (let i = 0; i < element.staffList.length; i++) {
-                  if (element.staffList[i].staff_organization_name == "上轴工") {
-                    if (element.staffList[i].order_num == "1") {
-                      this.Bclass.szg1 = element.staffList[i].staff_name
-                      this.Bclass.szg1Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "2") {
-                      this.Bclass.szg2 = element.staffList[i].staff_name
-                      this.Bclass.szg2Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "3") {
-                      this.Bclass.szg3 = element.staffList[i].staff_name
-                      this.Bclass.szg3Id = element.staffList[i].id
-                    }
-                  }
-                }
-              }
-            });
-            that.staffList = [{
-
-                label: "上轴工01",
-                staffName: that.Aclass.szg1,
-                isSelected: false,
-                id: that.Aclass.szg1Id
-              },
-              {
-                label: "上轴工02",
-                staffName: that.Aclass.szg2,
-                isSelected: false,
-                id: that.Aclass.szg2Id
-              },
-              {
-                label: "上轴工03",
-                staffName: that.Aclass.szg3,
-                isSelected: false,
-                id: that.Aclass.szg3Id
-              },
-            ]
-            that.Aclass2 = that.Aclass
-            that.Bclass2 = that.Bclass
-            that.staffList2 = that.staffList
-
-            // that.Aclass.id = res.data.result[0].id
-            // that.Bclass.id = res.data.result[1].id
-            // that.Cclass.id = res.data.result[2].id
-            // res.data.result[0].staffList.forEach(element => {
-            //   if (element.order_num == "1") {
-            //     that.Aclass.szg1Id = element.id
-            //     that.Aclass.szg1 = element.staff_name
-            //   } else if (element.order_num == "2") {
-            //     that.Aclass.szg2Id = element.id
-            //     that.Aclass.szg2 = element.staff_name
-            //   } else if (element.order_num == "3") {
-            //     that.Aclass.szg3Id = element.id
-            //     that.Aclass.szg3 = element.staff_name
-            //   }
-            // });
-            // res.data.result[1].staffList.forEach(element => {
-            //   if (element.order_num == "1") {
-            //     that.Bclass.szg1Id = element.id
-            //     that.Bclass.szg1 = element.staff_name
-            //   } else if (element.order_num == "2") {
-            //     that.Bclass.szg2Id = element.id
-            //     that.Bclass.szg2 = element.staff_name
-            //   } else if (element.order_num == "3") {
-            //     that.Bclass.szg3Id = element.id
-            //     that.Bclass.szg3 = element.staff_name
-            //   }
-            // });
-            // res.data.result[2].staffList.forEach(element => {
-            //   if (element.order_num == "1") {
-            //     that.Cclass.szg1Id = element.id
-            //     that.Cclass.szg1 = element.staff_name
-            //   } else if (element.order_num == "2") {
-            //     that.Cclass.szg2Id = element.id
-            //     that.Cclass.szg2 = element.staff_name
-            //   } else if (element.order_num == "3") {
-            //     that.Cclass.szg3Id = element.id
-            //     that.Cclass.szg3 = element.staff_name
-            //   }
-            // });
-            // that.staffList = [{
-
-            //     label: "上轴工01",
-            //     staffName: that.Aclass.szg1,
-            //     isSelected: false,
-            //     id: that.Aclass.szg1Id
-            //   },
-            //   {
-            //     label: "上轴工02",
-            //     staffName: that.Aclass.szg2,
-            //     isSelected: false,
-            //     id: that.Aclass.szg2Id
-            //   },
-            //   {
-            //     label: "上轴工03",
-            //     staffName: that.Aclass.szg3,
-            //     isSelected: false,
-            //     id: that.Aclass.szg3Id
-            //   },
-            // ]
-            // that.staffList2 = that.staffList
-            // that.Aclass2 = that.Aclass
-            // that.Bclass2 = that.Bclass
-            // that.Cclass2 = that.Cclass
-          })
-        axios({
-            url: url2,
-            method: "post",
-            data: {
-              selectInfo: {
-                company_id: that.company_id,
-              },
-              shiftGroup: {
-                id: 5
-              }
-            },
-
-
-            // headers: headers
-          })
-          .then(res => {
-            console.log(res.data.result)
-            res.data.result.forEach(element => {
-              if (element.group_name == "长白班C组") {
-                this.Cclass.id = element.id
-                for (let i = 0; i < element.staffList.length; i++) {
-                  if (element.staffList[i].staff_organization_name == "上轴工") {
-                    if (element.staffList[i].order_num == "1") {
-                      this.Cclass.szg1 = element.staffList[i].staff_name
-                      this.Cclass.szg1Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "2") {
-                      this.Cclass.szg2 = element.staffList[i].staff_name
-                      this.Cclass.szg2Id = element.staffList[i].id
-                    } else if (element.staffList[i].order_num == "3") {
-                      this.Cclass.szg3 = element.staffList[i].staff_name
-                      this.Cclass.szg3Id = element.staffList[i].id
-                    }
-                  }
-                }
-              }
-            });
-            that.Cclass2 = that.Cclass
-            if (this.isYunzhuan == false) {
-
-              this.staffList = [{
-                  label: "上轴工01",
-                  staffName: this.Cclass.szg1,
-                  isSelected: false,
-                  groupId: this.Cclass.id
-                },
-                {
-                  label: "上轴工02",
-                  staffName: this.Cclass.szg2,
-                  isSelected: false,
-                  groupId: this.Cclass.id
-                },
-                {
-                  label: "上轴工03",
-                  staffName: this.Cclass.szg3,
-                  isSelected: false,
-                  groupId: this.Cclass.id
-                },
-              ]
-              that.staffList2 = that.staffList
-
-              console.log(this.staffList)
-            }
-          })
-      },
-      getStaffList() {
-        let url = "http://106.12.219.66:8227/report/getSimpleReport"
-        let data = {
-
-          tableName: "s_staff",
-          sort: 'DESC',
-          sortCloumn: 'id',
-          selectFields: ['id', 'staff_name'],
-          pageNum: this.page_num2,
-          pageSize: this.page_size2,
-          query: {
-            staff_organization_id: 35 //上轴工
-          }
-        }
-        let headers = {
-          companyId: this.company_id
-        }
-        this.StaffNameList = []
-        let that = this
-        axios({
-            url: url,
-            method: "post",
-            headers: headers,
-            data: data,
-
-
-            // headers: headers
-          })
-          .then(res => {
-            console.log(res)
-            let arr = res.data.data
-            for (let i = 0; i < arr.length; i++) {
-              that.StaffNameList.push(arr[i])
-            }
-            that.total_num2 = res.data.total
-            //   console.log(that.total_num2)
-
-          })
+          // headers: headers
+        }).then((res) => {
+          console.log(res);
+          that.se_hao = res.data.result.se_hao;
+          that.pin_hao = res.data.result.pin_hao;
+          that.product_name = res.data.result.product_name;
+          that.machine_id = res.data.result.machine_id;
+        });
       }
     },
-    mounted() {
-
-
+    UpdatePeopleShow(val) {
+      if (val == true) {
+        console.log(val);
+        this.page_num2 = 1;
+        this.StaffNameList = [];
+        this.getStaffList();
+        this.getGroup();
+        if (this.isChooseAclass == "0") {
+          this.className = "A班";
+        } else if (this.isChooseAclass == "1") {
+          this.className = "B班";
+        } else if (this.isChooseAclass == "2") {
+          this.className = "C班";
+        }
+      }
     },
-    watch: {
-      pch(val) { //批轴号事件
-        let url = host + "/api/stationMachine/getAxisInfo"
-        let that = this
-        if (val != "") {
-          axios({
-              url: url,
-              method: "post",
+    szShiftShow(val) {
+      //当选择上轴组页面显示时加载数据
+      if (val == true) {
+        this.getGroup();
 
-              data: {
-                selectInfo: {
-                  company_id: that.company_id
-                },
-                print_code: val
-              },
+        // })
+      }
+    },
+    szShiftShow2(val) {
+      //当选择上轴组页面显示时加载数据
+      if (val == true) {
+        this.getGroup();
 
-
-              // headers: headers
-            })
-            .then(res => {
-              console.log(res)
-              that.se_hao = res.data.result.se_hao
-              that.pin_hao = res.data.result.pin_hao
-              that.product_name = res.data.result.product_name
-              that.machine_id = res.data.result.machine_id
-            })
-        }
-      },
-      UpdatePeopleShow(val) {
-
-        if (val == true) {
-          console.log(val)
-          this.page_num2 = 1
-          this.StaffNameList = []
-          this.getStaffList()
-          this.getGroup()
-          if (this.isChooseAclass == '0') {
-            this.className = 'A班'
-          } else if (this.isChooseAclass == '1') {
-            this.className = 'B班'
-          } else if (this.isChooseAclass == '2') {
-            this.className = 'C班'
-          }
-        }
-      },
-      szShiftShow(val) { //当选择上轴组页面显示时加载数据
-        if (val == true) {
-          this.getGroup()
-
-
-          // })
-        }
-      },
-      szShiftShow2(val) { //当选择上轴组页面显示时加载数据
-        if (val == true) {
-          this.getGroup()
-
-
-          // })
-        }
-      },
-      // isYunzhuan(val){
-      //   if(val==false){
-      //     console.log(this.Cclass)
-      //     //          this.staffList = [{
-      //     //     label: "上轴工01",
-      //     //     staffName: this.Cclass.szg1,
-      //     //     isSelected: false,
-      //     //     groupId: this.Cclass.id
-      //     //   },
-      //     //   {
-      //     //     label: "上轴工02",
-      //     //     staffName: this.Cclass.szg2,
-      //     //     isSelected: false,
-      //     //     groupId: this.Cclass.id
-      //     //   },
-      //     //   {
-      //     //     label: "上轴工03",
-      //     //     staffName: this.Cclass.szg3,
-      //     //     isSelected: false,
-      //     //     groupId: this.Cclass.id
-      //     //   },
-      //     // ]
-      //   }
-      // }
-    }
-
-  };
-
+        // })
+      }
+    },
+    // isYunzhuan(val){
+    //   if(val==false){
+    //     console.log(this.Cclass)
+    //     //          this.staffList = [{
+    //     //     label: "上轴工01",
+    //     //     staffName: this.Cclass.szg1,
+    //     //     isSelected: false,
+    //     //     groupId: this.Cclass.id
+    //     //   },
+    //     //   {
+    //     //     label: "上轴工02",
+    //     //     staffName: this.Cclass.szg2,
+    //     //     isSelected: false,
+    //     //     groupId: this.Cclass.id
+    //     //   },
+    //     //   {
+    //     //     label: "上轴工03",
+    //     //     staffName: this.Cclass.szg3,
+    //     //     isSelected: false,
+    //     //     groupId: this.Cclass.id
+    //     //   },
+    //     // ]
+    //   }
+    // }
+  },
+};
 </script>
 
 <style>
-  .el-message {
-    font-size: 3rem;
-  }
-
-  .el-message__content {
-    font-size: 3rem;
-  }
-
-  .pch {
-    position: absolute;
-    left: 1rem;
-    top: -3.5rem;
-    width: 15.5rem;
-    height: 3rem;
-
-  }
-
-  .pch input {
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;
-    font-size: 1.5rem;
-  }
-
-  .pch input::-webkit-input-placeholder {
-    font-size: 1.3rem;
-
-  }
-
-  .currentClass {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 1.5rem;
-    color: red;
-  }
-
-  .classA {
-    width: 50%;
-
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .classA_left {
-    width: 47%;
-    background: rgb(128, 128, 128);
-    color: white;
-    font-size: 1.5rem;
-    height: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .classA_left_chossed {
-    width: 47%;
-    background: rgb(50, 150, 250);
-    color: white;
-    font-size: 1.5rem;
-    height: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .classA_right {
-    width: 47%;
-
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  .classA_right span {
-    width: 100%;
-    height: 20%;
-    text-align: left;
-    font-size: 1rem;
-
-  }
-
-  .main_btn {
-    width: 30%;
-    height: 50%;
-    background: #A3D897;
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-    color: black;
-    font-size: 4rem;
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-bottom: 3px solid #717171;
-    border-right: 3px solid #717171;
-  }
-
-  .operationPane {
-    width: 100%;
-    height: 66%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    background: #E2E7ED;
-  }
-
-  .operationPane_con {
-    width: 98%;
-    height: 96%;
-    background: white;
-    border-radius: 16px;
-    position: relative;
-  }
-
-  .operationPane_con img {
-    position: absolute;
-    right: 0;
-    top: -8px;
-    width: 80px;
-    height: 80px;
-  }
-
-  .search {
-    position: absolute;
-    left: 18%;
-    top: 0px;
-    font-size: 1.7rem;
-    width: 64%;
-    height: 66px;
-
-
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  .search input {
-    border: 1px solid black;
-    height: 3rem;
-    font-size: 2rem;
-  }
-
-  .leftLabel {
-    position: absolute;
-    left: 0;
-    top: 0px;
-    border-top-left-radius: 16px;
-    font-size: 1.7rem;
-    width: 200px;
-    height: 70px;
-    background: #D4D4D4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .operationPane_con_uppershaft {
-    width: 85%;
-
-    height: 70%;
-    margin-bottom: 3%;
-
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-  }
-
-  .text {
-    position: absolute;
-    top: -20%;
-    left: 0%;
-    width: 60%;
-    height: 20%;
-    display: flex;
-    flex-direction: column;
-
-  }
-
-  .text_con {
-    width: 100%;
-    height: 50%;
-    display: flex;
-    align-items: center;
-
-  }
-
-  .text_con span {
-    margin-left: 15px;
-    margin-right: 15px;
-    font-size: 1.5rem;
-  }
-
-  .shift {
-    width: 28%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-end;
-  }
-
-  .shift_con {
-    width: 100%;
-    height: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 15px;
-  }
-
-  .shift_con span {
-    font-size: 2rem;
-  }
-
-  .shift_con select {
-    font-size: 2rem;
-    width: 50%;
-    height: 100%;
-    border: 1px solid black;
-  }
-
-  .staffCheck {
-    font-size: 2rem;
-    width: 50%;
-    height: 100%;
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .staffCheck2 {
-    font-size: 2rem;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid red;
-  }
-
-  .shift_con input {
-    font-size: 2rem;
-    width: 50%;
-    height: 100%;
-    border: 1px solid black;
-  }
-
-  .operationPane_con_machineList {
-    width: 93%;
-
-    height: 60%;
-    margin-top: 5%;
-
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-
-  }
-
-  .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
-    font-size: 4rem;
-    padding: 20px 27px;
-    margin: 1rem;
-
-    /* background: #8C8C8C; */
-  }
-
-
-
-
-  .operationPane_con_machineList /deep/ .el-pagination--small .btn-next,
-  .el-pagination--small .btn-prev,
-  .el-pagination--small .el-pager li,
-  .el-pagination--small .el-pager li.btn-quicknext,
-  .el-pagination--small .el-pager li.btn-quickprev,
-  .el-pagination--small .el-pager li:last-child {
-    font-size: 2rem;
-    line-height: 1rem;
-    height: 5rem;
-  }
-
-
-  .operationPane_con_machineList /deep/ .el-checkbox-button,
-  .el-checkbox-button__inner {
-    float: left;
-
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
-    font-size: 2rem;
-  }
-
-  .operationPane_con_machineList_btn {
-    width: 93%;
-
-    height: 20%;
-    position: absolute;
-    bottom: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .operationPane_con_machineList_btn_left {
-    width: 40%;
-    height: 60%;
-    display: flex;
-
-    align-items: center;
-
-  }
-
-  .operationPane_con_machineList_btn_leftBtn {
-    width: 40%;
-    height: 100%;
-    background: #A3D897;
-    display: flex;
-    margin-left: 15px;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-bottom: 3px solid #717171;
-    border-right: 3px solid #717171;
-    font-size: 3rem;
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pager li {
-    padding: 2rem 2rem;
-    font-size: 2rem;
-    min-width: 35.5px;
-    height: 5rem;
-    line-height: 1rem;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pagination button {
-    display: inline-block;
-    font-size: 3rem;
-    min-width: 35.5px;
-    height: 5rem;
-    width: 5rem;
-    line-height: 28px;
-    vertical-align: top;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
-  .el-pagination .btn-prev .el-icon {
-    font-size: 2rem;
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background: #FFC100;
-
-  }
-
-  .operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background.el-pagination--small .btn-next,
-  .el-pagination.is-background.el-pagination--small .btn-prev,
-  .el-pagination.is-background.el-pagination--small .el-pager li {
-    font-size: 2rem;
-    line-height: 2rem;
-    height: 4.5rem;
-  }
-
-  .operationPane_con_machineList_btn_right {
-    width: 54%;
-    height: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-  }
-
-  .chooseBtn {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-  }
-
-  .chooseBtn_con {
-    width: 100%;
-    height: 40%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-  }
-
-  .chooseBtn_con_label {
-    width: 50%;
-    height: 4rem;
-    background: #317CCD;
-    color: white;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .chooseBtn_con_btn {
-    width: 50%;
-    height: 5rem;
-    background: #A3D897;
-    color: black;
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-bottom: 3px solid #717171;
-    border-right: 3px solid #717171;
-  }
-
-  .pane {
-    width: 65%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-
-  }
-
-  .pane_title {
-    width: 100%;
-    height: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF;
-    background: #808080;
-    font-size: 1.5rem;
-  }
-
-  .pane_con {
-    width: 99.8%;
-    height: 55%;
-    border-left: 1px solid #A0A0A0;
-    border-bottom: 1px solid #A0A0A0;
-    border-right: 1px solid #A0A0A0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pane_con textarea {
-    width: 95%;
-    height: 80%;
-    color: #6C6C6C;
-    border: none;
-    font-size: 2rem;
-  }
-
-  textarea[class='textarea']::-moz-placeholder {
-    color: #6C6C6C;
-    font-size: 1.5rem;
-  }
-
-  .pane_btn {
-    width: 100%;
-    height: 30%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-around;
-  }
-
-  .pane_btn_one {
-    width: 40%;
-    height: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #808080;
-    color: white;
-    font-size: 2.5rem;
-
-    margin-bottom: 10px;
-    border-top: 3px solid #ffffff;
-    border-left: 3px solid #ffffff;
-    border-bottom: 3px solid #717171;
-    border-right: 3px solid #717171;
-  }
-
+.el-message {
+  font-size: 3rem;
+}
+
+.el-message__content {
+  font-size: 3rem;
+}
+
+.pch {
+  position: absolute;
+  left: 1rem;
+  top: -3.5rem;
+  width: 15.5rem;
+  height: 3rem;
+}
+
+.pch input {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  font-size: 1.5rem;
+}
+
+.pch input::-webkit-input-placeholder {
+  font-size: 1.3rem;
+}
+
+.currentClass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.classA {
+  width: 50%;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.classA_left {
+  width: 47%;
+  background: rgb(128, 128, 128);
+  color: white;
+  font-size: 1.5rem;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.classA_left_chossed {
+  width: 47%;
+  background: rgb(50, 150, 250);
+  color: white;
+  font-size: 1.5rem;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.classA_right {
+  width: 47%;
+
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.classA_right span {
+  width: 100%;
+  height: 20%;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.main_btn {
+  width: 30%;
+  height: 50%;
+  background: #a3d897;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 4rem;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
+
+.operationPane {
+  width: 100%;
+  height: 66%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #e2e7ed;
+}
+
+.operationPane_con {
+  width: 98%;
+  height: 96%;
+  background: white;
+  border-radius: 16px;
+  position: relative;
+}
+
+.operationPane_con img {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  width: 80px;
+  height: 80px;
+}
+
+.search {
+  position: absolute;
+  left: 18%;
+  top: 0px;
+  font-size: 1.7rem;
+  width: 64%;
+  height: 66px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.search input {
+  border: 1px solid black;
+  height: 3rem;
+  font-size: 2rem;
+}
+
+.leftLabel {
+  position: absolute;
+  left: 0;
+  top: 0px;
+  border-top-left-radius: 16px;
+  font-size: 1.7rem;
+  width: 200px;
+  height: 70px;
+  background: #d4d4d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.operationPane_con_uppershaft {
+  width: 85%;
+
+  height: 70%;
+  margin-bottom: 3%;
+
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.text {
+  position: absolute;
+  top: -20%;
+  left: 0%;
+  width: 60%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.text_con {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.text_con span {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 1.5rem;
+}
+
+.shift {
+  width: 28%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.shift_con {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+
+.shift_con span {
+  font-size: 2rem;
+}
+
+.shift_con select {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.staffCheck {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.staffCheck2 {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid red;
+}
+
+.shift_con input {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.operationPane_con_machineList {
+  width: 93%;
+
+  height: 60%;
+  margin-top: 5%;
+
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
+  font-size: 4rem;
+  padding: 20px 27px;
+  margin: 1rem;
+
+  /* background: #8C8C8C; */
+}
+
+.operationPane_con_machineList /deep/ .el-pagination--small .btn-next,
+.el-pagination--small .btn-prev,
+.el-pagination--small .el-pager li,
+.el-pagination--small .el-pager li.btn-quicknext,
+.el-pagination--small .el-pager li.btn-quickprev,
+.el-pagination--small .el-pager li:last-child {
+  font-size: 2rem;
+  line-height: 1rem;
+  height: 5rem;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button,
+.el-checkbox-button__inner {
+  float: left;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.operationPane_con_machineList_btn {
+  width: 93%;
+
+  height: 20%;
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.operationPane_con_machineList_btn_left {
+  width: 40%;
+  height: 60%;
+  display: flex;
+
+  align-items: center;
+}
+
+.operationPane_con_machineList_btn_leftBtn {
+  width: 40%;
+  height: 100%;
+  background: #a3d897;
+  display: flex;
+  margin-left: 15px;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+  font-size: 3rem;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pager li {
+  padding: 2rem 2rem;
+  font-size: 2rem;
+  min-width: 35.5px;
+  height: 5rem;
+  line-height: 1rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination button {
+  display: inline-block;
+  font-size: 3rem;
+  min-width: 35.5px;
+  height: 5rem;
+  width: 5rem;
+  line-height: 28px;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background: #ffc100;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background.el-pagination--small .btn-next,
+.el-pagination.is-background.el-pagination--small .btn-prev,
+.el-pagination.is-background.el-pagination--small .el-pager li {
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 4.5rem;
+}
+
+.operationPane_con_machineList_btn_right {
+  width: 54%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.chooseBtn {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chooseBtn_con {
+  width: 100%;
+  height: 40%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.chooseBtn_con_label {
+  width: 50%;
+  height: 4rem;
+  background: #317ccd;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chooseBtn_con_btn {
+  width: 50%;
+  height: 5rem;
+  background: #a3d897;
+  color: black;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
+
+.pane {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.pane_title {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #808080;
+  font-size: 1.5rem;
+}
+
+.pane_con {
+  width: 99.8%;
+  height: 55%;
+  border-left: 1px solid #a0a0a0;
+  border-bottom: 1px solid #a0a0a0;
+  border-right: 1px solid #a0a0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pane_con textarea {
+  width: 95%;
+  height: 80%;
+  color: #6c6c6c;
+  border: none;
+  font-size: 2rem;
+}
+
+textarea[class="textarea"]::-moz-placeholder {
+  color: #6c6c6c;
+  font-size: 1.5rem;
+}
+
+.pane_btn {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+
+.pane_btn_one {
+  width: 40%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #808080;
+  color: white;
+  font-size: 2.5rem;
+
+  margin-bottom: 10px;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
 </style>
