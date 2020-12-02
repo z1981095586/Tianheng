@@ -1,259 +1,253 @@
 <template>
   <div class="other_wrap">
     <div class="other_wrap" v-show="isSelect">
-    
-       <el-table
-    :data="dataList"
-    height="450"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
-    <el-table-column
-      prop="type"
-      label="类型"
-      width="180">
-     <template slot-scope="scope">
-       <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
-          <select v-model="scope.row.type" style="font-size:1.5rem;" >
-              <option v-for="(item,index) in typeList" :key="index" :value="item.type">{{item.type}}</option>
-            </select>
+
+      <el-table :data="dataList" height="450" border style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
+        <el-table-column prop="type" label="类型" width="180">
+          <template slot-scope="scope">
+            <div
+              style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
+              <select v-model="scope.row.type" style="font-size:1.5rem;">
+                <option v-for="(item,index) in typeList" :key="index" :value="item.type">{{item.type}}</option>
+              </select>
               <i class="el-icon-arrow-down" style="
       font-size: 2rem;position:absolute;right:3rem;"></i>
-       </div>
-      </template>
-          
-    </el-table-column>
-    <el-table-column
-     prop="num"
-      label="数量"
-      width="100" >
-         <template slot-scope="scope"  >
-      
+            </div>
+          </template>
+
+        </el-table-column>
+        <el-table-column prop="num" label="数量" width="100">
+          <template slot-scope="scope">
+
             <!-- <span >{{scope.num}}</span> -->
-<input v-model="scope.row.num" @focus="showNum(scope.row.id)" style="border:none;font-size:1.5rem;height:5rem" />       
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="units"
-      width="180"
-      label="单位">
-         <template slot-scope="scope">
-           <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
-            <select v-model="scope.row.unit" style="width:10rem;font-size:1.5rem;">
-              <option v-for="(item,index) in unitList" :key="index" :value="item.units">{{item.units}}</option>
-            </select>
+            <input v-model="scope.row.num" @focus="showNum(scope.row.id)"
+              style="border:none;font-size:1.5rem;height:5rem" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="units" width="180" label="单位">
+          <template slot-scope="scope">
+            <div
+              style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
+              <select v-model="scope.row.unit" style="width:10rem;font-size:1.5rem;">
+                <option v-for="(item,index) in unitList" :key="index" :value="item.units">{{item.units}}</option>
+              </select>
               <i class="el-icon-arrow-down" style="
       font-size: 2rem;position:absolute;right:3rem;"></i>
-      </div>
-      </template>
-    </el-table-column>
-        <el-table-column
-      prop="nameList"
-      label="人员">
-    <template slot-scope="scope">
-        <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
-      <span
-              style="font-size:1.3rem;width:80%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
-              v-text="(String(scope.row.nameList))"></span>
-            <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName()"></i><i
-                class="el-icon-remove-outline" @click="deleteName()"></i></div>
-        </div>
-      
-         
-      </template>
-    </el-table-column>
-  </el-table>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nameList" label="人员">
+          <template slot-scope="scope">
+            <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
+              <span
+                style="font-size:1.3rem;width:80%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
+                v-text="(String(scope.row.nameList))"></span>
+              <div class="add" style="width:20%"><i class="el-icon-circle-plus-outline"
+                  @click="addName(scope.row.id)"></i><i class="el-icon-remove-outline"
+                  @click="deleteName(scope.row.id)"></i></div>
+            </div>
+
+
+          </template>
+        </el-table-column>
+      </el-table>
       <div class="bottom_btn" :style="dataList.length>=4 ?'  ':''">
         <div class="bottom_btn_left" @click="add()"><i style="font-size:2rem;color:#409EFF" class="el-icon-plus"></i>
         </div>
         <div class="bottom_btn_right">
-          <div class="sub "   style="background:rgb(202,249,130)" @click="submit()"><span>提交</span></div>
+          <div class="sub " style="background:rgb(202,249,130)" @click="submit()"><span>提交</span></div>
           <div class="sub" style="margin-left:1rem"><span @click="$emit('cancel','cancel')">取消</span></div>
           <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="isSelect=!isSelect">切换</span></div>
         </div>
       </div>
       <el-dialog id="num" :visible.sync="showNumTable" width="800px" append-to-body :close-on-click-modal="false">
-     
 
-                    <p style="display: inline-block;font-size: 3rem">输入数量</p>
-                    <el-input   size="medium" id="num" ref="num" v-model="num" @focus="changeFocus('num')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
-      <br> <br>
-      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
-        <tr v-for="indexTr in 2" >
-          <td  v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-            </el-button>
-          </td>
-          <td v-if="indexTr===1">
-            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission">确定</el-button>
-          </td>
-          <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
-          </td>
-        </tr>
-      </table>
+
+        <p style="display: inline-block;font-size: 3rem">输入数量</p>
+        <el-input size="medium" id="num" ref="num" v-model="num" @focus="changeFocus('num')"
+          style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
+        <br> <br>
+        <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+          <tr v-for="indexTr in 2">
+            <td v-for="indexTd in 5" style="text-align: center;">
+              <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+                size="medium" @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+                <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              </el-button>
+            </td>
+            <td v-if="indexTr===1">
+              <el-button type="primary"
+                style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+                @click="getPermission">确定</el-button>
+            </td>
+            <td v-if="indexTr===2">
+              <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+                @click="selectTableButton('退格')">退格</el-button>
+            </td>
+          </tr>
+        </table>
       </el-dialog>
       <el-dialog id="num" :visible.sync="showNameTable" width="800px" append-to-body :close-on-click-modal="false">
-     
 
-              <p style="display: inline-block;font-size: 3rem">输入员工号</p><el-input  size="medium" id="staff_code" ref="staff_code" v-model="staff_code" @focus="changeFocus('staff_code')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
-      <br> <br>
-      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
-        <tr v-for="indexTr in 2" >
-          <td  v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-            </el-button>
-          </td>
-          <td v-if="indexTr===1">
-            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission2">确定</el-button>
-          </td>
-          <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
-          </td>
-        </tr>
-      </table>
+
+        <p style="display: inline-block;font-size: 3rem">输入员工号</p>
+        <el-input size="medium" id="staff_code" ref="staff_code" v-model="staff_code" @focus="changeFocus('staff_code')"
+          style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
+        <br> <br>
+        <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+          <tr v-for="indexTr in 2">
+            <td v-for="indexTd in 5" style="text-align: center;">
+              <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+                size="medium" @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+                <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              </el-button>
+            </td>
+            <td v-if="indexTr===1">
+              <el-button type="primary"
+                style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+                @click="getPermission2">确定</el-button>
+            </td>
+            <td v-if="indexTr===2">
+              <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+                @click="selectTableButton('退格')">退格</el-button>
+            </td>
+          </tr>
+        </table>
       </el-dialog>
     </div>
 
 
 
     <div class="other_wrap" v-show="!isSelect">
-    
-    
-          <el-table
-    :data="showData"
-    height="450"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
-    <el-table-column
-      prop="type"
-      label="类型"
-       width="130" >
-     <template slot-scope="scope">
-       <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
-          <select v-model="scope.row.type" style="font-size:1.5rem;" v-show="scope.row.isSelected">
-              <option v-for="(item,index) in typeList" :key="index" :value="item.type">{{item.type}}</option>
-            </select>
-              <i class="el-icon-arrow-down"  v-show="scope.row.isSelected" style="
+
+
+      <el-table :data="showData" height="450" border style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
+        <el-table-column prop="type" label="类型" width="130">
+          <template slot-scope="scope">
+            <div
+              style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
+              <select v-model="scope.row.type" style="font-size:1.5rem;" v-show="scope.row.isSelected">
+                <option v-for="(item,index) in typeList" :key="index" :value="item.type">{{item.type}}</option>
+              </select>
+              <i class="el-icon-arrow-down" v-show="scope.row.isSelected" style="
       font-size: 2rem;position:absolute;right:1rem;"></i>
-         <span  v-show="!scope.row.isSelected">{{scope.row.type}}</span>
-       </div>
-      </template>
-          
-    </el-table-column>
-    <el-table-column
-     prop="number"
-      label="数量"
-      width="100" >
-         <template slot-scope="scope"  >
-      
+              <span v-show="!scope.row.isSelected">{{scope.row.type}}</span>
+            </div>
+          </template>
+
+        </el-table-column>
+        <el-table-column prop="number" label="数量" width="100">
+          <template slot-scope="scope">
+
             <span v-show="!scope.row.isSelected">{{scope.row.number}}</span>
-<input  v-show="scope.row.isSelected" v-model="scope.row.number" @focus="showNum2(scope.row.id)" style="border:none;font-size:1.5rem;height:5rem" />       
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="units"
-       width="130" 
-      label="单位">
-         <template slot-scope="scope">
-               <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
-      <select v-show="scope.row.isSelected" v-model="scope.row.units" style="width:10rem;font-size:1.5rem;">
-              <option v-for="(item,index) in unitList" :key="index" :value="item.units">{{item.units}}</option>
-            </select>
-               <span v-show="!scope.row.isSelected">{{scope.row.units}}</span>
-              <i class="el-icon-arrow-down"  v-show="scope.row.isSelected" style="
+            <input v-show="scope.row.isSelected" v-model="scope.row.number" @focus="showNum2(scope.row.id)"
+              style="border:none;font-size:1.5rem;height:5rem" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="units" width="130" label="单位">
+          <template slot-scope="scope">
+            <div
+              style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-around;position:relative">
+              <select v-show="scope.row.isSelected" v-model="scope.row.units" style="width:10rem;font-size:1.5rem;">
+                <option v-for="(item,index) in unitList" :key="index" :value="item.units">{{item.units}}</option>
+              </select>
+              <span v-show="!scope.row.isSelected">{{scope.row.units}}</span>
+              <i class="el-icon-arrow-down" v-show="scope.row.isSelected" style="
       font-size: 2rem;position:absolute;right:2rem;"></i>
-      
-       </div>
-          
-      </template>
-    </el-table-column>
-        <el-table-column
-      prop="person"
-      label="人员">
-    <template slot-scope="scope">
-        <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
-      <span  
-              style="font-size:1.3rem;width:70%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
-              v-text="(String(scope.row.person))" v-show="scope.row.isSelected"></span>
-                 <span  
-              style="font-size:1.3rem;width:100%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
-              v-text="(String(scope.row.person))" v-show="!scope.row.isSelected"></span>
-            <div class="add" v-show="scope.row.isSelected" ><i  class="el-icon-circle-plus-outline" @click="addName2(scope.row.id)"></i><i 
-                class="el-icon-remove-outline" @click="deleteName2(scope.row.id)"></i></div>
-        </div>
-      
-         
-      </template>
-    </el-table-column>
-        <el-table-column
-     
-      label="操作">
-    <template slot-scope="scope">
-       <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
-         <div class="sub" @click="editItem(scope.row.id)"
-              style="background:#409EFF;width:45%;height:60%;color:white;margin-left:1rem"><span
-                v-text="scope.row.isSelected?'完成':'编辑'"></span></div>
-            <div class="sub" @click="deleteItem(scope.row.id)"
-              style="background:#red;width:45%;height:60%;margin-left:1rem;color:white"><span>删除</span></div>
-       </div>
-         
-      </template>
-    </el-table-column>
-  </el-table>
+
+            </div>
+
+          </template>
+        </el-table-column>
+        <el-table-column prop="person" label="人员">
+          <template slot-scope="scope">
+            <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
+              <span
+                style="font-size:1.3rem;width:70%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
+                v-text="(String(scope.row.person))" v-show="scope.row.isSelected"></span>
+              <span
+                style="font-size:1.3rem;width:100%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
+                v-text="(String(scope.row.person))" v-show="!scope.row.isSelected"></span>
+              <div class="add" v-show="scope.row.isSelected"><i class="el-icon-circle-plus-outline"
+                  @click="addName2(scope.row.id)"></i><i class="el-icon-remove-outline"
+                  @click="deleteName2(scope.row.id)"></i></div>
+            </div>
+
+
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
+              <div class="sub" @click="editItem(scope.row.id)"
+                style="background:#409EFF;width:45%;height:60%;color:white;margin-left:1rem"><span
+                  v-text="scope.row.isSelected?'完成':'编辑'"></span></div>
+              <div class="sub" @click="deleteItem(scope.row.id)"
+                style="background:#red;width:45%;height:60%;margin-left:1rem;color:white"><span>删除</span></div>
+            </div>
+
+          </template>
+        </el-table-column>
+      </el-table>
       <div class="bottom_btn" style="justify-content:flex-end;border:none">
-    <div class="sub" style="background:#409EFF;margin-left:1rem"><span
-            @click="lastPage">上一页</span></div>
-              <div class="sub" style="background:#409EFF;margin-left:1rem"><span
-            @click="nextPage">下一页</span></div>
-        <div class="sub" style="background:#409EFF;margin-left:1rem"><span
-            @click="isSelect=!isSelect">切换</span></div>
+        <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="lastPage">上一页</span></div>
+        <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="nextPage">下一页</span></div>
+        <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="isSelect=!isSelect">切换</span></div>
       </div>
       <el-dialog id='num2' :visible.sync="showNumTable2" width="800px" append-to-body :close-on-click-modal="false">
-   
 
-        
-                    <p style="display: inline-block;font-size: 3rem">输入数量</p>
-                    <el-input  size="medium" id="num2" ref="num2" v-model="num2" @focus="changeFocus2('num')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
-      <br> <br>
-      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
-        <tr v-for="indexTr in 2" >
-          <td  v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-            </el-button>
-          </td>
-          <td v-if="indexTr===1">
-            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission3">确定</el-button>
-          </td>
-          <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton2('退格')">退格</el-button>
-          </td>
-        </tr>
-      </table>
+
+
+        <p style="display: inline-block;font-size: 3rem">输入数量</p>
+        <el-input size="medium" id="num2" ref="num2" v-model="num2" @focus="changeFocus2('num')"
+          style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
+        <br> <br>
+        <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+          <tr v-for="indexTr in 2">
+            <td v-for="indexTd in 5" style="text-align: center;">
+              <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+                size="medium" @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
+                <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              </el-button>
+            </td>
+            <td v-if="indexTr===1">
+              <el-button type="primary"
+                style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+                @click="getPermission3">确定</el-button>
+            </td>
+            <td v-if="indexTr===2">
+              <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+                @click="selectTableButton2('退格')">退格</el-button>
+            </td>
+          </tr>
+        </table>
       </el-dialog>
       <el-dialog :visible.sync="showNameTable2" width="800px" append-to-body :close-on-click-modal="false">
-      
 
-              <p style="display: inline-block;font-size: 3rem">输入员工号</p>
-                    <el-input  size="medium" id="staffcode" ref="staff_code2" v-model="staff_code2" @focus="changeFocus2('staff_code')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
-      <br> <br>
-      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
-        <tr v-for="indexTr in 2" >
-          <td  v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-            </el-button>
-          </td>
-          <td v-if="indexTr===1">
-            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission4">确定</el-button>
-          </td>
-          <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton2('退格')">退格</el-button>
-          </td>
-        </tr>
-      </table>
+
+        <p style="display: inline-block;font-size: 3rem">输入员工号</p>
+        <el-input size="medium" id="staffcode" ref="staff_code2" v-model="staff_code2"
+          @focus="changeFocus2('staff_code')" style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
+        <br> <br>
+        <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+          <tr v-for="indexTr in 2">
+            <td v-for="indexTd in 5" style="text-align: center;">
+              <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+                size="medium" @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
+                <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              </el-button>
+            </td>
+            <td v-if="indexTr===1">
+              <el-button type="primary"
+                style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+                @click="getPermission4">确定</el-button>
+            </td>
+            <td v-if="indexTr===2">
+              <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+                @click="selectTableButton2('退格')">退格</el-button>
+            </td>
+          </tr>
+        </table>
       </el-dialog>
     </div>
   </div>
@@ -272,7 +266,7 @@
 
         ],
         selectData: [],
-        showData:[],
+        showData: [],
         isSelect: true,
         companyId: "",
         num: "",
@@ -282,7 +276,7 @@
         id: "",
         staff_code: "",
         isadd: null,
-        
+
         showNameTable2: false,
         showNumTable2: false,
         focusInput2: "",
@@ -290,8 +284,8 @@
         id2: "",
         staff_code2: "",
         isadd2: null,
-        pageNum:1,
-        pageSize:4
+        pageNum: 1,
+        pageSize: 4
 
       }
     },
@@ -306,45 +300,48 @@
           if (element.id == id) {
 
             element.isSelected = !element.isSelected
-    if (element.isSelected == false) {
-            let url="http://120.55.124.53:14100/warping/updateProduceForm"
-               let method = "post";
-                      let person=(String(element.person)).split('、')
-        let data = {
-          company_id: this.companyId,
-          creat_time:this.formatDate(),
-          id:element.id,
-          type:element.type,
-          number:element.number,
-          units:element.units,
-          person:person,
+            if (element.isSelected == false) {
+              let url = "http://120.55.124.53:14100/warping/updateProduceForm"
+              let method = "post";
+              let person = (String(element.person)).split('、')
+              if (element.number == null) {
+                element.number = 0
+              }
+              let data = {
+                company_id: this.companyId,
+                creat_time: this.formatDate(),
+                id: element.id,
+                type: element.type,
+                number: element.number,
+                units: element.units,
+                person: person,
 
 
-        };
-             axios({
-            url: url,
-            method: method,
-            data: data,
+              };
+              axios({
+                  url: url,
+                  method: method,
+                  data: data,
 
-          })
-          .then(response => {
-            console.log(response)
-                if (response.data.message == "response to success") {
-              this.$message({
-                message: '更新成功！',
-                type: 'success'
-              });
-            } else {
-              this.$message.error('更新失败！');
+                })
+                .then(response => {
+                  console.log(response)
+                  if (response.data.message == "response to success") {
+                    this.$message({
+                      message: '更新成功！',
+                      type: 'success'
+                    });
+                  } else {
+                    this.$message.error('更新失败！');
+                  }
+
+                  this.getData(true)
+                })
+
+
             }
-
-            this.getData(true)
-          })
-
-    
           }
-          }
-      
+
 
         });
       },
@@ -380,27 +377,27 @@
           })
 
       },
-      lastPage(){
-      if(this.pageNum>1){
-this.pageNum=this.pageNum-1
- this.showData=this.pagination(this.pageNum,this.pageSize,this.selectData)
-      }else{
- this.$message({
-          message: '没有上一页了哦！',
-          type: 'warning'
-        });
-      }
+      lastPage() {
+        if (this.pageNum > 1) {
+          this.pageNum = this.pageNum - 1
+          this.showData = this.pagination(this.pageNum, this.pageSize, this.selectData)
+        } else {
+          this.$message({
+            message: '没有上一页了哦！',
+            type: 'warning'
+          });
+        }
       },
-      nextPage(){
-      if((this.pageSize*this.pageNum)<this.selectData.length){
-this.pageNum=this.pageNum+1
- this.showData=this.pagination(this.pageNum,this.pageSize,this.selectData)
-      }else{
- this.$message({
-          message: '最后一页了哦！',
-          type: 'warning'
-        });
-      }
+      nextPage() {
+        if ((this.pageSize * this.pageNum) < this.selectData.length) {
+          this.pageNum = this.pageNum + 1
+          this.showData = this.pagination(this.pageNum, this.pageSize, this.selectData)
+        } else {
+          this.$message({
+            message: '最后一页了哦！',
+            type: 'warning'
+          });
+        }
       },
       getData(flag) {
         let url = 'http://106.12.219.66:8227/report/getSimpleReport';
@@ -417,10 +414,10 @@ this.pageNum=this.pageNum+1
         };
 
         let that = this
-         that.showData=[]
-        if(flag!=true){
-            
-            that.pageNum=1
+        that.showData = []
+        if (flag != true) {
+
+          that.pageNum = 1
         }
         that.selectData = []
         axios({
@@ -436,8 +433,8 @@ this.pageNum=this.pageNum+1
               element.isSelected = false
               that.selectData.push(element)
             });
-         
-            that.showData=that.pagination(that.pageNum,that.pageSize,that.selectData)
+
+            that.showData = that.pagination(that.pageNum, that.pageSize, that.selectData)
             // this.macRelation.mac_type_id = response.data.data[0].id
             // for (let i = 0; i < response.data.data.length; i++) {
 
@@ -558,37 +555,37 @@ this.pageNum=this.pageNum+1
             // this.getWorkShopList() //获取车间id列表
           })
       },
-      addName() {
+      addName(id) {
         this.showNameTable = true
-
+        this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = true
       },
-      deleteName() {
+      deleteName(id) {
         this.showNameTable = true
-
+        this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = false
       },
       add() {
-        if(this.dataList.length<4){
- this.dataList.push({
-          id: this.dataList.length,
-          type: this.typeList[0].type,
-          unit: this.unitList[0].units,
-          nameList: [
+        if (this.dataList.length < 4) {
+          this.dataList.push({
+            id: this.dataList.length,
+            type: this.typeList[0].type,
+            unit: this.unitList[0].units,
+            nameList: [
 
-          ]
-        })
-        }else{
-             this.$message({
-          message: '一次添加最多四条！',
-          type: 'warning'
-        });
+            ]
+          })
+        } else {
+          this.$message({
+            message: '一次添加最多四条！',
+            type: 'warning'
+          });
         }
-       
+
         console.log(this.dataList)
 
       },
@@ -610,7 +607,7 @@ this.pageNum=this.pageNum+1
         this.isadd2 = false
       },
       showNum2(id) {
-     
+
         this.showNumTable2 = true
         document.getElementById("num2").focus()
         this.focusInput2 = "num"
@@ -624,7 +621,7 @@ this.pageNum=this.pageNum+1
         document.getElementById("num").focus()
         this.focusInput = "num"
         this.id = id
-      
+
       },
       changeFocus2(focusInput) {
         this.focusInput2 = focusInput
@@ -682,19 +679,19 @@ this.pageNum=this.pageNum+1
       getPermission() {
         console.log(this.num)
         this.showNumTable = false
-          
+
         this.dataList.forEach(element => {
           if (element.id == this.id) {
-            let type=element.type
+            let type = element.type
             element.num = this.num
-                      element.type = element.num
-                          element.type=type
+            element.type = element.num
+            element.type = type
             this.num = ""
           }
-       
+
         });
-      
-     
+
+
         console.log(this.dataList)
 
       },
@@ -714,11 +711,11 @@ this.pageNum=this.pageNum+1
 
         this.showNameTable2 = false
         console.log(this.id2)
-        let key=0
+        // let key=0
         this.showData.forEach(element => {
-         if(key==0){
-           key=1
-         }
+          //  if(key==0){
+          //    key=1
+          //  }
           element.nameList = []
           if (element.id == this.id2) {
             console.log(element.id)
@@ -751,16 +748,34 @@ this.pageNum=this.pageNum+1
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
                   if (that.isadd2 == true) {
-                    element.person=element.person+("、"+response.data.data[0].staff_name)
+                    console.log(element.person)
+                    if (element.person == "") {
+                      element.person = element.person + (response.data.data[0].staff_name)
+                    } else {
+                      element.person = element.person + ("、" + response.data.data[0].staff_name)
+                    }
+
                   } else {
-                   
-                  if(key==1){
-                      element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
-                  }else{
-                      element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                    console.log(element.person)
+
+                    if (element.person.indexOf(response.data.data[0].staff_name + '、') == -1) {
+                      if (element.person[element.person.indexOf(response.data.data[0].staff_name) - 1] == '、') {
+                        element.person = element.person.replace('、' + response.data.data[0].staff_name, "");
+                      } else {
+                        element.person = element.person.replace(response.data.data[0].staff_name, "");
+                      }
+
+                    } else {
+
+                      element.person = element.person.replace(response.data.data[0].staff_name + "、", "");
+                    }
+                    // if(key==1){
+                    //     element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                    // }else{
+                    //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                    // }
                   }
-                  }
-                  console.log(element)
+
 
                 } else {
                   this.$message.warning("员工号不正确!");
@@ -827,12 +842,13 @@ this.pageNum=this.pageNum+1
 
       },
       pagination(pageNo, pageSize, array) {
-var offset = (pageNo - 1) * pageSize;
-return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
-},
+        var offset = (pageNo - 1) * pageSize;
+        return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
+          pageSize);
+      },
     },
     mounted() {
-    
+
       this.getOpiton()
       let params = this.$route.params.params.split(",");
 
@@ -849,8 +865,8 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
       isSelect(val) {
         if (val == false) {
           this.getData()
-        }else{
-          this.dataList=[]
+        } else {
+          this.dataList = []
         }
       }
     }
@@ -859,18 +875,19 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
 </script>
 
 <style lang="less">
-.bigSquareButton{
-  width: 10rem;
-  height: 10rem;
-  margin-bottom: 8px;
-  line-height:1.4;
-  letter-spacing:4px
-}
+  .bigSquareButton {
+    width: 10rem;
+    height: 10rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    letter-spacing: 4px
+  }
+
   .add {
- 
+
     width: 30%;
-height:5rem;
-margin-right: 1rem;
+    height: 5rem;
+    margin-right: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -924,16 +941,16 @@ margin-right: 1rem;
     height: 6rem;
     display: flex;
     border-left: 1px solid black;
-  
-  
+
+
   }
 
   .bottom_btn_left {
     width: 55%;
     height: 100%;
- border-top: 1px solid black;
-  border-right: 1px solid black;
-      border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -943,8 +960,8 @@ margin-right: 1rem;
 
   .bottom_btn_right {
     width: 45%;
-   
-    
+
+
     height: 100%;
     display: flex;
   }
@@ -983,11 +1000,11 @@ margin-right: 1rem;
   }
 
 
- select {
+  select {
     font-size: 1.5rem;
     border: none;
     width: 11rem;
-    height:5rem;
+    height: 5rem;
     /* 鼠标移上，变小手 */
     cursor: pointer;
     padding: 0 10px;

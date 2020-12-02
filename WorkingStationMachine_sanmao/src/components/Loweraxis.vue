@@ -60,9 +60,11 @@
           <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
         </div>
       </div>
-      <div class="leftLabel"><span>选机台</span></div>
-      <div class="search">
-        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 4rem; width: 95%; top: 18px">
+        <span style="font-size: 1.5rem">搜索：</span><input style="font-size: 1.5rem" v-model="search_machine" placeholder="输入机台号" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">确认</div>
+        <span style="color: red; margin-left: 1rem">选中机台：{{ String(this.checkMachine).replace(/ /g, "") }}</span>
       </div>
       <img src="../../static/img/close.png" @click="cancel()" />
     </div>
@@ -184,9 +186,12 @@
           <el-pagination background small :pager-count="4" @current-change="CurrentChange2" layout="prev, pager, next" :total="total_num2"> </el-pagination>
         </div>
       </div>
-      <div class="leftLabel"><span>选机台</span></div>
-      <div class="search">
-        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum2 }}</span>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+
+      <div class="search" style="left: 4rem; width: 95%; top: 18px">
+        <span style="font-size: 1.5rem">搜索：</span><input style="font-size: 1.5rem" v-model="search_machine2" placeholder="输入机台号" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search2()">确认</div>
+        <span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum2 }}</span>
       </div>
       <img src="../../static/img/close.png" @click="cancel2()" />
     </div>
@@ -351,14 +356,22 @@ export default {
       page_size2: 21,
       page_num2: 1,
       total_num2: null,
+      search_machine: "",
+      search_machine2: "",
       /**退轴数据 */
     };
   },
   methods: {
+    search() {
+      this.getMachineList(this.search_machine);
+    },
+    search2() {
+      this.getMachineList2(this.search_machine2);
+    },
     getGroup() {
       //获取组员信息
-      console.log("getGroup");
-      console.log(this.isYunzhuan);
+      //console.log("getGroup");
+      //console.log(this.isYunzhuan);
       let url2 = host + "/api/group/getGroupDetail";
       let that = this;
       axios({
@@ -375,7 +388,7 @@ export default {
 
         // headers: headers
       }).then((res) => {
-        console.log(res.data.result);
+        //console.log(res.data.result);
         res.data.result.forEach((element) => {
           if (element.group_name == "下轴班A组") {
             this.Aclass.id = element.id;
@@ -443,7 +456,7 @@ export default {
       this.tzMachineShow = false;
       this.tzMainShow = true;
 
-      console.log(this.chooseClassName2);
+      //console.log(this.chooseClassName2);
       // this.$emit('szChange', this.staffList)
     },
     cancelClass2() {
@@ -521,24 +534,38 @@ export default {
       this.checkedMachineNum2 = e[0];
     },
     CurrentChange2(e) {
-      console.log(e);
+      //console.log(e);
       this.page_num2 = e;
       this.getMachineList2();
     },
-    getMachineList2() {
+    getMachineList2(machine_id) {
+      let data = {};
+      if (machine_id) {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size2,
+            page_num: this.page_num2,
+          },
+          mac_type_id: this.mac_type_id,
+          machine_id: machine_id,
+        };
+      } else {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size2,
+            page_num: this.page_num2,
+          },
+          mac_type_id: this.mac_type_id,
+        };
+      }
       let that = this;
       let url = host + "/api/stationMachine/getMachines";
       let method = axios({
         url: url,
         method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_size: that.page_size2,
-            page_num: that.page_num2,
-          },
-          mac_type_id: that.mac_type_id,
-        },
+        data: data,
         // headers: headers
       }).then((response) => {
         that.total_num2 = response.data.result.total_num;
@@ -601,7 +628,7 @@ export default {
     /**退轴函数 */
     getNumber2(number) {
       //织布经纱div确认按键事件
-      console.log(number);
+      //console.log(number);
       if (this.zbFocus == true) {
         this.zbLength = number;
       } else if (this.jzFocus == true) {
@@ -612,7 +639,7 @@ export default {
     },
     NumberChange2(number) {
       //织布经纱div数字键盘事件事件
-      console.log(number);
+      //console.log(number);
       if (this.zbFocus == true) {
         //     if(this.zbLength.length>0){
         //    let k=[]
@@ -641,7 +668,7 @@ export default {
             k.push(this.jzLength.substr(i, 1));
           }
           this.$refs.board3.number = k;
-          console.log(this.$refs.board3.number);
+          //console.log(this.$refs.board3.number);
         }
       }
     },
@@ -650,14 +677,14 @@ export default {
       this.jzFocus = false;
       if (this.zbFocus == true) {
         this.$refs.board3.number = [];
-        console.log(this.zbLength.length);
+        //console.log(this.zbLength.length);
         if (this.zbLength.length > 0) {
           let k = [];
           for (let i = 0; i < this.zbLength.length; i++) {
             k.push(this.zbLength.substr(i, 1));
           }
           this.$refs.board3.number = k;
-          console.log(this.$refs.board3.number);
+          //console.log(this.$refs.board3.number);
         }
       }
     },
@@ -669,7 +696,7 @@ export default {
       this.isIndexShow = false;
       this.xzMachineShow = false;
       this.xzMainShow = true;
-      console.log(this.isChooseAclass2);
+      //console.log(this.isChooseAclass2);
       // if (this.isChooseAclass == true) {
       //   this.chooseClassName = 'A组'
       // } else {
@@ -796,28 +823,42 @@ export default {
       this.checkedMachineNum = e[0];
     },
     CurrentChange(e) {
-      console.log(e);
+      //console.log(e);
       this.page_num = e;
       this.getMachineList();
     },
-    getMachineList() {
+    getMachineList(machine_id) {
+      let data = {};
+      if (machine_id) {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size,
+            page_num: this.page_num,
+          },
+          mac_type_id: this.mac_type_id,
+          machine_id: machine_id,
+        };
+      } else {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size,
+            page_num: this.page_num,
+          },
+          mac_type_id: this.mac_type_id,
+        };
+      }
       let that = this;
       let url = host + "/api/stationMachine/getMachines";
 
       axios({
         url: url,
         method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_size: that.page_size,
-            page_num: that.page_num,
-          },
-          mac_type_id: that.mac_type_id,
-        },
+        data: data,
         // headers: headers
       }).then((response) => {
-        console.log(response);
+        //console.log(response);
         that.total_num = response.data.result.total_num;
         let array = response.data.result.models;
         that.machineList = [];
@@ -828,8 +869,8 @@ export default {
     },
     /**下轴函数 */
     xiazhou() {
-      console.log(this.isChooseAclass2);
-      console.log(this.checkedMachineNum);
+      //console.log(this.isChooseAclass2);
+      //console.log(this.checkedMachineNum);
       if (this.pch == "") {
         this.$message({
           message: "请先扫码！",
@@ -857,7 +898,7 @@ export default {
           },
           // headers: headers
         }).then((response) => {
-          console.log(response);
+          //console.log(response);
 
           if (response.data.message == "成功") {
             this.$message({
@@ -907,7 +948,7 @@ export default {
 
           // headers: headers
         }).then((res) => {
-          console.log(res);
+          //console.log(res);
           that.se_hao = res.data.result.se_hao;
           that.pin_hao = res.data.result.pin_hao;
           that.product_name = res.data.result.product_name;
@@ -929,6 +970,20 @@ export default {
         this.getGroup();
 
         // })
+      }
+    },
+    xzMachineShow(val) {
+      if (val == true) {
+        this.page_num = 1;
+        this.getMachineList();
+        this.search_machine = "";
+      }
+    },
+    tzMachineShow(val) {
+      if (val == true) {
+        this.page_num2 = 1;
+        this.getMachineList2();
+        this.search_machine2 = "";
       }
     },
   },

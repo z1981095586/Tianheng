@@ -31,7 +31,7 @@
           </div>
           <div class="card7">
             <div class="card6_con">
-              <span style="font-size:0.6rem;color:#00FF99;margin-top:1rem">浙江省{{companyname}}有限公司</span>
+              <span style="font-size:0.6rem;color:#00FF99;margin-top:1rem">浙江{{companyname}}纺织有限公司</span>
               <span style="color:#FFF700;font-size:1.1rem; margin-top:0.5rem  ">验布机总数：{{jsjzs}}</span>
             </div>
           </div>
@@ -128,8 +128,8 @@
         const yestoday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
         let date = new Date()
 
-        //////////console.log(that.getdate(yestoday))
-        //////////console.log(that.getdate(date))
+        ////////////console.log(that.getdate(yestoday))
+        ////////////console.log(that.getdate(date))
         axios({ //今日验布
             url: 'http://47.99.156.243:8227/report/getSimpleReport',
             method: 'post',
@@ -156,7 +156,7 @@
 
           })
           .then(response => {
-            ////////console.log(response)
+            //////////console.log(response)
             for (let i = 0; i < 9; i++) {
               if (response.data.data[i].user_id1 != "0") {
                 axios({
@@ -184,7 +184,7 @@
                   })
                   .then(res => {
 
-//console.log(res)
+////console.log(res)
                     response.data.data[i].staff_name = res.data.data[0].staff_name
 
 
@@ -203,20 +203,20 @@
 
             }
             setTimeout(() => {
-              ////console.log(list.length)
-              ////console.log("wd")
+              //////console.log(list.length)
+              //////console.log("wd")
               let list2 = that.sortByKey(list, "sum")
 
               let arr = []
-              ////console.log( JSON.stringify(list2))
+              //////console.log( JSON.stringify(list2))
               for (let j = list2.length - 1; j >= 0; j--) {
 
                 arr.push(list2[j])
                 xlist.push(list2[j].staff_name)
                 ylist.push(list2[j].sum)
               }
-              ////console.log(xlist)
-              ////console.log(ylist)
+              //////console.log(xlist)
+              //////console.log(ylist)
 
 
 
@@ -264,11 +264,11 @@
               }
               setTimeout(() => {
                 // that.echart2(xlist, ylist, ylist2)
-                ////console.log(xlist)
-                ////console.log(ylist)
-                ////console.log(ylist2)
+                //////console.log(xlist)
+                //////console.log(ylist)
+                //////console.log(ylist2)
                 let name = xlist[0]
-                // //////console.log(name)
+                // ////////console.log(name)
 
                 that.echart2(xlist, ylist, ylist2, name)
               }, 1000);
@@ -301,14 +301,14 @@
 
 
         setTimeout(() => {
-         console.log(datelist)
+         //console.log(datelist)
           let xlist = []
           let ylist3 = []
 
           for (let i = 0; i < datelist.length; i++) {
             xlist.push((datelist[i].substr(11, 2) + ":00"))
           }
-          console.log(xlist)
+          //console.log(xlist)
          
           let datelist2 = []
           for (let i = 0; i < datelist.length; i++) {
@@ -340,7 +340,7 @@
 
 
           }
-          console.log(datelist2)
+          //console.log(datelist2)
           for (let i = 0; i < datelist2.length; i++) {
             let sum = 0
             axios({
@@ -369,7 +369,7 @@
 
               })
               .then(response => {
-                console.log(response)
+                //console.log(response)
 
                 if (!response.data.data[0]) {
                   sum = sum + 0
@@ -415,7 +415,7 @@
                     }
 
                   }).then(() => {
-                    //////console.log(sum)
+                    ////////console.log(sum)
                     ylist3.push({
                       // time: parseInt(datelist2[i].endTime.slice(11)),
                        time:datelist2[i].endTime ,
@@ -424,9 +424,9 @@
                 
 
                     // ylist3 = that.sortByKey(ylist3, "time")
-                    console.log(ylist3)
+                    //console.log(ylist3)
                     if (ylist3.length == 8) {
-                      console.log(that.sortByKey(ylist3, "time"))
+                      //console.log(that.sortByKey(ylist3, "time"))
                       let zcarr = []
                       let xlist=[]
                       ylist3.forEach(element => {
@@ -441,7 +441,7 @@
           }
 
 
-          ////////////console.log(ylist4)
+          //////////////console.log(ylist4)
 
         }, 1000);
 
@@ -477,12 +477,12 @@
 for(let i=0;i<xlist.length;i++){
   xlist[i]=parseInt( xlist[i].slice(11))+":00"
 }
-console.log(xlist)
-console.log(ylist3)
+//console.log(xlist)
+//console.log(ylist3)
         let myChart1 = this.$echarts.init(document.getElementById('echart1'));
         // 绘制图表
         myChart1.clear();
-  //console.log(xlist)
+  ////console.log(xlist)
         let that = this
         let option = {
           tooltip: {
@@ -791,7 +791,7 @@ console.log(ylist3)
       getYesterday() { //昨日验布
         let that = this
         let day = that.getYerFormatDate()
-        //////console.log(day)
+        ////////console.log(day)
         let url = "http://47.99.156.243:8227/report/getSimpleReport"
         axios({
             url: url,
@@ -809,7 +809,7 @@ console.log(ylist3)
             }
           })
           .then(response => {
-           //console.log(response)
+          console.log(response)
             let yersum = 0
             for (let i = 0; i < response.data.data.length; i++) {
               yersum = yersum + response.data.data[i].yield

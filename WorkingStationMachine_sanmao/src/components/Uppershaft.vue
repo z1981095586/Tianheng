@@ -161,11 +161,13 @@
           <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
         </div>
       </div>
-      <div class="leftLabel"><span>选机台</span></div>
-      <div class="search">
-        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 4rem; width: 95%; top: 18px">
+        <span style="font-size: 1.7rem">搜索：</span><input placeholder="输入机台号" v-model="search_machine" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">确认</div>
+        <span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
       </div>
-      <img src="../../static/img/close.png" @click="closeCurrentPage()" />
+      <img src="../../static/img/close.png" @click="closeCurrentPage" />
     </div>
     <!-- 上轴部分选机台-->
     <!-- 上轴换班-->
@@ -320,11 +322,15 @@ export default {
       machine_id: "",
       isYunzhuan: null,
       className: "",
+      search_machine: "",
     };
   },
   methods: {
+    search() {
+      this.getMachineList(this.search_machine);
+    },
     classChange(e) {
-      console.log(e.target.value);
+      //console.log(e.target.value);
       let that = this;
       if (e.target.value == "A班") {
         that.isChooseAclass = "0";
@@ -409,7 +415,7 @@ export default {
 
       this.szIndexShow = false;
       this.szMainShow = true;
-      console.log(this.staffList2);
+      //console.log(this.staffList2);
 
       // this.szMachineShow = true;
       // this.getMachineList()
@@ -498,8 +504,8 @@ export default {
       this.szMainShow = false;
       this.szIndexShow = false;
       this.UpdatePeopleShow = true;
-      console.log(this.isChooseAclass);
-      console.log(this.staffList);
+      //console.log(this.isChooseAclass);
+      //console.log(this.staffList);
     },
     cancelClass() {
       this.UpdatePeopleShow = false;
@@ -577,36 +583,50 @@ export default {
           },
         ];
       }
-      console.log(this.staffList);
+      //console.log(this.staffList);
     },
     CurrentChange(e) {
-      console.log(e);
+      //console.log(e);
       this.page_num = e;
       this.getMachineList();
     },
     CurrentNameChange(e) {
-      console.log(e);
+      //console.log(e);
       this.page_num2 = e;
       this.getStaffList();
     },
-    getMachineList() {
+    getMachineList(machine_id) {
+      //获取机台列表
+      let data = {};
+      if (machine_id) {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size,
+            page_num: this.page_num,
+          },
+          mac_type_id: this.mac_type_id,
+          machine_id: machine_id,
+        };
+      } else {
+        data = {
+          selectInfo: {
+            company_id: this.company_id,
+            page_size: this.page_size,
+            page_num: this.page_num,
+          },
+          mac_type_id: this.mac_type_id,
+        };
+      }
       let that = this;
       let url = host + "/api/stationMachine/getMachines";
-
-      axios({
+      let method = axios({
         url: url,
         method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_size: that.page_size,
-            page_num: that.page_num,
-          },
-          mac_type_id: that.mac_type_id,
-        },
+        data: data,
         // headers: headers
       }).then((response) => {
-        console.log(response);
+        //console.log(response);
         that.total_num = response.data.result.total_num;
         let array = response.data.result.models;
         that.machineList = [];
@@ -616,7 +636,7 @@ export default {
       });
     },
     closeCurrentPage() {
-      console.log(this.szMachineShow);
+      //console.log(this.szMachineShow);
       if (this.szMachineShow == true) {
         this.isCheckedMachine = false;
         this.checkedMachineNum = "";
@@ -659,13 +679,13 @@ export default {
       this.issaoma = true;
     },
     wanchen() {
-      console.log(this.issaoma);
-      console.log(this.pch);
+      //console.log(this.issaoma);
+      //console.log(this.pch);
       let nameList = [];
       this.staffList2.forEach((element) => {
         nameList.push(element.staffName);
       });
-      console.log(String(nameList));
+      //console.log(String(nameList));
       if (this.issaoma == true) {
         if (this.print_code != "" && this.machine_id != "") {
           let url = host + "/api/stationMachine/onAxis";
@@ -758,9 +778,9 @@ export default {
     save() {
       //确认按钮事件
       if (this.isStartChange == true) {
-        console.log(this.Aclass);
-        console.log(this.Bclass);
-        console.log(this.staffList);
+        //console.log(this.Aclass);
+        //console.log(this.Bclass);
+        //console.log(this.staffList);
         let id;
         let staffList = [
           {
@@ -807,7 +827,7 @@ export default {
           method: "post",
           data: data,
         }).then((response) => {
-          console.log(response);
+          //console.log(response);
           if (response.data.message == "成功") {
             that.$message({
               message: "换班成功！",
@@ -869,7 +889,7 @@ export default {
             data: data,
             headers: headers,
           }).then((response) => {
-            console.log(response);
+            //console.log(response);
             this.staffList[i].id = response.data.data[0].id; //绑定员工id
           });
         }
@@ -892,8 +912,8 @@ export default {
 
     getGroup() {
       //获取组员信息
-      console.log("getGroup");
-      console.log(this.isYunzhuan);
+      //console.log("getGroup");
+      //console.log(this.isYunzhuan);
       let url2 = host + "/api/group/getGroupDetail";
       let that = this;
       axios({
@@ -910,7 +930,7 @@ export default {
 
         // headers: headers
       }).then((res) => {
-        console.log(res.data.result);
+        //console.log(res.data.result);
         res.data.result.forEach((element) => {
           if (element.group_name == "运转班A组") {
             this.Aclass.id = element.id;
@@ -1048,7 +1068,7 @@ export default {
 
         // headers: headers
       }).then((res) => {
-        console.log(res.data.result);
+        //console.log(res.data.result);
         res.data.result.forEach((element) => {
           if (element.group_name == "长白班C组") {
             this.Cclass.id = element.id;
@@ -1092,7 +1112,7 @@ export default {
           ];
           that.staffList2 = that.staffList;
 
-          console.log(this.staffList);
+          //console.log(this.staffList);
         }
       });
     },
@@ -1122,13 +1142,13 @@ export default {
 
         // headers: headers
       }).then((res) => {
-        console.log(res);
+        //console.log(res);
         let arr = res.data.data;
         for (let i = 0; i < arr.length; i++) {
           that.StaffNameList.push(arr[i]);
         }
         that.total_num2 = res.data.total;
-        //   console.log(that.total_num2)
+        //   //console.log(that.total_num2)
       });
     },
   },
@@ -1152,7 +1172,7 @@ export default {
 
           // headers: headers
         }).then((res) => {
-          console.log(res);
+          //console.log(res);
           that.se_hao = res.data.result.se_hao;
           that.pin_hao = res.data.result.pin_hao;
           that.product_name = res.data.result.product_name;
@@ -1162,7 +1182,8 @@ export default {
     },
     UpdatePeopleShow(val) {
       if (val == true) {
-        console.log(val);
+        //console.log(val);
+        this.toChooseMachine;
         this.page_num2 = 1;
         this.StaffNameList = [];
         this.getStaffList();
@@ -1180,21 +1201,24 @@ export default {
       //当选择上轴组页面显示时加载数据
       if (val == true) {
         this.getGroup();
-
-        // })
+      }
+    },
+    szMachineShow(val) {
+      if (val == true) {
+        this.page_num = 1;
+        this.getMachineList();
+        this.search_machine = "";
       }
     },
     szShiftShow2(val) {
       //当选择上轴组页面显示时加载数据
       if (val == true) {
         this.getGroup();
-
-        // })
       }
     },
     // isYunzhuan(val){
     //   if(val==false){
-    //     console.log(this.Cclass)
+    //     //console.log(this.Cclass)
     //     //          this.staffList = [{
     //     //     label: "上轴工01",
     //     //     staffName: this.Cclass.szg1,
@@ -1506,7 +1530,21 @@ export default {
 .operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
-
+.checked_machine_btn_one {
+  width: 18%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  background: #a3d897;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
 .operationPane_con_machineList_btn {
   width: 93%;
 

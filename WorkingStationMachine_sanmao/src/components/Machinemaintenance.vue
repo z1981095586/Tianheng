@@ -160,12 +160,12 @@ export default {
             },
           },
         }).then((res) => {
-          console.log(res);
+          //console.log(res);
 
           let dcName = res.data.result.staffList[0].staff_name;
-          console.log(error_desc);
-          console.log(this.checkedMachineNum);
-          console.log(dcName);
+          //console.log(error_desc);
+          //console.log(this.checkedMachineNum);
+          //console.log(dcName);
           let url = host + "/api/repair/errorSubmit";
           axios({
             url: url,
@@ -181,7 +181,7 @@ export default {
               },
             },
           }).then((res) => {
-            console.log(res);
+            //console.log(res);
             if (res.data.message == "成功") {
               this.$message({
                 message: "报修成功！",
@@ -223,7 +223,7 @@ export default {
       });
     },
     lastPage() {
-      console.log(this.page_num);
+      //console.log(this.page_num);
       if (this.page_num > 1) {
         this.page_num = this.page_num - 1;
         this.getMachine();
@@ -235,7 +235,7 @@ export default {
       }
     },
     nextPage() {
-      console.log(this.total_num / this.page_size);
+      //console.log(this.total_num / this.page_size);
       if (this.page_num > this.total_num / this.page_size) {
         this.$message({
           message: "没有下一页！",
@@ -260,7 +260,7 @@ export default {
           },
         },
       }).then((res) => {
-        console.log(res);
+        //console.log(res);
         let val = res.data.result;
         that.questionList = [];
 
@@ -291,17 +291,17 @@ export default {
       for (let i = 0; i < this.questionList.length; i++) {
         if (this.questionList[i].id == id) {
           this.questionList[i].isChecked = !this.questionList[i].isChecked;
-          console.log(this.questionList[i].isChecked);
+          //console.log(this.questionList[i].isChecked);
           if (this.questionList[i].isChecked == true) {
             if (this.questionCon.indexOf(this.questionList[i]) == -1) {
               this.questionCon.push(this.questionList[i]);
-              console.log(this.questionCon);
+              //console.log(this.questionCon);
             }
           } else if (this.questionList[i].isChecked == false) {
-            console.log(this.questionCon.indexOf(this.questionList[i]));
+            //console.log(this.questionCon.indexOf(this.questionList[i]));
             if (this.questionCon.indexOf(this.questionList[i]) != -1) {
               this.questionCon.splice(this.questionCon.indexOf(this.questionList[i]), 1);
-              console.log(this.questionCon);
+              //console.log(this.questionCon);
             }
           }
         }
@@ -334,7 +334,7 @@ export default {
     },
     problem(val) {
       //监听问题列表获取
-      console.log(val);
+      //console.log(val);
       // if(this.questionList.length>0||this.page_num>1){
 
       // }else{
@@ -351,14 +351,13 @@ export default {
       this.total_num = val.total_num;
 
       // }
-      //  console.log(this.problemList)
+      //  //console.log(this.problemList)
     },
     questionList(val) {
       // val.forEach(element => {
-
       //   });
-
-      console.log(val);
+      //console.log(val);
+  
     },
   },
 };
@@ -368,7 +367,7 @@ export default {
 .allPage_M {
   width: 100%;
   position: relative;
-  height: 66%;
+  height: 64%;
   display: flex;
   background: rgb(226, 231, 237);
   align-items: center;

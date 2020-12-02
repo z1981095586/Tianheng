@@ -329,7 +329,7 @@
 
   .header {
     width: 100%;
-    height: 8%;
+height: 80px;
     background: #29374B;
     display: flex;
     align-items: center;

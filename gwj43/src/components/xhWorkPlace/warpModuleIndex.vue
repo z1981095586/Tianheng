@@ -134,12 +134,12 @@
     >
       <div slot="title" class="big_font" style="font-size: 40px">其他产量</div>
       <table :data="tableData" border style="width: 100%; font-size: 1.2rem; font-weight: bolder">
-          <tr>
-            <th width="200px" >类型</th>
-            <th width="200px" >数量</th>
-            <th width="230px" >单位</th>
-            <th width="320px" >人员</th>
-          </tr>
+        <tr>
+          <th width="200px" >类型</th>
+          <th width="200px" >数量</th>
+          <th width="230px" >单位</th>
+          <th width="320px" >人员</th>
+        </tr>
         <tr v-for="indexTd in 5">
           <td type="mold"><el-select v-model="value" ></el-select></td>
           <td type="number"><el-input @focus="enterQuantity" ></el-input></td>
@@ -149,18 +149,18 @@
         </tr>
       </table>
 
-  <div style="text-align: center;margin-top: 5vw">
-    <el-button type="danger" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="add_Production">
-      <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >新增</p>
-    </el-button>
-    <el-button type="success" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="">
-      <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >提交</p>
-    </el-button>
-    <el-button type="primary" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-left: 2vw" size="medium" @click="showotherProduct = false">
-      <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;">取消</p>
-    </el-button>
-  </div>
-  </el-dialog>
+      <div style="text-align: center;margin-top: 5vw">
+        <el-button type="danger" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="add_Production">
+          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >新增</p>
+        </el-button>
+        <el-button type="success" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="">
+          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >提交</p>
+        </el-button>
+        <el-button type="primary" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-left: 2vw" size="medium" @click="showotherProduct = false">
+          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;">取消</p>
+        </el-button>
+      </div>
+    </el-dialog>
     <!--数量页面-->
     <el-dialog
       :visible.sync="showBeheadednumber"
@@ -214,13 +214,13 @@
         </tr>
       </table>
     </el-dialog>
-        <el-dialog
+    <el-dialog
       :visible.sync="otherProduceDialogShow"
       width="950px"
       append-to-body
       :close-on-click-modal="false"
     >
-      <otherProductTable ref="otherProductTable" @cancel="otherProduceDialogShow=false" ></otherProductTable>
+      <otherProductTable ref="otherProductTable" :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
     <!--头部-->
     <div style="height: 80px;background-color: #29374b;width: 100%">
@@ -287,7 +287,7 @@
                 </td>
               </tr>
             </table>
-              <el-button type="warning" style="height: 70px;position: absolute;top: 45px;right: 20px;" size="medium" @click="otherProduceDialogShow=true">
+           <el-button type="warning" style="height: 70px;position: absolute;top: 45px;right: 20px;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
                 <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 12%">其他<br/><br/>产量</p>
               </div>
@@ -443,7 +443,7 @@
   import outputSubmitTable from './produceComfirm.vue';
   import outputPrintTable from './../warpCardPrint.vue';
   import changeStaffMessage from './changeStaffMessage.vue';
-      import otherProductTable from './otherProductTable.vue';
+  import otherProductTable from './otherProductTable.vue';
   import screenfull from "screenfull"
   export default {
     components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,otherProductTable},
@@ -1027,8 +1027,8 @@
         this.dataSelect = item;
         if(this.optionConfirm){
           // if(this.dataSelect.workQty > this.dataSelect.currentRealYield){
-            this.dataSelect.newAddQty = this.dataSelect.workQty - this.dataSelect.currentRealYield;
-            this.showAddAxisTable = true;
+          this.dataSelect.newAddQty = this.dataSelect.workQty - this.dataSelect.currentRealYield;
+          this.showAddAxisTable = true;
           // }else{
           //   this.$message.warning("当前轴已完成产量大于设定产量，无法增轴")
           // }
@@ -1236,7 +1236,7 @@
           clearTimeout(this.$store.state.commonClock);
           let _this = this;
           this.$store.commonClock = setTimeout(function () {
-          //  _this.$message.warning("出现异常，自动取消上一步操作");
+            //  _this.$message.warning("出现异常，自动取消上一步操作");
             _this.$store.state.showLoadingLog = false;
           },5000)
         }else{

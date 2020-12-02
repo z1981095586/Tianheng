@@ -54,8 +54,8 @@
       <span
               style="font-size:1.3rem;width:80%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
               v-text="(String(scope.row.nameList))"></span>
-            <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName()"></i><i
-                class="el-icon-remove-outline" @click="deleteName()"></i></div>
+            <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName(scope.row.id)"></i><i
+                class="el-icon-remove-outline" @click="deleteName(scope.row.id)"></i></div>
         </div>
       
          
@@ -310,6 +310,9 @@
             let url="http://120.55.124.53:14100/sizing/updateProduceForm"
                let method = "post";
                       let person=(String(element.person)).split('、')
+                       if(element.number==null){
+                        element.number=0
+                      }
         let data = {
           company_id: this.companyId,
           creat_time:this.formatDate(),
@@ -410,7 +413,7 @@ this.pageNum=this.pageNum+1
         };
         let method = "post";
         let data = {
-          "tableName": "station_produce_info",
+          "tableName": "sizing_produce_info",
           "pageNum": 1,
           "pageSize": 1000,
 
@@ -507,13 +510,13 @@ this.pageNum=this.pageNum+1
         };
         let method = "post";
         let data = {
-          "tableName": "station_produce_type",
+          "tableName": "sizing_produce_type",
           "pageNum": 1,
           "pageSize": 1000,
           "selectFields": ["id", "type"],
         };
         let data2 = {
-          "tableName": "station_produce_units",
+          "tableName": "sizing_produce_units",
           "pageNum": 1,
           "pageSize": 1000,
           "selectFields": ["id", "units"],
@@ -558,16 +561,16 @@ this.pageNum=this.pageNum+1
             // this.getWorkShopList() //获取车间id列表
           })
       },
-      addName() {
+      addName(id) {
         this.showNameTable = true
-
+   this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = true
       },
-      deleteName() {
+      deleteName(id) {
         this.showNameTable = true
-
+   this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = false
@@ -714,11 +717,11 @@ this.pageNum=this.pageNum+1
 
         this.showNameTable2 = false
         console.log(this.id2)
-        let key=0
+        // let key=0
         this.showData.forEach(element => {
-         if(key==0){
-           key=1
-         }
+        //  if(key==0){
+        //    key=1
+        //  }
           element.nameList = []
           if (element.id == this.id2) {
             console.log(element.id)
@@ -751,16 +754,34 @@ this.pageNum=this.pageNum+1
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
                   if (that.isadd2 == true) {
-                    element.person=element.person+("、"+response.data.data[0].staff_name)
-                  } else {
+                    console.log(element.person)
+                    if(element.person==""){
+                       element.person=element.person+(response.data.data[0].staff_name)
+                    }else{
+                       element.person=element.person+("、"+response.data.data[0].staff_name)
+                    }
                    
-                  if(key==1){
-                      element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
-                  }else{
-                      element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                  } else {
+                     console.log(element.person)
+                   
+                     if(element.person.indexOf(response.data.data[0].staff_name+'、')==-1){
+                       if(element.person[element.person.indexOf(response.data.data[0].staff_name)-1]=='、'){
+element.person= element.person.replace('、'+response.data.data[0].staff_name,""); 
+                       }else{
+                        element.person= element.person.replace(response.data.data[0].staff_name,"");  
+                       }
+                       
+                     }else{
+                        
+                       element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                     }
+                  // if(key==1){
+                  //     element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                  // }else{
+                  //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                  // }
                   }
-                  }
-                  console.log(element)
+                
 
                 } else {
                   this.$message.warning("员工号不正确!");

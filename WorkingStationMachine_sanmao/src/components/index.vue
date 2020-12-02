@@ -9,9 +9,9 @@
       </div>
       <div class="header_right">
         <div class="header_right_con">
-          <span v-show="isShangZhou || isChaPian || isKaiChu">{{ className }}</span
-          ><span v-show="isShangZhou || isChaPian || isKaiChu">开出工:{{ kcgName }}</span
-          ><span v-show="isShangZhou || isKaiChu" v-for="(item, index) in nameList" :key="'sz_' + index">{{ item.label }}：{{ item.staffName }}</span> <span v-show="isChaPian" v-for="(item, index) in nameList2" :key="'cp_' + index">{{ item.label }}：{{ item.staffName }}</span
+          <span v-show="isShangZhou || isChaPian || isKaiChu || isLower">{{ className }}</span
+          ><span v-show="isShangZhou || isChaPian || isKaiChu || isLower">开出工:{{ kcgName }}</span
+          ><span v-show="isShangZhou || isKaiChu || isLower" v-for="(item, index) in nameList" :key="'sz_' + index">{{ item.label }}：{{ item.staffName }}</span> <span v-show="isChaPian" v-for="(item, index) in nameList2" :key="'cp_' + index">{{ item.label }}：{{ item.staffName }}</span
           ><span v-show="isMachine">机台：701@王某人</span>
           <span v-show="isStopCar || isMachine">{{ dcClass }}&nbsp;&nbsp;挡车工:{{ dcName }}</span>
         </div>
@@ -132,7 +132,7 @@ export default {
           },
         },
       }).then((res) => {
-        console.log(res);
+        //console.log(res);
         let nameList = res.data.result.staffList;
         that.className = res.data.result.group_name;
         nameList.forEach((element) => {
@@ -154,18 +154,18 @@ export default {
       //上轴换班事件
       this.nameList = [];
       let str = "";
-      console.log(nameList);
+      //console.log(nameList);
       for (let i = 0; i < nameList.length; i++) {
         if (nameList[i].label == "开出工01" && nameList[i].staffName != "") {
           this.kcgName = nameList[i].staffName;
-          console.log(this.kcgName);
+          //console.log(this.kcgName);
         }
         if (nameList[i].label.indexOf("上轴工") != -1 && nameList[i].staffName != "") {
           str = str + nameList[i].staffName + "，";
         }
       }
       str = str.substr(0, str.length - 1);
-      console.log(str);
+      //console.log(str);
       if (this.nameList.length > 1) {
         if (str != "" && this.nameList[1].staffName != str) {
           this.nameList[1] = {
@@ -320,14 +320,13 @@ export default {
           },
         },
       }).then((res) => {
-        console.log(res);
+        //console.log(res);
         this.problem = res.data.result;
       });
     },
   },
   mounted() {
     this.getGroup(4, "sz"); //默认
-    
   },
   watch: {
     isShangZhou(val) {
@@ -369,7 +368,7 @@ body /deep/ .el-message--success .el-message__content {
 
 .header {
   width: 100%;
-  height: 8%;
+  height: 80px;
   background: #29374b;
   display: flex;
   align-items: center;
@@ -390,7 +389,7 @@ body /deep/ .el-message--success .el-message__content {
 }
 
 .header_right {
-  width: 62%;
+  width: 65%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -399,7 +398,7 @@ body /deep/ .el-message--success .el-message__content {
 
 .header_right_con {
   color: white;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
 
   text-overflow: -o-ellipsis-lastline;

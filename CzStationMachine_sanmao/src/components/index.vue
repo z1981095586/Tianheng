@@ -389,7 +389,7 @@ body{
 
   .header {
     width: 100%;
-    height: 8%;
+    height: 80px;
     background: #29374B;
     display: flex;
     align-items: center;
@@ -480,7 +480,7 @@ body{
   }
 
   .table {
-    width: 100%;
+    width: 101%;
     height: 30rem;
   }
 

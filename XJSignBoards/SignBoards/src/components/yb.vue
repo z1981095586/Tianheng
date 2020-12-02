@@ -238,8 +238,8 @@
         const yestoday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
         let date = new Date()
 
-        ////////console.log(that.getdate(yestoday))
-        ////////console.log(that.getdate(date))
+        //////////console.log(that.getdate(yestoday))
+        //////////console.log(that.getdate(date))
         axios({ //今日验布
             url: 'http://47.99.156.243:8227/report/getSimpleReport',
             method: 'post',
@@ -254,6 +254,7 @@
               selectLikeFields: {
                 update_time: that.getdate(date)
               },
+
               groupByColumn: ["user_id1"],
               selectFields: ["sum(yield) as sum", "user_id1"]
 
@@ -265,8 +266,8 @@
 
           })
           .then(response => {
-            //////console.log(response)
-            for (let i = 0; i < response.data.data.length; i++) {
+            ////////console.log(response)
+            for (let i = 0; i < 9; i++) {
               if (response.data.data[i].user_id1 != "0") {
                 axios({
                     url: 'http://47.99.156.243:8227/report/getSimpleReport',
@@ -280,7 +281,8 @@
 
                       tableName: "s_staff",
                       query: {
-                        id: response.data.data[i].user_id1
+                        id: response.data.data[i].user_id1,
+
                       }
 
 
@@ -292,7 +294,7 @@
                   })
                   .then(res => {
 
-
+                    //console.log(res)
                     response.data.data[i].staff_name = res.data.data[0].staff_name
 
 
@@ -311,20 +313,20 @@
 
             }
             setTimeout(() => {
-              //console.log(list.length)
-              //console.log("wd")
+              ////console.log(list.length)
+              ////console.log("wd")
               let list2 = that.sortByKey(list, "sum")
 
               let arr = []
-              //console.log( JSON.stringify(list2))
+              ////console.log( JSON.stringify(list2))
               for (let j = list2.length - 1; j >= 0; j--) {
 
                 arr.push(list2[j])
                 xlist.push(list2[j].staff_name)
                 ylist.push(list2[j].sum)
               }
-              //console.log(xlist)
-              //console.log(ylist)
+              ////console.log(xlist)
+              ////console.log(ylist)
 
 
 
@@ -347,8 +349,10 @@
                         update_time: that.getdate(yestoday)
                       },
                       query: {
-                        user_id1: arr[i].user_id1
+                        user_id1: arr[i].user_id1,
+
                       },
+
                       selectFields: ["sum(yield) as sum", ]
 
 
@@ -369,12 +373,12 @@
                   })
               }
               setTimeout(() => {
-                that.echart2(xlist, ylist, ylist2)
-                //console.log(xlist)
-                //console.log(ylist)
-                //console.log(ylist2)
+                // that.echart2(xlist, ylist, ylist2)
+                ////console.log(xlist)
+                ////console.log(ylist)
+                ////console.log(ylist2)
                 let name = xlist[0]
-                // ////console.log(name)
+                // //////console.log(name)
 
                 that.echart2(xlist, ylist, ylist2, name)
               }, 1000);
@@ -402,18 +406,20 @@
 
         let ylist4 = []
         let that = this;
-        let datelist = that.gethourarr(6);
+        let datelist = that.gethourarr(8);
 
 
 
         setTimeout(() => {
-          ////////console.log(datelist)
+          console.log(datelist)
           let xlist = []
           let ylist3 = []
 
           for (let i = 0; i < datelist.length; i++) {
             xlist.push((datelist[i].substr(11, 2) + ":00"))
           }
+          console.log(xlist)
+
           let datelist2 = []
           for (let i = 0; i < datelist.length; i++) {
             //  if(datelist[i].substr(11,2))
@@ -424,10 +430,18 @@
             let k = parseInt(datelist[i].substr(11, 2))
             let k2 = datelist[i].substr(0, 11)
             if (k + 1 > 24) {
+
               endTime = k2 + "00"
             } else {
-              endTime = k2 + String(k + 1)
+
+              if (k + 1 < 10) {
+                endTime = k2 + '0' + String(k + 1)
+              } else {
+                endTime = k2 + String(k + 1)
+              }
+
             }
+
             datelist2.push({
               startTime: datelist[i],
               endTime: endTime
@@ -436,6 +450,7 @@
 
 
           }
+          console.log(datelist2)
           for (let i = 0; i < datelist2.length; i++) {
             let sum = 0
             axios({
@@ -449,7 +464,9 @@
                 data: {
 
                   tableName: "exam_defect_his",
-
+                  query: {
+                    workshop_id: that.workshop_id
+                  },
 
                   selectFields: ['sum(yield) as sum', "update_time"],
                   selectLikeFields: {
@@ -462,10 +479,12 @@
 
               })
               .then(response => {
+                console.log(response)
 
                 if (!response.data.data[0]) {
                   sum = sum + 0
                 } else {
+
                   sum = sum + response.data.data[0].sum
 
                 }
@@ -482,7 +501,9 @@
                     data: {
 
                       tableName: "exam_defect_his",
-
+                      query: {
+                        workshop_id: that.workshop_id
+                      },
 
                       selectFields: ['sum(yield) as sum', "update_time"],
                       selectLikeFields: {
@@ -504,17 +525,23 @@
                     }
 
                   }).then(() => {
-                    ////console.log(sum)
+                    //////console.log(sum)
                     ylist3.push({
-                      time: parseInt(datelist2[i].endTime.slice(11)),
+                      // time: parseInt(datelist2[i].endTime.slice(11)),
+                      time: datelist2[i].endTime,
                       sum: sum
                     })
 
-                    ylist3 = that.sortByKey(ylist3, "time")
-                    if (ylist3.length == 6) {
+
+                    // ylist3 = that.sortByKey(ylist3, "time")
+                    console.log(ylist3)
+                    if (ylist3.length == 8) {
+                      console.log(that.sortByKey(ylist3, "time"))
                       let zcarr = []
+                      let xlist = []
                       ylist3.forEach(element => {
                         zcarr.push(element.sum)
+                        xlist.push(element.time)
                       });
 
                       that.echart(xlist, zcarr)
@@ -524,7 +551,7 @@
           }
 
 
-          //////////console.log(ylist4)
+          ////////////console.log(ylist4)
 
         }, 1000);
 
@@ -557,10 +584,13 @@
         return arr2
       },
       echart(xlist, ylist3) {
-
+        for (let i = 0; i < xlist.length; i++) {
+          xlist[i] = parseInt(xlist[i].slice(11)) + ":00"
+        }
         let myChart1 = this.$echarts.init(document.getElementById('echart1'));
         // 绘制图表
         myChart1.clear();
+  
         let that = this
         let option = {
           tooltip: {
@@ -894,10 +924,10 @@
             that.yersum = yersum.toFixed(1)
           })
       },
-   
+
 
       getYerFormatDate() {
-        
+
         let time = (new Date).getTime() - 24 * 60 * 60 * 1000;
         let yesday = new Date(time); // 获取的是前一天日期
         yesday = yesday.getFullYear() + "/" + (yesday.getMonth() > 9 ? (yesday.getMonth() + 1) : +(yesday.getMonth() +
@@ -977,7 +1007,7 @@
       } else {
         this.workshopname = "祥嘉"
       }
-      
+
       this.getzjSum()
       this.getzzSum()
       this.getjsSum()

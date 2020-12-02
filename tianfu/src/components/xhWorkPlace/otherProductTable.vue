@@ -54,8 +54,8 @@
       <span
               style="font-size:1.8rem;width:80%;height:5rem;line-height:5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 1;-webkit-box-orient: vertical;"
               v-text="(String(scope.row.nameList))"></span>
-            <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName()"></i><i
-                class="el-icon-remove-outline" @click="deleteName()"></i></div>
+            <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName(scope.row.id)"></i><i
+                class="el-icon-remove-outline" @click="deleteName(scope.row.id)"></i></div>
         </div>
       
          
@@ -366,6 +366,9 @@
             let url="http://120.55.124.53:14100/warping/updateProduceForm"
                let method = "post";
                       let person=(String(element.person)).split('、')
+                       if(element.number==null){
+                        element.number=0
+                      }
         let data = {
           company_id: this.companyId,
           creat_time:this.formatDate(),
@@ -394,7 +397,7 @@
               this.$message.error('更新失败！');
             }
 
-            this.getData()
+            this.getData(true)
           })
 
     
@@ -458,7 +461,7 @@ this.pageNum=this.pageNum+1
         });
       }
       },
-      getData() {
+      getData(flag) {
         let url = 'http://106.12.219.66:8227/report/getSimpleReport';
         let headers = {
           'Content-Type': 'application/json',
@@ -473,8 +476,11 @@ this.pageNum=this.pageNum+1
         };
 
         let that = this
-           that.showData=[]
+         that.showData=[]
+        if(flag!=true){
+            
             that.pageNum=1
+        }
         that.selectData = []
         axios({
             url: url,
@@ -611,16 +617,16 @@ this.pageNum=this.pageNum+1
             // this.getWorkShopList() //获取车间id列表
           })
       },
-      addName() {
+      addName(id) {
         this.showNameTable = true
-
+   this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = true
       },
-      deleteName() {
+      deleteName(id) {
         this.showNameTable = true
-
+   this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = false
@@ -767,11 +773,11 @@ this.pageNum=this.pageNum+1
 
         this.showNameTable2 = false
         console.log(this.id2)
-        let key=0
+        // let key=0
         this.showData.forEach(element => {
-         if(key==0){
-           key=1
-         }
+        //  if(key==0){
+        //    key=1
+        //  }
           element.nameList = []
           if (element.id == this.id2) {
             console.log(element.id)
@@ -804,16 +810,34 @@ this.pageNum=this.pageNum+1
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
                   if (that.isadd2 == true) {
-                    element.person=element.person+("、"+response.data.data[0].staff_name)
-                  } else {
+                    console.log(element.person)
+                    if(element.person==""){
+                       element.person=element.person+(response.data.data[0].staff_name)
+                    }else{
+                       element.person=element.person+("、"+response.data.data[0].staff_name)
+                    }
                    
-                  if(key==1){
-                      element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
-                  }else{
-                      element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                  } else {
+                     console.log(element.person)
+                   
+                     if(element.person.indexOf(response.data.data[0].staff_name+'、')==-1){
+                       if(element.person[element.person.indexOf(response.data.data[0].staff_name)-1]=='、'){
+element.person= element.person.replace('、'+response.data.data[0].staff_name,""); 
+                       }else{
+                        element.person= element.person.replace(response.data.data[0].staff_name,"");  
+                       }
+                       
+                     }else{
+                        
+                       element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                     }
+                  // if(key==1){
+                  //     element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                  // }else{
+                  //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                  // }
                   }
-                  }
-                  console.log(element)
+                
 
                 } else {
                   this.$message.warning("员工号不正确!");
