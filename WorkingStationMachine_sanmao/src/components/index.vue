@@ -9,11 +9,26 @@
       </div>
       <div class="header_right">
         <div class="header_right_con">
-          <span v-show="isShangZhou || isChaPian || isKaiChu || isLower">{{ className }}</span
-          ><span v-show="isShangZhou || isChaPian || isKaiChu || isLower">开出工:{{ kcgName }}</span
-          ><span v-show="isShangZhou || isKaiChu || isLower" v-for="(item, index) in nameList" :key="'sz_' + index">{{ item.label }}：{{ item.staffName }}</span> <span v-show="isChaPian" v-for="(item, index) in nameList2" :key="'cp_' + index">{{ item.label }}：{{ item.staffName }}</span
+          <span v-show="isShangZhou || isChaPian || isKaiChu || isLower">{{
+            className
+          }}</span
+          ><span v-show="isShangZhou || isChaPian || isKaiChu || isLower"
+            >开出工:{{ kcgName }}</span
+          ><span
+            v-show="isShangZhou || isKaiChu || isLower"
+            v-for="(item, index) in nameList"
+            :key="'sz_' + index"
+            >{{ item.label }}：{{ item.staffName }}</span
+          >
+          <span
+            v-show="isChaPian"
+            v-for="(item, index) in nameList2"
+            :key="'cp_' + index"
+            >{{ item.label }}：{{ item.staffName }}</span
           ><span v-show="isMachine">机台：701@王某人</span>
-          <span v-show="isStopCar || isMachine">{{ dcClass }}&nbsp;&nbsp;挡车工:{{ dcName }}</span>
+          <span v-show="isStopCar || isMachine"
+            >{{ dcClass }}&nbsp;&nbsp;挡车工:{{ dcName }}</span
+          >
         </div>
         <div class="icon_info">
           <img src="../../static/img/remind.png" />
@@ -28,14 +43,28 @@
     </div>
     <div class="tabPane">
       <div class="tabPane_con">
-        <div :class="item.class" @click="changeTab(item.label)" :style="item.style" v-for="(item, index) in tabList" :key="index">{{ item.label }}</div>
+        <div
+          :class="item.class"
+          @click="changeTab(item.label)"
+          :style="item.style"
+          v-for="(item, index) in tabList"
+          :key="index"
+        >
+          {{ item.label }}
+        </div>
       </div>
     </div>
     <uppershaft v-show="isShangZhou" @szChange="getGroup(4, 'sz')"></uppershaft>
-    <illustration v-show="isChaPian" @cpChange="getGroup(15, 'cp')"></illustration>
+    <illustration
+      v-show="isChaPian"
+      @cpChange="getGroup(15, 'cp')"
+    ></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
-    <machinemaintenance v-show="isMachine" :problem="problem"></machinemaintenance>
+    <machinemaintenance
+      v-show="isMachine"
+      :problem="problem"
+    ></machinemaintenance>
     <out v-show="isKaiChu" @kcChange="getGroup(4, 'sz')"></out>
   </div>
 </template>
@@ -136,7 +165,8 @@ export default {
         let nameList = res.data.result.staffList;
         that.className = res.data.result.group_name;
         nameList.forEach((element) => {
-          element.label = element.staff_organization_name + "0" + element.order_num;
+          element.label =
+            element.staff_organization_name + "0" + element.order_num;
           element.staffName = element.staff_name;
         });
 
@@ -160,7 +190,10 @@ export default {
           this.kcgName = nameList[i].staffName;
           //console.log(this.kcgName);
         }
-        if (nameList[i].label.indexOf("上轴工") != -1 && nameList[i].staffName != "") {
+        if (
+          nameList[i].label.indexOf("上轴工") != -1 &&
+          nameList[i].staffName != ""
+        ) {
           str = str + nameList[i].staffName + "，";
         }
       }
@@ -187,7 +220,10 @@ export default {
 
       let str = "";
       for (let i = 0; i < nameList.length; i++) {
-        if (nameList[i].label.indexOf("插片工") != -1 && nameList[i].staffName != "") {
+        if (
+          nameList[i].label.indexOf("插片工") != -1 &&
+          nameList[i].staffName != ""
+        ) {
           str = str + nameList[i].staffName + "，";
         }
       }

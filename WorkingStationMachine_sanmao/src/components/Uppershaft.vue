@@ -2,7 +2,11 @@
   <div class="operationPane">
     <!-- 上轴部分操作栏组件-->
     <!-- 上轴首页-->
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center" v-show="szIndexShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: space-around; align-items: center"
+      v-show="szIndexShow"
+    >
       <div class="main_btn" @click="toClass(true)">运转班</div>
       <div class="main_btn" @click="toClass(false)">长白班</div>
       <div class="main_btn" @click="toSz">上轴</div>
@@ -10,12 +14,37 @@
     </div>
     <!-- 上轴首页-->
     <!-- 上轴部分选班次-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="szShiftShow"
+    >
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass == 0 ? '当前班次：运转班A组' : isChooseAclass == 1 ? '当前班次：运转班B组' : ''" v-show="isYunzhuan"></div>
+        <div
+          class="currentClass"
+          v-html="
+            isChooseAclass == 0
+              ? '当前班次：运转班A组'
+              : isChooseAclass == 1
+              ? '当前班次：运转班B组'
+              : ''
+          "
+          v-show="isYunzhuan"
+        ></div>
         <div class="currentClass" v-show="!isYunzhuan">当前班次：长白班C组</div>
         <div class="classA" v-show="isYunzhuan">
-          <div @click="changeClass('a')" :class="isChooseAclass == 0 ? 'classA_left_chossed' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass('a')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left_chossed'
+                : isChooseAclass == 1
+                ? 'classA_left'
+                : isChooseAclass == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>上轴工组A</span>
           </div>
           <div class="classA_right">
@@ -25,7 +54,18 @@
           </div>
         </div>
         <div class="classA" v-show="isYunzhuan">
-          <div @click="changeClass('b')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left_chossed' : isChooseAclass == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass('b')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left'
+                : isChooseAclass == 1
+                ? 'classA_left_chossed'
+                : isChooseAclass == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>上轴工组B</span>
           </div>
           <div class="classA_right">
@@ -35,7 +75,18 @@
           </div>
         </div>
         <div class="classA" v-show="!isYunzhuan">
-          <div @click="changeClass('c')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left_chossed' : ''">
+          <div
+            @click="changeClass('c')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left'
+                : isChooseAclass == 1
+                ? 'classA_left'
+                : isChooseAclass == 2
+                ? 'classA_left_chossed'
+                : ''
+            "
+          >
             <span>上轴工组C</span>
           </div>
           <div class="classA_right">
@@ -47,8 +98,19 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureClass()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="cancelClass()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right"></div>
       </div>
@@ -58,11 +120,37 @@
     </div>
     <!-- 上轴部分选班次-->
     <!-- 上轴部分选班次-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow2">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="szShiftShow2"
+    >
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass2 == 0 ? '当前班次：运转班A组' : isChooseAclass2 == 1 ? '当前班次：运转班B组' : isChooseAclass2 == 2 ? '当前班次：运转班C组' : ''"></div>
+        <div
+          class="currentClass"
+          v-html="
+            isChooseAclass2 == 0
+              ? '当前班次：运转班A组'
+              : isChooseAclass2 == 1
+              ? '当前班次：运转班B组'
+              : isChooseAclass2 == 2
+              ? '当前班次：运转班C组'
+              : ''
+          "
+        ></div>
         <div class="classA">
-          <div @click="changeClass2('a')" :class="isChooseAclass2 == 0 ? 'classA_left_chossed' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass2('a')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left_chossed'
+                : isChooseAclass2 == 1
+                ? 'classA_left'
+                : isChooseAclass2 == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>上轴工组A</span>
           </div>
           <div class="classA_right">
@@ -72,7 +160,18 @@
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('b')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left_chossed' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass2('b')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left'
+                : isChooseAclass2 == 1
+                ? 'classA_left_chossed'
+                : isChooseAclass2 == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>上轴工组B</span>
           </div>
           <div class="classA_right">
@@ -82,7 +181,18 @@
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('c')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left_chossed' : ''">
+          <div
+            @click="changeClass2('c')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left'
+                : isChooseAclass2 == 1
+                ? 'classA_left'
+                : isChooseAclass2 == 2
+                ? 'classA_left_chossed'
+                : ''
+            "
+          >
             <span>上轴工组C</span>
           </div>
           <div class="classA_right">
@@ -94,8 +204,19 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass2()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureClass2()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="cancelClass2()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right"></div>
       </div>
@@ -105,19 +226,42 @@
     </div>
     <!-- 上轴部分选班次-->
     <!-- 上轴部分主菜单-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-end" v-show="szMainShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-end"
+      v-show="szMainShow"
+    >
       <div class="operationPane_con_uppershaft">
         <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
-            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black">
-              <span v-show="machine_id == ''">请扫码</span><span v-show="!(machine_id == '')">{{ machine_id }}</span>
+            <div
+              class="chooseBtn_con_btn"
+              style="background: white; border: 1px solid black"
+            >
+              <span v-show="machine_id == ''">请扫码</span
+              ><span v-show="!(machine_id == '')">{{ machine_id }}</span>
             </div>
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>上轴组</span></div>
-            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black"><span v-text="isChooseAclass2 == 0 ? 'A组' : isChooseAclass2 == 1 ? 'B组' : isChooseAclass2 == 2 ? 'C组' : ''"></span></div>
+            <div
+              class="chooseBtn_con_btn"
+              style="background: white; border: 1px solid black"
+            >
+              <span
+                v-text="
+                  isChooseAclass2 == 0
+                    ? 'A组'
+                    : isChooseAclass2 == 1
+                    ? 'B组'
+                    : isChooseAclass2 == 2
+                    ? 'C组'
+                    : ''
+                "
+              ></span>
+            </div>
           </div>
         </div>
         <div class="pane">
@@ -131,12 +275,27 @@
             </div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
-          <div class="pane_con"><textarea style="background: white" class="textarea" disabled placeholder="扫描后显示..."></textarea></div>
+          <div class="pane_con">
+            <textarea
+              style="background: white"
+              class="textarea"
+              disabled
+              placeholder="扫描后显示..."
+            ></textarea>
+          </div>
           <div class="pane_btn">
-            <div class="pane_btn_one" @click="saoma()" :style="issaoma ? 'background:#808080' : 'background:#A3D897'">
+            <div
+              class="pane_btn_one"
+              @click="saoma()"
+              :style="issaoma ? 'background:#808080' : 'background:#A3D897'"
+            >
               <span>扫码上轴</span>
             </div>
-            <div class="pane_btn_one" @click="wanchen()" :style="issaoma ? 'background:#A3D897' : 'background:#808080'">
+            <div
+              class="pane_btn_one"
+              @click="wanchen()"
+              :style="issaoma ? 'background:#A3D897' : 'background:#808080'"
+            >
               <span>上轴完成</span>
             </div>
           </div>
@@ -146,61 +305,154 @@
     </div>
     <!-- 上轴部分主菜单-->
     <!-- 上轴部分选机台-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szMachineShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="szMachineShow"
+    >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group :max="1" @change="checkedMachine" v-model="checkMachine" style="width: 100%; height: 100%">
-          <el-checkbox-button size="medium" v-for="(item, index) in machineList" style="magin: 1rem; font-size: 2rem" :label="item.machine_id" :key="index">{{ item.machine_id }}</el-checkbox-button>
+        <el-checkbox-group
+          :max="1"
+          @change="checkedMachine"
+          v-model="checkMachine"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in machineList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.machine_id"
+            :key="index"
+            >{{ item.machine_id }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureMachine()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="cancel()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="4" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
+          <el-pagination
+            background
+            small
+            :pager-count="4"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :total="total_num"
+          >
+          </el-pagination>
         </div>
       </div>
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
-        <span style="font-size: 1.7rem">搜索：</span><input placeholder="输入机台号" v-model="search_machine" />
-        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">确认</div>
-        <span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
+        <span style="font-size: 1.7rem">搜索：</span
+        ><input placeholder="输入机台号" v-model="search_machine" />
+        <div
+          class="checked_machine_btn_one"
+          style="height: 3rem"
+          @click="search()"
+        >
+          确认
+        </div>
+        <span style="color: red; margin-left: 1rem"
+          >选中机台：{{ this.checkedMachineNum }}</span
+        >
       </div>
       <img src="../../static/img/close.png" @click="closeCurrentPage" />
     </div>
     <!-- 上轴部分选机台-->
     <!-- 上轴换班-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="UpdatePeopleShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="UpdatePeopleShow"
+    >
       <div class="operationPane_con_machineList">
         <div class="shift">
           <div class="shift_con">
             <span>班次：</span
-            ><select :disabled="!isStartChange" v-model="className" @change="classChange">
+            ><select
+              :disabled="!isStartChange"
+              v-model="className"
+              @change="classChange"
+            >
               <option value="A班">A班</option>
               <option value="B班">B班</option>
               <option value="C班">C班</option>
             </select>
           </div>
-          <div class="shift_con" v-for="(item, index) in staffList" :key="index">
+          <div
+            class="shift_con"
+            v-for="(item, index) in staffList"
+            :key="index"
+          >
             <span>{{ item.label }}：</span>
-            <div :class="item.isSelected ? 'staffCheck2' : 'staffCheck'" @click="chooseStaff(item.label)">
+            <div
+              :class="item.isSelected ? 'staffCheck2' : 'staffCheck'"
+              @click="chooseStaff(item.label)"
+            >
               {{ item.staffName }}
             </div>
           </div>
         </div>
 
-        <el-checkbox-group :max="1" :disabled="!isStartChange" v-model="checkName" @change="checkedName" style="width: 100%; height: 100%">
-          <el-checkbox-button size="medium" v-for="(item, index) in StaffNameList" style="magin: 1rem; font-size: 2rem" :label="item.staff_name" :key="index">{{ item.staff_name }}</el-checkbox-button>
+        <el-checkbox-group
+          :max="1"
+          :disabled="!isStartChange"
+          v-model="checkName"
+          @change="checkedName"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in StaffNameList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.staff_name"
+            :key="index"
+            >{{ item.staff_name }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="startChange()" :style="isStartChange ? 'background:#8C8C8C' : 'background:#A3D897'">开始修改</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" :style="isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'" @click="save()">保存</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="startChange()"
+            :style="isStartChange ? 'background:#8C8C8C' : 'background:#A3D897'"
+          >
+            开始修改
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            :style="
+              isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'
+            "
+            @click="save()"
+          >
+            保存
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small layout="prev, pager, next" :pager-count="4" @current-change="CurrentNameChange" :total="total_num2"> </el-pagination>
+          <el-pagination
+            background
+            small
+            layout="prev, pager, next"
+            :pager-count="4"
+            @current-change="CurrentNameChange"
+            :total="total_num2"
+          >
+          </el-pagination>
         </div>
       </div>
       <div class="leftLabel"><span>换班</span></div>
@@ -252,7 +504,26 @@ export default {
       page_num2: 1,
       total_num2: null,
       StaffNameList: [],
-      machineList: ["101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118"], //上轴机台列表
+      machineList: [
+        "101",
+        "102",
+        "103",
+        "104",
+        "105",
+        "106",
+        "107",
+        "108",
+        "109",
+        "110",
+        "111",
+        "112",
+        "113",
+        "114",
+        "115",
+        "116",
+        "117",
+        "118",
+      ], //上轴机台列表
       page_size: 21,
       page_num: 1,
       total_num: null,
@@ -847,7 +1118,7 @@ export default {
               type: "warning",
             });
           }
-          this.checkName = "";
+          this.checkName = [];
         });
       }
     },
@@ -891,6 +1162,7 @@ export default {
           }).then((response) => {
             //console.log(response);
             this.staffList[i].id = response.data.data[0].id; //绑定员工id
+            this.checkName = [];
           });
         }
       }
@@ -1145,6 +1417,7 @@ export default {
         //console.log(res);
         let arr = res.data.data;
         for (let i = 0; i < arr.length; i++) {
+          arr[i].checked = false;
           that.StaffNameList.push(arr[i]);
         }
         that.total_num2 = res.data.total;
@@ -1527,9 +1800,14 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination
+  .btn-prev
+  .el-icon {
   font-size: 2rem;
 }
+
 .checked_machine_btn_one {
   width: 18%;
   height: 60%;
@@ -1545,12 +1823,13 @@ export default {
   border-bottom: 3px solid #717171;
   border-right: 3px solid #717171;
 }
+
 .operationPane_con_machineList_btn {
   width: 93%;
 
   height: 20%;
   position: absolute;
-  bottom: 0;
+  bottom: -7px;
 
   display: flex;
   align-items: center;
@@ -1604,16 +1883,27 @@ export default {
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination
+  .btn-next
+  .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background
+  .el-pager
+  li:not(.disabled).active {
   background: #ffc100;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background.el-pagination--small .btn-next,
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background.el-pagination--small
+  .btn-next,
 .el-pagination.is-background.el-pagination--small .btn-prev,
 .el-pagination.is-background.el-pagination--small .el-pager li {
   font-size: 2rem;

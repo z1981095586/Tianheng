@@ -2,68 +2,201 @@
   <div class="operationPane">
     <!-- 挡车部分操作栏组件-->
     <!-- 挡车部分主菜单-->
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center" v-show="isMainShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: space-around; align-items: center"
+      v-show="isMainShow"
+    >
       <div class="main_btn" @click="toShift">换班</div>
       <div class="main_btn" @click="toCar">挡车</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
 
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="isMachine">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="isMachine"
+    >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group v-model="checkMachine" style="width: 100%; height: 100%" :max="8">
-          <el-checkbox-button size="medium" v-for="(item, index) in machineList" style="magin: 1rem; font-size: 2rem" :label="item.machine_id" :key="index">{{ item.machine_id }}</el-checkbox-button>
+        <el-checkbox-group
+          v-model="checkMachine"
+          style="width: 100%; height: 100%"
+          :max="8"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in machineList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.machine_id"
+            :key="index"
+            >{{ item.machine_id }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">保存</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="goback()">返回</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureMachine()"
+          >
+            保存
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="goback()"
+          >
+            返回
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
+          <el-pagination
+            background
+            small
+            :pager-count="3"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :total="total_num"
+          >
+          </el-pagination>
         </div>
       </div>
 
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
-        <span style="font-size: 1.5rem">搜索：</span><input style="font-size: 1.5rem" v-model="search_machine" placeholder="输入机台号" />
-        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">确认</div>
-        <span style="color: red; margin-left: 1rem">选中机台：{{ String(this.checkMachine).replace(/ /g, "") }}</span>
+        <span style="font-size: 1.5rem">搜索：</span
+        ><input
+          style="font-size: 1.5rem"
+          v-model="search_machine"
+          placeholder="输入机台号"
+        />
+        <div
+          class="checked_machine_btn_one"
+          style="height: 3rem"
+          @click="search()"
+        >
+          确认
+        </div>
+        <span style="color: red; margin-left: 1rem"
+          >选中机台：{{ String(this.checkMachine).replace(/ /g, "") }}</span
+        >
       </div>
       <img src="../../static/img/close.png" @click="goback()" />
     </div>
 
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column" v-show="isCar">
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="isCar"
+    >
       <div class="checked_machine">
-        <div class="checked_machine_one" v-for="(item, index) in checkMachineColor" @click="checkShutdown(item.label)" :style="item.isChecked ? 'background:rgb(50, 150, 250);color:white;' : 'background:#808080;color:white;'" :key="index">
+        <div
+          class="checked_machine_one"
+          v-for="(item, index) in checkMachineColor"
+          @click="checkShutdown(item.label)"
+          :style="
+            item.isChecked
+              ? 'background:rgb(50, 150, 250);color:white;'
+              : 'background:#808080;color:white;'
+          "
+          :key="index"
+        >
           <span>{{ item.label }}</span
-          ><span style="font-size: 1rem" v-show="!item.isShutDown">（状态:开机）</span><span v-show="item.isShutDown" style="font-size: 1rem">（状态:关机）</span>
+          ><span style="font-size: 1rem" v-show="!item.isShutDown"
+            >（状态:开机）</span
+          ><span v-show="item.isShutDown" style="font-size: 1rem"
+            >（状态:关机）</span
+          >
         </div>
       </div>
       <div class="checked_machine_btn">
         <div class="checked_machine_btn_one" @click="openMachine()">开机</div>
-        <div class="checked_machine_btn_one" @click="shutdownMachine()">关机</div>
-        <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">落布</div>
-        <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">改品种</div>
-        <div class="checked_machine_btn_one" style="background: #808080" v-show="!enabled">落布</div>
-        <div class="checked_machine_btn_one" style="background: #808080" v-show="!enabled">改品种</div>
-        <div class="checked_machine_btn_one" style="margin-left: 12rem; background: #808080" @click="goback2()">返回</div>
+        <div class="checked_machine_btn_one" @click="shutdownMachine()">
+          关机
+        </div>
+        <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">
+          落布
+        </div>
+        <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">
+          改品种
+        </div>
+        <div
+          class="checked_machine_btn_one"
+          style="background: #808080"
+          v-show="!enabled"
+        >
+          落布
+        </div>
+        <div
+          class="checked_machine_btn_one"
+          style="background: #808080"
+          v-show="!enabled"
+        >
+          改品种
+        </div>
+        <div
+          class="checked_machine_btn_one"
+          style="margin-left: 12rem; background: #808080"
+          @click="goback2()"
+        >
+          返回
+        </div>
       </div>
       <img src="../../static/img/close.png" @click="goback2()" />
     </div>
 
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="shiftShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="shiftShow"
+    >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group :max="1" @change="checkName" v-model="checkMachine" style="width: 100%; height: 100%">
-          <el-checkbox-button size="medium" v-for="(item, index) in NameList" style="magin: 1rem; font-size: 2rem" :label="item.staff_name" :key="index">{{ item.staff_name }}</el-checkbox-button>
+        <el-checkbox-group
+          :max="1"
+          @change="checkName"
+          v-model="checkMachine"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in NameList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.staff_name"
+            :key="index"
+            >{{ item.staff_name }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureShift()">保存</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="background: #808080; color: white" @click="ShiftBack()">返回</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureShift()"
+          >
+            保存
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style="background: #808080; color: white"
+            @click="ShiftBack()"
+          >
+            返回
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" @current-change="CurrentNameChange" layout="prev, pager, next" :total="total_num2"> </el-pagination>
+          <el-pagination
+            background
+            small
+            :pager-count="3"
+            @current-change="CurrentNameChange"
+            layout="prev, pager, next"
+            :total="total_num2"
+          >
+          </el-pagination>
         </div>
       </div>
       <div class="select_shift">
@@ -82,74 +215,156 @@
       <img src="../../static/img/close.png" @click="ShiftBack()" />
     </div>
 
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center; position: relative" v-show="PzShow">
-      <input v-model="pzPrintCode" style="position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem; border: none" v-show="showPrintCode" />
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: relative;
+      "
+      v-show="PzShow"
+    >
+      <input
+        v-model="pzPrintCode"
+        style="
+          position: absolute;
+          left: 1rem;
+          top: 1rem;
+          font-size: 1.5rem;
+          border: none;
+        "
+        v-show="showPrintCode"
+      />
       <div class="pz_left">
         <div class="pz_left_top">
           <div class="pz_left_top_title">
-            <span>原品种信息</span><span style="font-size: 1.3rem; color: red">选中机台：{{ checkedMachine }}</span>
+            <span>原品种信息</span
+            ><span style="font-size: 1.3rem; color: red"
+              >选中机台：{{ checkedMachine }}</span
+            >
           </div>
           <div class="pz_left_top_title"><span>品号：843-349-3495</span></div>
-          <div class="pz_left_top_title"><span>品名：我是品名，我是品名，我是品名品名</span></div>
-          <div class="pz_left_top_title" style="height: 3rem"><span>规格：我是规格我是规格，我是规格，我是规格我是</span></div>
-          <div class="pz_left_top_title2" style="margin-top: 1rem"><span>原品种信息</span></div>
-          <div class="pz_left_top_title2"><span>品号：</span><span style="color: #8c8c8c">扫码后获取…</span></div>
-          <div class="pz_left_top_title2"><span>品名：</span><span style="color: #8c8c8c">扫码后获取…</span></div>
-          <div class="pz_left_top_title2" style="height: 3rem"><span>规格：</span><span style="color: #8c8c8c">扫码后获取…</span></div>
+          <div class="pz_left_top_title">
+            <span>品名：我是品名，我是品名，我是品名品名</span>
+          </div>
+          <div class="pz_left_top_title" style="height: 3rem">
+            <span>规格：我是规格我是规格，我是规格，我是规格我是</span>
+          </div>
+          <div class="pz_left_top_title2" style="margin-top: 1rem">
+            <span>品种信息</span>
+          </div>
+          <div class="pz_left_top_title2">
+            <span>品号：</span><span style="color: #8c8c8c">{{ pin_hao }}</span>
+          </div>
+          <div class="pz_left_top_title2">
+            <span>品名：</span
+            ><span style="color: #8c8c8c">{{ product_name }}</span>
+          </div>
+          <div class="pz_left_top_title2" style="height: 3rem">
+            <span>规格：</span><span style="color: #8c8c8c">{{ se_hao }}</span>
+          </div>
         </div>
         <div class="pz_left_bottom">
-          <div class="pz_left_bottom_btn_active" @click="showPcode" v-text="showPrintCode ? '改品种' : '扫码'"></div>
-          <div class="pz_left_bottom_btn_unactive" @click="cancelPz()">取消</div>
+          <div
+            class="pz_left_bottom_btn_active"
+            @click="showPcode"
+            v-text="showPrintCode ? '改品种' : '扫码'"
+          ></div>
+          <div class="pz_left_bottom_btn_unactive" @click="cancelPz()">
+            取消
+          </div>
         </div>
       </div>
       <div class="pz_right">
         <div class="pz_right_top">
           <div class="pz_right_top_input">
             <span>当前织布长度：</span>
-            <div :class="zbFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'" @click="iszb">
+            <div
+              :class="
+                zbFocus
+                  ? 'pz_right_top_input_active'
+                  : 'pz_right_top_input_unactive'
+              "
+              @click="iszb"
+            >
               <span>{{ zbLength }}</span>
             </div>
           </div>
           <div class="pz_right_top_input">
             <span>当前剩余经轴长度：</span>
-            <div :class="jzFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'" @click="isjz">
+            <div
+              :class="
+                jzFocus
+                  ? 'pz_right_top_input_active'
+                  : 'pz_right_top_input_unactive'
+              "
+              @click="isjz"
+            >
               <span>{{ jzLength }}</span>
             </div>
           </div>
         </div>
         <div class="pz_right_bottom">
           <div class="pz_right_bottom_con">
-            <keyboard ref="board1" @sure="getNumber" @change="NumberChange"></keyboard>
+            <keyboard
+              ref="board1"
+              @sure="getNumber"
+              @change="NumberChange"
+            ></keyboard>
           </div>
         </div>
       </div>
       <img src="../../static/img/close.png" @click="cancelPz()" />
     </div>
 
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center" v-show="LbShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: space-around; align-items: center"
+      v-show="LbShow"
+    >
       <div class="pz_right">
         <div class="pz_right_top">
           <div class="pz_right_top_input">
             <span>落布米长：</span>
-            <div :class="lbFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'" @click="islb">
+            <div
+              :class="
+                lbFocus
+                  ? 'pz_right_top_input_active'
+                  : 'pz_right_top_input_unactive'
+              "
+              @click="islb"
+            >
               <span v-text="lbLength"></span>
             </div>
           </div>
         </div>
         <div class="pz_right_bottom">
           <div class="pz_right_bottom_con">
-            <keyboard ref="board2" @sure="getNumber2" @change="NumberChange2"></keyboard>
+            <keyboard
+              ref="board2"
+              @sure="getNumber2"
+              @change="NumberChange2"
+            ></keyboard>
           </div>
         </div>
       </div>
       <div class="pz_left">
         <div class="pz_left_top">
-          <div class="pz_left_top_title" style="margin-top: 6rem"><span>品号：843-349-3495</span></div>
-          <div class="pz_left_top_title"><span>品名：我是品名，我是品名，我是品名品名</span></div>
-          <div class="pz_left_top_title" style="height: 3rem"><span>规格：我是规格我是规格，我是规格，我是规格我是</span></div>
+          <div class="pz_left_top_title" style="margin-top: 6rem">
+            <span>品号：843-349-3495</span>
+          </div>
+          <div class="pz_left_top_title">
+            <span>品名：我是品名，我是品名，我是品名品名</span>
+          </div>
+          <div class="pz_left_top_title" style="height: 3rem">
+            <span>规格：我是规格我是规格，我是规格，我是规格我是</span>
+          </div>
         </div>
         <div class="pz_left_bottom">
-          <div class="pz_left_bottom_btn_unactive" @click="cancelLb()">取消</div>
+          <div class="pz_left_bottom_btn_unactive" @click="cancelLb()">
+            取消
+          </div>
         </div>
       </div>
 
@@ -201,6 +416,10 @@ export default {
       showPrintCode: false,
       pzPrintCode: "",
       search_machine: "",
+
+      product_name: "",
+      pin_hao: "",
+      se_hao: "",
     };
   },
   methods: {
@@ -665,7 +884,8 @@ export default {
 
       for (let i = 0; i < this.checkMachineColor.length; i++) {
         if (this.checkMachineColor[i].label == label) {
-          this.checkMachineColor[i].isChecked = !this.checkMachineColor[i].isChecked;
+          this.checkMachineColor[i].isChecked = !this.checkMachineColor[i]
+            .isChecked;
         }
       }
       //防止数据更新视图不更新
@@ -818,6 +1038,31 @@ export default {
   },
   mounted() {},
   watch: {
+    pzPrintCode(val) {
+      //批轴号事件
+      let url = host + "/api/stationMachine/getAxisInfo";
+      let that = this;
+      if (val != "") {
+        axios({
+          url: url,
+          method: "post",
+
+          data: {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            print_code: val,
+          },
+
+          // headers: headers
+        }).then((res) => {
+          //console.log(res);
+          that.se_hao = res.data.result.se_hao;
+          that.pin_hao = res.data.result.pin_hao;
+          that.product_name = res.data.result.product_name;
+        });
+      }
+    },
     checkedClass(e) {
       if (e == "9") {
         this.getGroup("A班");

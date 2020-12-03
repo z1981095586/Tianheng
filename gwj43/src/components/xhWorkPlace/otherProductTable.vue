@@ -256,6 +256,7 @@
 <script>
   import axios from 'axios'
   export default {
+    props:['order_list','otherProduceDialogShow'],
     data() {
       return {
         buttonList: "1234567890",
@@ -315,7 +316,7 @@
                 number: element.number,
                 units: element.units,
                 person: person,
-
+ warping_id:String(this.order_list.id)
 
               };
               axios({
@@ -410,7 +411,9 @@
           "tableName": "station_produce_info",
           "pageNum": 1,
           "pageSize": 1000,
-
+query:{
+  warping_id:String(this.order_list.id)
+}
         };
 
         let that = this
@@ -464,6 +467,7 @@
           element.number = element.num
           element.person = element.nameList
           element.units = element.unit
+          element.warping_id=String(this.order_list.id)
         });
         let url = "http://120.55.124.53:14100/warping/addProduceForm"
         if (this.dataList.length > 0) {
@@ -473,7 +477,8 @@
               data: {
                 company_id: this.companyId,
                 form_data: data,
-                creat_time: this.formatDate()
+                creat_time: this.formatDate(),
+             
               },
 
             })
@@ -854,8 +859,7 @@
 
       this.companyId = params[1];
       this.getData()
-      console.log(document.getElementById("num2"))
-
+   
 
     },
     destroyed() {
@@ -868,13 +872,23 @@
         } else {
           this.dataList = []
         }
+      },
+        otherProduceDialogShow(val){
+   
+       if(val==true){
+          this.isSelect=true
+       }
       }
     }
   }
 
 </script>
 
-<style lang="less">
+<style scoped>
+ /deep/  .el-input__inner{
+    height: 5rem;
+    line-height: 3rem;
+ }
   .bigSquareButton {
     width: 10rem;
     height: 10rem;

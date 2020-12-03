@@ -74,7 +74,7 @@
       <el-dialog id="num" :visible.sync="showNumTable" width="1200px" append-to-body :close-on-click-modal="false">
         <p style="display: inline-block;font-size: 2rem">输入数量</p>
         <el-input size="medium" id="num" ref="num" v-model="num"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus('num')"></el-input>
+          style="display: inline-block;width: 500px;font-size:2rem" class="elInput" @focus="changeFocus('num')"></el-input>
         <table width="620px" cellspacing='0' cellpadding='0' height="400px"
           style="margin-top: 20px;display: inline-block">
           <tr v-for="indexTr in 2">
@@ -98,7 +98,7 @@
       <el-dialog id="num" :visible.sync="showNameTable" width="1200px" append-to-body :close-on-click-modal="false">
         <p style="display: inline-block;font-size: 2rem">输入员工号</p>
         <el-input size="medium" id="staff_code" ref="staff_code" v-model="staff_code"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus('staff_code')"></el-input>
+          style="display: inline-block;width: 500px;font-size:2rem" class="elInput" @focus="changeFocus('staff_code')"></el-input>
         <table width="620px" cellspacing='0' cellpadding='0' height="400px"
           style="margin-top: 20px;display: inline-block">
           <tr v-for="indexTr in 2">
@@ -265,7 +265,7 @@
       <el-dialog id='num2' :visible.sync="showNumTable2" width="1200px" append-to-body :close-on-click-modal="false">
         <p style="display: inline-block;font-size: 2rem">输入数量</p>
         <el-input size="medium" id="num2" ref="num2" v-model="num2"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus2('num')"></el-input>
+          style="display: inline-block;width: 500px;font-size:2rem" class="elInput" @focus="changeFocus2('num')"></el-input>
         <table width="620px" cellspacing='0' cellpadding='0' height="400px"
           style="margin-top: 20px;display: inline-block">
           <tr v-for="indexTr in 2">
@@ -288,8 +288,8 @@
       </el-dialog>
       <el-dialog :visible.sync="showNameTable2" width="1200px" append-to-body :close-on-click-modal="false">
         <p style="display: inline-block;font-size: 2rem">输入员工号</p>
-        <el-input size="medium" id="staffcode" ref="staff_code2" v-model="staff_code2"
-          style="display: inline-block;width: 500px;font-size:2rem" class="staffcode"
+        <el-input size="medium" id="staffcode" ref="staff_code2"  v-model="staff_code2"
+          style="display: inline-block;width: 500px;font-size:2rem" class="staffcode elInput" 
           @focus="changeFocus2('staff_code')"></el-input>
         <table width="620px" cellspacing='0' cellpadding='0' height="400px"
           style="margin-top: 20px;display: inline-block">
@@ -318,6 +318,7 @@
 <script>
   import axios from 'axios'
   export default {
+        props:['order_list','otherProduceDialogShow'],
     data() {
       return {
         buttonList: "1234567890",
@@ -352,7 +353,7 @@
       }
     },
     methods: {
-      editItem(id) {
+    editItem(id) {
 
         // this.selectData.forEach(element => {
         //   element.isSelected=false
@@ -362,48 +363,48 @@
           if (element.id == id) {
 
             element.isSelected = !element.isSelected
-    if (element.isSelected == false) {
-            let url="http://120.55.124.53:14100/warping/updateProduceForm"
-               let method = "post";
-                      let person=(String(element.person)).split('、')
-                       if(element.number==null){
-                        element.number=0
-                      }
-        let data = {
-          company_id: this.companyId,
-          creat_time:this.formatDate(),
-          id:element.id,
-          type:element.type,
-          number:element.number,
-          units:element.units,
-          person:person,
+            if (element.isSelected == false) {
+              let url = "http://120.55.124.53:14100/warping/updateProduceForm"
+              let method = "post";
+              let person = (String(element.person)).split('、')
+              if (element.number == null) {
+                element.number = 0
+              }
+              let data = {
+                company_id: this.companyId,
+                creat_time: this.formatDate(),
+                id: element.id,
+                type: element.type,
+                number: element.number,
+                units: element.units,
+                person: person,
+ warping_id:String(this.order_list.id)
+
+              };
+              axios({
+                  url: url,
+                  method: method,
+                  data: data,
+
+                })
+                .then(response => {
+                  console.log(response)
+                  if (response.data.message == "response to success") {
+                    this.$message({
+                      message: '更新成功！',
+                      type: 'success'
+                    });
+                  } else {
+                    this.$message.error('更新失败！');
+                  }
+
+                  this.getData(true)
+                })
 
 
-        };
-             axios({
-            url: url,
-            method: method,
-            data: data,
-
-          })
-          .then(response => {
-            console.log(response)
-                if (response.data.message == "response to success") {
-              this.$message({
-                message: '更新成功！',
-                type: 'success'
-              });
-            } else {
-              this.$message.error('更新失败！');
             }
-
-            this.getData(true)
-          })
-
-    
           }
-          }
-      
+
 
         });
       },
@@ -439,27 +440,27 @@
           })
 
       },
-      lastPage(){
-      if(this.pageNum>1){
-this.pageNum=this.pageNum-1
- this.showData=this.pagination(this.pageNum,this.pageSize,this.selectData)
-      }else{
- this.$message({
-          message: '没有上一页了哦！',
-          type: 'warning'
-        });
-      }
+      lastPage() {
+        if (this.pageNum > 1) {
+          this.pageNum = this.pageNum - 1
+          this.showData = this.pagination(this.pageNum, this.pageSize, this.selectData)
+        } else {
+          this.$message({
+            message: '没有上一页了哦！',
+            type: 'warning'
+          });
+        }
       },
-      nextPage(){
-      if((this.pageSize*this.pageNum)<this.selectData.length){
-this.pageNum=this.pageNum+1
- this.showData=this.pagination(this.pageNum,this.pageSize,this.selectData)
-      }else{
- this.$message({
-          message: '最后一页了哦！',
-          type: 'warning'
-        });
-      }
+      nextPage() {
+        if ((this.pageSize * this.pageNum) < this.selectData.length) {
+          this.pageNum = this.pageNum + 1
+          this.showData = this.pagination(this.pageNum, this.pageSize, this.selectData)
+        } else {
+          this.$message({
+            message: '最后一页了哦！',
+            type: 'warning'
+          });
+        }
       },
       getData(flag) {
         let url = 'http://106.12.219.66:8227/report/getSimpleReport';
@@ -472,14 +473,16 @@ this.pageNum=this.pageNum+1
           "tableName": "station_produce_info",
           "pageNum": 1,
           "pageSize": 1000,
-
+query:{
+  warping_id:String(this.order_list.id)
+}
         };
 
         let that = this
-         that.showData=[]
-        if(flag!=true){
-            
-            that.pageNum=1
+        that.showData = []
+        if (flag != true) {
+
+          that.pageNum = 1
         }
         that.selectData = []
         axios({
@@ -495,8 +498,8 @@ this.pageNum=this.pageNum+1
               element.isSelected = false
               that.selectData.push(element)
             });
-         
-            that.showData=that.pagination(that.pageNum,that.pageSize,that.selectData)
+
+            that.showData = that.pagination(that.pageNum, that.pageSize, that.selectData)
             // this.macRelation.mac_type_id = response.data.data[0].id
             // for (let i = 0; i < response.data.data.length; i++) {
 
@@ -526,6 +529,7 @@ this.pageNum=this.pageNum+1
           element.number = element.num
           element.person = element.nameList
           element.units = element.unit
+          element.warping_id=String(this.order_list.id)
         });
         let url = "http://120.55.124.53:14100/warping/addProduceForm"
         if (this.dataList.length > 0) {
@@ -535,7 +539,8 @@ this.pageNum=this.pageNum+1
               data: {
                 company_id: this.companyId,
                 form_data: data,
-                creat_time: this.formatDate()
+                creat_time: this.formatDate(),
+             
               },
 
             })
@@ -619,35 +624,35 @@ this.pageNum=this.pageNum+1
       },
       addName(id) {
         this.showNameTable = true
-   this.id = id
+        this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = true
       },
       deleteName(id) {
         this.showNameTable = true
-   this.id = id
+        this.id = id
         document.getElementById("staff_code").focus()
         this.focusInput = "staff_code"
         this.isadd = false
       },
       add() {
-        if(this.dataList.length<4){
- this.dataList.push({
-          id: this.dataList.length,
-          type: this.typeList[0].type,
-          unit: this.unitList[0].units,
-          nameList: [
+        if (this.dataList.length < 4) {
+          this.dataList.push({
+            id: this.dataList.length,
+            type: this.typeList[0].type,
+            unit: this.unitList[0].units,
+            nameList: [
 
-          ]
-        })
-        }else{
-             this.$message({
-          message: '一次添加最多四条！',
-          type: 'warning'
-        });
+            ]
+          })
+        } else {
+          this.$message({
+            message: '一次添加最多四条！',
+            type: 'warning'
+          });
         }
-       
+
         console.log(this.dataList)
 
       },
@@ -669,7 +674,7 @@ this.pageNum=this.pageNum+1
         this.isadd2 = false
       },
       showNum2(id) {
-     
+
         this.showNumTable2 = true
         document.getElementById("num2").focus()
         this.focusInput2 = "num"
@@ -683,7 +688,7 @@ this.pageNum=this.pageNum+1
         document.getElementById("num").focus()
         this.focusInput = "num"
         this.id = id
-      
+
       },
       changeFocus2(focusInput) {
         this.focusInput2 = focusInput
@@ -741,19 +746,19 @@ this.pageNum=this.pageNum+1
       getPermission() {
         console.log(this.num)
         this.showNumTable = false
-          
+
         this.dataList.forEach(element => {
           if (element.id == this.id) {
-            let type=element.type
+            let type = element.type
             element.num = this.num
-                      element.type = element.num
-                          element.type=type
+            element.type = element.num
+            element.type = type
             this.num = ""
           }
-       
+
         });
-      
-     
+
+
         console.log(this.dataList)
 
       },
@@ -775,9 +780,9 @@ this.pageNum=this.pageNum+1
         console.log(this.id2)
         // let key=0
         this.showData.forEach(element => {
-        //  if(key==0){
-        //    key=1
-        //  }
+          //  if(key==0){
+          //    key=1
+          //  }
           element.nameList = []
           if (element.id == this.id2) {
             console.log(element.id)
@@ -811,33 +816,33 @@ this.pageNum=this.pageNum+1
                 if (response.data.data.length >= 1) {
                   if (that.isadd2 == true) {
                     console.log(element.person)
-                    if(element.person==""){
-                       element.person=element.person+(response.data.data[0].staff_name)
-                    }else{
-                       element.person=element.person+("、"+response.data.data[0].staff_name)
+                    if (element.person == "") {
+                      element.person = element.person + (response.data.data[0].staff_name)
+                    } else {
+                      element.person = element.person + ("、" + response.data.data[0].staff_name)
                     }
-                   
+
                   } else {
-                     console.log(element.person)
-                   
-                     if(element.person.indexOf(response.data.data[0].staff_name+'、')==-1){
-                       if(element.person[element.person.indexOf(response.data.data[0].staff_name)-1]=='、'){
-element.person= element.person.replace('、'+response.data.data[0].staff_name,""); 
-                       }else{
-                        element.person= element.person.replace(response.data.data[0].staff_name,"");  
-                       }
-                       
-                     }else{
-                        
-                       element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
-                     }
-                  // if(key==1){
-                  //     element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
-                  // }else{
-                  //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
-                  // }
+                    console.log(element.person)
+
+                    if (element.person.indexOf(response.data.data[0].staff_name + '、') == -1) {
+                      if (element.person[element.person.indexOf(response.data.data[0].staff_name) - 1] == '、') {
+                        element.person = element.person.replace('、' + response.data.data[0].staff_name, "");
+                      } else {
+                        element.person = element.person.replace(response.data.data[0].staff_name, "");
+                      }
+
+                    } else {
+
+                      element.person = element.person.replace(response.data.data[0].staff_name + "、", "");
+                    }
+                    // if(key==1){
+                    //     element.person= element.person.replace(response.data.data[0].staff_name+"、",""); 
+                    // }else{
+                    //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
+                    // }
                   }
-                
+
 
                 } else {
                   this.$message.warning("员工号不正确!");
@@ -904,9 +909,10 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
 
       },
       pagination(pageNo, pageSize, array) {
-var offset = (pageNo - 1) * pageSize;
-return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
-},
+        var offset = (pageNo - 1) * pageSize;
+        return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
+          pageSize);
+      },
     },
     mounted() {
     
@@ -929,13 +935,23 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
         }else{
           this.dataList=[]
         }
+      },
+             otherProduceDialogShow(val){
+   
+       if(val==true){
+          this.isSelect=true
+       }
       }
     }
   }
 
 </script>
 
-<style lang="less">
+<style scoped >
+/deep/ .el-input--medium .el-input__inner{
+    height: 5rem;
+    line-height: 3rem;
+}
 .bigSquareButton{
   width: 10rem;
   height: 10rem;

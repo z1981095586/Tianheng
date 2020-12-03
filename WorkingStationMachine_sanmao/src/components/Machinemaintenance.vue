@@ -1,23 +1,61 @@
 <template>
   <div class="allPage_M">
-    <div class="operationPane_con" v-show="isMachine" style="display: flex; justify-content: center; align-items: flex-start">
+    <div
+      class="operationPane_con"
+      v-show="isMachine"
+      style="display: flex; justify-content: center; align-items: flex-start"
+    >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group :max="1" @change="checkedMachine" v-model="checkMachine" style="width: 100%; height: 100%">
-          <el-checkbox-button size="medium" v-for="(item, index) in machineList" style="magin: 1rem; font-size: 2rem" :label="item.machine_id" :key="index">{{ item.machine_id }}</el-checkbox-button>
+        <el-checkbox-group
+          :max="1"
+          @change="checkedMachine"
+          v-model="checkMachine"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in machineList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.machine_id"
+            :key="index"
+            >{{ item.machine_id }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancel()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureMachine()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="cancel()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" layout="prev, pager, next" :total="total_num2"> </el-pagination>
+          <el-pagination
+            background
+            small
+            :pager-count="3"
+            layout="prev, pager, next"
+            :total="total_num2"
+          >
+          </el-pagination>
         </div>
       </div>
       <div class="leftLabel"><span>选机台</span></div>
       <div class="search">
-        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span style="color: red; margin-left: 1rem">选中机台：{{ this.checkedMachineNum }}</span>
+        <span style="font-size: 2rem">搜索：</span
+        ><input placeholder="输入机台号" /><span
+          style="color: red; margin-left: 1rem"
+          >选中机台：{{ this.checkedMachineNum }}</span
+        >
       </div>
       <img src="../../static/img/close.png" @click="cancel()" />
     </div>
@@ -26,11 +64,29 @@
         <div class="allPage_con_left_top">
           <div class="allPage_con_left_top_left">
             <div class="allPage_con_left_top_left_title">报修机台</div>
-            <div class="allPage_con_left_top_left_btn" v-show="!isChecked" @click="chooseMachine()">请选择</div>
-            <div class="allPage_con_left_top_left_btn" v-show="isChecked" @click="chooseMachine()">{{ checkedMachineNum }}</div>
+            <div
+              class="allPage_con_left_top_left_btn"
+              v-show="!isChecked"
+              @click="chooseMachine()"
+            >
+              请选择
+            </div>
+            <div
+              class="allPage_con_left_top_left_btn"
+              v-show="isChecked"
+              @click="chooseMachine()"
+            >
+              {{ checkedMachineNum }}
+            </div>
           </div>
           <div class="allPage_con_left_top_right">
-            <div class="baoxiu_btn" :style="!isChecked ? 'background:#808080' : 'background:#A3D897'" @click="repair">报修</div>
+            <div
+              class="baoxiu_btn"
+              :style="!isChecked ? 'background:#808080' : 'background:#A3D897'"
+              @click="repair"
+            >
+              报修
+            </div>
           </div>
         </div>
         <div class="allPage_con_left_middle">
@@ -45,16 +101,33 @@
         </div>
         <div class="allPage_con_left_bottom">
           <div class="allPage_con_left_top_left" style="width: 100%">
-            <div class="allPage_con_left_top_left_title" style="height: 30%">品名</div>
-            <textarea disabled placeholder="选择机台后获取..." style="height: 70%; width: 98.3%"></textarea>
+            <div class="allPage_con_left_top_left_title" style="height: 30%">
+              品名
+            </div>
+            <textarea
+              disabled
+              placeholder="选择机台后获取..."
+              style="height: 70%; width: 98.3%"
+            ></textarea>
           </div>
         </div>
       </div>
       <div class="allPage_con_right">
         <div class="allPage_con_right_left">
-          <div class="allPage_con_right_left_one" @click="checkQuestion(item.id)" v-for="(item, index) in questionList" :key="index">
+          <div
+            class="allPage_con_right_left_one"
+            @click="checkQuestion(item.id)"
+            v-for="(item, index) in questionList"
+            :key="index"
+          >
             <!-- <span>{{item.title}}</span> -->
-            <div class="question_area" style="height: 100%" :style="item.isChecked ? 'background:#3296FA' : 'background:#808080'">
+            <div
+              class="question_area"
+              style="height: 100%"
+              :style="
+                item.isChecked ? 'background:#3296FA' : 'background:#808080'
+              "
+            >
               <span>{{ item.question }}</span>
             </div>
           </div>
@@ -300,7 +373,10 @@ export default {
           } else if (this.questionList[i].isChecked == false) {
             //console.log(this.questionCon.indexOf(this.questionList[i]));
             if (this.questionCon.indexOf(this.questionList[i]) != -1) {
-              this.questionCon.splice(this.questionCon.indexOf(this.questionList[i]), 1);
+              this.questionCon.splice(
+                this.questionCon.indexOf(this.questionList[i]),
+                1
+              );
               //console.log(this.questionCon);
             }
           }
@@ -357,7 +433,6 @@ export default {
       // val.forEach(element => {
       //   });
       //console.log(val);
-  
     },
   },
 };

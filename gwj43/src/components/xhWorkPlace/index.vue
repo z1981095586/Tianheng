@@ -1,10 +1,9 @@
 <template>
-  <!--浆纱工位机页面-->
   <div  @click="makeFullScreen">
     <!--织轴绑定-->
     <el-dialog
       :visible.sync="showSetAxleTable"
-      width="900px"
+      width="1200px"
       append-to-body
       :close-on-click-modal="false"
     >
@@ -24,7 +23,7 @@
     <!--经轴确认-->
     <el-dialog
       :visible.sync="showConfirmAxleTable"
-      width="1200px"
+      width="1600px"
       append-to-body
       :close-on-click-modal="false"
       :before-close="confirmAxleFinished"
@@ -45,7 +44,7 @@
       <table cellspacing='0' cellpadding='0' border="0" width="100%" height="400px" style="overflow-y: auto">
         <tr v-for="indexTr in 3">
           <td v-for="indexTd in 12" style="text-align: center">
-            <el-button plain type="primary" disabled :id="axleListArray[(indexTr-1)*12+indexTd-1].beamName+'confirm'" v-if="axleListArray[(indexTr-1)*12+indexTd-1]" style="width: 5rem;height: 5rem">
+            <el-button plain type="primary" disabled :id="axleListArray[(indexTr-1)*12+indexTd-1].beamName+'confirm'" v-if="axleListArray[(indexTr-1)*12+indexTd-1]" style="width: 6rem;height: 6rem">
               <p class="big_font" style="font-size: 18px">{{axleListArray[(indexTr-1)*12+indexTd-1].beamName}}</p>
             </el-button>
           </td>
@@ -55,7 +54,7 @@
     <!--经轴换绑-->
     <el-dialog
       :visible.sync="showModifyAxleTable"
-      width="900px"
+      width="1200px"
       append-to-body
       :close-on-click-modal="false"
       :before-close="changeAxleFinished"
@@ -80,7 +79,7 @@
       <table cellspacing='0' cellpadding='0' border="0" width="100%" height="400px" style="overflow-y: auto">
         <tr v-for="indexTr in 5">
           <td v-for="indexTd in 7" style="text-align: center">
-            <el-button plain type="primary" :id="axleListArray[(indexTr-1)*7+indexTd-1].beamName" v-if="axleListArray[(indexTr-1)*7+indexTd-1]" style="width: 50px;height: 50px" @click="chooseAxle(axleListArray[(indexTr-1)*7+indexTd-1].beamName)">
+            <el-button plain type="primary" :id="axleListArray[(indexTr-1)*7+indexTd-1].beamName" v-if="axleListArray[(indexTr-1)*7+indexTd-1]" style="width: 80px;height: 80px" @click="chooseAxle(axleListArray[(indexTr-1)*7+indexTd-1].beamName)">
               <p class="big_font" style="font-size: 18px">{{axleListArray[(indexTr-1)*7+indexTd-1].beamName}}</p>
             </el-button>
           </td>
@@ -105,18 +104,18 @@
     >
       <p style="display: inline-block;font-size: 30px">密码:</p><el-input v-model="option_code" ref="option_code"  style="font-size: 30px;width: 400px" class="standard_input" ></el-input>
       <br> <br>
-      <table width="800px"  cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
+      <table width="620px"  cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
         <tr v-for="indexTr in 2" >
           <td  v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 150px;height: 150px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p  style="font-weight: bolder;font-size: 70px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+            <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+              <p  style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
             </el-button>
           </td>
           <td v-if="indexTr===1">
-            <el-button type="primary" style="width:150px;height:150px;font-size: 40px;margin-bottom: 5px;font-weight: bolder" @click="getOptionPermission">确定</el-button>
+            <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px;font-weight: bolder" @click="getOptionPermission">确定</el-button>
           </td>
           <td v-if="indexTr===2">
-            <el-button type="info" style="width:150px;height:150px;font-size: 40px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
+            <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
           </td>
         </tr>
       </table>
@@ -128,43 +127,43 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <div slot="title" style="font-size: 2rem">修改经轴信息</div>
+      <div slot="title" style="font-size: 2.5vw">修改经轴信息</div>
       <div>
         <p style="font-size: 2rem;display: inline-block">当前轴号为{{dataSelect.axisNo || "无"}},请输入轴号</p>
         <el-input v-model="axisNo" ref="axisNo"  style="font-size: 32px;width: 400px;line-height: 60px" class="standard_input" @focus="focusName = 'axisNo'"></el-input>
         <p style="font-size: 2rem;display: inline-block">当前报产米数为{{dataSelect.currentRealYield || 0}},请输入修改米长</p>
         <el-input v-model="lengthFinished" ref="lengthFinished"  style="font-size: 32px;width: 400px;line-height: 60px" class="standard_input" @focus="focusName = 'lengthFinished'"></el-input>
         <br> <br>
-        <table width="900"  cellspacing='0' cellpadding='0' height="400px" style="display: inline-block" v-show="focusName === 'lengthFinished'">
+        <table width="1000"  cellspacing='0' cellpadding='0' height="400px" style="display: inline-block" v-show="focusName === 'lengthFinished'">
           <tr v-for="indexTr in 2" >
             <td  v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 150px;height: 150px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
                 <p  style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
               </el-button>
             </td>
             <td v-if="indexTr===1">
-              <el-button type="primary" style="width:150px;height:150px;font-size: 45px;margin-bottom: 5px;font-weight: bolder" @click="submitModifyAxis">确定</el-button>
+              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px;font-weight: bolder" @click="submitModifyAxis">确定</el-button>
             </td>
             <td v-if="indexTr===2">
-              <el-button type="info" style="width:150px;height:150px;font-size: 45px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
+              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
             </td>
           </tr>
         </table>
-        <table width="900px"  cellspacing='0' cellpadding='0' height="300px" v-show="focusName === 'axisNo'"  >
+        <table width="1100px"  cellspacing='0' cellpadding='0' height="300px" v-show="focusName === 'axisNo'">
           <tr v-for="indexTr in 3" >
             <td  v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 150px;height: 150px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonSetting[(indexTr-1)*5+indexTd-1])">
-                <p  style="font-weight: bolder;font-size: 70px;width: 100%">{{buttonSetting[(indexTr-1)*5+indexTd-1]}}</p>
+              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonSetting[(indexTr-1)*5+indexTd-1])">
+                <p  style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonSetting[(indexTr-1)*5+indexTd-1]}}</p>
               </el-button>
             </td>
             <td v-if="indexTr===1">
-              <el-button type="primary" style="width:150px;height:150px;font-size: 45px;margin-bottom: 5px;font-weight: bolder" @click="submitModifyAxis">提交</el-button>
+              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px;font-weight: bolder" @click="submitModifyAxis">提交</el-button>
             </td>
             <td v-if="indexTr===2">
-              <el-button type="danger" style="width:150px;height:150px;font-size: 45px;margin-bottom: 5px;font-weight: bolder" @click="showModifyAxisTable = false" >取消</el-button>
+              <el-button type="danger" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px;font-weight: bolder" @click="showModifyAxisTable = false" >取消</el-button>
             </td>
             <td v-if="indexTr===3">
-              <el-button type="info" style="width:150px;height:150px;font-size: 45px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
+              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
             </td>
           </tr>
         </table>
@@ -184,14 +183,15 @@
         新增轴设定产量：<span style="color: #F9243D">{{dataSelect.workQty || ""}}</span>米<br>
       </div>
       <div style="width: 100%;text-align: center;margin-top: 5%">
-        <el-button type="primary" style="width: 10vw;height: 10vw;margin-right:50px;margin-bottom: 5px" size="medium" @click="cutAxle">
-          <p  style="font-weight: bolder;line-height:30px;font-size: 2.5vw;width: 100%">确认<br>新增</p>
+        <el-button type="primary" style="width: 8vw;height: 8vw;margin-right:50px;margin-bottom: 5px" size="medium" @click="cutAxle">
+          <p  style="font-weight: bolder;font-size: 2.5vw;width: 100%">确认<br>新增</p>
         </el-button>
-        <el-button type="success" style="width: 10vw;height: 10vw;margin-bottom: 5px" size="medium" @click="showAddAxisTable = false">
-          <p  style="font-weight: bolder;line-height:30px;font-size: 2.5vw;width: 100%">取消<br>新增</p>
+        <el-button type="success" style="width: 8vw;height: 8vw;margin-bottom: 5px" size="medium" @click="showAddAxisTable = false">
+          <p  style="font-weight: bolder;font-size: 2.5vw;width: 100%">取消<br>新增</p>
         </el-button>
       </div>
     </el-dialog>
+
     <!--打印经轴-->
     <!--<el-dialog-->
     <!--:visible.sync="printAxisTable"-->
@@ -207,12 +207,13 @@
     <!--头部-->
     <el-dialog
       :visible.sync="otherProduceDialogShow"
-      width="950px"
+      width="1600px"
       append-to-body
       :close-on-click-modal="false"
     >
-      <otherProductTable ref="otherProductTable" :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
+      <otherProductTable ref="otherProductTable" :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
+    <!--其他产量对话框-->
     <div style="height: 80px;background-color: #29374b;width: 100%">
       <headComponent ref="headComponent" @selectWorker="selectWorker" @getData="getDataRefresh" @getStaffNameById="getStaffNameById" @returnFunc="returnFunc"></headComponent>
     </div>
@@ -220,9 +221,9 @@
       <div>
         <div :style="{height: scrollerHeightTop,width:scrollerWidthLeft}" style="display: inline-block">
           <el-card style="width: 100%;" :style="{height: scrollerHeightTop,width:scrollerWidthLeft}" shadow="hover">
-            <div style="width: 100%;margin-left: 0%" >
+            <div style="width: 93%;margin-left: 5%" >
               <p class="standard_font">点击下方区域即可扫码</p>
-              <input v-model="barCode" :style="{height:inputHeight,paddingRight:paddingRight}" @input="batchCodeChange(barCode)"   style="display: inline-block;font-size: 16px;font-weight :bold; width: 100%"></input>
+              <input v-model="barCode" :style="{height:inputHeight,paddingRight:paddingRight}" @input="batchCodeChange(barCode)"   style="display: inline-block;font-size: 30px;width: 100%"></input>
               <img :src="delete_icon"  style="display: inline-block;position: fixed" @click="barCode = ''" :style="{opacity:0.2,height:buttonHeight,left:buttonLeft,top:buttonTop}">
             </div>
           </el-card>
@@ -241,7 +242,7 @@
                   设备编号：{{order_list.machineId}}
                 </td>
                 <td rowspan="6" style="width: 300px;border-width: 3px;"  >
-                  <div style="width: 100%;margin-top: -20px;margin-left: 20px" :style="{height:scrollerHeightRightButton}" >
+                  <div style="width: 100%;margin-top:-25px;margin-left: 20px" :style="{height:scrollerHeightRightButton}" >
                     <div style="width: 100%;background-color: #29374b;height: 22%" @click="changeAxle">
                       <p class="big_font" style="text-align: center;color:white">经轴换绑</p>
                     </div>
@@ -288,49 +289,50 @@
                 </td>
               </tr>
             </table>
-            <el-button type="warning" style="height: 40px;position: absolute;top: 110px;right: 14rem;" size="medium" @click="otherProduceDialogShow=true">
+            <el-button type="warning" style="height: 100px;position: absolute;   width: 11rem;
+    height: 4rem;
+        right: 52rem;
+    top: 10rem;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
-                <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 5%">其他产量</p>
+                <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 13%">其他产量</p>
               </div>
             </el-button>
           </el-card>
         </div>
       </div>
       <div style="margin-top:10px ">
-        <!--左下区域-->
         <div :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}"  style="display: inline-block" >
           <el-card style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}" shadow="hover" body-style="">
             <div class="left-bottomDiv" id="leftDiv"  :style="{height: scrollerHeightBottomDiv}" @mousedown="mousedown" @touchstart="mousedown" @mousemove="move" @mouseup="end" @touchmove.prevent="move"  @touchend="end" >
-              <div class="standard_border" @click="changeByCardNumber(item)" :style="{height:label_height,backgroundColor:getLabelColor(item.status)}" v-for="item in all_order_list" :label="item.barCode" :key="item.id" style="width: 90%;display: inline-block;margin-left: 0%;margin-bottom: 10px;border-width:2px;padding: 5px" >
+              <div class="standard_border" @click="changeByCardNumber(item)" :style="{height:label_height,backgroundColor:getLabelColor(item.status)}" v-for="item in all_order_list" :label="item.barCode" :key="item.id" style="width: 80%;display: inline-block;margin-left: 5%;margin-bottom: 10px;border-width:2px;padding: 10px" >
                 <table cellspacing='0' cellpadding='0' border="0" width="100%">
                   <tr>
                     <td colspan="2">
-                      <p class="small_font" style="display: inline-block;margin-top: 5px">浆纱单 &nbsp<br>{{item.barCode}}</p>
+                      <p class="standard_font" style="display: inline-block;margin-top: 20px">浆纱单&nbsp{{item.barCode}}</p>
                       <img :src="selectedPicture" alt="" width="30px" style="display: inline-block;" v-show="item.barCode === barCode">
                     </td>
                   </tr>
                   <tr>
-                    <td style="width: 130%">
-                      <p class="small_font">品名&nbsp{{item.orderSheetPlan.productName}}</p>
+                    <td>
+                      <p class="standard_font">品名&nbsp{{item.orderSheetPlan.productName}}</p>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <p class="small_font">机台号&nbsp{{item.machineId}}</p>
+                      <p class="standard_font">机台号&nbsp{{item.machineId}}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td style="width: 30%">
+                    <td style="width: 50%">
                       <p class="small_font">单据编号&nbsp{{item.orderSheetId}}</p>
                     </td>
-                    <td style="width: 170%">
+                    <td style="width: 50%">
                       <p class="small_font">合轴数&nbsp{{item.axialNumber}}</p>
                     </td>
                   </tr>
                 </table>
               </div>
               <div>
-                <!--左侧按钮-->
                 <img id="left_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowLeft,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none" @click="left_up">
                 <img id="left_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowLeft,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg)" @click="left_down">
               </div>
@@ -340,25 +342,23 @@
         <div :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}"  style="display: inline-block;margin-left: 10px">
           <el-card style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthRight}" shadow="hover" >
             <div>
-              <!--右侧按钮-->
               <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);" @click="right_up">
               <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg)" @click="right_down">
             </div>
-            <!--右下区域-->
             <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" >
-              <div class="standard_border" :id="'rightLabel'+ item.id" :style="{height:label_height_right}" v-for="item in order_detail_list" :label="item.axisNo" :key="item.id" style="width: 93%;margin-bottom: 10px;border-width:2px;padding: 10px" @click="rightLabelClick(item)">
+              <div class="standard_border" :id="'rightLabel'+ item.id" :style="{height:label_height_right}" v-for="item in order_detail_list" :label="item.axisNo" :key="item.id" style="width: 92%;margin-bottom: 10px;border-width:2px;padding: 10px" @click="rightLabelClick(item)">
                 <table id="rightLabel" cellspacing='0' cellpadding='0' border="0" width="100%"  style="height: 100%;overflow-y: scroll">
                   <tr>
-                    <td  style="width: 15%">
+                    <td  style="width: 25%">
                       <p class="big_font">序号：{{item.index}}</p>
                     </td>
-                    <td  style="width: 15%">
+                    <td  style="width: 25%">
                       <p class="big_font">轴号：{{item.axisNo}}</p>
                     </td>
-                    <td style="width: 25%" rowspan="2">
-                      <el-button :style="{backgroundColor:getColor(item.status,[0,null])}" style="height: 65px;display: inline-block"  :disabled="item.status!==0&&item.status!==null" @click="setAxle(item)">
+                    <td style="width: 40%" rowspan="2">
+                      <el-button :style="{backgroundColor:getColor(item.status,[0,null])}" style="height: 80px;display: inline-block"  :disabled="item.status!==0&&item.status!==null" @click="setAxle(item)">
                         <div :style="{height:button_height}" style="display: inline-block">
-                          <p class="big_font" style="color: white;height: 60%;line-height:70%;margin-top: 15%">织轴<br/><br/>绑定</p>
+                          <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">织轴绑定</p>
                         </div>
                       </el-button>
                       <!--<el-button :style="{backgroundColor:getColor(item.status,[1,2])}" style="height: 80px;display: inline-block" v-if="item.status!==0&&item.status!==null"  @click="setAxle(item)">-->
@@ -366,9 +366,9 @@
                       <!--<p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">更换织轴</p>-->
                       <!--</div>-->
                       <!--</el-button>-->
-                      <el-button :style="{backgroundColor:getColor(item.status,[4,1])}" style="height: 65px;display: inline-block" :disabled="(item.status===0||item.status===3||item.status===3||item.status===null)" @click="submit(item)">
+                      <el-button :style="{backgroundColor:getColor(item.status,[4,1])}" style="height: 80px;display: inline-block" :disabled="(item.status===0||item.status===3||item.status===3||item.status===null)" @click="submit(item)">
                         <div :style="{height:button_height}" style="display: inline-block">
-                          <p class="big_font" style="color: white;height: 60%;line-height:70%;margin-top: 15%">生产<br/><br/>完成</p>
+                          <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">生产完成</p>
                         </div>
                       </el-button>
                       <el-popover
@@ -376,9 +376,9 @@
                         width="600"
                         style="margin-left: 10px"
                         trigger="click">
-                        <el-button slot="reference" :style="{backgroundColor:getColor(item.status,[null])}" style="height: 65px;display: inline-block" v-show="item.status===null">
+                        <el-button slot="reference" :style="{backgroundColor:getColor(item.status,[null])}" style="height: 80px;display: inline-block" v-show="item.status===null">
                           <div :style="{height:button_height}" style="display: inline-block">
-                            <p class="big_font" style="color: white;height: 60%;line-height:70%;margin-top: 15%">删除<br/><br/>织轴</p>
+                            <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">删除织轴</p>
                           </div>
                         </el-button>
                         <div style="width: 100%;text-align: center">
@@ -432,9 +432,9 @@
                             </div>
                           </el-button>
                         </div>
-                        <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 70px;display: inline-block;background-color: #417804" slot="reference" :disabled="item.status===0||item.status===null" @click="showDetails(item)" v-show="item.status!==null">
+                        <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 80px;display: inline-block;background-color: #417804" slot="reference" :disabled="item.status===0||item.status===null" @click="showDetails(item)" v-show="item.status!==null">
                           <div :style="{height:button_height}" style="display: inline-block">
-                            <p class="big_font" style="color: white;height: 60%;line-height:75%;margin-top: 10%">更多<br/><br/>操作</p>
+                            <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">更多操作</p>
                           </div>
                         </el-button>
                       </el-popover>
@@ -590,9 +590,9 @@
         this.label_height_right =(((window.innerHeight*0.98 -80) -20)*0.75 - 64)/4 + "px";
         this.button_height =((((window.innerHeight*0.98 -80) -20)*0.75 - 70)/4.5 -20)/2 +"px";
         this.upArrowTop = ((window.innerHeight*0.98 -80) -20)*0.25 +80+50+((window.innerWidth -10)-10)*0.25*0.3+"px";
-        this.arrowLeft = ((window.innerWidth -10)-10)*0.26*0.82+"px";
-        this.arrowRight = 20+((window.innerWidth -10)-10)*0.25+((window.innerWidth -10)-10)*0.73*0.92+10+"px";
-        this.arrowWidth = ((window.innerWidth -10)-10)*0.20*0.15+"px";
+        this.arrowLeft = ((window.innerWidth -10)-10)*0.25*0.82+"px";
+        this.arrowRight = 20+((window.innerWidth -10)-10)*0.25+((window.innerWidth -10)-10)*0.75*0.92+10+"px";
+        this.arrowWidth = ((window.innerWidth -10)-10)*0.25*0.15+"px";
         this.downArrowTop = window.innerHeight -30 - ((window.innerWidth -10)-10)*0.25*0.45 + "px";
       },
       getColor(status,step){
@@ -958,6 +958,7 @@
           let print_count = 1;
           common_api("/report/getSimpleReport", data,this.companyId)
             .then(response => {
+              console.log();
               if(response.data.result === "ok"){
                 if(response.data.data[0]){
                   print_count = response.data.data[0].print_count;
@@ -994,6 +995,7 @@
             } else {
               newBarCode = "FB" + this.order_list.orderSheetPlan.orderSheetNo + "01";
             }
+            console.log(newBarCode);
             this.newBarCode = newBarCode;
             let order_detail_list = [];
             let dataObject ={};
@@ -1004,7 +1006,7 @@
               addCode = "00" + dataObject.print_count;
               dataObject.volumeSemi = addCode.substring(addCode.length-3);
               dataObject.id = this.newBarCode + dataObject.volumeSemi;
-              dataObject.yieldMeterSemi = 120;
+              dataObject.yieldMeterSemi = item.lmWarpPlanB.yieldMeterSemi;
               order_detail_list.push(dataObject);
             }
             //console.log(order_detail_list);
@@ -1017,6 +1019,8 @@
           });
       },
       printClothCardReturn(order_detail_list){
+        // console.log(this.order_list);
+        // console.log(clothEaches);
         //落布返回记录，生成织造加工单
         if(order_detail_list.length>0){
           let data={};
@@ -1036,7 +1040,7 @@
             clothEaches.push({
               id:order_detail_list[i].id,
               volumeSemi:order_detail_list[i].volumeSemi,
-              yieldMeterSemi:"110",
+              yieldMeterSemi: order_detail_list[i].lmWarpPlanB.yieldMeterSemi,
               remark:""
             })
           }
@@ -1093,7 +1097,7 @@
             .then(response => {
               //console.log(response.data);
               if(response.data.result === "fail"){
-                let message =response.data.successMessage;
+                let message = response.data.successMessage;
                 this.$message.warning(message);
               }else{
                 this.getDataByCardNumber(this.barCode);
@@ -1558,10 +1562,15 @@
         let url = "/lm-warp-plan-detail/addJsAxis";
         warp_api(url, data,this.companyId)
           .then(response => {
-            //console.log(response.data);
-            this.showAddAxisTable = false;
-            this.$message.success("新增织轴成功");
-            this.getDetails(this.order_list.id);
+            if(response.data.result === "fail"){
+              this.showAddAxisTable = false;
+              this.$message.warning(response.data.message);
+              this.$store.state.showLoadingLog = false;
+            }else{
+              this.showAddAxisTable = false;
+              this.$message.success("新增织轴成功");
+              this.getDetails(this.order_list.id);
+            }
           })
           .catch(error => {
             console.log(error);
@@ -1647,7 +1656,7 @@
       },
       changeWorker(){
         this.$refs.headComponent.changeWorker();
-      },
+      }
     },
     mounted() {
       this.getUrlMessage();
@@ -1668,9 +1677,9 @@
           clearTimeout(this.$store.state.commonClock);
           let _this = this;
           this.$store.commonClock = setTimeout(function () {
-            //  _this.$message.warning("出现异常，自动取消上一步操作");
+            //_this.$message.warning("出现异常，自动取消上一步操作");
             _this.$store.state.showLoadingLog = false;
-          },5000)
+          },15000)
         }else{
           clearTimeout(this.$store.state.commonClock);
           this.$store.state.commonClock = null;
@@ -1683,21 +1692,39 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
+  .otherProduct{
+    width: 11rem;
+    height: 3rem;
+    background: red;
+    font-size: 1.3rem;
+
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    right: 52rem;
+    top: 10rem;
+    font-weight: 600;
+  }
   .big_font{
     color: #616164;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.2vw;
   }
   .standard_font{
     color: #616164;
     font-weight: bolder;
-    font-size: 1rem;
+    font-size: 1vw;
   }
   .small_font{
     color: #616164;
     font-weight: bolder;
-    font-size: 0.9rem;
+    font-size: 0.8vw;
   }
   .light_green{
     color: #c4ff7d;

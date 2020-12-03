@@ -1262,7 +1262,7 @@ export default {
 
   height: 20%;
   position: absolute;
-  bottom: 0;
+     bottom: -7px;
 
   display: flex;
   align-items: center;
