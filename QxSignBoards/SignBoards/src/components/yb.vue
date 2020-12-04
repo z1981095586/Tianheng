@@ -139,7 +139,7 @@
           //     }
           // },
           title: {
-            text: "8月疵点品种分析",
+            text: "12月疵点品种分析",
             textStyle: {
               color: "#00C4FF",
               fontSize: 15
@@ -460,7 +460,7 @@
           // },
 
           title: {
-            text: "8月疵点种类分析",
+            text: "12月疵点种类分析",
             textStyle: {
               color: "#00C4FF",
               fontSize: 15

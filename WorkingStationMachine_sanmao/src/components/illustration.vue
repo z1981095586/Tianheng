@@ -105,8 +105,9 @@
             background
             small
             layout="prev, pager, next"
-            :pager-count="4"
+            :pager-count="3"
             :total="total_num"
+            :page-size="21"
             @current-change="CurrentNameChange2"
           >
           </el-pagination>
@@ -210,6 +211,7 @@
             :pager-count="4"
             @current-change="CurrentNameChange"
             :total="total_num2"
+            :page-size="12"
           >
           </el-pagination>
         </div>

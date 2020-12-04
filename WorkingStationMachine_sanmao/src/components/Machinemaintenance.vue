@@ -45,6 +45,7 @@
             :pager-count="3"
             layout="prev, pager, next"
             :total="total_num2"
+            :page-size="page_size2"
           >
           </el-pagination>
         </div>
@@ -319,6 +320,18 @@ export default {
         this.getMachine();
       }
     },
+    nextPage2() {
+      if (this.page_num2 > this.total_num / this.page_size2) {
+        this.$message({
+          message: "没有下一页！",
+          type: "waring",
+          duraing: 1000,
+        });
+      } else {
+        this.page_num2 = this.page_num2 + 1;
+        this.getMachine();
+      }
+    },
     getMachine() {
       let url2 = host + "/api/repair/getRepairType";
       let that = this;
@@ -383,6 +396,7 @@ export default {
         }
       }
     },
+
     chooseMachine() {
       this.isMachine = true;
     },
@@ -409,11 +423,6 @@ export default {
       this.getMachineList();
     },
     problem(val) {
-      //监听问题列表获取
-      //console.log(val);
-      // if(this.questionList.length>0||this.page_num>1){
-
-      // }else{
       this.page_num = 1;
       this.questionList = [];
 
@@ -425,9 +434,6 @@ export default {
         });
       });
       this.total_num = val.total_num;
-
-      // }
-      //  //console.log(this.problemList)
     },
     questionList(val) {
       // val.forEach(element => {

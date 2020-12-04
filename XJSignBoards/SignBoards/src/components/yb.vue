@@ -465,7 +465,7 @@
 
                   tableName: "exam_defect_his",
                   query: {
-                    workshop_id: that.workshop_id
+                    workshop_id: that.workshopId
                   },
 
                   selectFields: ['sum(yield) as sum', "update_time"],
@@ -502,7 +502,7 @@
 
                       tableName: "exam_defect_his",
                       query: {
-                        workshop_id: that.workshop_id
+                        workshop_id: that.workshopId
                       },
 
                       selectFields: ['sum(yield) as sum', "update_time"],
@@ -877,8 +877,12 @@
               'companyId': this.companyId
             },
             data: {
-              tableName: "exam_day_info"
+              tableName: "exam_day_info",
+                 query:{
+                  workshop_id:that.workshopId
             }
+            }
+         
           })
           .then(response => {
             let daysum = 0
@@ -911,7 +915,8 @@
             data: {
               tableName: "exam_day_info_his",
               query: {
-                shift_date: day
+                shift_date: day,
+                workshop_id:that.workshopId
               }
             }
           })

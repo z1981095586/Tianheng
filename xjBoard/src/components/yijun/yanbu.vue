@@ -128,8 +128,8 @@
         const yestoday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
         let date = new Date()
 
-        ////////////console.log(that.getdate(yestoday))
-        ////////////console.log(that.getdate(date))
+        console.log(that.getdate(yestoday))
+        console.log(that.getdate(date))
         axios({ //今日验布
             url: 'http://47.99.156.243:8227/report/getSimpleReport',
             method: 'post',

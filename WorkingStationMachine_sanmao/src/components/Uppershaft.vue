@@ -451,6 +451,7 @@
             :pager-count="4"
             @current-change="CurrentNameChange"
             :total="total_num2"
+            :page-size="12"
           >
           </el-pagination>
         </div>
@@ -1435,14 +1436,12 @@ export default {
         axios({
           url: url,
           method: "post",
-
           data: {
             selectInfo: {
               company_id: that.company_id,
             },
             print_code: val,
           },
-
           // headers: headers
         }).then((res) => {
           //console.log(res);

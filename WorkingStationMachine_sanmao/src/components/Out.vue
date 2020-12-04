@@ -2,7 +2,11 @@
   <div class="operationPane">
     <!-- 开出部分操作栏组件-->
     <!-- 开出首页-->
-    <div class="operationPane_con" style="display: flex; justify-content: space-around; align-items: center" v-show="szIndexShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: space-around; align-items: center"
+      v-show="szIndexShow"
+    >
       <div class="main_btn" @click="toClass">运转班</div>
       <div class="main_btn" @click="toClass2">长白班</div>
       <div class="main_btn" @click="toSz">开出</div>
@@ -10,12 +14,39 @@
     </div>
     <!-- 开出首页-->
     <!-- 开出部分选班次-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="szShiftShow"
+    >
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass == 0 ? '当前班次：运转班A组' : isChooseAclass == 1 ? '当前班次：运转班B组' : ''" v-show="isYunzhuan == '运转班'"></div>
-        <div class="currentClass" v-show="isYunzhuan == '长白班'">当前班次：运转班C组</div>
+        <div
+          class="currentClass"
+          v-html="
+            isChooseAclass == 0
+              ? '当前班次：运转班A组'
+              : isChooseAclass == 1
+              ? '当前班次：运转班B组'
+              : ''
+          "
+          v-show="isYunzhuan == '运转班'"
+        ></div>
+        <div class="currentClass" v-show="isYunzhuan == '长白班'">
+          当前班次：运转班C组
+        </div>
         <div class="classA" v-show="isYunzhuan == '运转班'">
-          <div @click="changeClass('a')" :class="isChooseAclass == 0 ? 'classA_left_chossed' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass('a')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left_chossed'
+                : isChooseAclass == 1
+                ? 'classA_left'
+                : isChooseAclass == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>运转班A组</span>
           </div>
           <div class="classA_right">
@@ -24,7 +55,18 @@
           </div>
         </div>
         <div class="classA" v-show="isYunzhuan == '运转班'">
-          <div @click="changeClass('b')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left_chossed' : isChooseAclass == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass('b')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left'
+                : isChooseAclass == 1
+                ? 'classA_left_chossed'
+                : isChooseAclass == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>运转班B组</span>
           </div>
           <div class="classA_right">
@@ -33,7 +75,18 @@
           </div>
         </div>
         <div class="classA" v-show="isYunzhuan == '长白班'">
-          <div @click="changeClass('c')" :class="isChooseAclass == 0 ? 'classA_left' : isChooseAclass == 1 ? 'classA_left' : isChooseAclass == 2 ? 'classA_left_chossed' : ''">
+          <div
+            @click="changeClass('c')"
+            :class="
+              isChooseAclass == 0
+                ? 'classA_left'
+                : isChooseAclass == 1
+                ? 'classA_left'
+                : isChooseAclass == 2
+                ? 'classA_left_chossed'
+                : ''
+            "
+          >
             <span>运转班C组</span>
           </div>
           <div class="classA_right">
@@ -43,8 +96,19 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureClass()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="cancelClass()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right"></div>
       </div>
@@ -54,11 +118,37 @@
     </div>
     <!-- 开出部分选班次-->
     <!-- 开出部分选班次-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="szShiftShow2">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="szShiftShow2"
+    >
       <div class="operationPane_con_machineList">
-        <div class="currentClass" v-html="isChooseAclass2 == 0 ? '当前班次：运转班A组' : isChooseAclass2 == 1 ? '当前班次：运转班B组' : isChooseAclass2 == 2 ? '当前班次：运转班C组' : ''"></div>
+        <div
+          class="currentClass"
+          v-html="
+            isChooseAclass2 == 0
+              ? '当前班次：运转班A组'
+              : isChooseAclass2 == 1
+              ? '当前班次：运转班B组'
+              : isChooseAclass2 == 2
+              ? '当前班次：运转班C组'
+              : ''
+          "
+        ></div>
         <div class="classA">
-          <div @click="changeClass2('a')" :class="isChooseAclass2 == 0 ? 'classA_left_chossed' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass2('a')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left_chossed'
+                : isChooseAclass2 == 1
+                ? 'classA_left'
+                : isChooseAclass2 == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>运转班A组</span>
           </div>
           <div class="classA_right">
@@ -67,7 +157,18 @@
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('b')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left_chossed' : isChooseAclass2 == 2 ? 'classA_left' : ''">
+          <div
+            @click="changeClass2('b')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left'
+                : isChooseAclass2 == 1
+                ? 'classA_left_chossed'
+                : isChooseAclass2 == 2
+                ? 'classA_left'
+                : ''
+            "
+          >
             <span>运转班B组</span>
           </div>
           <div class="classA_right">
@@ -76,7 +177,18 @@
           </div>
         </div>
         <div class="classA">
-          <div @click="changeClass2('c')" :class="isChooseAclass2 == 0 ? 'classA_left' : isChooseAclass2 == 1 ? 'classA_left' : isChooseAclass2 == 2 ? 'classA_left_chossed' : ''">
+          <div
+            @click="changeClass2('c')"
+            :class="
+              isChooseAclass2 == 0
+                ? 'classA_left'
+                : isChooseAclass2 == 1
+                ? 'classA_left'
+                : isChooseAclass2 == 2
+                ? 'classA_left_chossed'
+                : ''
+            "
+          >
             <span>运转班C组</span>
           </div>
           <div class="classA_right">
@@ -87,8 +199,19 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">确认</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="cancelClass2()">取消</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="sureClass2()"
+          >
+            确认
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="cancelClass2()"
+          >
+            取消
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right"></div>
       </div>
@@ -98,26 +221,74 @@
     </div>
     <!-- 开出部分选班次-->
     <!-- 开出部分换班-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-start" v-show="isShift">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="isShift"
+    >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group v-model="checkName" style="width: 100%; height: 100%" :max="1">
-          <el-checkbox-button size="medium" v-for="(item, index) in StaffNameList" style="magin: 1rem; font-size: 2rem" :label="item.staff_name" :key="index">{{ item.staff_name }}</el-checkbox-button>
+        <el-checkbox-group
+          v-model="checkName"
+          style="width: 100%; height: 100%"
+          :max="1"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in StaffNameList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.staff_name"
+            :key="index"
+            >{{ item.staff_name }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="save()">保存</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style="" @click="goback()">返回</div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="save()"
+          >
+            保存
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="goback()"
+          >
+            返回
+          </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" @current-change="CurrentChange" layout="prev, pager, next" :total="total_num"> </el-pagination>
+          <el-pagination
+            background
+            small
+            :pager-count="3"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :page-size="page_size"
+            :total="total_num"
+          >
+          </el-pagination>
         </div>
       </div>
 
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
-        <span style="font-size: 1.5rem">开出工：</span><input style="font-size: 1.5rem; width: 10rem" disabled v-model="String(this.checkedName).replace(/ /g, '')" /><span
+        <span style="font-size: 1.5rem">开出工：</span
+        ><input
+          style="font-size: 1.5rem; width: 10rem"
+          disabled
+          v-model="String(this.checkedName).replace(/ /g, '')"
+        /><span
           style="color: red; margin-left: 1rem"
-          v-html="isChooseAclass == 0 ? '当前选中：' + isYunzhuan + 'A组' : isChooseAclass == 1 ? '当前选中：' + isYunzhuan + 'B组' : isChooseAclass == 2 ? '当前选中：' + isYunzhuan + 'C组' : ''"
+          v-html="
+            isChooseAclass == 0
+              ? '当前选中：' + isYunzhuan + 'A组'
+              : isChooseAclass == 1
+              ? '当前选中：' + isYunzhuan + 'B组'
+              : isChooseAclass == 2
+              ? '当前选中：' + isYunzhuan + 'C组'
+              : ''
+          "
         ></span>
       </div>
       <img src="../../static/img/close.png" @click="goback()" />
@@ -152,19 +323,42 @@
     </div> -->
     <!-- 开出部分换班-->
     <!-- 开出部分主菜单-->
-    <div class="operationPane_con" style="display: flex; justify-content: center; align-items: flex-end" v-show="szMainShow">
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-end"
+      v-show="szMainShow"
+    >
       <div class="operationPane_con_uppershaft">
         <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
-            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black">
-              <span v-show="!isCheckedMachine">请扫码</span><span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
+            <div
+              class="chooseBtn_con_btn"
+              style="background: white; border: 1px solid black"
+            >
+              <span v-show="!isCheckedMachine">请扫码</span
+              ><span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
             </div>
           </div>
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>开出组</span></div>
-            <div class="chooseBtn_con_btn" style="background: white; border: 1px solid black"><span v-text="isChooseAclass2 == 0 ? 'A组' : isChooseAclass2 == 1 ? 'B组' : isChooseAclass2 == 2 ? 'C组' : ''"></span></div>
+            <div
+              class="chooseBtn_con_btn"
+              style="background: white; border: 1px solid black"
+            >
+              <span
+                v-text="
+                  isChooseAclass2 == 0
+                    ? 'A组'
+                    : isChooseAclass2 == 1
+                    ? 'B组'
+                    : isChooseAclass2 == 2
+                    ? 'C组'
+                    : ''
+                "
+              ></span>
+            </div>
           </div>
         </div>
         <div class="pane">
@@ -176,12 +370,27 @@
             <div class="text_con"><span>品名：扫码号显示....</span></div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
-          <div class="pane_con"><textarea style="background: white" class="textarea" disabled placeholder="扫描后显示..."></textarea></div>
+          <div class="pane_con">
+            <textarea
+              style="background: white"
+              class="textarea"
+              disabled
+              placeholder="扫描后显示..."
+            ></textarea>
+          </div>
           <div class="pane_btn">
-            <div class="pane_btn_one" @click="saoma()" :style="issaoma ? 'background:#808080' : 'background:#A3D897'">
+            <div
+              class="pane_btn_one"
+              @click="saoma()"
+              :style="issaoma ? 'background:#808080' : 'background:#A3D897'"
+            >
               <span>扫码开出</span>
             </div>
-            <div class="pane_btn_one" @click="wanchen()" :style="issaoma ? 'background:#A3D897' : 'background:#808080'">
+            <div
+              class="pane_btn_one"
+              @click="wanchen()"
+              :style="issaoma ? 'background:#A3D897' : 'background:#808080'"
+            >
               <span>开出完成</span>
             </div>
           </div>
@@ -1253,7 +1462,11 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination
+  .btn-prev
+  .el-icon {
   font-size: 2rem;
 }
 
@@ -1262,7 +1475,7 @@ export default {
 
   height: 20%;
   position: absolute;
-     bottom: -7px;
+  bottom: -7px;
 
   display: flex;
   align-items: center;
@@ -1316,12 +1529,20 @@ export default {
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination
+  .btn-next
+  .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
-.operationPane_con_machineList_btn_right /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background
+  .el-pager
+  li:not(.disabled).active {
   background: #ffc100;
 }
 

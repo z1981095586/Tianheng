@@ -57,6 +57,7 @@
             @current-change="CurrentChange"
             layout="prev, pager, next"
             :total="total_num"
+            :page-size="page_size"
           >
           </el-pagination>
         </div>
@@ -195,6 +196,7 @@
             @current-change="CurrentNameChange"
             layout="prev, pager, next"
             :total="total_num2"
+            :page-size="page_size2"
           >
           </el-pagination>
         </div>

@@ -174,8 +174,8 @@
 
     data() {
       return {
-        timer:"",
-        time:"",
+        timer: "",
+        time: "",
         enabled: false,
         isZJ1: true,
         printCode: "",
@@ -208,7 +208,7 @@
           zj2_zh: "",
           zj2_dzgh: "",
           zj2_bz: ""
-        }
+        },
 
       }
     },
@@ -217,7 +217,7 @@
         if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
           console.log("不能为空！")
           this.dialogVisible3 = true
-          console.log(this.ss_tzss < 0)
+       
         } else {
           this.enabled = true
         }
@@ -227,10 +227,10 @@
         this.isZJ1 = !this.isZJ1
       },
       Finish() {
-        console.log(this.zj2_zjcd)
+       
         if (this.form.zj2_zjgh2 == "" || this.form.zj_zjgh2 == "" || this.form.zj_zjcd == "" || this.form.zj2_zjcd ==
           "" || this.form.zj_bs == "" || this.form.zj2_bs == "") {
-          console.log("不能为空！")
+          
           this.dialogVisible4 = true
 
         } else {
@@ -244,27 +244,29 @@
           this.ss_tzss = ""
           this.ss_zjgh1 = ""
           this.ss_zjgh2 = ""
-          console.log(this.form)
         }
 
 
       },
-      getData() {
-
-      },
+  
 
       showQuery() {
         this.mainShow = false
         this.queryShow = true
       },
 
-      back() {
 
+      back() {
+     
+           
         this.queryShow = false
         this.mainShow = true
-        
+
+    
+
       },
-          getTime() { //获取时间
+    
+      getTime() { //获取时间
         //定义一个日期对象;
         var dateTime = new Date();
         //获得系统年份;
@@ -290,17 +292,25 @@
       },
     },
     mounted() {
-
-     this.timer = setInterval(this.getTime, 1000);
-
+      this.timer = setInterval(this.getTime, 1000);
+  
+      
     },
     watch: {
+    
       printCode(val) {
         if (val.length == 9) {
           this.dialogVisible = false
           this.mainShow = false
           this.queryShow = true
           this.printCode = ""
+        }
+      },
+      queryShow(val) {
+        if (val == true) {
+          this.ss_zjgh1 = ""
+          this.ss_zjgh2 = ""
+          this.ss_tzss = ""
         }
       },
       dialogVisible4(val) {
@@ -316,6 +326,14 @@
 </script>
 
 <style scoped>
+  body {
+    padding-right: 0 !important;
+  }
+
+  body {
+    padding: 0;
+  }
+
   .header {
     background: #317CCD;
     color: white;
@@ -323,13 +341,13 @@
 
   .allPage {
     width: 100%;
-  height: 768px;
+    height: 768px;
     background: #E2E7ED;
   }
 
   .header {
     width: 100%;
-height: 80px;
+    height: 80px;
     background: #29374B;
     display: flex;
     align-items: center;
