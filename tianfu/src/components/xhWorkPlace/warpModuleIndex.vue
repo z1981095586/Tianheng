@@ -36,7 +36,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-    
+
       <p style="display: inline-block;font-size: 30px">密码:</p><el-input v-model="option_code" ref="option_code"  style="font-size: 30px;width: 400px" class="standard_input" ></el-input>
       <br> <br>
       <table width="620px"  cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
@@ -84,7 +84,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-    
+
       <div slot="title" style="font-size: 2.5vw">修改经轴信息</div>
       <div>
         <p style="font-size: 2rem;display: inline-block">当前轴号为{{dataSelect.axisNo || "无"}},请输入轴号</p>
@@ -127,7 +127,7 @@
         </table>
       </div>
     </el-dialog>
-        <el-dialog
+     <el-dialog
       :visible.sync="otherProduceDialogShow"
       width="1600px"
       append-to-body
@@ -135,7 +135,7 @@
     >
       <otherProductTable ref="otherProductTable" :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
-       <!--其他产量对话框-->
+    <!--其他产量对话框-->
     <!--头部-->
     <div style="height: 80px;background-color: #29374b;width: 100%">
       <headComponent ref="headComponent" @selectWorker="selectWorker"  @getData="getDataRefresh" @getStaffNameById="getStaffNameById"></headComponent>
@@ -152,9 +152,9 @@
           </el-card>
         </div>
         <div :style="{height: scrollerHeightTop,width:scrollerWidthLeft}" style="display: inline-block;margin-left: 10px;">
-         
+
           <el-card style="width: 100%;position:relative" :style="{height: scrollerHeightTop,width:scrollerWidthRight}" shadow="hover">
-                <el-button type="warning" style="height: 100px;position: absolute;top: 45px;right: 20px;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
+             <el-button type="warning" style="height: 100px;position: absolute;top: 45px;right: 20px;    padding: 10px 40px;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
                 <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 12%">其他<br/><br/>产量</p>
               </div>
@@ -375,7 +375,7 @@
   import outputSubmitTable from './produceComfirm.vue';
   import outputPrintTable from './../warpCardPrint.vue';
   import otherProductTable from './otherProductTable.vue';
-   
+
   import changeStaffMessage from './changeStaffMessage.vue';
   import screenfull from "screenfull"
   export default {
@@ -454,9 +454,6 @@
         this.companyId = params[1];
         this.workshopId = params[2];
         this.machineId = params[3];
-        if(this.machineId){
-          this.machineId = this.machineId.split("-");
-        }
         this.$store.state.workshopId = this.workshopId;
         this.buttonSetting = "123"+message[0]+message[1]+"456"+message[2]+message[3]+"7890"+message[4];
         this.$refs.headComponent.sendMachineType("040000",this.workshopId);
@@ -743,9 +740,9 @@
                     if (!this.dataSelect.actualYarnLength) {
                       this.dataSelect.actualYarnLength = this.dataSelect.workQty1 + this.dataSelect.workQty2 + this.dataSelect.workQty3;
                     }
-                    if(this.companyId !== "10000015"){
+                  //  if(this.companyId !== "10000015"){
                       this.$refs.outputPrintTable.startPrint(this.order_list, this.dataSelect, this.companyId);
-                    }
+                   // }
                   })
                 }
               })
@@ -960,8 +957,8 @@
         this.dataSelect = item;
         if(this.optionConfirm){
           // if(this.dataSelect.workQty > this.dataSelect.currentRealYield){
-            this.dataSelect.newAddQty = this.dataSelect.workQty - this.dataSelect.currentRealYield;
-            this.showAddAxisTable = true;
+          this.dataSelect.newAddQty = this.dataSelect.workQty - this.dataSelect.currentRealYield;
+          this.showAddAxisTable = true;
           // }else{
           //   this.$message.warning("当前轴已完成产量大于设定产量，无法增轴")
           // }
@@ -1155,19 +1152,19 @@
 </script>
 
 <style lang="less" scoped>
-.otherProduct{
-  width: 13rem;
-  height: 8rem;
-  background: red;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
-  font-weight: 600;
-}
+  .otherProduct{
+    width: 13rem;
+    height: 8rem;
+    background: red;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    font-weight: 600;
+  }
   .big_font{
     color: #616164;
     font-weight: bold;

@@ -246,7 +246,9 @@
         this.dialogVisible2 = false
         this.baogongShow = false
         this.mainShow = true
+       
       },
+ 
       save() {
         this.enabled2 = !this.enabled2
         this.enabled3 = true
@@ -278,7 +280,6 @@
           })
           .then(response => {
             console.log(response)
-
           })
       },
       headerClass({
@@ -343,6 +344,7 @@
     },
     mounted() {
      this.timer = setInterval(this.getTime, 1000);
+  
     },
     watch: {
       printCode(val) {
@@ -357,8 +359,7 @@
       queryShow(val) { //当选择上轴组页面显示时加载数据
         if (val == true) {
           this.getData()
-
-
+   
           // })
         }
       },
@@ -425,7 +426,7 @@ body{
   }
 
   .icon_info {
-    width: 30%;
+    width: 42%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -433,10 +434,9 @@ body{
   }
 
   .icon_info img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
-
   .main {
     width: 100%;
     height: 92%;

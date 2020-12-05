@@ -217,7 +217,7 @@
         if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
           console.log("不能为空！")
           this.dialogVisible3 = true
-       
+
         } else {
           this.enabled = true
         }
@@ -227,10 +227,10 @@
         this.isZJ1 = !this.isZJ1
       },
       Finish() {
-       
+
         if (this.form.zj2_zjgh2 == "" || this.form.zj_zjgh2 == "" || this.form.zj_zjcd == "" || this.form.zj2_zjcd ==
           "" || this.form.zj_bs == "" || this.form.zj2_bs == "") {
-          
+
           this.dialogVisible4 = true
 
         } else {
@@ -248,7 +248,7 @@
 
 
       },
-  
+
 
       showQuery() {
         this.mainShow = false
@@ -257,15 +257,15 @@
 
 
       back() {
-     
-           
+
+
         this.queryShow = false
         this.mainShow = true
 
-    
+
 
       },
-    
+
       getTime() { //获取时间
         //定义一个日期对象;
         var dateTime = new Date();
@@ -293,11 +293,16 @@
     },
     mounted() {
       this.timer = setInterval(this.getTime, 1000);
-  
       
+    
+
+
+
+
+
     },
     watch: {
-    
+
       printCode(val) {
         if (val.length == 9) {
           this.dialogVisible = false
@@ -383,7 +388,7 @@
   }
 
   .icon_info {
-    width: 30%;
+    width: 42%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -391,8 +396,8 @@
   }
 
   .icon_info img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 
   .main {
