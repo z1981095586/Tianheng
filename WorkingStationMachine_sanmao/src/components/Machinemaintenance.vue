@@ -24,10 +24,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             确认
           </div>
           <div
@@ -45,6 +42,7 @@
             :pager-count="3"
             layout="prev, pager, next"
             :total="total_num2"
+            @current-change="CurrentChange"
             :page-size="page_size2"
           >
           </el-pagination>
@@ -52,8 +50,7 @@
       </div>
       <div class="leftLabel"><span>选机台</span></div>
       <div class="search">
-        <span style="font-size: 2rem">搜索：</span
-        ><input placeholder="输入机台号" /><span
+        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span
           style="color: red; margin-left: 1rem"
           >选中机台：{{ this.checkedMachineNum }}</span
         >
@@ -102,9 +99,7 @@
         </div>
         <div class="allPage_con_left_bottom">
           <div class="allPage_con_left_top_left" style="width: 100%">
-            <div class="allPage_con_left_top_left_title" style="height: 30%">
-              品名
-            </div>
+            <div class="allPage_con_left_top_left_title" style="height: 30%">品名</div>
             <textarea
               disabled
               placeholder="选择机台后获取..."
@@ -125,9 +120,7 @@
             <div
               class="question_area"
               style="height: 100%"
-              :style="
-                item.isChecked ? 'background:#3296FA' : 'background:#808080'
-              "
+              :style="item.isChecked ? 'background:#3296FA' : 'background:#808080'"
             >
               <span>{{ item.question }}</span>
             </div>
@@ -272,6 +265,11 @@ export default {
         });
       }
     },
+    CurrentChange(e) {
+      //console.log(e);
+      this.page_num2 = e;
+      this.getMachineList();
+    },
     getMachineList() {
       let that = this;
       let url = host + "/api/stationMachine/getMachines";
@@ -386,10 +384,7 @@ export default {
           } else if (this.questionList[i].isChecked == false) {
             //console.log(this.questionCon.indexOf(this.questionList[i]));
             if (this.questionCon.indexOf(this.questionList[i]) != -1) {
-              this.questionCon.splice(
-                this.questionCon.indexOf(this.questionList[i]),
-                1
-              );
+              this.questionCon.splice(this.questionCon.indexOf(this.questionList[i]), 1);
               //console.log(this.questionCon);
             }
           }

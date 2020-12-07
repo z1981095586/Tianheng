@@ -59,7 +59,6 @@
             </table>
           </td>
         </tr>
-
       </table>
     </div>
   </div>
@@ -112,18 +111,15 @@
         },
         printPdf() {
           let  LODOP = getLodop();
-          // let pageHeight = this.printConfig.printHeight * 100;
-          // let pageWidth = this.printConfig.printWidth * 100;
           let pageHeight = "6cm";
           let pageWidth = "8cm";
           let strBodyStyle = "<style>td{ text-align: center;font-size: 14px;}</style>";
-          let strFormHtml = strBodyStyle+"<body>" +document.getElementById("printTable").innerHTML +"</body>";
+          let strFormHtml = strBodyStyle+"<body>" +document.getElementById("printTableXJ").innerHTML +"</body>";
           LODOP.PRINT_INIT("流水单");
-          LODOP.SET_PRINT_PAGESIZE(0,"6cm","8cm","");
-           LODOP.ADD_PRINT_BARCODE(5, 5, 55, 55, "QRCode",  this.warpInfoData.printCode);
-           LODOP.SET_PRINT_STYLEA(0,"AngleOfPageInside",-90);
-           LODOP.ADD_PRINT_BARCODE(5, 66, 230, 43, "128B",  this.warpInfoData.printCode);
-           LODOP.ADD_PRINT_HTM("16mm","0mm", pageWidth, pageHeight,
+          LODOP.ADD_PRINT_BARCODE(5, 5, 55, 55, "QRCode",  this.warpInfoData.printCode);
+          LODOP.SET_PRINT_STYLEA(0,"AngleOfPageInside",-90);
+          LODOP.ADD_PRINT_BARCODE(5, 66, 230, 43, "128B",  this.warpInfoData.printCode);
+          LODOP.ADD_PRINT_HTM("16mm","0mm", pageWidth, pageHeight,
             strFormHtml);
           LODOP.SET_PRINT_PAGESIZE(2,pageWidth,pageHeight,"");
           if(this.$store.state.openOutline){

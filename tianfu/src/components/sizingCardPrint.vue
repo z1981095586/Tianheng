@@ -7,11 +7,12 @@
     <div style="text-align: center" id="printTable" >
       <table  cellspacing='0' cellpadding='0' width="100%" style="">
         <tr style="height: 50px">
-          <td colspan="2" style="width: 30%">
-            &nbsp
+          <td colspan="2" style="width: 30%;text-align: left">
+            <p style="font-size: 28px;font-weight: bolder;"  v-if="companyId==10000022"> 批号：{{this.headData.supplierCode}}</p>
+            <p style="font-size: 28px;font-weight: bolder;" v-if="companyId == 10000015">&nbsp</p>
           </td>
-          <td colspan="2" style="width: 70%;text-align: center;height: 50px">
-            <p style="font-size: 20px;font-weight: bolder">{{companyName}}</p>
+          <td colspan="2" style="width: 70%;text-align: left;height: 50px">
+            <p style="font-size: 28px;font-weight: bolder">{{companyName}}</p>
           </td>
           <td style="width: 20%">
             <!--<el-row>-->
@@ -29,8 +30,7 @@
               </tr>
               <tr>
                 <td width="100px" >品名</td>
-                <td width="240px" colspan="2" v-if="companyId!=10000022">{{headData.orderSheetPlan.productName}}</td>
-                <td width="240px" colspan="2" v-if="companyId==10000022">{{headData.orderSheetPlan.productName}}|{{}}</td>
+                <td width="240px" colspan="2">{{headData.orderSheetPlan.productName}}</td>
                 <td width="100px">完成<br>日期</td>
                 <td width="150px"><span v-if="sizingInfoData.endDate">{{sizingInfoData.endDate.substring(0,10)}}</span></td>
               </tr>
@@ -46,7 +46,7 @@
                 <td width="100px">轴号</td>
                 <td width="150px">{{sizingInfoData.axisNo}}</td>
                 <td width="100px">落轴<br>次数</td>
-                <td width="150px">&nbsp</td>
+                <td width="150px">{{sizingInfoData.vatNums}}-{{sizingInfoData.beamNums}}</td>
               </tr>
               <tr>
                 <td width="100px">米长</td>

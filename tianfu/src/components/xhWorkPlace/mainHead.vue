@@ -214,14 +214,14 @@
                 label="机器"
                 width="100">
                 <template slot-scope="scope">
-                  {{ scope.row.machine_id }}
+                  {{ scope.row.machine_id}}
                 </template>
               </el-table-column>
               <el-table-column
                 label="报修人员"
                 width="120">
                 <template slot-scope="scope">
-                  {{ scope.row.submit_person }}
+                  {{ scope.row.submit_person}}
                 </template>
               </el-table-column>
               <el-table-column

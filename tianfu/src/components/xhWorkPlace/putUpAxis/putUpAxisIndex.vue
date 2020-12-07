@@ -60,8 +60,8 @@
       :show-close="false"
     >
       <div slot="title">
-        <p @click="showModifiedVarieties = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
-        <el-button type="primary" style="margin-left: 5%;font-size: 3rem;font-weight: bolder;display: inline-block" @click="startPrint">确认并生成加工单</el-button>
+        <p @click="showModifiedVarieties = false" style="font-size: 3rem;font-weight: bolder;display: inline-block">点击此处返回</p>
+        <el-button type="primary" style="margin-left: 5%;font-size: 3rem;font-weight: bolder;display: inline-block" @click="startPrint" v-if="!haveBuiltOrder">确认并生成加工单</el-button>
       </div>
       <table style="text-align: center" width="100%">
         <tr>
@@ -82,7 +82,7 @@
           <td>
             <div style="font-size: 1.5rem;font-weight: bolder;margin-top: 20px;">
               <span>纬纱批号:</span>
-              <el-input ref="WeavingsupplierCode" @focus="focusInput = 'WeavingsupplierCode'" v-model="WeavingsupplierCode" @blur="all_order_list[0].lmWeavingPlanB.supplierCode = WeavingsupplierCode" style="font-size: 1.5rem; width: 240px;text-transform: uppercase; height: 50px"></el-input>
+              <el-input ref="WeavingsupplierCode" @focus="focusInput = 'WeavingsupplierCode'" v-model="WeavingsupplierCode" @blur="changeWSName" style="font-size: 1.5rem; width: 240px;text-transform: uppercase; height: 50px"></el-input>
             </div>
           </td>
           <td>
@@ -356,7 +356,7 @@
                 <div class="changeWS-row">
                   <div>
                     <span>品名:</span>
-                    <input v-model="productName" style="font-size: 1.5rem;text-transform: uppercase">
+                    <input v-model="productName" @focus="changeWSMessage" style="font-size: 1.5rem;text-transform: uppercase">
                   </div>
                   <div >
                     <span>经纱产地:</span>
@@ -375,11 +375,11 @@
                   </div>
                   <div style="margin-top: 5%;">
                     <span>纬纱批号:</span>
-                    <input v-model="WeavingsupplierCode" style="font-size: 1.5rem;text-transform: uppercase">
+                    <input v-model="WeavingsupplierCode" @focus="changeWSMessage" style="font-size: 1.5rem;text-transform: uppercase">
                   </div>
                   <div style="margin-top: 5%;">
                     <span>纬纱产地:</span>
-                    <input v-model="WeavingsupplierName" style="font-size: 1.5rem; text-transform: uppercase">
+                    <input v-model="WeavingsupplierName" @focus="changeWSMessage" style="font-size: 1.5rem; text-transform: uppercase">
                   </div>
                 </div>
                 <div class="changeWS-row">
@@ -418,22 +418,22 @@
                       <div style="height:5vh;font-size: 1.5vw;border-bottom: 1px solid lightgray;font-weight: bolder">机器号：{{machine_detail_list[indexTd+indexTr*3-4].machineid}}</div>
                       <div style="height:5vh;font-size: 1.5vw;font-weight: bolder;">了机时间：{{machine_detail_list[indexTd+indexTr*3-4].machineEndHours}}h</div>
                       <div style="height:9vh;font-size: 1.5vw;font-weight: bolder;">当前品种：{{machine_detail_list[indexTd+indexTr*3-4].styleName}}</div>
-                      <!--<div style="height:9vh;font-size: 1.5vw;font-weight: bolder;">排产品种：<br>{{machine_detail_list[indexTd+indexTr*3-4].styleName}}</div>-->
+                      <!--<div style="heigh t:9vh;font-size: 1.5vw;font-weight: bolder;">排产品种：<br>{{machine_detail_list[indexTd+indexTr*3-4].styleName}}</div>-->
                     </div>
                   </td>
                 </tr>
               </table>
               <div class="pass-bill" v-show="radio === 'radio4'">
-                <div class="recorded-F"><span>已记录&nbsp;&nbsp;{{yczListLength}}</span></div><br><br>
+                <div class="recorded-F"><span>当前第{{yczPage}}页，每页7条，已记录:&nbsp;&nbsp;{{yczListLength}}条</span></div><br><br>
                 <div class="board_con_bottom" :style="{height: scrollerHeightPassBill+'px'}" id="board_con_bottom">
-                  <div class="board_con_bottom_one" v-for="(item,index) in yczList" :key="'ycz'+index" >
-                    <span>织轴卡号:{{item.print_code}}</span>
-                    <span>机台号:{{item.machine_id}}</span>
-                    <span>总经根数:{{item.root_number}}</span>
-                    <span>品名:{{item.product_name}}</span>
-                    <span>轴号:{{item.beam_name}}</span>
-                    <span>筘号:{{item.reed_no}}</span>
-                    <span style="color: #606266">{{item.create_time}}</span>
+                  <div class="board_con_bottom_one" v-for="index in 6" :key="'ycz'+index" v-if="(6*yczPage + index -1)<=yczListLength">
+                    <span>织轴卡号:{{yczList[6*yczPage + index -1].print_code}}</span>
+                    <span>机台号:{{yczList[6*yczPage + index -1].machine_id}}</span>
+                    <span>总经根数:{{yczList[6*yczPage + index -1].root_number}}</span>
+                    <span>品名:{{yczList[6*yczPage + index -1].product_name}}</span>
+                    <span>轴号:{{yczList[6*yczPage + index -1].beam_name}}</span>
+                    <span>筘号:{{yczList[6*yczPage + index -1].reed_no}}</span>
+                    <span style="color: #606266">{{yczList[6*yczPage + index -1].create_time}}</span>
                   </div>
                 </div>
               </div>
@@ -936,6 +936,8 @@
           }
         ],
         focusInput:null,
+        yczPage:1,
+        haveBuiltOrder: false,//已生成加工单
       }
     },
     methods:{
@@ -946,6 +948,7 @@
         this.companyId = params[1];
         this.buttonSetting = "123"+message[0]+message[1]+"456"+message[2]+message[3]+"7890"+message[4];
         this.workshopId = params[2];
+        this.$store.state.companyId = this.companyId;
         this.$store.state.workshopId = this.workshopId;
         this.$refs.headComponent.getWorker("/s-staff-organization-relation/getJsStaff");
         this.$refs.headComponent.changeMainTitle("天衡织造工位操作系统");
@@ -1019,7 +1022,8 @@
         let url = "/report/getSimpleReport";
         common_api(url, data, this.companyId)
           .then(res => {
-            console.log(res);
+            // console.log("=======");
+            // console.log(res);
             for (let i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].machine_id == -1) {
                 res.data.data[i].machine_id = "手工穿综"
@@ -1042,6 +1046,7 @@
             // console.log(response.data.data);
             this.order_detail_list = response.data.data.pceClothEaches;
             this.order_detail_list_length = Math.ceil((this.order_detail_list.length-2)/3);
+            this.haveBuiltOrder = !!(this.order_detail_list.length > 0);
             // this.$nextTick(()=>{
             //   if(this.newCodeNum>0){
             //     for (let i = 0; i < this.newCodeNum; i++) {
@@ -1200,11 +1205,11 @@
       },
       right_up() {
         if (this.radio == 'radio4') {
-          if (document.getElementById("board_con_bottom").scrollTop) {
-
+          if(this.yczPage === 1){
+            this.$message.warning("已经是第一页")
+          }else{
+            this.yczPage --;
           }
-          document.getElementById("board_con_bottom").scrollTop -= 300;
-
         } else {
           if (document.getElementById("rightDiv").scrollTop - parseInt(this.label_height) * 3 - 60 >= 0) {
             document.getElementById("rightDiv").scrollTop -= parseInt(this.label_height) * 2;
@@ -1219,7 +1224,11 @@
       },
       right_down() {
         if (this.radio == 'radio4') {
-          document.getElementById("board_con_bottom").scrollTop += 300;//调整滚动距离的，
+          if(this.yczPage === Math.ceil(this.yczListLength/7)){
+            this.$message.warning("已经是最后一页")
+          }else{
+            this.yczPage ++;
+          }
         } else {
           if (document.getElementById("rightDiv").scrollTop + parseInt(this.label_height) * 3 + 46 <= document.getElementById("rightDiv").scrollHeight) {
             document.getElementById("rightDiv").scrollTop += parseInt(this.label_height) * 2;
@@ -1473,7 +1482,11 @@
           if(this.WeavingsupplierCode&&this.WeavingsupplierName){
             this.startPrint();
           }else{
-            this.alterPart();
+            if(this.companyId == 10000015){
+              this.startPrint();
+            }else{
+              this.alterPart();
+            }
           }
         } else {
           this.showMachineTable = true;
@@ -1661,6 +1674,7 @@
         let data = {};
         data.machineId = this.all_order_list[0].machineId?this.all_order_list[0].machineId:this.machineIdSelected;
         data.printCode = this.barCode;
+        data.staffId = this.staff_id;
         let url = "/pce-mac-beam/upperBeam";
         warp_api_get(url, data,this.companyId)
           .then(response => {
@@ -1819,6 +1833,39 @@
             break;
         }
       },
+      //填纬纱编号映射纬纱产地
+      changeWSName(){
+        this.all_order_list[0].lmWeavingPlanB.supplierCode = this.WeavingsupplierCode;
+        let data = {};
+        data.tableName = "Supplier_LotNo";
+        data.query = {
+          LotNo: this.WeavingsupplierCode
+        };
+        common_api("/report/getSimpleReport", data,this.companyId)
+          .then(response => {
+            // console.log(response.data);
+            switch(response.data.data.length){
+              case 0:
+                this.$message.warning("没有找到对应纬纱产地");
+                break;
+              case 1:
+                this.all_order_list[0].lmWeavingPlanB.supplierName = this.WeavingsupplierName = response.data.data[0].ShortName;
+                break;
+              default:
+                this.$message.warning("找到多个对应纬纱产地，默认填写第一个");
+                this.all_order_list[0].lmWeavingPlanB.supplierName = this.WeavingsupplierName = response.data.data[0].ShortName;
+                break;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      //点击输入框更换纬纱信息
+      changeWSMessage(){
+        this.showModifiedVarieties = true;
+        this.haveBuiltOrder = true;
+      }
     },
     mounted() {
       this.getUrlMessage();
@@ -1978,7 +2025,7 @@
     span{
       font-size: 1.5rem;
       font-weight: bolder;
-      text-align: center;
+      text-align: left;
     }
     >:nth-child(1){
       width: 50%;
@@ -2011,7 +2058,7 @@
     display: flex;
     span{
       font-size: 1rem;
-      text-align: center;
+      text-align: left;
       font-weight: bolder;
     }
     >:nth-child(1){

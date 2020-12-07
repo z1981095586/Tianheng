@@ -66,7 +66,7 @@
         <div class="bottom_btn_left" @click="add()"><i style="font-size:2rem;color:#409EFF" class="el-icon-plus"></i>
         </div>
         <div class="bottom_btn_right">
-          <div class="sub "   style="background:rgb(202,249,130)" @click="submit()"><span>提交</span></div>
+          <div class="sub "   style="background:rgb(202,249,130)" @click="submit()" v-preventReClick><span>提交</span></div>
           <div class="sub" style="margin-left:1rem"><span @click="$emit('cancel','cancel')">取消</span></div>
           <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="isSelect=!isSelect">切换</span></div>
         </div>
@@ -192,11 +192,11 @@
       label="操作">
     <template slot-scope="scope">
        <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
-         <div class="sub" @click="editItem(scope.row.id)"
-              style="background:#409EFF;width:45%;height:60%;color:white;margin-left:1rem"><span
-                v-text="scope.row.isSelected?'完成':'编辑'"></span></div>
-            <div class="sub" @click="deleteItem(scope.row.id)"
-              style="background:#red;width:45%;height:60%;margin-left:1rem;color:white"><span>删除</span></div>
+         <button class="sub" @click="editItem(scope.row.id)" v-preventReClick
+              style="background:#409EFF;width:45%;height:60%;color:white;margin-left:1rem;border:none"><span
+                v-text="scope.row.isSelected?'完成':'编辑'"></span></button>
+            <button class="sub" @click="deleteItem(scope.row.id)"
+              style="background:#red;width:45%;height:60%;margin-left:1rem;color:white;border:none" v-preventReClick><span>删除</span></button>
        </div>
          
       </template>

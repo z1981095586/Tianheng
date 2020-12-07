@@ -50,6 +50,19 @@
         </tr>
       </table>
     </div>
+    <div style="text-align: center;font-size: 12px; display: none" v-for="(item,index) in printData" :class="'printClothsXJ' + index">
+      <table cellspacing='0' cellpadding='0' border="1" width="65%" style="margin-left: 2%" >
+        <tr>
+          <td style="height: 1cm">{{orderData.productName}}</td>
+        </tr>
+        <tr>
+          <td style="height: 1cm">{{orderData.ZjwarpsupplierCode}}</td>
+        </tr>
+        <tr>
+          <td style="height: 1cm">{{orderData.machineAxis}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -72,8 +85,8 @@
         }
         this.orderData = orderData;
         this.printData = printData;
-        // console.log(printData);
-        // console.log(orderData);
+        console.log(printData);
+        console.log(orderData);
         let count = LODOP.GET_PRINTER_COUNT();
         let printerList = [];
         if(count ===0 ){
@@ -102,35 +115,52 @@
         // console.log("打印数据，printData为", this.printData);
         const LODOP = getLodop();
         //打印初始化
-        LODOP.PRINT_INIT("布票");
-        // LODOP.PRINT_INITA(0,0,522,333,"打印鑫海落布表");
-        // console.log("printData2", this.printData);
-        for(let i = 0; i < this.printData.length; i++){
-          //设定纸张大小
-          LODOP.SET_PRINT_PAGESIZE(0, 800, 600, '');
-          let XHPlanTable = document.querySelector('.printCloths' + i).innerHTML;
-          // console.log("XHPlanTable", XHPlanTable);
-          //打印二维码
-          LODOP.SET_PRINT_STYLE('FontSize', 12);
-          LODOP.ADD_PRINT_BARCODE(5, 5, 55, 55, "QRCode", this.printData[i].id);
-          //打印条形码
-          LODOP.SET_PRINT_STYLE('FontSize', 12);
-          LODOP.ADD_PRINT_BARCODE(5, 66, 240, 43, "128B", this.printData[i].id);
-          //打印标题
-          // LODOP.SET_PRINT_STYLE('FontSize', 18);
-          // LODOP.SET_PRINT_STYLE('Bold', 1);
-          // LODOP.ADD_PRINT_TEXT(75, 300, 200, 30, "鑫海织造计划表");
-          //设置默认打印机
-          LODOP.SET_PRINTER_INDEX(printerName);
-          // LODOP.SET_PRINTER_INDEX("Gprinter GP-1524T (副本 1)");
-          //打印标题
-         // LODOP.SET_PRINT_STYLE('FontSize', 12);
-         // LODOP.SET_PRINT_STYLE('Bold', 1);
-          //LODOP.ADD_PRINT_TEXT(60,50,250,50,"落布卡 打印次数: " + this.printData[i].print_count);
-          //打印表格
-          LODOP.SET_PRINT_STYLE('FontSize', 16);
-          LODOP.ADD_PRINT_HTM(69, 20, 600, 600, XHPlanTable);
-          LODOP.NewPage();
+        if(this.$store.state.companyId*1.0 === 10000022){
+          for(let i = 0; i < this.printData.length; i++){
+            let pageHeight = "4cm";
+            let pageWidth = "6cm";
+            let strBodyStyle = "<style>td{ text-align: center;font-size: 14px;}</style>";
+            let strFormHtml = strBodyStyle+"<body>" +document.querySelector('.printClothsXJ' + i).innerHTML +"</body>";
+            LODOP.PRINT_INIT("布票");
+            LODOP.SET_PRINT_PAGESIZE(0,"6cm","4cm","");
+            LODOP.ADD_PRINT_BARCODE(40, 5, 80, 80, "QRCode", this.printData[i].id);
+            LODOP.SET_PRINT_STYLEA(0,"AngleOfPageInside",-90);
+            LODOP.ADD_PRINT_HTM("3mm","16mm", pageWidth, pageHeight,
+              strFormHtml);
+            LODOP.SET_PRINT_PAGESIZE(2,pageWidth,pageHeight,"");
+            LODOP.NewPage();
+          }
+        }else{
+          LODOP.PRINT_INIT("布票");
+          // LODOP.PRINT_INITA(0,0,522,333,"打印鑫海落布表");
+          // console.log("printData2", this.printData);
+          for(let i = 0; i < this.printData.length; i++){
+            //设定纸张大小
+            LODOP.SET_PRINT_PAGESIZE(0, 800, 600, '');
+            let XHPlanTable = document.querySelector('.printCloths' + i).innerHTML;
+            // console.log("XHPlanTable", XHPlanTable);
+            //打印二维码
+            LODOP.SET_PRINT_STYLE('FontSize', 12);
+            LODOP.ADD_PRINT_BARCODE(5, 5, 55, 55, "QRCode", this.printData[i].id);
+            //打印条形码
+            LODOP.SET_PRINT_STYLE('FontSize', 12);
+            LODOP.ADD_PRINT_BARCODE(5, 66, 240, 43, "128B", this.printData[i].id);
+            //打印标题
+            // LODOP.SET_PRINT_STYLE('FontSize', 18);
+            // LODOP.SET_PRINT_STYLE('Bold', 1);
+            // LODOP.ADD_PRINT_TEXT(75, 300, 200, 30, "鑫海织造计划表");
+            //设置默认打印机
+            LODOP.SET_PRINTER_INDEX(printerName);
+            // LODOP.SET_PRINTER_INDEX("Gprinter GP-1524T (副本 1)");
+            //打印标题
+            // LODOP.SET_PRINT_STYLE('FontSize', 12);
+            // LODOP.SET_PRINT_STYLE('Bold', 1);
+            //LODOP.ADD_PRINT_TEXT(60,50,250,50,"落布卡 打印次数: " + this.printData[i].print_count);
+            //打印表格
+            LODOP.SET_PRINT_STYLE('FontSize', 16);
+            LODOP.ADD_PRINT_HTM(69, 20, 600, 600, XHPlanTable);
+            LODOP.NewPage();
+          }
         }
         if(this.$store.state.openOutline){
           LODOP.PREVIEW();

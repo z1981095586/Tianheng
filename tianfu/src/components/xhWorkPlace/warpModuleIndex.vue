@@ -300,6 +300,7 @@
                       <el-popover
                         placement="top"
                         width="800"
+                        :ref="refNamePopover+item.id"
                         trigger="click">
                         <table style="" cellpadding='0' border="0" width="100%">
                           <tr v-for="details in produce_details_list" :key="details.id">
@@ -331,6 +332,11 @@
                           <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="print(item)">
                             <div :style="{height:button_height}" style="display: inline-block">
                               <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">打印报表</p>
+                            </div>
+                          </el-button>
+                          <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="cancleTap(item)">
+                            <div :style="{height:button_height}" style="display: inline-block">
+                              <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">撤销操作</p>
                             </div>
                           </el-button>
                         </div>
@@ -444,7 +450,8 @@
         focusName:"",//用于判断键盘输入对象
         showModifyAxisTable:false,
         funcName:null,
-        machineId:null
+        machineId:null,
+        refNamePopover: 'popover-', 
       }
     },
     methods:{
@@ -1032,6 +1039,43 @@
             .catch(error => {
               console.log(error);
             });
+        }
+      },
+      // 撤销
+      cancleTap(item){
+         if(!this.$store.state.showLoadingLog){
+          if(this.staff_id){
+            this.$store.state.showLoadingLog = true;
+            this.dataSelect = item;
+            this.$refs.headComponent.getStaffNameById(this.dataSelect.currentStaffId*1.0);
+            this.dataSelect.staff_name = this.printStaffName;
+            let data = {};
+            data.id = this.dataSelect.id;
+            // data.staffId = this.staff_id;
+            let url = "/lm-zjwarp-plan-detail/initBeam";
+            warp_api(url,data,this.companyId)
+              .then(response => {
+                //  this.$message.success("开始打印");
+                if(response.data.result === "fail"){
+                  let message =response.data.successMessage;
+                  this.$message.warning(message);
+                }else {
+                  console.log(response.data.data,'response.data.data')
+                  let message =response.data.successMessage;
+                  this.$message.success(message)
+                  let refName = this.refNamePopover + item.id;
+                  this.$refs[refName][0].doClose();
+                  this.getDataByCardNumber(this.barCode)
+                  this.scrollTop = false;
+                }
+                 this.$store.state.showLoadingLog = false;
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }else{
+            this.$message.warning("请选择操作员工");
+          }
         }
       },
       modifyAxis(item){

@@ -33,7 +33,7 @@ export function shift_api(url, data)
     headers: headers
   });
 }
-export function warp_api_get(url,data,companyId )
+export function warp_api_get(url,data,companyId)
 {
   let totalUrl=api66 + ':8763';
   totalUrl+=url;
@@ -96,8 +96,8 @@ export function realOutput_api(url, data,companyId)
 }
 export function common_api(url, data,companyId)
 {
-  //let totalUrl=api66 + ':10086';//测试
-  let totalUrl=api66 + ':8227';//正式
+  let totalUrl=api66 + ':10086';//测试
+  //let totalUrl=api66 + ':8227';//正式
   totalUrl+=url;
   let headers= {
     'Content-Type': 'application/json',

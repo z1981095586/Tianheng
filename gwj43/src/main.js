@@ -11,7 +11,8 @@ import 'iview/dist/styles/iview.css'
 import Print from 'vue-print-nb'
 import Echarts from 'echarts'
 import store from './store';
-
+import preventReClick from './preventClick'
+Vue.use(preventReClick)
 import "./commonFuncs.js"
 Vue.prototype.echarts = Echarts;
 Vue.use(Echarts);

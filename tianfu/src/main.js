@@ -25,7 +25,8 @@ import './../static/css/border.css'//边框
 import './../static/css/button.css'//按钮
 import './../static/css/loading.css'//加载
 //**************************************************************
-
+import preventReClick from './preventClick'
+Vue.use(preventReClick)
 Vue.config.productionTip = false;
 //注册
 Vue.use(iView);
