@@ -65,7 +65,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      company_id: "10000025",
+      company_id: "10000015",
       tabList: [
         {
           label: "我的机台",
@@ -183,9 +183,11 @@ export default {
 body /deep/ .el-message .el-icon-success {
   font-size: 3rem;
 }
+
 body /deep/ .el-message--success .el-message__content {
   font-size: 3rem;
 }
+
 .allPage {
   width: 100%;
   height: 768px;
@@ -233,10 +235,12 @@ body /deep/ .el-message--success .el-message__content {
   color: white;
   font-size: 2.4rem;
 }
+
 .header_right_con img {
   width: 40px;
   height: 40px;
 }
+
 .header_right_con span {
   margin-left: 1rem;
 

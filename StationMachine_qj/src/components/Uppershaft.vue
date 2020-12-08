@@ -31,9 +31,9 @@
             size="medium"
             v-for="(item, index) in machineList"
             style="magin: 1rem; font-size: 2rem"
-            :label="item.machine_id"
+            :label="item.machineId"
             :key="index"
-            >{{ item.machine_id }}</el-checkbox-button
+            >{{ item.machineId }}</el-checkbox-button
           >
         </el-checkbox-group>
       </div>
@@ -100,8 +100,8 @@
               v-for="city in cities"
               :label="city"
               :key="city"
-              >{{ city }}</el-checkbox
-            >
+              >{{ city }}
+            </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="Maintance_object_con">
@@ -119,8 +119,8 @@
               v-for="city in cities"
               :label="city"
               :key="city"
-              >{{ city }}</el-checkbox
-            >
+              >{{ city }}
+            </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="Maintance_object_con">
@@ -138,8 +138,8 @@
               v-for="city in cities"
               :label="city"
               :key="city"
-              >{{ city }}</el-checkbox
-            >
+              >{{ city }}
+            </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class="Maintance_object_con">
@@ -157,8 +157,8 @@
               v-for="city in cities"
               :label="city"
               :key="city"
-              >{{ city }}</el-checkbox
-            >
+              >{{ city }}
+            </el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
@@ -201,7 +201,14 @@
         >
           取消
         </div>
-        <div class="btns" style="margin-left: 16rem" @click="drawer = true">
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = false;
+          "
+        >
           查看零配件
         </div>
       </div>
@@ -231,9 +238,9 @@
             size="medium"
             v-for="(item, index) in typeList"
             style="magin: 1rem; font-size: 2rem"
-            :label="item.name"
+            :label="item.label"
             :key="index"
-            >{{ item.name }}</el-checkbox-button
+            >{{ item.label }}</el-checkbox-button
           >
         </el-checkbox-group>
       </div>
@@ -283,7 +290,8 @@
           v-for="(item, index) in materialsList"
           :key="index"
         >
-          {{ item.name }}
+          <span>{{ item.product_name }}</span
+          ><span> {{ item.num }}{{ item.unit_name }}</span>
         </div>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -292,19 +300,30 @@
         <div class="btns" style="background: #808080; color: white" @click="cancel3">
           取消
         </div>
-        <div class="btns" style="margin-left: 16rem" @click="drawer = true">
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = true;
+          "
+        >
           查看零配件
         </div>
       </div>
 
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 3rem; width: 95%; top: 18px">
-        <span style="color: red; margin-left: 1rem"
+        <span style="color: red; margin-right: 1rem"
           >保养机台：{{ this.checkedMachineNum }}</span
         >
         <span style="font-size: 1.7rem">搜索：</span
-        ><input placeholder="" v-model="search_machine" />
-        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
+        ><input placeholder="" v-model="search_material" />
+        <div
+          class="checked_machine_btn_one"
+          style="height: 3rem"
+          @click="getInventory(search_material)"
+        >
           确认
         </div>
       </div>
@@ -403,30 +422,37 @@
       :visible.sync="drawer"
       direction="rtl"
     >
-      <div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
-        <div class="select_material"></div>
+      <div
+        style="
+          width: 20rem;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          height: 100%;
+        "
+      >
+        <div style="width: 20rem">
+          <div
+            class="select_material"
+            v-for="(item, index) in materialsList2"
+            :key="index"
+          >
+            <span>{{ item.product_name }}</span>
+          </div>
+        </div>
 
-        <img
-          src="../../static/img/page-left.png"
-          style="width: 7rem; margin: 1rem; height: 7rem"
-        />
-        <img
-          src="../../static/img/page-right.png"
-          style="width: 7rem; margin: 1rem; height: 7rem"
-        />
+        <div style="width: 20rem; position: absolute; bottom: 0">
+          <img
+            src="../../static/img/page-left.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="lastPage()"
+          />
+          <img
+            src="../../static/img/page-right.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="nextPage()"
+          />
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -445,6 +471,7 @@ export default {
       MaterialsTypeShow: false, //选零配件种类
       MaterialsShow: false, //物料界面
       drawer: false, //查看零配件抽屉
+      drawerFlag: null, //查看零配件抽屉是否需要根据配件种类参数获取
       noSaveDialog: false,
       checkedCities: ["上海", "北京"],
       cities: ["上海", "北京", "广州", "深圳"],
@@ -472,43 +499,118 @@ export default {
       page_num: 1,
       page_size: 9,
 
-      typeList: [
-        {
-          name: 1234,
-        },
-        {
-          name: 1222,
-        },
-        {
-          name: 1333,
-        },
-        {
-          name: 1444,
-        },
-      ],
+      typeList: [],
       checkType: [], //选中机台列表
-      checkedTypeName: "",
+      checkedTypeName: "", //选中种类名称
+      checkedTypeId: "", //选中种类id
       materialsList: [],
+      materialsList2: [], //零配件列表
+      total_num2: 100,
+      page_num2: 1,
+      page_size2: 14,
+      search_material: "", //输入框搜索零配件名称
       materialId: null,
       materialNum: null,
       materialNumDialog: false,
+
+      company_id: 10000015,
     };
   },
   methods: {
+    getMachineList() {
+      //获取机台列表
+      let url = "http://120.55.124.53:8211/machine/getMachineList";
+      let that = this;
+      that.machineList = [];
+      axios
+        .post(
+          url,
+          {
+            //           "workShopId":workshop_id,
+            //     "machineType": mac_type_id,
+            page: that.page_num,
+            pageSize: that.page_size,
+            orderType: "asc",
+            groupId: "",
+          },
+          {
+            headers: {
+              companyId: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          if (res.data.data.length == 0) {
+            return;
+          } else {
+            that.total_num = res.data.totalDataNum; //设置数据总条数
+
+            for (let i = 0; i < res.data.data.length; i++) {
+              if (String(res.data.data[i].machineId).indexOf("-") == -1) {
+                that.machineList.push(String(res.data.data[i].machineId));
+              }
+            }
+            console.log(that.machineList);
+            that.machineList = [
+              //假数据
+              {
+                machineId: 1011,
+              },
+              {
+                machineId: 1012,
+              },
+            ];
+          }
+        });
+    },
+    getRootCategories() {
+      //获取物料分类
+      //获取分类根目录
+      let url = "http://120.55.124.53:8206/api/product/getFullCategories";
+      let that = this;
+      that.typeList = [];
+      axios
+        .post(
+          url,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              companyID: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+
+          for (let i = 0; i < res.data.data.children.length; i++) {
+            if (res.data.data.children[i].categories_id == 8) {
+              that.typeList = res.data.data.children[i].children;
+            }
+          }
+          console.log(that.typeList);
+        });
+    },
     addMaterial() {
+      //显示物料分类选择界面
       this.MaintanceShow = false;
       this.MaterialsTypeShow = true;
     },
     toMaintance() {
+      //显示保养界面
       this.IndexShow = false;
       this.MachineShow = true;
     },
     choosedMaterial() {
+      //选择物料
       console.log(this.materialsList);
       this.materialNumDialog = false;
     },
 
     use() {
+      //显示加减数量的窗口
+      console.log(this.materialId);
       if (this.materialId != null) {
         this.materialNumDialog = true;
       } else {
@@ -519,6 +621,7 @@ export default {
       }
     },
     addNum() {
+      //加物料数量
       this.materialNum = this.materialNum + 1;
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
@@ -527,6 +630,7 @@ export default {
       }
     },
     subNum() {
+      //减物料数量
       if (this.materialNum > 1) {
         this.materialNum = this.materialNum - 1;
       }
@@ -537,11 +641,15 @@ export default {
       }
     },
     checkMaterial(id) {
+      //选中物料，切换状态
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == id) {
           if (this.materialsList[i].ischecked == false) {
             this.materialId = id;
             this.materialNum = this.materialsList[i].num;
+          } else {
+            this.materialId = null;
+            this.materialNum = null;
           }
           this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
         }
@@ -549,6 +657,7 @@ export default {
       console.log(this.materialId);
     },
     handleCheckAllChange(val) {
+      //全选保养项次
       this.checkedCities = val ? this.cities : [];
       this.isIndeterminate = false;
     },
@@ -558,22 +667,67 @@ export default {
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
     },
     closeCurrentPage() {},
-    search() {},
+    search() {
+      //搜索机台
+      if (this.search_machine != "") {
+        let url = "http://106.12.219.66:8763/com-machine-info/selectAMachineRelation";
+        let that = this;
+        axios
+          .post(
+            url,
+            {
+              machineId: this.search_machine,
+            },
+            {
+              //开始查询
+              headers: {
+                "Content-Type": "application/json",
+                companyID: this.company_id,
+              },
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            that.machineList = [];
+            if (res.data.data[0]) {
+              that.machineList.push(res.data.data[0]);
+            }
+          });
+      } else {
+        this.page_num = 1;
+        this.getMachineList();
+      }
+    },
     CurrentChange(e) {
+      //机台分页
       //console.log(e);
       this.page_num = e;
       this.getMachineList();
     },
-    getMachineList() {},
+
     checkedMachine(e) {
       //选择机台事件
       this.checkedMachineNum = e[0];
     },
     checkedType(e) {
-      //选择机台事件
-      this.checkedTypeName = e[0];
+      //选择物料种类
+
+      console.log(e);
+      if (e.length > 0) {
+        this.checkedTypeName = e[0];
+        this.typeList.forEach((element) => {
+          if (element.label == e[0]) {
+            this.checkedTypeId = element.categories_id;
+          }
+        });
+      } else {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+      }
+      console.log(this.checkedTypeId);
     },
     sureMachine() {
+      //确定机台
       console.log(this.checkedMachineNum);
       if (this.checkedMachineNum != "") {
         this.MachineShow = false;
@@ -590,6 +744,7 @@ export default {
       this.IndexShow = true;
     },
     sureType() {
+      //确定种类
       console.log(this.checkedTypeName);
       if (this.checkedTypeName != "") {
         this.MaterialsTypeShow = false;
@@ -606,6 +761,7 @@ export default {
       this.MaintanceShow = true;
     },
     sureMaterial() {
+      //确定物料
       console.log(this.materialsList);
       let flag; //是否有选中的
       for (let i = 0; i < this.materialsList.length; i++) {
@@ -626,6 +782,129 @@ export default {
         });
       }
     },
+    getInventory(searchinfo) {
+      //获取物料
+      //获取保养物料数据
+      //  this.$refs.myscroller.finishPullToRefresh();
+      let that = this;
+      that.materialsList = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
+
+      if (searchinfo) {
+        let datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: 8,
+          product_name: searchinfo,
+        };
+      } else {
+        datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: this.checkedTypeId,
+        };
+      }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
+            "Content-Type": "application/json",
+            companyID: that.company_id,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+
+          // that.totalDataNum = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList.push(res.data.data.productModel[i]);
+          }
+        });
+    },
+    lastPage() {
+      //物料上一页
+      if (this.page_num2 > 1) {
+        this.page_num2 = this.page_num2 - 1;
+        this.getInventory2();
+      } else {
+        this.$message({
+          message: "没有上一页了",
+          type: "warning",
+        });
+      }
+    },
+    nextPage() {
+      //物料下一页
+      if (this.total_num2 <= this.page_num2 * this.page_size2) {
+        this.$message({
+          message: "没有下一页了",
+          type: "warning",
+        });
+      } else {
+        this.page_num2 = this.page_num2 + 1;
+        this.getInventory2();
+      }
+    },
+    getInventory2() {
+      //获取物料列表分页版
+      let that = this;
+      that.materialsList2 = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
+
+      //查询当前选择的下拉选项下的数据
+
+      if (that.drawerFlag == true) {
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
+
+          categories_id: this.checkedTypeId,
+        };
+      } else {
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
+        };
+      }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
+            "Content-Type": "application/json",
+            companyID: that.company_id,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+
+          that.total_num2 = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList2.push(res.data.data.productModel[i]);
+          }
+        });
+    },
     cancel3() {
       this.noSaveDialog = true;
     },
@@ -640,6 +919,32 @@ export default {
       });
     }
   },
+  watch: {
+    //监听页面显示执行相应的获取数据函数
+    MaterialsTypeShow(val) {
+      if (val == true) {
+        this.getRootCategories();
+      }
+    },
+    MaterialsShow(val) {
+      if (val == true) {
+        this.getInventory();
+      }
+    },
+    drawer(val) {
+      //查看零配件
+      if (val == true) {
+        this.page_num2 = 1;
+        this.getInventory2();
+      }
+    },
+    MachineShow(val) {
+      if (val == true) {
+        this.page_num = 1;
+        this.getMachineList();
+      }
+    },
+  },
 };
 </script>
 
@@ -649,6 +954,7 @@ export default {
   padding: 20px 27px;
   margin: 1rem 0.5rem;
 }
+
 .el-message {
   font-size: 3rem;
 }
@@ -1080,6 +1386,7 @@ textarea[class="textarea"]::-moz-placeholder {
   border-bottom: 3px solid #717171;
   border-right: 3px solid #717171;
 }
+
 .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
   font-size: 2rem;
   padding: 20px 27px;
@@ -1108,6 +1415,7 @@ textarea[class="textarea"]::-moz-placeholder {
 .operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
+
 .operationPane_con_machineList_btn_right /deep/ .el-pager li {
   padding: 1.5rem 1.5rem;
   font-size: 3rem;
@@ -1135,6 +1443,7 @@ textarea[class="textarea"]::-moz-placeholder {
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
+
 .Maintance_machine {
   width: 95%;
   height: 15%;
@@ -1145,6 +1454,7 @@ textarea[class="textarea"]::-moz-placeholder {
   font-size: 1.5rem;
   color: red;
 }
+
 .Maintance_object {
   width: 95%;
   height: 35%;
@@ -1152,6 +1462,7 @@ textarea[class="textarea"]::-moz-placeholder {
   display: flex;
   flex-direction: column;
 }
+
 .Maintance_object_con {
   width: 100%;
   height: 25%;
@@ -1160,23 +1471,28 @@ textarea[class="textarea"]::-moz-placeholder {
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
 }
+
 .Maintance_object_con /deep/ .el-checkbox {
   font-size: 1.5rem;
 }
+
 .Maintance_object_con /deep/ .el-checkbox__inner {
   width: 1.5rem;
   height: 1.5rem;
 }
+
 .Maintance_object_con /deep/ .el-checkbox__inner::after {
   height: 8px;
   left: 9px;
   position: absolute;
   top: 4px;
 }
+
 .Maintance_object_con /deep/ .el-checkbox__label {
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
 }
+
 .Maintance_materials {
   width: 95%;
   height: 30%;
@@ -1185,6 +1501,7 @@ textarea[class="textarea"]::-moz-placeholder {
   align-items: center;
   justify-content: space-between;
 }
+
 .Maintance_materials_con {
   width: 15%;
   height: 80%;
@@ -1196,6 +1513,7 @@ textarea[class="textarea"]::-moz-placeholder {
   background: grey;
   color: white;
 }
+
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
@@ -1204,6 +1522,7 @@ textarea[class="textarea"]::-moz-placeholder {
   justify-content: center;
   font-size: 1.5rem;
 }
+
 .Maintance_btn {
   width: 95%;
   height: 20%;
@@ -1211,6 +1530,7 @@ textarea[class="textarea"]::-moz-placeholder {
   display: flex;
   align-items: center;
 }
+
 .btns {
   width: 10rem;
   background: #a3d897;
@@ -1224,6 +1544,7 @@ textarea[class="textarea"]::-moz-placeholder {
   margin-left: 1rem;
   font-size: 1.5rem;
 }
+
 .select_material {
   width: 8rem;
   height: 4rem;
@@ -1234,11 +1555,14 @@ textarea[class="textarea"]::-moz-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
   float: left;
   margin-left: 1rem;
   font-size: 1.5rem;
   margin-top: 1rem;
 }
+
 .material_one {
   width: 18%;
   height: 22%;
@@ -1250,7 +1574,9 @@ textarea[class="textarea"]::-moz-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
+
 .material_one_checked {
   width: 18%;
   height: 22%;
@@ -1262,5 +1588,6 @@ textarea[class="textarea"]::-moz-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 </style>
