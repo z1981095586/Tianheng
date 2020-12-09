@@ -931,6 +931,7 @@ export default {
         this.getInventory();
       }
     },
+
     drawer(val) {
       //查看零配件
       if (val == true) {
@@ -938,6 +939,7 @@ export default {
         this.getInventory2();
       }
     },
+
     MachineShow(val) {
       if (val == true) {
         this.page_num = 1;

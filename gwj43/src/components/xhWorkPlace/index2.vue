@@ -211,7 +211,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <otherProductTable ref="otherProductTable"  :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false"></otherProductTable>
+      <otherProductTable ref="otherProductTable" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
     <div style="height: 80px;background-color: #29374b;width: 100%">
       <headComponent ref="headComponent" @selectWorker="selectWorker" @getData="getDataRefresh" @getStaffNameById="getStaffNameById" @returnFunc="returnFunc"></headComponent>
@@ -288,7 +288,7 @@
                 </td>
               </tr>
             </table>
-            <el-button type="warning" style="height: 40px;position: absolute;    top: 102px;right: 24rem;" size="medium" @click="otherProduceDialogShow=true">
+            <el-button type="warning" style="height: 40px;position: absolute;top: 110px;right: 14rem;" size="medium" @click="otherProduceDialogShow=true">
               <div :style="{height:button_height}" style="display: inline-block">
                 <p class="big_font" style="color: white;height: 70%;line-height:70%;margin-top: 5%">其他产量</p>
               </div>

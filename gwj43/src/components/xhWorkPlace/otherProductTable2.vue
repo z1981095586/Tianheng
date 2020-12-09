@@ -66,9 +66,9 @@
         <div class="bottom_btn_left" @click="add()"><i style="font-size:2rem;color:#409EFF" class="el-icon-plus"></i>
         </div>
         <div class="bottom_btn_right">
-          <div class="sub "   style="background:rgb(202,249,130)" @click="submit()" v-preventReClick><span>提交</span></div>
-          <div class="sub" style="margin-left:1rem"><span @click="$emit('cancel','cancel')">取消</span></div>
-          <div class="sub" style="background:#409EFF;margin-left:1rem"><span @click="isSelect=!isSelect">切换</span></div>
+          <button class="sub "   style="background:rgb(202,249,130);border:none" @click="submit()" v-preventReClick><span>提交</span></button>
+          <button class="sub" style="margin-left:1rem;border:none"><span @click="$emit('cancel','cancel')">取消</span></button>
+          <button class="sub" style="background:#409EFF;margin-left:1rem;border:none"><span @click="isSelect=!isSelect">切换</span></button>
         </div>
       </div>
       <el-dialog id="num" :visible.sync="showNumTable" width="800px" append-to-body :close-on-click-modal="false">
