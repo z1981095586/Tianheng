@@ -1,406 +1,501 @@
 <template>
   <div class="operationPane">
-    <!-- 开出部分操作栏组件-->
-    <!-- 开出首页-->
+    <!-- 我的机台部分操作栏组件-->
+    <!-- 首页-->
     <div
       class="operationPane_con"
       style="display: flex; justify-content: space-around; align-items: center"
-      v-show="szIndexShow"
+      v-show="IndexShow"
     >
-      <div class="main_btn" @click="toClass">运转班</div>
-      <div class="main_btn" @click="toClass2">长白班</div>
-      <div class="main_btn" @click="toSz">开出</div>
+      <div class="main_btn" @click="toMaintance(0)">每日保养</div>
+      <div class="main_btn" @click="toMaintance(1)">每周保养</div>
+      <div class="main_btn" @click="toMaintance(2)">每月保养</div>
+      <div class="main_btn" @click="toMaintance(2)">每年保养</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
-    <!-- 开出首页-->
-    <!-- 开出部分选班次-->
-    <div
-      class="operationPane_con"
-      style="display: flex; justify-content: center; align-items: flex-start"
-      v-show="szShiftShow"
-    >
-      <div class="operationPane_con_machineList">
-        <div
-          class="currentClass"
-          v-html="
-            isChooseAclass == 0
-              ? '当前班次：运转班A组'
-              : isChooseAclass == 1
-              ? '当前班次：运转班B组'
-              : ''
-          "
-          v-show="isYunzhuan == '运转班'"
-        ></div>
-        <div class="currentClass" v-show="isYunzhuan == '长白班'">
-          当前班次：运转班C组
-        </div>
-        <div class="classA" v-show="isYunzhuan == '运转班'">
-          <div
-            @click="changeClass('a')"
-            :class="
-              isChooseAclass == 0
-                ? 'classA_left_chossed'
-                : isChooseAclass == 1
-                ? 'classA_left'
-                : isChooseAclass == 2
-                ? 'classA_left'
-                : ''
-            "
-          >
-            <span>运转班A组</span>
-          </div>
-          <div class="classA_right">
-            <span></span><span>开出工01：{{ Aclass.szg1 }}</span
-            ><span></span>
-          </div>
-        </div>
-        <div class="classA" v-show="isYunzhuan == '运转班'">
-          <div
-            @click="changeClass('b')"
-            :class="
-              isChooseAclass == 0
-                ? 'classA_left'
-                : isChooseAclass == 1
-                ? 'classA_left_chossed'
-                : isChooseAclass == 2
-                ? 'classA_left'
-                : ''
-            "
-          >
-            <span>运转班B组</span>
-          </div>
-          <div class="classA_right">
-            <span></span> <span>开出工01：{{ Bclass.szg1 }}</span
-            ><span></span>
-          </div>
-        </div>
-        <div class="classA" v-show="isYunzhuan == '长白班'">
-          <div
-            @click="changeClass('c')"
-            :class="
-              isChooseAclass == 0
-                ? 'classA_left'
-                : isChooseAclass == 1
-                ? 'classA_left'
-                : isChooseAclass == 2
-                ? 'classA_left_chossed'
-                : ''
-            "
-          >
-            <span>运转班C组</span>
-          </div>
-          <div class="classA_right">
-            <span>开出工01：{{ Cclass.szg1 }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="operationPane_con_machineList_btn">
-        <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass()"
-          >
-            确认
-          </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            style=""
-            @click="cancelClass()"
-          >
-            取消
-          </div>
-        </div>
-        <div class="operationPane_con_machineList_btn_right"></div>
-      </div>
-      <div class="leftLabel" style="width: 170px"><span>选择开出组</span></div>
+    <!-- 首页-->
 
-      <img src="../../static/img/close.png" @click="cancelClass()" />
-    </div>
-    <!-- 开出部分选班次-->
-    <!-- 开出部分选班次-->
+    <!-- 保养界面-->
     <div
       class="operationPane_con"
-      style="display: flex; justify-content: center; align-items: flex-start"
-      v-show="szShiftShow2"
+      style="
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="MaintanceShow"
     >
-      <div class="operationPane_con_machineList">
-        <div
-          class="currentClass"
-          v-html="
-            isChooseAclass2 == 0
-              ? '当前班次：运转班A组'
-              : isChooseAclass2 == 1
-              ? '当前班次：运转班B组'
-              : isChooseAclass2 == 2
-              ? '当前班次：运转班C组'
-              : ''
-          "
-        ></div>
-        <div class="classA">
-          <div
-            @click="changeClass2('a')"
-            :class="
-              isChooseAclass2 == 0
-                ? 'classA_left_chossed'
-                : isChooseAclass2 == 1
-                ? 'classA_left'
-                : isChooseAclass2 == 2
-                ? 'classA_left'
-                : ''
-            "
-          >
-            <span>运转班A组</span>
-          </div>
-          <div class="classA_right">
-            <span></span> <span>开出工01：{{ Aclass2.szg1 }}</span
-            ><span></span>
-          </div>
-        </div>
-        <div class="classA">
-          <div
-            @click="changeClass2('b')"
-            :class="
-              isChooseAclass2 == 0
-                ? 'classA_left'
-                : isChooseAclass2 == 1
-                ? 'classA_left_chossed'
-                : isChooseAclass2 == 2
-                ? 'classA_left'
-                : ''
-            "
-          >
-            <span>运转班B组</span>
-          </div>
-          <div class="classA_right">
-            <span></span> <span>开出工01：{{ Bclass2.szg1 }}</span
-            ><span></span>
-          </div>
-        </div>
-        <div class="classA">
-          <div
-            @click="changeClass2('c')"
-            :class="
-              isChooseAclass2 == 0
-                ? 'classA_left'
-                : isChooseAclass2 == 1
-                ? 'classA_left'
-                : isChooseAclass2 == 2
-                ? 'classA_left_chossed'
-                : ''
-            "
-          >
-            <span>运转班C组</span>
-          </div>
-          <div class="classA_right">
-            <span></span> <span>开出工01：{{ Cclass2.szg1 }}</span
-            ><span></span>
-          </div>
-        </div>
-      </div>
-      <div class="operationPane_con_machineList_btn">
-        <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass2()"
-          >
-            确认
-          </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            style=""
-            @click="cancelClass2()"
-          >
-            取消
-          </div>
-        </div>
-        <div class="operationPane_con_machineList_btn_right"></div>
-      </div>
-      <div class="leftLabel" style="width: 170px"><span>选择开出组</span></div>
+      <div class="Maintance_machine">保养机台:{{ checkedMachineNum }}</div>
+      <div class="Maintance_object">
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次01</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
 
-      <img src="../../static/img/close.png" @click="cancelClass2()" />
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次02</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次03</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次04</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </div>
+      <div class="Maintance_materials">
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+      </div>
+      <div class="Maintance_btn">
+        <div class="btns" style="margin: 0">确认保养</div>
+        <div class="btns" @click="addMaterial">新增零配件</div>
+        <div
+          class="btns"
+          style="background: #808080; color: white"
+          @click="
+            MaintanceShow = false;
+            IndexShow = true;
+          "
+        >
+          取消
+        </div>
+        <div
+          class="btns"
+          style="background: #808080; color: white; margin-left: 5rem"
+          @click="
+            MaintanceShow = false;
+            peijianShow = true;
+          "
+        >
+          零配件详情
+        </div>
+        <div
+          class="btns"
+          style="background: #808080; color: white; margin-left: 1rem"
+          @click="
+            MaintanceShow = false;
+            xiangciShow = true;
+          "
+        >
+          项次详情
+        </div>
+      </div>
+      <img
+        src="../../static/img/close.png"
+        @click="
+          MaintanceShow = false;
+          IndexShow = true;
+        "
+      />
     </div>
-    <!-- 开出部分选班次-->
-    <!-- 开出部分换班-->
+    <!-- 保养界面-->
+    <!--选零配件种类-->
     <div
       class="operationPane_con"
       style="display: flex; justify-content: center; align-items: flex-start"
-      v-show="isShift"
+      v-show="MaterialsTypeShow"
     >
       <div class="operationPane_con_machineList">
         <el-checkbox-group
-          v-model="checkName"
-          style="width: 100%; height: 100%"
           :max="1"
+          @change="checkedType"
+          v-model="checkType"
+          style="width: 100%; height: 100%"
         >
           <el-checkbox-button
             size="medium"
-            v-for="(item, index) in StaffNameList"
+            v-for="(item, index) in typeList"
             style="magin: 1rem; font-size: 2rem"
-            :label="item.staff_name"
+            :label="item.label"
             :key="index"
-            >{{ item.staff_name }}</el-checkbox-button
+            >{{ item.label }}</el-checkbox-button
           >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="save()"
-          >
-            保存
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
+            确认
           </div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
+            取消
+          </div>
+        </div>
+        <!-- <div class="operationPane_con_machineList_btn_right">
+          <el-pagination
+            background
+            small
+            :pager-count="4"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :total="total_num"
+          >
+          </el-pagination>
+        </div> -->
+      </div>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 3rem; width: 95%; top: 18px">
+        <!-- <span style="font-size: 1.7rem">搜索：</span
+        ><input placeholder="输入机台号" v-model="search_machine" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
+          确认
+        </div> -->
+        <span style="color: red">保养机台：{{ this.checkedMachineNum }}</span>
+      </div>
+      <img src="../../static/img/close.png" @click="cancel2" />
+    </div>
+    <!-- 选零配件种类-->
+    <!-- 配件列表-->
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="MaterialsShow"
+    >
+      <div style="width: 93%; height: 64%; margin-top: 9%">
+        <div
+          :class="item.ischecked ? 'material_one_checked' : 'material_one'"
+          @click="checkMaterial(item.id)"
+          v-for="(item, index) in materialsList"
+          :key="index"
+        >
+          <span>{{ item.product_name }}</span
+          ><span> {{ item.num }}{{ item.unit_name }}</span>
+        </div>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="btns" style="margin: 0" @click="sureMaterial">确认</div>
+        <div class="btns" @click="use()">使用</div>
+        <div class="btns" style="background: #808080; color: white" @click="cancel3">
+          取消
+        </div>
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = true;
+          "
+        >
+          查看零配件
+        </div>
+      </div>
+
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 3rem; width: 95%; top: 18px">
+        <span style="color: red; margin-right: 1rem"
+          >保养机台：{{ this.checkedMachineNum }}</span
+        >
+        <span style="font-size: 1.7rem">搜索：</span
+        ><input placeholder="" v-model="search_material" />
+        <div
+          class="checked_machine_btn_one"
+          style="height: 3rem"
+          @click="getInventory(search_material)"
+        >
+          确认
+        </div>
+      </div>
+      <img src="../../static/img/close.png" @click="cancel3" />
+    </div>
+    <!-- 配件列表-->
+    <!-- 零配件详情-->
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="peijianShow"
+    >
+      <span style="font-size: 1.5rem; margin: 1rem">零配件详情</span>
+      <div style="width: 93%; height: 78%">
+        <div class="material_ones" style="background: grey; color: white">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="material_ones" style="background: grey; color: white">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
           <div
             class="operationPane_con_machineList_btn_leftBtn"
-            style=""
-            @click="goback()"
+            @click="
+              peijianShow = false;
+              IndexShow = true;
+            "
           >
             返回
           </div>
         </div>
-        <div class="operationPane_con_machineList_btn_right">
-          <el-pagination
-            background
-            small
-            :pager-count="3"
-            @current-change="CurrentChange"
-            layout="prev, pager, next"
-            :page-size="page_size"
-            :total="total_num"
-          >
-          </el-pagination>
-        </div>
       </div>
 
-      <div class="search" style="left: 4rem; width: 95%; top: 18px">
-        <span style="font-size: 1.5rem">开出工：</span
-        ><input
-          style="font-size: 1.5rem; width: 10rem"
-          disabled
-          v-model="String(this.checkedName).replace(/ /g, '')"
-        /><span
-          style="color: red; margin-left: 1rem"
-          v-html="
-            isChooseAclass == 0
-              ? '当前选中：' + isYunzhuan + 'A组'
-              : isChooseAclass == 1
-              ? '当前选中：' + isYunzhuan + 'B组'
-              : isChooseAclass == 2
-              ? '当前选中：' + isYunzhuan + 'C组'
-              : ''
-          "
-        ></span>
-      </div>
-      <img src="../../static/img/close.png" @click="goback()" />
+      <img
+        src="../../static/img/close.png"
+        @click="
+          peijianShow = false;
+          IndexShow = true;
+        "
+      />
     </div>
-    <!-- 开出部分换班-->
-    <!-- 开出部分换班-->
-    <!-- <div class="operationPane_con" style="display:flex;justify-content: center;align-items: flex-start;"
-      v-show="isShift2">
+    <!-- 零配件详情-->
+    <!--项次详情-->
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
 
-      <div class="operationPane_con_machineList">
-        <el-checkbox-group v-model="checkName2" style="width:100%;height:100%;" :max="1">
-          <el-checkbox-button size="medium" v-for="(item,index) in StaffNameList" style="magin:1rem;font-size:2rem"
-            :label="item.staff_name" :key="index">{{item.staff_name}}</el-checkbox-button>
-        </el-checkbox-group>
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="xiangciShow"
+    >
+      <span style="font-size: 1.5rem; margin: 1rem">项次详情</span>
+      <div style="width: 93%; height: 78%">
+        <div class="material_ones">
+          <el-checkbox>备选项</el-checkbox>
+        </div>
+        <div class="material_ones">
+          <el-checkbox>备选项</el-checkbox>
+        </div>
+        <div class="material_ones">
+          <el-checkbox>备选项</el-checkbox>
+        </div>
+        <div class="material_ones">
+          <el-checkbox>备选项</el-checkbox>
+        </div>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureName2()">保存</div>
-          <div class="operationPane_con_machineList_btn_leftBtn" style=" " @click="goback2()">返回</div>
-        </div>
-        <div class="operationPane_con_machineList_btn_right">
-          <el-pagination background small :pager-count="3" @current-change="CurrentChange" layout="prev, pager, next"
-            :total="total_num">
-          </el-pagination>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="
+              xiangciShow = false;
+              IndexShow = true;
+            "
+          >
+            返回
+          </div>
         </div>
       </div>
 
-      <div class="search" style="left:4rem;width:95%;top:18px"><span style="font-size:1.5rem">开出工：</span><input
-          style="font-size:1.5rem;width:10rem;" disabled v-model="String(this.checkName2).replace(/ /g, '')" /><span
-          style="color:red;margin-left:1rem;">当前选中：运转班C组</span></div>
-      <img src="../../static/img/close.png" @click="goback2()" />
-    </div> -->
-    <!-- 开出部分换班-->
-    <!-- 开出部分主菜单-->
-    <div
-      class="operationPane_con"
-      style="display: flex; justify-content: center; align-items: flex-end"
-      v-show="szMainShow"
-    >
-      <div class="operationPane_con_uppershaft">
-        <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
-        <div class="chooseBtn">
-          <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span>机台</span></div>
-            <div
-              class="chooseBtn_con_btn"
-              style="background: white; border: 1px solid black"
-            >
-              <span v-show="!isCheckedMachine">请扫码</span
-              ><span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
-            </div>
-          </div>
-          <div class="chooseBtn_con">
-            <div class="chooseBtn_con_label"><span>开出组</span></div>
-            <div
-              class="chooseBtn_con_btn"
-              style="background: white; border: 1px solid black"
-            >
-              <span
-                v-text="
-                  isChooseAclass2 == 0
-                    ? 'A组'
-                    : isChooseAclass2 == 1
-                    ? 'B组'
-                    : isChooseAclass2 == 2
-                    ? 'C组'
-                    : ''
-                "
-              ></span>
-            </div>
-          </div>
-        </div>
-        <div class="pane">
-          <div class="text">
-            <div class="text_con">
-              <span>品名：{{ axis_no }}</span
-              ><span>品名：{{ product_name }}</span>
-            </div>
-            <div class="text_con"><span>品名：扫码号显示....</span></div>
-          </div>
-          <div class="pane_title"><span>注意事项</span></div>
-          <div class="pane_con">
-            <textarea
-              style="background: white"
-              class="textarea"
-              disabled
-              placeholder="扫描后显示..."
-            ></textarea>
-          </div>
-          <div class="pane_btn">
-            <div
-              class="pane_btn_one"
-              @click="saoma()"
-              :style="issaoma ? 'background:#808080' : 'background:#A3D897'"
-            >
-              <span>扫码开出</span>
-            </div>
-            <div
-              class="pane_btn_one"
-              @click="wanchen()"
-              :style="issaoma ? 'background:#A3D897' : 'background:#808080'"
-            >
-              <span>开出完成</span>
-            </div>
-          </div>
-        </div>
-      </div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
-    <!-- 开出部分主菜单-->
+    <!-- 项次详情-->
+    <!-- 上轴部分操作栏组件-->
+    <el-dialog title="修改数量" width="400" :visible.sync="materialNumDialog">
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <span style="font-size: 1.5rem">配件名称</span>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 67%;
+            margin-top: 1rem;
+          "
+        >
+          <button
+            style="width: 5.5rem; height: 5.5rem; background: #a3d897; border: none"
+            @click="subNum"
+          >
+            <i class="el-icon-minus" style="font-size: 1.5rem"></i>
+          </button>
+          <input
+            style="width: 7.5rem; height: 5rem; font-size: 3.5rem"
+            v-model="materialNum"
+          />
+          <button
+            @click="addNum"
+            style="width: 5.5rem; height: 5.5rem; background: #a3d897; border: none"
+          >
+            <i class="el-icon-plus" style="font-size: 1.5rem"></i>
+          </button>
+        </div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 94%;
+            height: 6rem;
+            margin-top: 3rem;
+          "
+        >
+          <div class="btns" @click="choosedMaterial">选好了</div>
+          <div
+            class="btns"
+            style="background: #808080; color: white"
+            @click="materialNumDialog = false"
+          >
+            取消
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog title="警告" width="400" :visible.sync="noSaveDialog">
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <span style="font-size: 1.5rem">本页面数据不会保存</span>
 
-    <!-- 开出部分操作栏组件-->
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 94%;
+            height: 6rem;
+            margin-top: 3rem;
+          "
+        >
+          <div
+            class="btns"
+            @click="
+              noSaveDialog = false;
+              MaterialsShow = false;
+              MaterialsTypeShow = true;
+              materialsList = [];
+            "
+          >
+            确定
+          </div>
+          <div
+            class="btns"
+            style="background: #808080; color: white"
+            @click="noSaveDialog = false"
+          >
+            取消
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-drawer
+      title="查看零配件"
+      :with-header="false"
+      :visible.sync="drawer"
+      direction="rtl"
+    >
+      <div
+        style="
+          width: 20rem;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          height: 100%;
+        "
+      >
+        <div style="width: 20rem">
+          <div
+            class="select_material"
+            v-for="(item, index) in materialsList2"
+            :key="index"
+          >
+            <span>{{ item.product_name }}</span>
+          </div>
+        </div>
+
+        <div style="width: 20rem; position: absolute; bottom: 0">
+          <img
+            src="../../static/img/page-left.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="lastPage()"
+          />
+          <img
+            src="../../static/img/page-right.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="nextPage()"
+          />
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -408,853 +503,545 @@
 import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
-  name: "Out",
+  name: "Uppershaft",
   data() {
     return {
-      szIndexShow: true,
-      szMainShow: false, //开出主页面显示隐藏
+      IndexShow: false,
+      MachineShow: false, //选择机台显示隐藏
+      MaintanceShow: false, //
+      MaterialsTypeShow: false, //选零配件种类
+      MaterialsShow: false, //物料界面
+      repairShow: false, //维修界面
+      xiangciShow: false,
+      peijianShow: true,
+      drawer: false, //查看零配件抽屉
+      drawerFlag: null, //查看零配件抽屉是否需要根据配件种类参数获取
+      noSaveDialog: false,
+      checkedCities: ["上海", "北京"],
+      cities: ["上海", "北京", "广州", "深圳"],
+      checkAll: false,
+      isIndeterminate: true,
 
-      isShift: false, //开出换班显示隐藏
-      isShift2: false, //开出换班显示隐藏
-      szShiftShow2: false,
-      szShiftShow: false,
-      isCheckedMachine: false,
+      search_machine: "",
+      checkMachine: [], //选中机台列表
       checkedMachineNum: "",
-      checkName: [], //开出选中的员工名字
-      checkName2: [], //开出选中的员工名字
-      issaoma: false,
-      staffList: [
+      machineList: [
         {
-          label: "开出工01",
-          staffName: "",
-          isSelected: false,
+          machine_id: 1234,
+        },
+        {
+          machine_id: 1222,
+        },
+        {
+          machine_id: 1333,
+        },
+        {
+          machine_id: 1444,
         },
       ],
-      staffList2: [
-        {
-          label: "开出工01",
-          staffName: "",
-          isSelected: false,
-        },
-      ],
-      StaffNameList: [],
-      page_size2: 21,
-      page_num2: 1,
-      total_num2: null,
-      page_size: 21,
+      total_num: 100,
       page_num: 1,
-      total_num: null,
-      mac_type_id: "030100",
-      company_id: "10000025",
+      page_size: 9,
 
-      isChooseAclass: 0,
-      Aclass: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      Bclass: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      Cclass: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      isChooseAclass2: 0,
-      Aclass2: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      Bclass2: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      Cclass2: {
-        szg1: "",
-        szg1Id: null,
-        szg2: "",
-        szg2Id: null,
-        szg3: "",
-        szg3Id: null,
-        id: null,
-      },
-      pch: "",
-      product_name: "",
-      axis_no: "",
-      isYunzhuan: "运转班", // 当前选择的班
-      checkedName: "",
+      typeList: [],
+      checkType: [], //选中机台列表
+      checkedTypeName: "", //选中种类名称
+      checkedTypeId: "", //选中种类id
+      materialsList: [],
+      materialsList2: [], //零配件列表
+      total_num2: 100,
+      page_num2: 1,
+      page_size2: 14,
+      search_material: "", //输入框搜索零配件名称
+      materialId: null,
+      materialNum: null,
+      materialNumDialog: false,
+
+      company_id: 10000015,
+      isWaitMaintance: null, //是否待保养，0带保养，1保养预期，2待维修
+      reasonlist: [
+        {
+          label: "经停",
+          value: "经停",
+        },
+        {
+          label: "纬停",
+          value: "纬停",
+        },
+        {
+          label: "疵点",
+          value: "疵点",
+        },
+        {
+          label: "设备",
+          value: "设备",
+        },
+      ],
+      checkedRepair: [],
+      checkedRepairName: "",
+      repairReason: "",
     };
   },
   methods: {
-    goback() {
-      this.szShiftShow2 = false;
-      this.isShift = false;
-
-      this.szShiftShow = false;
-      this.szMainShow = false;
-      this.szIndexShow = true;
-    },
-    // sureName2() {
-    //   this.szMainShow = false
-
-    //   this.szShiftShow2 = false
-    //   this.isShift = false
-    //   this.isShift2 = false
-    //   this.szIndexShow = true
-    // },
-    // goback2() {
-    //   this.szMainShow = false
-    //   this.isShift2 = false
-    //   this.szShiftShow2 = false
-    //   this.isShift = false
-    //   this.szIndexShow = true
-    // },
-    toClass2() {
-      this.szMainShow = false;
-      this.szIndexShow = false;
-      this.szShiftShow2 = false;
-
-      this.szShiftShow = false;
-
-      this.isShift = true;
-      this.isChooseAclass = "2";
-      this.isYunzhuan = "长白班";
-    },
-    toClass() {
-      this.szMainShow = false;
-      this.szIndexShow = false;
-      this.szShiftShow2 = false;
-      this.isShift2 = false;
-      this.isShift = false;
-      this.szShiftShow = true;
-      this.isChooseAclass = "0";
-      this.isYunzhuan = "运转班";
-    },
-    toSz() {
-      this.szMainShow = false;
-      this.szIndexShow = false;
-      this.isShift2 = false;
-      this.isShift = false;
-      this.szShiftShow2 = true;
-    },
-    sureClass2() {
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szShiftShow2 = false;
-
-      this.szIndexShow = false;
-      this.szMainShow = true;
-      //console.log(this.staffList2);
-
-      // this.szMachineShow = true;
-      // this.getMachineList()
-    },
-    cancelClass2() {
-      this.szShiftShow2 = false;
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szMainShow = false;
-      this.szMachineShow = false;
-      this.szIndexShow = true;
-    },
-    sureClass() {
-      // this.$emit('szChange', this.staffList)
-      this.szShiftShow = false;
-      this.szMachineShow = false;
-      this.szMainShow = false;
-      this.szIndexShow = false;
-      this.UpdatePeopleShow = true;
-      this.isShift = true;
-    },
-    cancelClass() {
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szMainShow = false;
-      this.szMachineShow = false;
-      this.szIndexShow = true;
-    },
-    changeClass2(e) {
-      if (e == "a") {
-        this.isChooseAclass2 = 0;
-        this.staffList2 = [
-          {
-            label: "开出工01",
-            staffName: this.Aclass2.szg1,
-            isSelected: false,
-            groupId: this.Aclass2.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Aclass2.szg2,
-            isSelected: false,
-            groupId: this.Aclass2.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Aclass2.szg3,
-            isSelected: false,
-            groupId: this.Aclass2.id,
-          },
-        ];
-      } else if (e == "b") {
-        this.isChooseAclass2 = 1;
-        this.staffList2 = [
-          {
-            label: "开出工01",
-            staffName: this.Bclass2.szg1,
-            isSelected: false,
-            groupId: this.Bclass2.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Bclass2.szg2,
-            isSelected: false,
-            groupId: this.Bclass2.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Bclass2.szg3,
-            isSelected: false,
-            groupId: this.Bclass2.id,
-          },
-        ];
-      } else if (e == "c") {
-        this.isChooseAclass2 = 2;
-        this.staffList2 = [
-          {
-            label: "开出工01",
-            staffName: this.Cclass2.szg1,
-            isSelected: false,
-            groupId: this.Cclass2.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Cclass2.szg2,
-            isSelected: false,
-            groupId: this.Cclass2.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Cclass2.szg3,
-            isSelected: false,
-            groupId: this.Cclass2.id,
-          },
-        ];
-      }
-    },
-
-    changeClass(e) {
-      if (e == "a") {
-        this.isChooseAclass = 0;
-
-        this.staffList = [
-          {
-            label: "开出工01",
-            staffName: this.Aclass.szg1,
-            isSelected: false,
-            groupId: this.Aclass.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Aclass.szg2,
-            isSelected: false,
-            groupId: this.Aclass.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Aclass.szg3,
-            isSelected: false,
-            groupId: this.Aclass.id,
-          },
-        ];
-      } else if (e == "b") {
-        this.isChooseAclass = 1;
-        this.staffList = [
-          {
-            label: "开出工01",
-            staffName: this.Bclass.szg1,
-            isSelected: false,
-            groupId: this.Bclass.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Bclass.szg2,
-            isSelected: false,
-            groupId: this.Bclass.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Bclass.szg3,
-            isSelected: false,
-            groupId: this.Bclass.id,
-          },
-        ];
-      } else if (e == "c") {
-        this.isChooseAclass = 2;
-        this.staffList = [
-          {
-            label: "开出工01",
-            staffName: this.Cclass.szg1,
-            isSelected: false,
-            groupId: this.Cclass.id,
-          },
-          {
-            label: "开出工02",
-            staffName: this.Cclass.szg2,
-            isSelected: false,
-            groupId: this.Cclass.id,
-          },
-          {
-            label: "开出工03",
-            staffName: this.Cclass.szg3,
-            isSelected: false,
-            groupId: this.Cclass.id,
-          },
-        ];
-      }
-      //console.log(this.staffList);
-    },
-    CurrentChange(e) {
-      //console.log(e);
-      this.page_num = e;
-      this.getMachineList();
-    },
-    CurrentNameChange(e) {
-      //console.log(e);
-      this.page_num2 = e;
-      this.getStaffList();
-    },
     getMachineList() {
+      //获取机台列表
+      let url = "http://120.55.124.53:8211/machine/getMachineList";
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
-
-      axios({
-        url: url,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_size: that.page_size,
-            page_num: that.page_num,
-          },
-          mac_type_id: that.mac_type_id,
-        },
-        // headers: headers
-      }).then((response) => {
-        //console.log(response);
-        that.total_num = response.data.result.total_num;
-        let array = response.data.result.models;
-        that.machineList = [];
-        array.forEach((element) => {
-          that.machineList.push(element);
-        });
-      });
-    },
-    closeCurrentPage() {
-      //console.log(this.szMachineShow);
-      if (this.szMachineShow == true) {
-        this.isCheckedMachine = false;
-        this.checkedMachineNum = "";
-        this.UpdatePeopleShow = false;
-        this.checkMachine = [];
-        this.szMachineShow = false;
-        this.szShiftShow = false;
-        this.szMainShow = true;
-        return;
-      }
-      if (this.szShiftShow == true) {
-        this.szMachineShow = false;
-        this.szShiftShow = false;
-        this.szMainShow = true;
-        this.UpdatePeopleShow = false;
-        this.isStartChange = false;
-        return;
-      }
-      if (this.szMainShow == true) {
-        this.szMachineShow = false;
-        this.szShiftShow = false;
-        this.szMainShow = false;
-        this.UpdatePeopleShow = false;
-        this.szShiftShow2 = false;
-        this.szIndexShow = true;
-        return;
-      }
-      if (this.UpdatePeopleShow == true) {
-        this.szMachineShow = false;
-        this.szShiftShow = false;
-        this.szMainShow = false;
-        this.UpdatePeopleShow = false;
-        this.szShiftShow2 = false;
-        this.szIndexShow = true;
-        this.isStartChange = false;
-        return;
-      }
-    },
-    saoma() {
-      this.issaoma = true;
-    },
-    wanchen() {
-      if (this.issaoma == true) {
-        if (this.pch != "") {
-          this.$message({
-            message: "开出成功！",
-            type: "success",
-          });
-          this.issaoma = false;
-        } else {
-          this.$message({
-            message: "请重新扫码!",
-            type: "warning",
-          });
-        }
-      }
-    },
-    toChooseMachine() {
-      this.szMainShow = false;
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szMachineShow = true;
-      this.getMachineList();
-    },
-
-    sureMachine() {
-      this.isCheckedMachine = true;
-      this.checkMachine = [];
-      this.szMachineShow = false;
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szMainShow = true;
-    },
-    cancel() {
-      //取消按钮事件
-      this.isCheckedMachine = false;
-      this.checkedMachineNum = "";
-      this.checkMachine = [];
-      this.szMachineShow = false;
-      this.UpdatePeopleShow = false;
-      this.szShiftShow = false;
-      this.szMainShow = true;
-    },
-    save() {
-      //确认按钮事件
-      if (this.checkedName != "") {
-        //console.log(this.Aclass);
-        //console.log(this.Bclass);
-        //console.log(this.Cclass);
-        //console.log(this.staffList);
-        //console.log(this.isChooseAclass);
-        let id;
-        let staffList = [
+      that.machineList = [];
+      axios
+        .post(
+          url,
           {
-            id: null,
-            order_num: null,
+            //           "workShopId":workshop_id,
+            //     "machineType": mac_type_id,
+            page: that.page_num,
+            pageSize: that.page_size,
+            orderType: "asc",
+            groupId: "",
           },
-        ];
-
-        if (this.isChooseAclass == 0) {
-          id = this.Aclass.id;
-        } else if (this.isChooseAclass == 1) {
-          id = this.Bclass.id;
-        } else if (this.isChooseAclass == 2) {
-          id = this.Cclass.id;
-        }
-
-        staffList[0].id = this.staffList[0].id;
-        staffList[0].order_num = 1;
-
-        let url = host + "/api/group/shift";
-        let data = {
-          selectInfo: {
-            company_id: this.company_id,
-          },
-          shiftGroup: {
-            id: id,
-          },
-          staffList: staffList,
-        };
-        let that = this;
-        //console.log(data);
-        axios({
-          url: url,
-          method: "post",
-          data: data,
-        }).then((response) => {
-          //console.log(response);
-          if (response.data.message == "成功") {
-            that.$message({
-              message: "换班成功！",
-              type: "success",
-            });
-
-            this.szMachineShow = false;
-            this.szShiftShow = false;
-            this.UpdatePeopleShow = false;
-            this.szMainShow = false;
-            this.isStartChange = false;
-            this.isShift = false;
-            this.szIndexShow = true;
-
-            this.$emit("kcChange", this.staffList);
+          {
+            headers: {
+              companyId: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          if (res.data.data.length == 0) {
+            return;
           } else {
-            this.$message({
-              message: "发生错误！",
-              type: "warning",
-            });
+            that.total_num = res.data.totalDataNum; //设置数据总条数
+
+            for (let i = 0; i < res.data.data.length; i++) {
+              if (String(res.data.data[i].machineId).indexOf("-") == -1) {
+                that.machineList.push(String(res.data.data[i].machineId));
+              }
+            }
+            console.log(that.machineList);
+            that.machineList = [
+              //假数据
+              {
+                machineId: 1011,
+              },
+              {
+                machineId: 1012,
+              },
+            ];
           }
         });
+    },
+    getRootCategories() {
+      //获取物料分类
+      //获取分类根目录
+      let url = "http://120.55.124.53:8206/api/product/getFullCategories";
+      let that = this;
+      that.typeList = [];
+      axios
+        .post(
+          url,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              companyID: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+
+          for (let i = 0; i < res.data.data.children.length; i++) {
+            if (res.data.data.children[i].categories_id == 8) {
+              that.typeList = res.data.data.children[i].children;
+            }
+          }
+          console.log(that.typeList);
+        });
+    },
+    addMaterial() {
+      //显示物料分类选择界面
+      if (this.isWaitMaintance == 2) {
+        this.repairShow = false;
+        this.MaterialsTypeShow = true;
+      } else {
+        this.MaintanceShow = false;
+        this.MaterialsTypeShow = true;
+      }
+    },
+    toMaintance(isWaitMaintance) {
+      //显示保养界面
+      this.IndexShow = false;
+      this.MaintanceShow = true;
+    },
+
+    choosedMaterial() {
+      //选择物料
+      console.log(this.materialsList);
+      this.materialNumDialog = false;
+    },
+
+    use() {
+      //显示加减数量的窗口
+      console.log(this.materialId);
+      if (this.materialId != null) {
+        this.materialNumDialog = true;
       } else {
         this.$message({
-          message: "请选择一个名字！",
+          message: "请先选一个配件！",
           type: "warning",
         });
       }
     },
-    startChange() {
-      //开始修改按钮单击事件
-      this.isStartChange = true;
+    addNum() {
+      //加物料数量
+      this.materialNum = this.materialNum + 1;
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == this.materialId) {
+          this.materialsList[i].num = this.materialNum;
+        }
+      }
     },
+    subNum() {
+      //减物料数量
+      if (this.materialNum > 1) {
+        this.materialNum = this.materialNum - 1;
+      }
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == this.materialId) {
+          this.materialsList[i].num = this.materialNum;
+        }
+      }
+    },
+    checkMaterial(id) {
+      //选中物料，切换状态
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == id) {
+          if (this.materialsList[i].ischecked == false) {
+            this.materialId = id;
+            this.materialNum = this.materialsList[i].num;
+          } else {
+            this.materialId = null;
+            this.materialNum = null;
+          }
+          this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+        }
+      }
+      console.log(this.materialId);
+    },
+    handleCheckAllChange(val) {
+      //全选保养项次
+      this.checkedCities = val ? this.cities : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+    },
+    closeCurrentPage() {},
+    search() {
+      //搜索机台
+      if (this.search_machine != "") {
+        let url = "http://106.12.219.66:8763/com-machine-info/selectAMachineRelation";
+        let that = this;
+        axios
+          .post(
+            url,
+            {
+              machineId: this.search_machine,
+            },
+            {
+              //开始查询
+              headers: {
+                "Content-Type": "application/json",
+                companyID: this.company_id,
+              },
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            that.machineList = [];
+            if (res.data.data[0]) {
+              that.machineList.push(res.data.data[0]);
+            }
+          });
+      } else {
+        this.page_num = 1;
+        this.getMachineList();
+      }
+    },
+    CurrentChange(e) {
+      //机台分页
+      //console.log(e);
+      this.page_num = e;
+      this.getMachineList();
+    },
+
     checkedMachine(e) {
       //选择机台事件
-
       this.checkedMachineNum = e[0];
     },
-    checkedName(e) {
-      //选择员工
+    checkRepair(e) {
+      //选择机台事件
+      console.log(e);
+      if (e[0]) {
+        this.checkedRepairName = e[0];
+      } else {
+        this.checkedRepairName = "";
+      }
+    },
+    checkedType(e) {
+      //选择物料种类
 
-      for (let i = 0; i < this.staffList.length; i++) {
-        if (this.staffList[i].isSelected == true) {
-          this.staffList[i].staffName = e[0];
-          let url = "http://106.12.219.66:8227/report/getSimpleReport";
-          let headers = {
+      console.log(e);
+      if (e.length > 0) {
+        this.checkedTypeName = e[0];
+        this.typeList.forEach((element) => {
+          if (element.label == e[0]) {
+            this.checkedTypeId = element.categories_id;
+          }
+        });
+      } else {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+      }
+      console.log(this.checkedTypeId);
+    },
+    sureMachine() {
+      //确定机台
+      console.log(this.checkedMachineNum);
+      if (this.checkedMachineNum != "") {
+        if (this.isWaitMaintance == 2) {
+          //待维修界面显示
+
+          this.MachineShow = false;
+          this.repairShow = true;
+        } else {
+          this.MachineShow = false;
+          this.MaintanceShow = true;
+        }
+      } else {
+        this.$message({
+          message: "先选一台机器!",
+          type: "warning",
+        });
+      }
+    },
+    cancel() {
+      this.MachineShow = false;
+      this.IndexShow = true;
+    },
+    sureType() {
+      //确定种类
+      console.log(this.checkedTypeName);
+      if (this.checkedTypeName != "") {
+        this.MaterialsTypeShow = false;
+        this.MaterialsShow = true;
+      } else {
+        this.$message({
+          message: "先选一个种类!",
+          type: "warning",
+        });
+      }
+    },
+    cancel2() {
+      if (this.isWaitMaintance == 2) {
+        this.MaterialsTypeShow = false;
+        this.repairShow = true;
+      } else {
+        this.MaterialsTypeShow = false;
+        this.MaintanceShow = true;
+      }
+    },
+    sureMaterial() {
+      //确定物料
+      console.log(this.materialsList);
+      let flag; //是否有选中的
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].ischecked == true && this.materialsList[i].num > 0) {
+          flag = true;
+          break;
+        } else {
+          flag = false;
+        }
+      }
+      if (flag == true) {
+        if (this.isWaitMaintance == 2) {
+          this.MaterialsShow = false;
+          this.repairShow = true;
+        } else {
+          this.MaterialsShow = false;
+          this.MaintanceShow = true;
+        }
+      } else {
+        this.$message({
+          message: "先选一个配件添加数量!",
+          type: "warning",
+        });
+      }
+    },
+    getInventory(searchinfo) {
+      //获取物料
+      //获取保养物料数据
+      //  this.$refs.myscroller.finishPullToRefresh();
+      let that = this;
+      that.materialsList = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
+
+      if (searchinfo) {
+        let datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: 8,
+          product_name: searchinfo,
+        };
+      } else {
+        datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: this.checkedTypeId,
+        };
+      }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
             "Content-Type": "application/json",
-            companyID: this.company_id,
-          };
-          let method = "post";
-          let data = {
-            tableName: "s_staff",
-            pageNum: 1,
-            pageSize: 1000,
-            query: {
-              staff_name: e[0],
-            },
-          };
-
-          let that = this;
-
-          axios({
-            url: url,
-            method: method,
-            data: data,
-            headers: headers,
-          }).then((response) => {
-            //console.log(response);
-            this.staffList[i].id = response.data.data[0].id; //绑定员工id
-          });
-        }
-      }
-      //此处查询staff表的对应e【0】的id
-    },
-    chooseStaff(label) {
-      //换班选中其中输入框的事件
-      if (this.isStartChange == true) {
-        for (let i = 0; i < this.staffList.length; i++) {
-          this.staffList[i].isSelected = false;
-        }
-        for (let i = 0; i < this.staffList.length; i++) {
-          if (this.staffList[i].label == label) {
-            this.staffList[i].isSelected = true;
-          }
-        }
-      }
-    },
-
-    getGroup() {
-      //获取组员信息
-      //console.log("getGroup");
-      //console.log(this.isYunzhuan);
-      let url2 = host + "/api/group/getGroupDetail";
-      let that = this;
-      axios({
-        url: url2,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
+            companyID: that.company_id,
           },
-          shiftGroup: {
-            id: 4,
-          },
-        },
+        })
+        .then(function (res) {
+          console.log(res);
 
-        // headers: headers
-      }).then((res) => {
-        //console.log(res.data.result);
-        res.data.result.forEach((element) => {
-          if (element.group_name == "运转班A组") {
-            this.Aclass.id = element.id;
-            for (let i = 0; i < element.staffList.length; i++) {
-              if (element.staffList[i].staff_organization_name == "开出工") {
-                if (element.staffList[i].order_num == "1") {
-                  this.Aclass.szg1 = element.staffList[i].staff_name;
-                  this.Aclass.szg1Id = element.staffList[i].id;
-                }
-              }
-            }
-          } else if (element.group_name == "运转班B组") {
-            this.Bclass.id = element.id;
-            for (let i = 0; i < element.staffList.length; i++) {
-              if (element.staffList[i].staff_organization_name == "开出工") {
-                if (element.staffList[i].order_num == "1") {
-                  this.Bclass.szg1 = element.staffList[i].staff_name;
-                  this.Bclass.szg1Id = element.staffList[i].id;
-                }
-              }
-            }
+          // that.totalDataNum = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList.push(res.data.data.productModel[i]);
           }
         });
-        that.staffList = [
-          {
-            label: "开出工01",
-            staffName: that.Aclass.szg1,
-            isSelected: false,
-            id: that.Aclass.szg1Id,
-          },
-        ];
-        that.Aclass2 = that.Aclass;
-        that.Bclass2 = that.Bclass;
-        that.staffList2 = that.staffList;
+    },
+    lastPage() {
+      //物料上一页
+      if (this.page_num2 > 1) {
+        this.page_num2 = this.page_num2 - 1;
+        this.getInventory2();
+      } else {
+        this.$message({
+          message: "没有上一页了",
+          type: "warning",
+        });
+      }
+    },
+    nextPage() {
+      //物料下一页
+      if (this.total_num2 <= this.page_num2 * this.page_size2) {
+        this.$message({
+          message: "没有下一页了",
+          type: "warning",
+        });
+      } else {
+        this.page_num2 = this.page_num2 + 1;
+        this.getInventory2();
+      }
+    },
+    getInventory2() {
+      //获取物料列表分页版
+      let that = this;
+      that.materialsList2 = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
 
-        // that.Aclass.id = res.data.result[0].id
-        // that.Bclass.id = res.data.result[1].id
-        // that.Cclass.id = res.data.result[2].id
-        // res.data.result[0].staffList.forEach(element => {
-        //   if (element.order_num == "1") {
-        //     that.Aclass.szg1Id = element.id
-        //     that.Aclass.szg1 = element.staff_name
-        //   } else if (element.order_num == "2") {
-        //     that.Aclass.szg2Id = element.id
-        //     that.Aclass.szg2 = element.staff_name
-        //   } else if (element.order_num == "3") {
-        //     that.Aclass.szg3Id = element.id
-        //     that.Aclass.szg3 = element.staff_name
-        //   }
-        // });
-        // res.data.result[1].staffList.forEach(element => {
-        //   if (element.order_num == "1") {
-        //     that.Bclass.szg1Id = element.id
-        //     that.Bclass.szg1 = element.staff_name
-        //   } else if (element.order_num == "2") {
-        //     that.Bclass.szg2Id = element.id
-        //     that.Bclass.szg2 = element.staff_name
-        //   } else if (element.order_num == "3") {
-        //     that.Bclass.szg3Id = element.id
-        //     that.Bclass.szg3 = element.staff_name
-        //   }
-        // });
-        // res.data.result[2].staffList.forEach(element => {
-        //   if (element.order_num == "1") {
-        //     that.Cclass.szg1Id = element.id
-        //     that.Cclass.szg1 = element.staff_name
-        //   } else if (element.order_num == "2") {
-        //     that.Cclass.szg2Id = element.id
-        //     that.Cclass.szg2 = element.staff_name
-        //   } else if (element.order_num == "3") {
-        //     that.Cclass.szg3Id = element.id
-        //     that.Cclass.szg3 = element.staff_name
-        //   }
-        // });
-        // that.staffList = [{
+      //查询当前选择的下拉选项下的数据
 
-        //     label: "上轴工01",
-        //     staffName: that.Aclass.szg1,
-        //     isSelected: false,
-        //     id: that.Aclass.szg1Id
-        //   },
-        //   {
-        //     label: "上轴工02",
-        //     staffName: that.Aclass.szg2,
-        //     isSelected: false,
-        //     id: that.Aclass.szg2Id
-        //   },
-        //   {
-        //     label: "上轴工03",
-        //     staffName: that.Aclass.szg3,
-        //     isSelected: false,
-        //     id: that.Aclass.szg3Id
-        //   },
-        // ]
-        // that.staffList2 = that.staffList
-        // that.Aclass2 = that.Aclass
-        // that.Bclass2 = that.Bclass
-        // that.Cclass2 = that.Cclass
-      });
-      axios({
-        url: url2,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-          },
-          shiftGroup: {
-            id: 5,
-          },
-        },
+      if (that.drawerFlag == true) {
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
 
-        // headers: headers
-      }).then((res) => {
-        //console.log(res.data.result);
-        res.data.result.forEach((element) => {
-          if (element.group_name == "长白班C组") {
-            this.Cclass.id = element.id;
-            for (let i = 0; i < element.staffList.length; i++) {
-              if (element.staffList[i].staff_organization_name == "开出工") {
-                if (element.staffList[i].order_num == "1") {
-                  this.Cclass.szg1 = element.staffList[i].staff_name;
-                  this.Cclass.szg1Id = element.staffList[i].id;
-                }
-              }
-            }
+          categories_id: this.checkedTypeId,
+        };
+      } else {
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
+        };
+      }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
+            "Content-Type": "application/json",
+            companyID: that.company_id,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+
+          that.total_num2 = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList2.push(res.data.data.productModel[i]);
           }
         });
-        that.Cclass2 = that.Cclass;
-        //console.log(this.isYunzhuan);
-        if (this.isYunzhuan == "长白班") {
-          this.staffList = [
-            {
-              label: "开出工01",
-              staffName: this.Cclass.szg1,
-              isSelected: false,
-              groupId: this.Cclass.id,
-            },
-          ];
-          this.checkedName = this.staffList[0].staffName;
-          that.staffList2 = that.staffList;
-
-          //console.log(this.checkName);
-        }
-      });
     },
-    getStaffList() {
-      let url = "http://106.12.219.66:8227/report/getSimpleReport";
-      let data = {
-        tableName: "s_staff",
-        sort: "DESC",
-        sortCloumn: "id",
-        selectFields: ["id", "staff_name"],
-        pageNum: this.page_num2,
-        pageSize: this.page_size2,
-        query: {
-          staff_organization_id: 36, //上轴工
-        },
-      };
-      let headers = {
-        companyId: this.company_id,
-      };
-      this.StaffNameList = [];
-      let that = this;
-      axios({
-        url: url,
-        method: "post",
-        headers: headers,
-        data: data,
-
-        // headers: headers
-      }).then((res) => {
-        //console.log(res);
-        let arr = res.data.data;
-        for (let i = 0; i < arr.length; i++) {
-          that.StaffNameList.push(arr[i]);
-        }
-        that.total_num2 = res.data.total;
-        //   //console.log(that.total_num2)
-      });
+    cancel3() {
+      this.noSaveDialog = true;
     },
   },
-  mounted() {},
+  mounted() {
+    for (let i = 0; i < 20; i++) {
+      this.materialsList.push({
+        num: 0,
+        id: i,
+        name: "螺杆机" + i,
+        ischecked: false,
+      });
+    }
+  },
   watch: {
-    checkName(val) {
-      if (val == "") {
-        this.getGroup();
-      } else {
-        this.checkedName = val;
+    //监听页面显示执行相应的获取数据函数
+    MaterialsTypeShow(val) {
+      if (val == true) {
+        this.getRootCategories();
       }
     },
-    pch(val) {
-      //批轴号事件
-      let url = host + "/api/stationMachine/getAxisInfo";
-      let that = this;
-      if (val != "") {
-        axios({
-          url: url,
-          method: "post",
-
-          data: {
-            selectInfo: {
-              company_id: that.company_id,
-            },
-            print_code: val,
-          },
-
-          // headers: headers
-        }).then((res) => {
-          //console.log(res);
-          that.axis_no = res.data.result.axis_no;
-          that.product_name = res.data.result.product_name;
-        });
+    MaterialsShow(val) {
+      if (val == true) {
+        this.getInventory();
       }
     },
 
-    isShift(val) {
+    drawer(val) {
+      //查看零配件
       if (val == true) {
         this.page_num2 = 1;
-        this.StaffNameList = [];
-        this.getStaffList();
-        this.getGroup();
-      }
-    },
-    isShift2(val) {
-      if (val == true) {
-        this.page_num2 = 1;
-        this.StaffNameList = [];
-        this.getStaffList();
+        this.getInventory2();
       }
     },
 
-    szShiftShow2(val) {
-      //当选择开出组页面显示时加载数据
+    MachineShow(val) {
       if (val == true) {
-        this.getGroup();
-      }
-    },
-    szShiftShow(val) {
-      //当选择开出组页面显示时加载数据
-      if (val == true) {
-        this.getGroup();
+        this.page_num = 1;
+        this.getMachineList();
       }
     },
   },
@@ -1262,28 +1049,44 @@ export default {
 </script>
 
 <style scoped>
-.pch {
-  position: absolute;
-  left: 1rem;
-  top: -3.5rem;
-  width: 15.5rem;
-  height: 3rem;
+.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
+}
+.repair_object /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
+}
+.el-message {
+  font-size: 3rem;
 }
 
-.pch input {
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  font-size: 1.5rem;
+.el-message__content {
+  font-size: 3rem;
 }
 
-.pch input::-webkit-input-placeholder {
-  font-size: 1.3rem;
+.main_btn {
+  width: 22%;
+  height: 39%;
+
+  background: #a3d897;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 3rem;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
 }
 
 .operationPane {
   width: 100%;
-  height: 64%;
+  height: 66%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -1308,20 +1111,26 @@ export default {
 
 .search {
   position: absolute;
-  left: 14%;
-  top: 10px;
+  left: 4rem;
+  width: 95%;
+  top: 18px;
 
   font-size: 1.7rem;
-  width: 69%;
-  height: 100px;
 
+  height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
 }
 
 .search input {
-  border: 1px solid black;
+  border: 1px solid #000;
   height: 3rem;
   font-size: 1.7rem;
 }
@@ -1332,8 +1141,8 @@ export default {
   top: 0px;
   border-top-left-radius: 16px;
   font-size: 1.7rem;
-  width: 135px;
-  height: 63px;
+  width: 200px;
+  height: 70px;
   background: #d4d4d4;
   display: flex;
   align-items: center;
@@ -1342,8 +1151,10 @@ export default {
 
 .operationPane_con_uppershaft {
   width: 85%;
+
   height: 70%;
   margin-bottom: 3%;
+
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -1353,7 +1164,7 @@ export default {
   position: absolute;
   top: -20%;
   left: 0%;
-  width: 77%;
+  width: 60%;
   height: 20%;
   display: flex;
   flex-direction: column;
@@ -1369,11 +1180,11 @@ export default {
 .text_con span {
   margin-left: 15px;
   margin-right: 15px;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .shift {
-  width: 35%;
+  width: 28%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1391,7 +1202,7 @@ export default {
 }
 
 .shift_con span {
-  font-size: 1.3rem;
+  font-size: 2rem;
 }
 
 .shift_con select {
@@ -1429,32 +1240,25 @@ export default {
 }
 
 .operationPane_con_machineList {
-  width: 90%;
+  width: 93%;
+
   height: 60%;
   margin-top: 9%;
 
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 
-.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
-  font-size: 2rem;
-  padding: 20px 27px;
-  margin: 1rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  /* background: #8C8C8C; */
-}
-
-.el-pagination--small .btn-next,
+.operationPane_con_machineList /deep/ .el-pagination--small .btn-next,
 .el-pagination--small .btn-prev,
 .el-pagination--small .el-pager li,
 .el-pagination--small .el-pager li.btn-quicknext,
 .el-pagination--small .el-pager li.btn-quickprev,
 .el-pagination--small .el-pager li:last-child {
-  font-size: 3rem;
-  line-height: 2rem;
-  height: 4.5rem;
+  font-size: 2rem;
+  line-height: 1rem;
+  height: 5rem;
 }
 
 .operationPane_con_machineList /deep/ .el-checkbox-button,
@@ -1462,12 +1266,24 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-prev
-  .el-icon {
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
+}
+
+.checked_machine_btn_one {
+  width: 18%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  background: #a3d897;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
 }
 
 .operationPane_con_machineList_btn {
@@ -1493,25 +1309,28 @@ export default {
 .operationPane_con_machineList_btn_leftBtn {
   width: 40%;
   height: 100%;
-  background: #a3d897;
   display: flex;
-  margin-left: 15px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  background: #a3d897;
+  margin-left: 15px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
-  color: black;
-  border-top: 3px solid #ffffff;
-  border-left: 3px solid #ffffff;
-  border-bottom: 3px solid #717171;
-  border-right: 3px solid #717171;
+  color: #000;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
   font-size: 1.5rem;
 }
 
 .operationPane_con_machineList_btn_right /deep/ .el-pager li {
-  padding: 1.5rem 1.5rem;
-  font-size: 3rem;
-  min-width: 38px;
-  height: 4.5rem;
-  line-height: 2rem;
+  padding: 2rem 2rem;
+  font-size: 2rem;
+  min-width: 35.5px;
+  height: 5rem;
+  line-height: 1rem;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   text-align: center;
@@ -1521,19 +1340,15 @@ export default {
   display: inline-block;
   font-size: 3rem;
   min-width: 35.5px;
-  height: 4.5rem;
-  width: 4.5rem;
+  height: 5rem;
+  width: 5rem;
   line-height: 28px;
   vertical-align: top;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-next
-  .el-icon,
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
@@ -1544,6 +1359,17 @@ export default {
   .el-pager
   li:not(.disabled).active {
   background: #ffc100;
+}
+
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background.el-pagination--small
+  .btn-next,
+.el-pagination.is-background.el-pagination--small .btn-prev,
+.el-pagination.is-background.el-pagination--small .el-pager li {
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 4.5rem;
 }
 
 .operationPane_con_machineList_btn_right {
@@ -1573,7 +1399,7 @@ export default {
 }
 
 .chooseBtn_con_label {
-  width: 67%;
+  width: 50%;
   height: 4rem;
   background: #317ccd;
   color: white;
@@ -1581,15 +1407,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 .chooseBtn_con_btn {
-  width: 67%;
+  width: 50%;
   height: 5rem;
   background: #a3d897;
   color: black;
-  font-size: 2rem;
+  font-size: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1660,10 +1485,252 @@ textarea[class="textarea"]::-moz-placeholder {
   color: white;
   font-size: 2.5rem;
 
-  margin-bottom: 3px;
+  margin-bottom: 10px;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
   border-bottom: 3px solid #717171;
   border-right: 3px solid #717171;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  /* background: #8C8C8C; */
+}
+
+.el-pagination--small .btn-next,
+.el-pagination--small .btn-prev,
+.el-pagination--small .el-pager li,
+.el-pagination--small .el-pager li.btn-quicknext,
+.el-pagination--small .el-pager li.btn-quickprev,
+.el-pagination--small .el-pager li:last-child {
+  font-size: 3rem;
+  line-height: 2rem;
+  height: 4.5rem;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button,
+.el-checkbox-button__inner {
+  float: left;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pager li {
+  padding: 1.5rem 1.5rem;
+  font-size: 3rem;
+  min-width: 38px;
+  height: 4.5rem;
+  line-height: 2rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination button {
+  display: inline-block;
+  font-size: 3rem;
+  min-width: 35.5px;
+  height: 4.5rem;
+  width: 4.5rem;
+  line-height: 28px;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.Maintance_machine {
+  width: 95%;
+  height: 15%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.Maintance_object {
+  width: 95%;
+  height: 35%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.Maintance_object_con {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.Maintance_object_con /deep/ .el-checkbox {
+  font-size: 1.5rem;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__inner {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__inner::after {
+  height: 8px;
+  left: 9px;
+  position: absolute;
+  top: 4px;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__label {
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.Maintance_materials {
+  width: 95%;
+  height: 30%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Maintance_materials_con {
+  width: 15%;
+  height: 80%;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background: grey;
+  color: white;
+}
+
+.Maintance_materials_con span {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.Maintance_btn {
+  width: 95%;
+  height: 20%;
+
+  display: flex;
+  align-items: center;
+}
+
+.btns {
+  width: 10rem;
+  background: #a3d897;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
+
+.select_material {
+  width: 8rem;
+  height: 4rem;
+  background: #a3d897;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  float: left;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.material_one {
+  width: 18%;
+  height: 22%;
+  background: grey;
+  margin-left: 1%;
+  margin-top: 1%;
+  float: left;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.material_one_checked {
+  width: 18%;
+  height: 22%;
+  background: rgb(50, 150, 250);
+  margin-left: 1%;
+  margin-top: 1%;
+  float: left;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.repair_object {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  position: relative;
+}
+.material_ones {
+  width: 13%;
+  margin-left: 0.5rem;
+
+  float: left;
+  height: 16%;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.material_ones /deep/ .el-checkbox {
+  font-size: 1.2rem;
+}
+
+.material_ones /deep/ .el-checkbox__inner {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.material_ones /deep/ .el-checkbox__inner::after {
+  height: 8px;
+  left: 7px;
+  position: absolute;
+  top: 4px;
+}
+
+.material_ones /deep/ .el-checkbox__label {
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.5);
 }
 </style>

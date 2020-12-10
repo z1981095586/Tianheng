@@ -7,63 +7,76 @@
     <div class="board">
       <div class="board_con">
         <div class="board_con_top">
-          <div class="board_con_top_left">
-            <div class="board_con_top_left_con" style=" margin-bottom: 8%;">
-              <div class="yijilu"><span>已记录&nbsp;&nbsp;&nbsp;{{dczListLength}}</span></div>
-              <div class="board_con_top_left_con_title">
-                <span style="margin-right:5%"> 今日待穿综记录</span>
-              </div>
-              <div class="board_con_top_left_con_tablehead">
-                <span>品种</span> <span>轴数</span> <span>日期</span>
-              </div>
-              <div class="board_con_top_left_con_tablecon" id="s1">
-                <div class="board_con_top_left_con_tablecon_one" v-for="(item,index) in dczList" :key="index"> <span
-                    style="color:#FFFFFF">{{item.product_name}}</span> <span
-                    style="color:#6CF603">{{item.beamNum2}}/{{item.beam_num}}</span> <span
-                    style="color:#FFFFFF">{{item.update_time}}</span></div>
-              </div>
-            </div>
-            <div class="board_con_top_left_con2" id="echart"></div>
-          </div>
-          <div class="board_con_top_middle">
-            <div class="board_con_top_middle_con">
-              <div class="board_con_top_middle_con_font">
-                <span style="font-size:1rem">今日总产量</span> <span style="color:#FFEE00;font-size:2rem">212374</span>
-              </div>
-            </div>
-          </div>
-          <div class="board_con_top_right">
-            <div class="board_con_top_left_con" style=" margin-bottom: 8%;">
-              <div class="board_con_top_left_con_title">
-                产量排行
-              </div>
-              <div class="board_con_top_left_con_tablehead">
-                <span>产量</span> <span>品种</span> <span>日期</span>
-              </div>
-              <div class="board_con_top_left_con_tablecon" id="s2">
-                <div class="board_con_top_left_con_tablecon_one" v-for="(item,index) in clpmList" :key="'clph'+index">
-                  <span style="color:#FFDD00">{{item.root_number}}</span>
-                  <span>{{item.product_name}}</span> <span style="color:#FFFFFF">{{item.create_time}}</span></div>
-              </div>
-            </div>
-            <div class="board_con_top_left_con2" id="echart2"></div>
-          </div>
+         <div class="board_con_top_con">
+        <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
+  {{item}}
+        </div>
+      
+        </div>
+          <div class="board_con_top_con">
+        <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
+  {{item}}
+        </div>
+      
+        </div>
+       
         </div>
         <div class="board_con_bottom">
-          <div class="yijilu2"><span>已记录&nbsp;&nbsp;{{yczListLength}}</span></div>
-          <div class="board_con_bottom_title">
-            已穿综记录
-          </div>
-          <div class="board_con_bottom_tablehead">
-            <span>织轴卡号</span><span>机台号</span><span>总经根数</span><span>品名</span><span>轴号</span><span>筘号</span><span>日期</span>
-          </div>
-          <div class="board_con_bottom_tablecon" id="s3">
-
-            <div class="board_con_bottom_tablecon_one" v-for="(item,index) in yczList" :key="'ycz'+index">
-              <span>{{item.print_code}}</span><span>{{item.machine_id}}</span><span>{{item.root_number}}</span><span
-                style="color:#5CFF00">{{item.product_name}}</span><span>{{item.beam_name}}</span><span>{{item.reed_no}}</span><span>{{item.create_time}}</span>
-            </div>
-          </div>
+       <div class="board_con_bottom_left">
+       <div class="board_con_bottom_left_left">
+       <div class="board_con_bottom_left_left_title">
+今日已完成
+       </div>
+       <div style="overflow: auto;">
+       <div class="board_con_bottom_left_left_tablehead">
+             <div class="board_con_bottom_left_left_tablehead_one">
+         品种
+       </div>
+          <div class="board_con_bottom_left_left_tablehead_one">
+         数量
+       </div>
+          <div class="board_con_bottom_left_left_tablehead_one">
+         剩余
+       </div>
+       </div>
+          <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    dczList" :key="index">
+             <div class="board_con_bottom_left_left_tablehead_one">
+         {{item.product_name}}
+       </div>
+          <div class="board_con_bottom_left_left_tablehead_one">
+      {{item.finish_beam_num}}
+       </div>
+          <div class="board_con_bottom_left_left_tablehead_one">
+    {{item.beam_num-item.finish_beam_num}}
+       </div>
+       </div>
+ 
+       </div>
+        </div><div class="board_con_bottom_left_right" id="dailyEchart">
+       
+        </div>
+        </div>
+        <div class="board_con_bottom_right">
+       <div class="board_con_bottom_right_img">
+         <div class="img1" >
+  <img src="/static/img/circle2.png" id="img1" />
+  <div class="img_span">
+    <span>S40今日穿综根数</span>
+    <span>98543</span>
+  </div>
+         </div>
+         <div class="img2">
+  <img src="/static/img/circle2.png"  id="img2"  />
+    <div class="img_span2">
+    <span>S40今日穿综根数</span>
+    <span>98543</span>
+  </div>
+         </div>
+       
+           
+       </div>
+        <div class="board_con_bottom_right_echart" id="pzEchart"></div>
+        </div>
         </div>
       </div>
     </div>
@@ -89,50 +102,199 @@
         lang: 'zh',
         workshopId: '3',
         companyId: "", //公司库表Id
-        dczList: [],
-        dczListLength: 0,
-        clpmList: [],
-        yczList: [],
-        yczListLength: 0,
+        tableTitle:[
+          "序号","分厂","品种","穿棕机型","穿棕轴数","织机机型","完成情况","筘号","筘幅",
+        ],
+        // dczList: [],
+        // dczListLength: 0,
+        // clpmList: [],
+        // yczList: [],
+        // yczListLength: 0,
         product_nameList: [],
-        companyname:"",
-        root_numberList: [],
-        legendList: [],
-        xList: [],
-        sList: []
+        dczList:[],
+        // companyname:"",
+         root_numberList: [],
+        // legendList: [],
+        // xList: [],
+        // sList: []
       }
     },
     methods: {
+
+rotate () {
+  var rotateVal = 0 // 旋转角度
+      var InterVal // 定时器
+       var rotateVal2 = 0 // 旋转角度
+		
+				InterVal = setInterval(function () {
+					var img = document.getElementById('img1')
+					rotateVal += 1
+					// 设置旋转属性(顺时针)
+					img.style.transform = 'rotate(' + rotateVal + 'deg)'
+					// 设置旋转属性(逆时针)
+					//img.style.transform = 'rotate(-' + rotateVal + 'deg)'
+					// 设置旋转时的动画  匀速0.1s
+          img.style.transition = '0.1s linear'
+          			var img2 = document.getElementById('img2')
+					rotateVal2 += 1
+					// 设置旋转属性(顺时针)
+					img2.style.transform = 'rotate(' + rotateVal2 + 'deg)'
+					// 设置旋转属性(逆时针)
+					//img.style.transform = 'rotate(-' + rotateVal + 'deg)'
+					// 设置旋转时的动画  匀速0.1s
+					img2.style.transition = '0.1s linear'
+				}, 100)
+			},
+
+      pzEchart(){
+             let myChart1 = this.$echarts.init(document.getElementById('pzEchart'));
+        // 绘制图表
+        myChart1.clear();
+        let that=this
+let option = {
+  
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+          radius: ['50%', '80%'],
+            center: ['52%', '50%'],
+            label:{
+              position:"inside",
+              formatter: '{d}% {b}'
+            },
+            labelLine:{
+              show:false
+            },
+           
+            data:that.root_numberList,
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+  myChart1.setOption(
+          option);
+        window.addEventListener('resize', function () {
+          myChart1.resize();
+        })
+      },
+      clEchart(){
+               let myChart1 = this.$echarts.init(document.getElementById('dailyEchart'));
+        // 绘制图表
+        myChart1.clear();
+let option = {
+  title:{
+ text:"穿棕产量日对比",
+ textStyle:{
+   color:"#87D3F7",
+   fontSize:15
+ },
+ left:"center",
+ top:15
+  },
+    color: ['#87D3F7'],
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+               axisTick: {
+            show:false
+            },
+            axisLine:{
+              lineStyle:{
+                 color:"#87D3F7"
+              }
+            }
+        }
+    ],
+    yAxis: [
+        {
+       
+splitLine:{
+    show:true,
+    lineStyle:{
+        type:'dashed'
+    }
+},
+              axisTick: {
+            show:false
+            },
+            type: 'value',
+               axisLine:{
+              lineStyle:{
+                 color:"#87D3F7"
+              }
+            }
+        }
+    ],
+    series: [
+        {
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390, 330, 220]
+        }
+    ]
+};
+      myChart1.setOption(
+          option);
+        window.addEventListener('resize', function () {
+          myChart1.resize();
+        })
+      },
       getclph() {
         let that = this
         let xList = []
         let sList = []
         let l=[]
         let legendList = []
-        axios({
-            url: host1 + '/report/getSimpleReport',
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              'companyId': that.companyId
-            },
-            data: {
+        // axios({
+        //     url: host1 + '/report/getSimpleReport',
+        //     method: 'post',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //       'companyId': that.companyId
+        //     },
+        //     data: {
 
-              tableName: "wear_weaving",
-
-
-              selectFields: ["distinct(machine_id)"],
-              //  selectFields:["sum(root_number)","machine_id","start_datetime"]
-
-            }
-
-          })
-          .then(res => {
+        //       tableName: "wear_weaving",
 
 
-            for (let i = 0; i < res.data.data.length; i++) {
-              if(res.data.data[i].machine_id=="cz02#"){
-      legendList.push(res.data.data[i].machine_id)
+        //       selectFields: ["distinct(machine_id)"],
+        //       //  selectFields:["sum(root_number)","machine_id","start_datetime"]
+
+        //     }
+
+        //   })
+        //   .then(res => {
+
+
+      //       for (let i = 0; i < res.data.data.length; i++) {
+      //         // if(res.data.data[i].machine_id=="cz02#"){
+      // legendList.push(res.data.data[i].machine_id)
               axios({
                   url: host1 + '/report/getSimpleReport',
                   method: 'post',
@@ -146,7 +308,7 @@
 
 
                     query: {
-                      machine_id: res.data.data[i].machine_id
+                      // machine_id: res.data.data[i].machine_id
                     },
                     selectFields: ["sum(root_number)", "machine_id", "create_date"],
                     groupByColumn: ['create_date']
@@ -183,160 +345,112 @@
                   })
 
                 })
-              }
+              // }
         
-            }
+            // }
             console.log(xList)
             console.log(sList)
 
-          }).then(() => {
+//           }).then(() => {
 
-             that.legendList=legendList
-             that.xList=xList
-             that.sList=sList
+//              that.legendList=legendList
+//              that.xList=xList
+//              that.sList=sList
 
-    setTimeout(() => {
-             let myChart1 = this.$echarts.init(document.getElementById('echart2'));
-        // 绘制图表
-        myChart1.clear();
-       let option = {
- color:['#1F78B4','#1AFF00'],
-          title: {
+//     setTimeout(() => {
+//              let myChart1 = this.$echarts.init(document.getElementById('echart2'));
+//         // 绘制图表
+//         myChart1.clear();
+//        let option = {
+//  color:['#1F78B4','#1AFF00'],
+//           title: {
 
-            left: "center",
-            top: "3%",
-            textStyle: {
-              color: "#00FFDC",
-              fontSize: 18,
-              fontWeight: "normal"
-            },
-            text: "每日产量占比"
-          },
-          xAxis: {
-            type: 'category',
-            data: xList,
-            axisLabel: {
-              show: true,
-              textStyle: {
-                color: "rgba(238,219,219,1)",
-                fontSize: 10
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255, 255, 255, 0)",
-                width: 1
-              }
-            },
-            axisTick: {
-              show: false
-            }
-          },
+//             left: "center",
+//             top: "3%",
+//             textStyle: {
+//               color: "#00FFDC",
+//               fontSize: 18,
+//               fontWeight: "normal"
+//             },
+//             text: "每日产量占比"
+//           },
+//           xAxis: {
+//             type: 'category',
+//             data: xList,
+//             axisLabel: {
+//               show: true,
+//               textStyle: {
+//                 color: "rgba(238,219,219,1)",
+//                 fontSize: 10
+//               }
+//             },
+//             axisLine: {
+//               lineStyle: {
+//                 color: "rgba(255, 255, 255, 0)",
+//                 width: 1
+//               }
+//             },
+//             axisTick: {
+//               show: false
+//             }
+//           },
 
-          // legend: {
-          //   right: "5%",
-          //   top: "17%",
-          //   textStyle: {
-          //     color: "#fff"
-          //   },
-          //   data: legendList
-          // },
-          yAxis: {
-            type: 'value',
-            name: "米",
-            nameTextStyle: {
-              color: "#979797",
-              fontSize: 10
-            },
-            splitLine: {
-              show: false,
-              lineStyle: {
-                type: 'dashed',
-                color: "#979797",
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255, 255, 255, 0)",
-                width: 1
-              }
-            },
-            nameLocation: "end",
-            axisLabel: {
-              show: true,
-              textStyle: {
-                color: "#979797",
-                fontSize: 10
-              }
-            },
-          },
-          grid: {
-            left: '10%',
-            bottom: "12%",
-            top: '40%',
-            right: "8%"
-          },
-          series: that.sortByKey(sList,"name")
-        };
+//           // legend: {
+//           //   right: "5%",
+//           //   top: "17%",
+//           //   textStyle: {
+//           //     color: "#fff"
+//           //   },
+//           //   data: legendList
+//           // },
+//           yAxis: {
+//             type: 'value',
+//             name: "米",
+//             nameTextStyle: {
+//               color: "#979797",
+//               fontSize: 10
+//             },
+//             splitLine: {
+//               show: false,
+//               lineStyle: {
+//                 type: 'dashed',
+//                 color: "#979797",
+//               }
+//             },
+//             axisLine: {
+//               lineStyle: {
+//                 color: "rgba(255, 255, 255, 0)",
+//                 width: 1
+//               }
+//             },
+//             nameLocation: "end",
+//             axisLabel: {
+//               show: true,
+//               textStyle: {
+//                 color: "#979797",
+//                 fontSize: 10
+//               }
+//             },
+//           },
+//           grid: {
+//             left: '10%',
+//             bottom: "12%",
+//             top: '40%',
+//             right: "8%"
+//           },
+//           series: that.sortByKey(sList,"name")
+//         };
 
-        //console.log(option.series[0])
-        myChart1.setOption(
-          option);
-        window.addEventListener('resize', function () {
-          myChart1.resize();
-        })
-    }, 1000);
+//         //console.log(option.series[0])
+//         myChart1.setOption(
+//           option);
+//         window.addEventListener('resize', function () {
+//           myChart1.resize();
+//         })
+//     }, 1000);
 
-        // for(let i=0;i<that.xList.length;i++){
-        //   list.push(that.xList[i])
-        // }
-        //    for(let i=0;i<that.sList.length;i++){
-        // ////console.log(that.sList[i].data)
-        // }
-        //   that.xList=['08-21','08-22','08-23','08-24','08-25',]
-        //   that.legendList=['1','2','-1']
-        //   that.sList=[
-        //  {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '1',
-        //          data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             },
-        //              {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '2',
-        //               data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             },
-        //              {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '-1',
-        //               data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             }
-        //   ]
 
-       
-            // that.echart2()
-          })
+//           })
       },
     // 对象排序
       sortByKey(array, key) {
@@ -390,7 +504,7 @@ groupByColumn:["product_name"],
                 value: res.data.data[i].root_number
               })
 
-              that.echart()
+              that.pzEchart()
             }
           })
       },
@@ -632,9 +746,9 @@ t=null
               response.data.data[i].update_time = response.data.data[i].update_time.substr(0, 10)
 
             }
-            //////console.log(response)
+           console.log(response)
             that.dczList = response.data.data
-            that.dczListLength = response.data.data.length
+       
           })
       },
                   startmarquee(lh, speed, delay) {
@@ -748,52 +862,7 @@ t=null
         myChart1.clear();
         let that = this
 
-        // for(let i=0;i<that.xList.length;i++){
-        //   list.push(that.xList[i])
-        // }
-        //    for(let i=0;i<that.sList.length;i++){
-        // ////console.log(that.sList[i].data)
-        // }
-        //   that.xList=['08-21','08-22','08-23','08-24','08-25',]
-        //   that.legendList=['1','2','-1']
-        //   that.sList=[
-        //  {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '1',
-        //          data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             },
-        //              {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '2',
-        //               data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             },
-        //              {
-        //               // itemStyle: { //柱图背景色
-        //               //   color: '#64D4E6'
-        //               // },
-        //               name: '-1',
-        //               data:[122,123,124,531,313,134],
-        //               label: {
-        //                 show: true,
-        //                 position: 'top'
-        //               },
-        //               type: 'bar'
-        //             }
-        //   ]
+   
 
         let option = {
 
@@ -913,15 +982,19 @@ t=null
         this.companyname="七星"
     
       }
+      this. clEchart()
+      this.pzEchart()
+      this.rotate()
       this.getdata()
-      this.getdata2()
+      // this.getdata()
+      // this.getdata2()
   
-      this.getdata3()
-          this. startmarquee2(30,50,80)
-      this.startmarquee(30,50,80)
-      this.startmarquee3(30,50,80)
-      this.getdata4()
-      this.getclph()
+      // this.getdata3()
+      //     this. startmarquee2(30,50,80)
+      // this.startmarquee(30,50,80)
+      // this.startmarquee3(30,50,80)
+       this.getdata4()
+      //  this.getclph()
 
 
 
@@ -974,7 +1047,7 @@ t=null
 
   .board {
     width: 100%;
-    height: 93%;
+    height:48rem;
     /* height: 71%; */
     display: flex;
     align-items: center;
@@ -983,7 +1056,7 @@ t=null
   }
 
   .board_con {
-    width: 93%;
+    width: 98%;
     height: 92%;
     display: flex;
     flex-direction: column;
@@ -991,221 +1064,167 @@ t=null
 
   .board_con_top {
     width: 100%;
-    height: 64%;
+    height: 47%;
     margin-bottom: 2%;
     display: flex;
-
+flex-direction: column;
+overflow: auto;
+    background: rgb(15,49,83);
   }
-
-  .board_con_top_left {
-    width: 30%;
+  .board_con_top_con {
+    width: 100%;
+  height: 2.6rem;
+    
+    display: flex;
+    
+  }
+   .board_con_top_con_one {
+    width: 11.1%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-
-  }
-
-  .board_con_top_left_con {
-    width: 100%;
-    height: 47%;
-
-    background: #0E3E5F;
-    position: relative;
-
-  }
-
-  .yijilu {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 86px;
-    height: 33px;
-    padding-left: 7px;
-    padding-right: 7px;
-    background: black;
-    color: #DFFF00;
-    font-size: 1.25rem;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-  }
-
-  .yijilu2 {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 86px;
-    height: 33px;
-    padding-left: 7px;
-    padding-right: 7px;
-    background: black;
-    color: #DFFF00;
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-
-  }
-
-  .board_con_top_left_con2 {
-    width: 100%;
-    height: 45%;
-
-    background: #0E3E5F;
-  }
-
-  .board_con_top_left_con_title {
-    width: 100%;
-    height: 20%;
+    color: white;
+    font-size: 1.5rem;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    color: #00FFDC;
-    font-size: 1.4rem;
-  }
-
-  .board_con_top_left_con_tablehead {
-    width: 100%;
-    height: 20%;
-    display: flex;
-  }
-
-  .board_con_top_left_con_tablehead span {
-    width: 33.33%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #01CBFF;
-    font-size: 1.2rem;
-  }
-
-  .board_con_top_left_con_tablecon {
-    width: 100%;
-    height: 7.8rem;
-    overflow: auto;
-  }
-
-  .board_con_top_left_con_tablecon_one {
-    width: 100%;
-    height: 2.55rem;
-    display: flex;
-    font-size: 1.2rem;
-
-  }
-
-  .board_con_top_left_con_tablecon_one span {
-    width: 33.33%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-  }
-
-  .board_con_top_middle {
-    width: 40%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-
-
-  }
-
-  .board_con_top_middle_con_font {
-    width: 100px;
-    height: 100px;
-
-  }
-
-  .board_con_top_middle_con_font span {
-    width: 100%;
-    height: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-  }
-
-  .board_con_top_middle_con {
-    width: 350px;
-    height: 350px;
-    background-image: url("../../static/img/circle.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
-
-  .board_con_top_right {
-    width: 30%;
-    height: 100%;
-
-
+    
   }
 
   .board_con_bottom {
     width: 100%;
-    height: 34%;
-    background: #0E3E5F;
-    position: relative;
+     height: 47%;
+ 
+  display: flex;
+  align-items: center;
   }
+    .board_con_bottom_left {
+    width: 60%;
+     height: 100%;
 
-  .board_con_bottom_title {
-    width: 100%;
-    height: 20%;
-    display: flex;
-    font-size: 1.4rem;
-    color: #00FFDC;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .board_con_bottom_tablehead {
-    width: 100%;
-    height: 20%;
-    display: flex;
-    font-size: 1.2rem;
-    color: #01CBFF;
+  display: flex;
 
   }
+  .board_con_bottom_left_left {
+    width: 50%;
+     height: 100%;
 
-  .board_con_bottom_tablehead span {
-    width: 14.28%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+flex-direction: column;
+
   }
-
-  .board_con_bottom_tablecon {
-    width: 100%;
-    height: 60%;
-    overflow: auto;
-  }
-
-  .board_con_bottom_tablecon_one {
-    width: 100%;
-    height: 25%;
-    display: flex;
-  }
-
-  .board_con_bottom_tablecon_one span {
-    width: 14.28%;
-    height: 100%;
+  .board_con_bottom_left_left_title{
+    width: 99%;
+    height: 4rem;
+    font-size: 1.7rem;
+    color: white;
+    border: 1px solid #87D3F7;
+    background: black;
     display: flex;
     align-items: center;
+    border-radius: 8px;
     justify-content: center;
-    font-size: 1.2rem;
+  }
+    .board_con_bottom_left_left_tablehead{
+    width: 100%;
+    height: 2.85rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: white;
+       background: rgb(15,49,83);
+   
+    display: flex;
+ 
+  }
+   .board_con_bottom_left_left_tablehead_one{
+    width: 33.3%;
+    height: 2.8rem;
+
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+  }
+    .board_con_bottom_left_right {
+    width: 50%;
+     height: 100%;
+
+  display: flex;
+
+  }
+  
+    .board_con_bottom_right {
+    width: 40%;
+     height: 100%;
+ 
+  display: flex;
+
+
+  }
+     .board_con_bottom_right_img {
+    width: 40%;
+     height: 100%;
+   position: relative;
+
+
+  }
+  .img1{
+    width: 11rem;
+    height: 11rem;
+    position: absolute;
+        left: 15px;
+    top: 15px;
+  }
+  .img_span{
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: white;
+      left: 33px;
+    top: 35px;
+  }
+    .img_span2{
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: white;
+      left: 35px;
+    top: 37px;
+  }
+  .img1 img{
+     width: 11rem;
+    height: 11rem;
+      
   }
 
+    .img2{
+     width: 11rem;
+    height: 11rem;
+    position: absolute;
+        right: 0px;
+    bottom: 0px;
+   
+  }
+      .img2 img{
+     width: 11rem;
+    height: 11rem;
+ 
+  }
+       .board_con_bottom_right_echart {
+    width: 60%;
+     height: 100%;
+ 
+
+
+  }
+  
 </style>

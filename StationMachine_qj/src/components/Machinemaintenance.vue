@@ -1,9 +1,10 @@
 <template>
-  <div class="allPage_M">
+  <div class="operationPane">
+    <!-- 我的机台选机台-->
     <div
       class="operationPane_con"
-      v-show="isMachine"
       style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="MachineShow"
     >
       <div class="operationPane_con_machineList">
         <el-checkbox-group
@@ -15,124 +16,537 @@
           <el-checkbox-button
             size="medium"
             v-for="(item, index) in machineList"
-            style="magin: 1rem; font-size: 2rem"
-            :label="item.machine_id"
+            style="magin: 1rem; font-size: 1rem"
+            :label="item.machineId"
             :key="index"
-            >{{ item.machine_id }}</el-checkbox-button
+            ><span>机台号：{{ item.machineId }}</span
+            ><span style="margin: 0.5rem">{{ item.type }}</span
+            ><span>上报时间：{{ item.time }}</span></el-checkbox-button
           >
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
           <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
-            确认
-          </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            style=""
-            @click="cancel()"
-          >
-            取消
+            进入维修
           </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
             background
             small
-            :pager-count="3"
+            :pager-count="4"
+            @current-change="CurrentChange"
             layout="prev, pager, next"
-            :total="total_num2"
-            :page-size="page_size2"
+            :total="total_num"
           >
           </el-pagination>
         </div>
       </div>
-      <div class="leftLabel"><span>选机台</span></div>
-      <div class="search">
-        <span style="font-size: 2rem">搜索：</span><input placeholder="输入机台号" /><span
-          style="color: red; margin-left: 1rem"
-          >选中机台：{{ this.checkedMachineNum }}</span
-        >
-      </div>
-      <img src="../../static/img/close.png" @click="cancel()" />
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+
+      <img src="../../static/img/close.png" />
     </div>
-    <div class="allPage_con" v-show="!isMachine">
-      <div class="allPage_con_left">
-        <div class="allPage_con_left_top">
-          <div class="allPage_con_left_top_left">
-            <div class="allPage_con_left_top_left_title">报修机台</div>
-            <div
-              class="allPage_con_left_top_left_btn"
-              v-show="!isChecked"
-              @click="chooseMachine()"
-            >
-              请选择
-            </div>
-            <div
-              class="allPage_con_left_top_left_btn"
-              v-show="isChecked"
-              @click="chooseMachine()"
-            >
-              {{ checkedMachineNum }}
-            </div>
+    <!-- 我的机台选机台-->
+    <!-- 保养界面-->
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="MaintanceShow"
+    >
+      <div class="Maintance_machine">保养机台:{{ checkedMachineNum }}</div>
+      <div class="Maintance_object">
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次01</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次02</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次03</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="Maintance_object_con">
+          <span style="margin-right: 4rem">项次04</span>
+          <el-checkbox
+            style="margin-right: 2rem"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              style="margin-left: 3rem"
+              v-for="city in cities"
+              :label="city"
+              :key="city"
+              >{{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </div>
+      <div class="Maintance_materials">
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+      </div>
+      <div class="Maintance_btn">
+        <div class="btns" style="margin: 0">确认保养</div>
+        <div class="btns" @click="addMaterial">新增零配件</div>
+        <div
+          class="btns"
+          style="background: #808080; color: white"
+          @click="
+            MaintanceShow = false;
+            MachineShow = true;
+          "
+        >
+          取消
+        </div>
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = false;
+          "
+        >
+          查看零配件
+        </div>
+      </div>
+      <img
+        src="../../static/img/close.png"
+        @click="
+          MaintanceShow = false;
+          MachineShow = true;
+        "
+      />
+    </div>
+    <!-- 保养界面-->
+    <!--选零配件种类-->
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="MaterialsTypeShow"
+    >
+      <div class="operationPane_con_machineList2">
+        <el-checkbox-group
+          :max="1"
+          @change="checkedType"
+          v-model="checkType"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in typeList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.label"
+            :key="index"
+            >{{ item.label }}</el-checkbox-button
+          >
+        </el-checkbox-group>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
+            确认
           </div>
-          <div class="allPage_con_left_top_right">
-            <div
-              class="baoxiu_btn"
-              :style="!isChecked ? 'background:#808080' : 'background:#A3D897'"
-              @click="repair"
-            >
-              报修
-            </div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
+            取消
           </div>
         </div>
-        <div class="allPage_con_left_middle">
-          <div class="allPage_con_left_top_left">
-            <div class="allPage_con_left_top_left_title">品号</div>
-            <textarea disabled placeholder="选择机台后获取..."></textarea>
-          </div>
-          <div class="allPage_con_left_top_left" style="width: 50%">
-            <div class="allPage_con_left_top_left_title">品名</div>
-            <textarea disabled placeholder="选择机台后获取..."></textarea>
-          </div>
+        <!-- <div class="operationPane_con_machineList_btn_right">
+          <el-pagination
+            background
+            small
+            :pager-count="4"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :total="total_num"
+          >
+          </el-pagination>
+        </div> -->
+      </div>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 3rem; width: 95%; top: 18px">
+        <!-- <span style="font-size: 1.7rem">搜索：</span
+        ><input placeholder="输入机台号" v-model="search_machine" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
+          确认
+        </div> -->
+        <span style="color: red">维修机台：{{ this.checkedMachineNum }}</span>
+      </div>
+      <img src="../../static/img/close.png" @click="cancel2" />
+    </div>
+    <!-- 选零配件种类-->
+    <!-- 配件列表-->
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="MaterialsShow"
+    >
+      <div style="width: 93%; height: 64%; margin-top: 9%">
+        <div
+          :class="item.ischecked ? 'material_one_checked' : 'material_one'"
+          @click="checkMaterial(item.id)"
+          v-for="(item, index) in materialsList"
+          :key="index"
+        >
+          <span>{{ item.product_name }}</span
+          ><span> {{ item.num }}{{ item.unit_name }}</span>
         </div>
-        <div class="allPage_con_left_bottom">
-          <div class="allPage_con_left_top_left" style="width: 100%">
-            <div class="allPage_con_left_top_left_title" style="height: 30%">品名</div>
-            <textarea
-              disabled
-              placeholder="选择机台后获取..."
-              style="height: 70%; width: 98.3%"
-            ></textarea>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="btns" style="margin: 0" @click="sureMaterial">确认</div>
+        <div class="btns" @click="use()">使用</div>
+        <div class="btns" style="background: #808080; color: white" @click="cancel3">
+          取消
+        </div>
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = true;
+          "
+        >
+          查看零配件
+        </div>
+      </div>
+
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 3rem; width: 95%; top: 18px">
+        <span style="color: red; margin-right: 1rem"
+          >保养机台：{{ this.checkedMachineNum }}</span
+        >
+        <span style="font-size: 1.7rem">搜索：</span
+        ><input placeholder="" v-model="search_material" />
+        <div
+          class="checked_machine_btn_one"
+          style="height: 3rem"
+          @click="getInventory(search_material)"
+        >
+          确认
+        </div>
+      </div>
+      <img src="../../static/img/close.png" @click="cancel3" />
+    </div>
+    <!-- 配件列表-->
+    <!-- 维修界面-->
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="repairShow"
+    >
+      <div class="Maintance_machine">
+        维修机台：{{ checkedMachineNum
+        }}<span style="margin-left: 2rem">上报时间：2020-12-10 18:30</span>
+      </div>
+      <div class="Maintance_machine" style="color: black; height: 5%">
+        故障分类：{{ String(checkedRepairName) }}
+      </div>
+      <div class="repair_object">
+        <el-checkbox-group
+          @change="checkRepair"
+          :max="1"
+          v-model="checkedRepair"
+          style="width: 60%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in reasonlist"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.label"
+            :key="index"
+            >{{ item.label }}</el-checkbox-button
+          >
+        </el-checkbox-group>
+        <div
+          style="
+            width: 40%;
+            height: 100%;
+            display: flex;
+            position: relative;
+            align-items: center;
+          "
+        >
+          <span style="position: absolute; top: -46px; font-size: 1.5rem"
+            >处理方式：</span
+          >
+          <el-input
+            type="textarea"
+            :rows="3"
+            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem"
+            placeholder="请输入内容"
+            v-model="repairReason"
+          >
+          </el-input>
+        </div>
+      </div>
+      <div class="Maintance_machine" style="color: black; height: 10%">零配件：</div>
+      <div class="Maintance_materials">
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+      </div>
+      <div class="Maintance_btn">
+        <div class="btns" style="margin: 0">确认维修</div>
+        <div class="btns" @click="addMaterial">新增零配件</div>
+        <div
+          class="btns"
+          style="background: #808080; color: white"
+          @click="
+            repairShow = false;
+            MachineShow = true;
+          "
+        >
+          取消
+        </div>
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = false;
+          "
+        >
+          查看零配件
+        </div>
+      </div>
+      <img
+        src="../../static/img/close.png"
+        @click="
+          repairShow = false;
+          MachineShow = true;
+        "
+      />
+    </div>
+    <!-- 维修界面-->
+    <!-- 上轴部分操作栏组件-->
+    <el-dialog title="修改数量" width="400" :visible.sync="materialNumDialog">
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <span style="font-size: 1.5rem">配件名称</span>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 67%;
+            margin-top: 1rem;
+          "
+        >
+          <button
+            style="width: 5.5rem; height: 5.5rem; background: #a3d897; border: none"
+            @click="subNum"
+          >
+            <i class="el-icon-minus" style="font-size: 1.5rem"></i>
+          </button>
+          <input
+            style="width: 7.5rem; height: 5rem; font-size: 3.5rem"
+            v-model="materialNum"
+          />
+          <button
+            @click="addNum"
+            style="width: 5.5rem; height: 5.5rem; background: #a3d897; border: none"
+          >
+            <i class="el-icon-plus" style="font-size: 1.5rem"></i>
+          </button>
+        </div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 94%;
+            height: 6rem;
+            margin-top: 3rem;
+          "
+        >
+          <div class="btns" @click="choosedMaterial">选好了</div>
+          <div
+            class="btns"
+            style="background: #808080; color: white"
+            @click="materialNumDialog = false"
+          >
+            取消
           </div>
         </div>
       </div>
-      <div class="allPage_con_right">
-        <div class="allPage_con_right_left">
+    </el-dialog>
+    <el-dialog title="警告" width="400" :visible.sync="noSaveDialog">
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <span style="font-size: 1.5rem">本页面数据不会保存</span>
+
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 94%;
+            height: 6rem;
+            margin-top: 3rem;
+          "
+        >
           <div
-            class="allPage_con_right_left_one"
-            @click="checkQuestion(item.id)"
-            v-for="(item, index) in questionList"
+            class="btns"
+            @click="
+              noSaveDialog = false;
+              MaterialsShow = false;
+              MaterialsTypeShow = true;
+              materialsList = [];
+            "
+          >
+            确定
+          </div>
+          <div
+            class="btns"
+            style="background: #808080; color: white"
+            @click="noSaveDialog = false"
+          >
+            取消
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-drawer
+      title="查看零配件"
+      :with-header="false"
+      :visible.sync="drawer"
+      direction="rtl"
+    >
+      <div
+        style="
+          width: 20rem;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          height: 100%;
+        "
+      >
+        <div style="width: 20rem">
+          <div
+            class="select_material"
+            v-for="(item, index) in materialsList2"
             :key="index"
           >
-            <!-- <span>{{item.title}}</span> -->
-            <div
-              class="question_area"
-              style="height: 100%"
-              :style="item.isChecked ? 'background:#3296FA' : 'background:#808080'"
-            >
-              <span>{{ item.question }}</span>
-            </div>
+            <span>{{ item.product_name }}</span>
           </div>
         </div>
-        <div class="allPage_con_right_right">
-          <div class="allPage_con_right_right_con">
-            <img src="../../static/img/page-left.png" @click="lastPage" />
-            <img src="../../static/img/page-right.png" @click="nextPage" />
-          </div>
+
+        <div style="width: 20rem; position: absolute; bottom: 0">
+          <img
+            src="../../static/img/page-left.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="lastPage()"
+          />
+          <img
+            src="../../static/img/page-right.png"
+            style="width: 7rem; margin: 1rem; height: 7rem"
+            @click="nextPage()"
+          />
         </div>
       </div>
-    </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -140,495 +554,1211 @@
 import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
-  name: "Machinemaintenance",
-  props: ["problem"],
+  name: "Uppershaft",
   data() {
     return {
-      mac_type_id: "030100",
-      isMachine: false,
+      MachineShow: true, //选择机台显示隐藏
+      MaintanceShow: false, //
+      MaterialsTypeShow: false, //选零配件种类
+      MaterialsShow: false, //物料界面
+      repairShow: false, //维修界面
+      drawer: false, //查看零配件抽屉
+      drawerFlag: null, //查看零配件抽屉是否需要根据配件种类参数获取
+      noSaveDialog: false,
+      checkedCities: ["上海", "北京"],
+      cities: ["上海", "北京", "广州", "深圳"],
+      checkAll: false,
+      isIndeterminate: true,
+
+      search_machine: "",
+      checkMachine: [], //选中机台列表
       checkedMachineNum: "",
-      isChecked: false,
-      company_id: "10000025",
-      checkMachine: [], //上轴选中机台列表
-      questionList: [
-        // {
-        //   id: 1,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
-        // {
-        //   id: 2,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
-        // {
-        //   id: 3,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
-        // {
-        //   id: 4,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
-        // {
-        //   id: 5,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
-        // {
-        //   id: 6,
-        //   title: "我是问题",
-        //   question: "我是问题描述问题描述问题描述问题描述问题备份",
-        //   isChecked: false
-        // },
+      machineList: [
+        {
+          machine_id: 1234,
+        },
+        {
+          machine_id: 1222,
+        },
+        {
+          machine_id: 1333,
+        },
+        {
+          machine_id: 1444,
+        },
       ],
-      questionCon: [],
+      total_num: 100,
       page_num: 1,
-      page_size: 6,
-      total_num: null,
-      machineList: [], //上轴机台列表
+      page_size: 9,
+
+      typeList: [],
+      checkType: [], //选中机台列表
+      checkedTypeName: "", //选中种类名称
+      checkedTypeId: "", //选中种类id
+      materialsList: [],
+      materialsList2: [], //零配件列表
+      total_num2: 100,
       page_num2: 1,
-      page_size2: 6,
-      total_num2: null,
+      page_size2: 14,
+      search_material: "", //输入框搜索零配件名称
+      materialId: null,
+      materialNum: null,
+      materialNumDialog: false,
+
+      company_id: 10000015,
+      isWaitMaintance: 2, //是否待保养，0带保养，1保养预期，2待维修
+      reasonlist: [
+        {
+          label: "经停",
+          value: "经停",
+        },
+        {
+          label: "纬停",
+          value: "纬停",
+        },
+        {
+          label: "疵点",
+          value: "疵点",
+        },
+        {
+          label: "设备",
+          value: "设备",
+        },
+      ],
+      checkedRepair: [],
+      checkedRepairName: "",
+      repairReason: "",
     };
   },
   methods: {
-    repair() {
-      let error_desc = [];
-      if (this.questionCon.length < 0) {
-        this.$message({
-          message: "请选择问题！",
-          type: "warning",
-        });
-      } else {
-        this.questionCon.forEach((element) => {
-          error_desc.push(element.question);
-        });
-        error_desc = String(error_desc);
-        let url2 = host + "/api/group/getOnDutyShift";
-        let that = this;
-        axios({
-          //获取挡车工姓名
-          url: url2,
-          method: "post",
-          data: {
-            selectInfo: {
-              company_id: that.company_id,
-            },
-            shiftGroup: {
-              id: 16,
-            },
+    getMachineList() {
+      //获取机台列表
+      let url = "http://120.55.124.53:8211/machine/getMachineList";
+      let that = this;
+      that.machineList = [];
+      axios
+        .post(
+          url,
+          {
+            //           "workShopId":workshop_id,
+            //     "machineType": mac_type_id,
+            page: that.page_num,
+            pageSize: that.page_size,
+            orderType: "asc",
+            groupId: "",
           },
-        }).then((res) => {
-          //console.log(res);
-
-          let dcName = res.data.result.staffList[0].staff_name;
-          //console.log(error_desc);
-          //console.log(this.checkedMachineNum);
-          //console.log(dcName);
-          let url = host + "/api/repair/errorSubmit";
-          axios({
-            url: url,
-            method: "post",
-            data: {
-              selectInfo: {
-                company_id: that.company_id,
-              },
-              error_submit: {
-                machine_id: that.checkedMachineNum,
-                error_desc: error_desc,
-                submit_person: dcName,
-              },
+          {
+            headers: {
+              companyId: that.company_id,
             },
-          }).then((res) => {
-            //console.log(res);
-            if (res.data.message == "成功") {
-              this.$message({
-                message: "报修成功！",
-                type: "success",
-              });
-            } else {
-              this.$message.error("操作失败！");
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          if (res.data.data.length == 0) {
+            return;
+          } else {
+            that.total_num = res.data.totalDataNum; //设置数据总条数
+
+            for (let i = 0; i < res.data.data.length; i++) {
+              if (String(res.data.data[i].machineId).indexOf("-") == -1) {
+                that.machineList.push(String(res.data.data[i].machineId));
+              }
             }
-            this.checkedMachineNum = "";
-            this.isChecked = false;
-            this.questionCon = [];
-            this.getMachine();
-          });
+            console.log(that.machineList);
+            that.machineList = [
+              //假数据
+              {
+                machineId: 1011,
+                type: "织机报修",
+                time: "2020-12-11 18:00",
+              },
+              {
+                machineId: 1012,
+                type: "织机报修",
+                time: "2020-12-11 18:00",
+              },
+            ];
+          }
+        });
+    },
+    getRootCategories() {
+      //获取物料分类
+      //获取分类根目录
+      let url = "http://120.55.124.53:8206/api/product/getFullCategories";
+      let that = this;
+      that.typeList = [];
+      axios
+        .post(
+          url,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              companyID: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+
+          for (let i = 0; i < res.data.data.children.length; i++) {
+            if (res.data.data.children[i].categories_id == 8) {
+              that.typeList = res.data.data.children[i].children;
+            }
+          }
+          console.log(that.typeList);
+        });
+    },
+    addMaterial() {
+      //显示物料分类选择界面
+      if (this.isWaitMaintance == 2) {
+        this.repairShow = false;
+        this.MaterialsTypeShow = true;
+      } else {
+        this.MaintanceShow = false;
+        this.MaterialsTypeShow = true;
+      }
+    },
+    toMaintance(isWaitMaintance) {
+      //显示保养界面
+      this.IndexShow = false;
+      this.MachineShow = true;
+      this.isWaitMaintance = isWaitMaintance;
+    },
+
+    choosedMaterial() {
+      //选择物料
+      console.log(this.materialsList);
+      this.materialNumDialog = false;
+    },
+
+    use() {
+      //显示加减数量的窗口
+      console.log(this.materialId);
+      if (this.materialId != null) {
+        this.materialNumDialog = true;
+      } else {
+        this.$message({
+          message: "请先选一个配件！",
+          type: "warning",
         });
       }
     },
-    getMachineList() {
-      let that = this;
-      let url = host + "/api/stationMachine/getMachines";
-      let method = axios({
-        url: url,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_size: that.page_size2,
-            page_num: that.page_num2,
-          },
-          mac_type_id: that.mac_type_id,
-        },
-        // headers: headers
-      }).then((response) => {
-        that.total_num2 = response.data.result.total_num;
-        let array = response.data.result.models;
-        that.machineList = [];
-        array.forEach((element) => {
-          that.machineList.push(element);
-        });
-      });
+    addNum() {
+      //加物料数量
+      this.materialNum = this.materialNum + 1;
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == this.materialId) {
+          this.materialsList[i].num = this.materialNum;
+        }
+      }
     },
-    lastPage() {
-      //console.log(this.page_num);
-      if (this.page_num > 1) {
-        this.page_num = this.page_num - 1;
-        this.getMachine();
+    subNum() {
+      //减物料数量
+      if (this.materialNum > 1) {
+        this.materialNum = this.materialNum - 1;
+      }
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == this.materialId) {
+          this.materialsList[i].num = this.materialNum;
+        }
+      }
+    },
+    checkMaterial(id) {
+      //选中物料，切换状态
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].id == id) {
+          if (this.materialsList[i].ischecked == false) {
+            this.materialId = id;
+            this.materialNum = this.materialsList[i].num;
+          } else {
+            this.materialId = null;
+            this.materialNum = null;
+          }
+          this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+        }
+      }
+      console.log(this.materialId);
+    },
+    handleCheckAllChange(val) {
+      //全选保养项次
+      this.checkedCities = val ? this.cities : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+    },
+    closeCurrentPage() {},
+    search() {
+      //搜索机台
+      if (this.search_machine != "") {
+        let url = "http://106.12.219.66:8763/com-machine-info/selectAMachineRelation";
+        let that = this;
+        axios
+          .post(
+            url,
+            {
+              machineId: this.search_machine,
+            },
+            {
+              //开始查询
+              headers: {
+                "Content-Type": "application/json",
+                companyID: this.company_id,
+              },
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            that.machineList = [];
+            if (res.data.data[0]) {
+              that.machineList.push(res.data.data[0]);
+            }
+          });
+      } else {
+        this.page_num = 1;
+        this.getMachineList();
+      }
+    },
+    CurrentChange(e) {
+      //机台分页
+      //console.log(e);
+      this.page_num = e;
+      this.getMachineList();
+    },
+
+    checkedMachine(e) {
+      //选择机台事件
+      this.checkedMachineNum = e[0];
+    },
+    checkRepair(e) {
+      //选择机台事件
+      console.log(e);
+      if (e[0]) {
+        this.checkedRepairName = e[0];
+      } else {
+        this.checkedRepairName = "";
+      }
+    },
+    checkedType(e) {
+      //选择物料种类
+
+      console.log(e);
+      if (e.length > 0) {
+        this.checkedTypeName = e[0];
+        this.typeList.forEach((element) => {
+          if (element.label == e[0]) {
+            this.checkedTypeId = element.categories_id;
+          }
+        });
+      } else {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+      }
+      console.log(this.checkedTypeId);
+    },
+    sureMachine() {
+      //确定机台
+      console.log(this.checkedMachineNum);
+      if (this.checkedMachineNum != "") {
+        if (this.isWaitMaintance == 2) {
+          //待维修界面显示
+
+          this.MachineShow = false;
+          this.repairShow = true;
+        } else {
+          this.MachineShow = false;
+          this.MaintanceShow = true;
+        }
       } else {
         this.$message({
-          message: "没有上一页！",
+          message: "先选一台机器!",
+          type: "warning",
+        });
+      }
+    },
+    cancel() {
+      this.MachineShow = false;
+      this.IndexShow = true;
+    },
+    sureType() {
+      //确定种类
+      console.log(this.checkedTypeName);
+      if (this.checkedTypeName != "") {
+        this.MaterialsTypeShow = false;
+        this.MaterialsShow = true;
+      } else {
+        this.$message({
+          message: "先选一个种类!",
+          type: "warning",
+        });
+      }
+    },
+    cancel2() {
+      if (this.isWaitMaintance == 2) {
+        this.MaterialsTypeShow = false;
+        this.repairShow = true;
+      } else {
+        this.MaterialsTypeShow = false;
+        this.MaintanceShow = true;
+      }
+    },
+    sureMaterial() {
+      //确定物料
+      console.log(this.materialsList);
+      let flag; //是否有选中的
+      for (let i = 0; i < this.materialsList.length; i++) {
+        if (this.materialsList[i].ischecked == true && this.materialsList[i].num > 0) {
+          flag = true;
+          break;
+        } else {
+          flag = false;
+        }
+      }
+      if (flag == true) {
+        this.MaterialsShow = false;
+        this.repairShow = true;
+      } else {
+        this.$message({
+          message: "先选一个配件添加数量!",
+          type: "warning",
+        });
+      }
+    },
+    getInventory(searchinfo) {
+      //获取物料
+      //获取保养物料数据
+      //  this.$refs.myscroller.finishPullToRefresh();
+      let that = this;
+      that.materialsList = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
+
+      if (searchinfo) {
+        let datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: 8,
+          product_name: searchinfo,
+        };
+      } else {
+        datas = {
+          page: 1,
+          pageNum: 20,
+
+          categories_id: this.checkedTypeId,
+        };
+      }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
+            "Content-Type": "application/json",
+            companyID: that.company_id,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+
+          // that.totalDataNum = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList.push(res.data.data.productModel[i]);
+          }
+        });
+    },
+    lastPage() {
+      //物料上一页
+      if (this.page_num2 > 1) {
+        this.page_num2 = this.page_num2 - 1;
+        this.getInventory2();
+      } else {
+        this.$message({
+          message: "没有上一页了",
           type: "warning",
         });
       }
     },
     nextPage() {
-      //console.log(this.total_num / this.page_size);
-      if (this.page_num > this.total_num / this.page_size) {
+      //物料下一页
+      if (this.total_num2 <= this.page_num2 * this.page_size2) {
         this.$message({
-          message: "没有下一页！",
+          message: "没有下一页了",
           type: "warning",
         });
       } else {
-        this.page_num = this.page_num + 1;
-        this.getMachine();
-      }
-    },
-    nextPage2() {
-      if (this.page_num2 > this.total_num / this.page_size2) {
-        this.$message({
-          message: "没有下一页！",
-          type: "waring",
-          duraing: 1000,
-        });
-      } else {
         this.page_num2 = this.page_num2 + 1;
-        this.getMachine();
+        this.getInventory2();
       }
     },
-    getMachine() {
-      let url2 = host + "/api/repair/getRepairType";
+    getInventory2() {
+      //获取物料列表分页版
       let that = this;
-      axios({
-        url: url2,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-            page_num: that.page_num,
-            page_size: that.page_size,
-          },
-        },
-      }).then((res) => {
-        //console.log(res);
-        let val = res.data.result;
-        that.questionList = [];
+      that.materialsList2 = [];
+      let url = "http://120.55.124.53:8206/api/product/getProductListByCategories"; //获取库存数量
+      var datas; //存放json数据
 
-        val.models.forEach((element) => {
-          //   for(let i=0;i<that.questionCon.length;i++){
-          //  if(that.questionCon[i].id==element.id){
-          //               that.questionList.push(that.questionCon[i])
-          //   }else{
-          that.questionList.push({
-            id: element.id,
-            isChecked: false,
-            question: element.repair_typename,
-          });
-          // }
-          // }
-        });
-        for (let j = 0; j < this.questionList.length; j++) {
-          for (let i = 0; i < this.questionCon.length; i++) {
-            if (this.questionCon[i].id == this.questionList[j].id) {
-              this.questionList[j] = this.questionCon[i];
-            }
-          }
-        }
-        that.total_num = val.total_num;
-      });
-    },
-    checkQuestion(id) {
-      for (let i = 0; i < this.questionList.length; i++) {
-        if (this.questionList[i].id == id) {
-          this.questionList[i].isChecked = !this.questionList[i].isChecked;
-          //console.log(this.questionList[i].isChecked);
-          if (this.questionList[i].isChecked == true) {
-            if (this.questionCon.indexOf(this.questionList[i]) == -1) {
-              this.questionCon.push(this.questionList[i]);
-              //console.log(this.questionCon);
-            }
-          } else if (this.questionList[i].isChecked == false) {
-            //console.log(this.questionCon.indexOf(this.questionList[i]));
-            if (this.questionCon.indexOf(this.questionList[i]) != -1) {
-              this.questionCon.splice(this.questionCon.indexOf(this.questionList[i]), 1);
-              //console.log(this.questionCon);
-            }
-          }
-        }
-      }
-    },
+      //查询当前选择的下拉选项下的数据
 
-    chooseMachine() {
-      this.isMachine = true;
-    },
-    checkedMachine(e) {
-      //选择机台事件
-      this.checkedMachineNum = e[0];
-    },
-    cancel() {
-      this.isMachine = false;
-      this.isChecked = false;
-    },
-    sureMachine() {
-      this.isMachine = false;
-      if (typeof this.checkedMachineNum == "undefined") {
-        this.isChecked = false;
+      if (that.drawerFlag == true) {
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
+
+          categories_id: this.checkedTypeId,
+        };
       } else {
-        this.isChecked = true;
+        datas = {
+          page: that.page_num2,
+          pageNum: that.page_size2,
+        };
       }
+
+      axios
+        .post(url, datas, {
+          //开始查询
+          headers: {
+            "Content-Type": "application/json",
+            companyID: that.company_id,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+
+          that.total_num2 = res.data.totalDataNum; //设置数据总条数
+
+          for (let i = 0; i < res.data.data.productModel.length; i++) {
+            //push消耗物料数据
+            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+            res.data.data.productModel[i].isinputShow = false;
+            res.data.data.productModel[i].stockQuantityShow = 0;
+            res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
+            res.data.data.productModel[i].num = 0;
+            res.data.data.productModel[i].ischecked = false;
+            that.materialsList2.push(res.data.data.productModel[i]);
+          }
+        });
+    },
+    cancel3() {
+      this.noSaveDialog = true;
     },
   },
-  mounted() {},
-  watch: {
-    isMachine(val) {
-      this.getMachineList();
-    },
-    problem(val) {
-      this.page_num = 1;
-      this.questionList = [];
-
-      val.models.forEach((element) => {
-        this.questionList.push({
-          id: element.id,
-          isChecked: false,
-          question: element.repair_typename,
-        });
+  mounted() {
+    for (let i = 0; i < 20; i++) {
+      this.materialsList.push({
+        num: 0,
+        id: i,
+        name: "螺杆机" + i,
+        ischecked: false,
       });
-      this.total_num = val.total_num;
+    }
+    this.getMachineList();
+  },
+  watch: {
+    //监听页面显示执行相应的获取数据函数
+    MaterialsTypeShow(val) {
+      if (val == true) {
+        this.getRootCategories();
+      }
     },
-    questionList(val) {
-      // val.forEach(element => {
-      //   });
-      //console.log(val);
+    MaterialsShow(val) {
+      if (val == true) {
+        this.getInventory();
+      }
+    },
+
+    drawer(val) {
+      //查看零配件
+      if (val == true) {
+        this.page_num2 = 1;
+        this.getInventory2();
+      }
+    },
+
+    MachineShow(val) {
+      if (val == true) {
+        this.page_num = 1;
+        this.getMachineList();
+      }
     },
   },
 };
 </script>
 
-<style>
-.allPage_M {
-  width: 100%;
-  position: relative;
-  height: 64%;
-  display: flex;
-  background: rgb(226, 231, 237);
-  align-items: center;
-  justify-content: center;
-}
-
-.allPage_con {
-  width: 98%;
-  height: 95%;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.allPage_con_left {
-  width: 40%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.allPage_con_left_top {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 35%;
-}
-
-.allPage_con_left_top_left {
-  width: 40%;
-  height: 100%;
+<style scoped>
+.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
+  font-size: 1rem;
+  padding: 10px 27px;
+  margin: 1rem;
+  margin-left: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-right: 0.5rem;
 }
-
-.allPage_con_left_top_left textarea {
-  width: 96%;
-  height: 40%;
-}
-
-.allPage_con_left_top_left_title {
-  width: 100%;
-  height: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.3rem;
-  color: white;
-  background: #317ccd;
-}
-
-.allPage_con_left_top_left_btn {
-  width: 96%;
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.repair_object /deep/ .el-checkbox-button__inner {
   font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
+}
+.el-message {
+  font-size: 3rem;
+}
+
+.el-message__content {
+  font-size: 3rem;
+}
+
+.main_btn {
+  width: 30%;
+  height: 50%;
+  background: #a3d897;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 3rem;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
   border-bottom: 3px solid #717171;
   border-right: 3px solid #717171;
-  color: black;
-  background: #a3d897;
 }
 
-.allPage_con_left_top_right {
+.operationPane {
+  width: 100%;
+  height: 66%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #e2e7ed;
+}
+
+.operationPane_con {
+  width: 98%;
+  height: 96%;
+  background: white;
+  border-radius: 16px;
+  position: relative;
+}
+
+.operationPane_con img {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  width: 63px;
+  height: 63px;
+}
+
+.search {
+  position: absolute;
+  left: 4rem;
+  width: 95%;
+  top: 18px;
+
+  font-size: 1.7rem;
+
+  height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.search input {
+  border: 1px solid #000;
+  height: 3rem;
+  font-size: 1.7rem;
+}
+
+.leftLabel {
+  position: absolute;
+  left: 0;
+  top: 0px;
+  border-top-left-radius: 16px;
+  font-size: 1.7rem;
+  width: 200px;
+  height: 70px;
+  background: #d4d4d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.operationPane_con_uppershaft {
+  width: 85%;
+
+  height: 70%;
+  margin-bottom: 3%;
+
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.text {
+  position: absolute;
+  top: -20%;
+  left: 0%;
+  width: 60%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.text_con {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.text_con span {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 1.5rem;
+}
+
+.shift {
+  width: 28%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.shift_con {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+
+.shift_con span {
+  font-size: 2rem;
+}
+
+.shift_con select {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.staffCheck {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.staffCheck2 {
+  font-size: 2rem;
   width: 50%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid red;
 }
 
-.baoxiu_btn {
-  width: 100%;
+.shift_con input {
+  font-size: 2rem;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.operationPane_con_machineList {
+  width: 93%;
   height: 80%;
+  margin-top: 0;
+
   display: flex;
-  background: #808080;
-  color: #ffffff;
+  justify-content: space-between;
+  position: relative;
+}
+
+.operationPane_con_machineList /deep/ .el-pagination--small .btn-next,
+.el-pagination--small .btn-prev,
+.el-pagination--small .el-pager li,
+.el-pagination--small .el-pager li.btn-quicknext,
+.el-pagination--small .el-pager li.btn-quickprev,
+.el-pagination--small .el-pager li:last-child {
+  font-size: 2rem;
+  line-height: 1rem;
+  height: 5rem;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button,
+.el-checkbox-button__inner {
+  float: left;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.checked_machine_btn_one {
+  width: 18%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  background: #a3d897;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
   border-bottom: 3px solid #717171;
   border-right: 3px solid #717171;
+}
+
+.operationPane_con_machineList_btn {
+  width: 93%;
+
+  height: 20%;
+  position: absolute;
+  bottom: -7px;
+
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.operationPane_con_machineList_btn_left {
+  width: 40%;
+  height: 60%;
+  display: flex;
+
+  align-items: center;
+}
+
+.operationPane_con_machineList_btn_leftBtn {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #a3d897;
+  margin-left: 15px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  color: #000;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
+  font-size: 1.5rem;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pager li {
+  padding: 2rem 2rem;
+  font-size: 2rem;
+  min-width: 35.5px;
+  height: 5rem;
+  line-height: 1rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination button {
+  display: inline-block;
+  font-size: 3rem;
+  min-width: 35.5px;
+  height: 5rem;
+  width: 5rem;
+  line-height: 28px;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
-.allPage_con_left_middle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 30%;
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background
+  .el-pager
+  li:not(.disabled).active {
+  background: #ffc100;
 }
 
-.allPage_con_left_bottom {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 30%;
+.operationPane_con_machineList_btn_right
+  /deep/
+  .el-pagination.is-background.el-pagination--small
+  .btn-next,
+.el-pagination.is-background.el-pagination--small .btn-prev,
+.el-pagination.is-background.el-pagination--small .el-pager li {
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 4.5rem;
 }
 
-.allPage_con_right {
-  width: 55%;
+.operationPane_con_machineList_btn_right {
+  width: 54%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.chooseBtn {
+  width: 30%;
   height: 100%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.allPage_con_right_left {
-  width: 75%;
-  height: 100%;
-}
+.chooseBtn_con {
+  width: 100%;
+  height: 40%;
 
-.allPage_con_right_left_one {
-  width: 45%;
-  height: 30%;
-
-  margin: 0.5rem;
-  float: left;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+}
+
+.chooseBtn_con_label {
+  width: 50%;
+  height: 4rem;
+  background: #317ccd;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chooseBtn_con_btn {
+  width: 50%;
+  height: 5rem;
+  background: #a3d897;
+  color: black;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
+
+.pane {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.pane_title {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #808080;
+  font-size: 1.5rem;
+}
+
+.pane_con {
+  width: 99.8%;
+  height: 55%;
+  border-left: 1px solid #a0a0a0;
+  border-bottom: 1px solid #a0a0a0;
+  border-right: 1px solid #a0a0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pane_con textarea {
+  width: 95%;
+  height: 80%;
+  color: #6c6c6c;
+  border: none;
+  font-size: 2rem;
+}
+
+textarea[class="textarea"]::-moz-placeholder {
+  color: #6c6c6c;
+  font-size: 1.5rem;
+}
+
+.pane_btn {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+
+.pane_btn_one {
+  width: 40%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #808080;
+  color: white;
+  font-size: 2.5rem;
+
+  margin-bottom: 10px;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+}
+
+.el-pagination--small .btn-next,
+.el-pagination--small .btn-prev,
+.el-pagination--small .el-pager li,
+.el-pagination--small .el-pager li.btn-quicknext,
+.el-pagination--small .el-pager li.btn-quickprev,
+.el-pagination--small .el-pager li:last-child {
+  font-size: 3rem;
+  line-height: 2rem;
+  height: 4.5rem;
+}
+
+.operationPane_con_machineList /deep/ .el-checkbox-button,
+.el-checkbox-button__inner {
+  float: left;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pager li {
+  padding: 1.5rem 1.5rem;
+  font-size: 3rem;
+  min-width: 38px;
+  height: 4.5rem;
+  line-height: 2rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination button {
+  display: inline-block;
+  font-size: 3rem;
+  min-width: 35.5px;
+  height: 4.5rem;
+  width: 4.5rem;
+  line-height: 28px;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
+.el-pagination .btn-prev .el-icon {
+  font-size: 2rem;
+}
+
+.Maintance_machine {
+  width: 95%;
+  height: 15%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.Maintance_object {
+  width: 95%;
+  height: 35%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.Maintance_object_con {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.Maintance_object_con /deep/ .el-checkbox {
+  font-size: 1.5rem;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__inner {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__inner::after {
+  height: 8px;
+  left: 9px;
+  position: absolute;
+  top: 4px;
+}
+
+.Maintance_object_con /deep/ .el-checkbox__label {
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.Maintance_materials {
+  width: 95%;
+  height: 30%;
+
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.allPage_con_right_left_one span {
-  width: 100%;
-  height: 25%;
-  text-align: center;
+.Maintance_materials_con {
+  width: 15%;
+  height: 80%;
+
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-}
-
-.question_area {
-  width: 100%;
-  height: 75%;
-  background: #808080;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.question_area span {
-  width: 90%;
-  height: 95%;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  word-wrap: break-word;
-
+  background: grey;
   color: white;
 }
 
-.allPage_con_right_right {
-  width: 15%;
-  height: 100%;
+.Maintance_materials_con span {
+  width: 100%;
+  height: 40%;
   display: flex;
+  align-items: center;
   justify-content: center;
+  font-size: 1.5rem;
+}
+
+.Maintance_btn {
+  width: 95%;
+  height: 20%;
+
+  display: flex;
   align-items: center;
 }
 
-.allPage_con_right_right_con {
-  width: 100%;
-  height: 50%;
+.btns {
+  width: 10rem;
+  background: #a3d897;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
+
+.select_material {
+  width: 8rem;
+  height: 4rem;
+  background: #a3d897;
+  border-color: #fff #717171 #717171 #fff;
+  border-style: solid;
+  border-width: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  float: left;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }
 
-.allPage_con_right_right_con img {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
+.material_one {
+  width: 18%;
+  height: 22%;
+  background: grey;
+  margin-left: 1%;
+  margin-top: 1%;
+  float: left;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.material_one_checked {
+  width: 18%;
+  height: 22%;
+  background: rgb(50, 150, 250);
+  margin-left: 1%;
+  margin-top: 1%;
+  float: left;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.repair_object {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  position: relative;
+}
+.operationPane_con_machineList2 {
+  width: 93%;
+  height: 60%;
+  margin-top: 9%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: relative;
+}
+.operationPane_con_machineList2 /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
 }
 </style>

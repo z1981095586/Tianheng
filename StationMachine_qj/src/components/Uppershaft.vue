@@ -7,9 +7,9 @@
       style="display: flex; justify-content: space-around; align-items: center"
       v-show="IndexShow"
     >
-      <div class="main_btn" @click="toMaintance">待保养机台</div>
-      <div class="main_btn">保养逾期机台</div>
-      <div class="main_btn">待维修机台</div>
+      <div class="main_btn" @click="toMaintance(0)">待保养机台</div>
+      <div class="main_btn" @click="toMaintance(1)">保养逾期机台</div>
+      <div class="main_btn" @click="toMaintance(2)">待维修机台</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 首页-->
@@ -60,11 +60,19 @@
       </div>
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
-        <span style="font-size: 1.7rem">搜索：</span
-        ><input placeholder="输入机台号" v-model="search_machine" />
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 0"
+          >待保养机台:64</span
+        >
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 1"
+          >保养逾期机台:64</span
+        >
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 2"
+          >待维修机台:64</span
+        >
+        <!--<input placeholder="输入机台号" v-model="search_machine" />
         <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
           确认
-        </div>
+        </div> -->
         <span style="color: red; margin-left: 1rem"
           >选中机台：{{ this.checkedMachineNum }}</span
         >
@@ -330,6 +338,122 @@
       <img src="../../static/img/close.png" @click="cancel3" />
     </div>
     <!-- 配件列表-->
+    <!-- 维修界面-->
+    <div
+      class="operationPane_con"
+      style="
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+      "
+      v-show="repairShow"
+    >
+      <div class="Maintance_machine">
+        维修机台：{{ checkedMachineNum
+        }}<span style="margin-left: 2rem">上报时间：2020-12-10 18:30</span>
+      </div>
+      <div class="Maintance_machine" style="color: black; height: 5%">
+        故障分类：{{ String(checkedRepairName) }}
+      </div>
+      <div class="repair_object">
+        <el-checkbox-group
+          @change="checkRepair"
+          :max="1"
+          v-model="checkedRepair"
+          style="width: 60%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in reasonlist"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.label"
+            :key="index"
+            >{{ item.label }}</el-checkbox-button
+          >
+        </el-checkbox-group>
+        <div
+          style="
+            width: 40%;
+            height: 100%;
+            display: flex;
+            position: relative;
+            align-items: center;
+          "
+        >
+          <span style="position: absolute; top: -46px; font-size: 1.5rem"
+            >处理方式：</span
+          >
+          <el-input
+            type="textarea"
+            :rows="3"
+            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem"
+            placeholder="请输入内容"
+            v-model="repairReason"
+          >
+          </el-input>
+        </div>
+      </div>
+      <div class="Maintance_machine" style="color: black; height: 10%">零配件：</div>
+      <div class="Maintance_materials">
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+        <div class="Maintance_materials_con">
+          <span>配件名称</span>
+          <span>99个</span>
+        </div>
+      </div>
+      <div class="Maintance_btn">
+        <div class="btns" style="margin: 0">确认维修</div>
+        <div class="btns" @click="addMaterial">新增零配件</div>
+        <div
+          class="btns"
+          style="background: #808080; color: white"
+          @click="
+            repairShow = false;
+            MachineShow = true;
+          "
+        >
+          取消
+        </div>
+        <div
+          class="btns"
+          style="margin-left: 16rem"
+          @click="
+            drawer = true;
+            drawerFlag = false;
+          "
+        >
+          查看零配件
+        </div>
+      </div>
+      <img
+        src="../../static/img/close.png"
+        @click="
+          repairShow = false;
+          MachineShow = true;
+        "
+      />
+    </div>
+    <!-- 维修界面-->
     <!-- 上轴部分操作栏组件-->
     <el-dialog title="修改数量" width="400" :visible.sync="materialNumDialog">
       <div style="display: flex; flex-direction: column; align-items: center">
@@ -470,6 +594,7 @@ export default {
       MaintanceShow: false, //
       MaterialsTypeShow: false, //选零配件种类
       MaterialsShow: false, //物料界面
+      repairShow: false, //维修界面
       drawer: false, //查看零配件抽屉
       drawerFlag: null, //查看零配件抽屉是否需要根据配件种类参数获取
       noSaveDialog: false,
@@ -514,6 +639,28 @@ export default {
       materialNumDialog: false,
 
       company_id: 10000015,
+      isWaitMaintance: null, //是否待保养，0带保养，1保养预期，2待维修
+      reasonlist: [
+        {
+          label: "经停",
+          value: "经停",
+        },
+        {
+          label: "纬停",
+          value: "纬停",
+        },
+        {
+          label: "疵点",
+          value: "疵点",
+        },
+        {
+          label: "设备",
+          value: "设备",
+        },
+      ],
+      checkedRepair: [],
+      checkedRepairName: "",
+      repairReason: "",
     };
   },
   methods: {
@@ -594,14 +741,21 @@ export default {
     },
     addMaterial() {
       //显示物料分类选择界面
-      this.MaintanceShow = false;
-      this.MaterialsTypeShow = true;
+      if (this.isWaitMaintance == 2) {
+        this.repairShow = false;
+        this.MaterialsTypeShow = true;
+      } else {
+        this.MaintanceShow = false;
+        this.MaterialsTypeShow = true;
+      }
     },
-    toMaintance() {
+    toMaintance(isWaitMaintance) {
       //显示保养界面
       this.IndexShow = false;
       this.MachineShow = true;
+      this.isWaitMaintance = isWaitMaintance;
     },
+
     choosedMaterial() {
       //选择物料
       console.log(this.materialsList);
@@ -709,6 +863,15 @@ export default {
       //选择机台事件
       this.checkedMachineNum = e[0];
     },
+    checkRepair(e) {
+      //选择机台事件
+      console.log(e);
+      if (e[0]) {
+        this.checkedRepairName = e[0];
+      } else {
+        this.checkedRepairName = "";
+      }
+    },
     checkedType(e) {
       //选择物料种类
 
@@ -730,8 +893,15 @@ export default {
       //确定机台
       console.log(this.checkedMachineNum);
       if (this.checkedMachineNum != "") {
-        this.MachineShow = false;
-        this.MaintanceShow = true;
+        if (this.isWaitMaintance == 2) {
+          //待维修界面显示
+
+          this.MachineShow = false;
+          this.repairShow = true;
+        } else {
+          this.MachineShow = false;
+          this.MaintanceShow = true;
+        }
       } else {
         this.$message({
           message: "先选一台机器!",
@@ -757,8 +927,13 @@ export default {
       }
     },
     cancel2() {
-      this.MaterialsTypeShow = false;
-      this.MaintanceShow = true;
+      if (this.isWaitMaintance == 2) {
+        this.MaterialsTypeShow = false;
+        this.repairShow = true;
+      } else {
+        this.MaterialsTypeShow = false;
+        this.MaintanceShow = true;
+      }
     },
     sureMaterial() {
       //确定物料
@@ -773,8 +948,13 @@ export default {
         }
       }
       if (flag == true) {
-        this.MaterialsShow = false;
-        this.MaintanceShow = true;
+        if (this.isWaitMaintance == 2) {
+          this.MaterialsShow = false;
+          this.repairShow = true;
+        } else {
+          this.MaterialsShow = false;
+          this.MaintanceShow = true;
+        }
       } else {
         this.$message({
           message: "先选一个配件添加数量!",
@@ -956,7 +1136,11 @@ export default {
   padding: 20px 27px;
   margin: 1rem 0.5rem;
 }
-
+.repair_object /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
+}
 .el-message {
   font-size: 3rem;
 }
@@ -1591,5 +1775,11 @@ textarea[class="textarea"]::-moz-placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.repair_object {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  position: relative;
 }
 </style>
