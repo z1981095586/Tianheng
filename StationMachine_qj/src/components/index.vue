@@ -35,31 +35,31 @@
         </div>
       </div>
     </div>
-    <uppershaft v-show="isShangZhou"></uppershaft>
+    <MyMachine v-show="isMyMachine"></MyMachine>
 
-    <stopcar v-show="isStopCar"></stopcar>
+    <History v-show="isHistory"></History>
 
-    <machinemaintenance v-show="isMachine"></machinemaintenance>
-    <out v-show="isKaiChu"></out>
+    <RepairMachine v-show="isRepair"></RepairMachine>
+    <Maitance v-show="isMaitance"></Maitance>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 var host = "http://120.55.124.53:12140";
-import Uppershaft from "./Uppershaft"; //上轴操作面板
+import MyMachine from "./MyMachine"; //我的机台操作面板
 
-import Stopcar from "./Stopcar"; //挡车操作面板
+import History from "./History.vue"; //挡车操作面板
 
-import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
-import Out from "./Out"; //开出操作面板
+import RepairMachine from "./RepairMachine.vue"; //维修操作面板
+import Maitance from "./Maitance.vue"; //开出操作面板
 export default {
   components: {
-    Uppershaft,
-    Stopcar,
+    MyMachine,
+    History,
 
-    Machinemaintenance,
-    Out,
+    RepairMachine,
+    Maitance,
   },
   name: "index",
   inject: ["reload"],
@@ -90,11 +90,11 @@ export default {
         },
       ],
       activeTab: "",
-      isShangZhou: true,
+      isMyMachine: true,
 
-      isKaiChu: false,
-      isStopCar: false,
-      isMachine: false,
+      isMaitance: false,
+      isHistory: false,
+      isRepair: false,
     };
   },
   methods: {
@@ -125,43 +125,43 @@ export default {
           if (this.tabList[i].label == "我的机台") {
             this.tabList[i].style = "background:#3296FA;color:white;";
             this.isLower = false;
-            this.isMachine = false;
-            this.isStopCar = false;
+            this.isRepair = false;
+            this.isHistory = false;
             this.isChaPian = false;
-            this.isKaiChu = false;
-            this.isShangZhou = true;
+            this.isMaitance = false;
+            this.isMyMachine = true;
             return;
           }
 
           if (this.tabList[i].label == "历史记录") {
             this.tabList[i].style = "background:#FF943E;color:white;";
-            this.isShangZhou = false;
+            this.isMyMachine = false;
             this.isChaPian = false;
             this.isLower = false;
-            this.isKaiChu = false;
-            this.isMachine = false;
-            this.isStopCar = true;
+            this.isMaitance = false;
+            this.isRepair = false;
+            this.isHistory = true;
             return;
           }
 
           if (this.tabList[i].label == "维修") {
             this.tabList[i].style = "background:#F25643;color:white;";
-            this.isShangZhou = false;
+            this.isMyMachine = false;
             this.isChaPian = false;
-            this.isStopCar = false;
+            this.isHistory = false;
             this.isLower = false;
-            this.isKaiChu = false;
-            this.isMachine = true;
+            this.isMaitance = false;
+            this.isRepair = true;
             return;
           }
           if (this.tabList[i].label == "保养") {
             this.tabList[i].style = "background:#4352F2;color:white;";
-            this.isShangZhou = false;
+            this.isMyMachine = false;
             this.isChaPian = false;
-            this.isStopCar = false;
+            this.isHistory = false;
             this.isLower = false;
-            this.isMachine = false;
-            this.isKaiChu = true;
+            this.isRepair = false;
+            this.isMaitance = true;
             return;
           }
         }
@@ -170,7 +170,7 @@ export default {
   },
   mounted() {},
   watch: {
-    // isShangZhou(val) {
+    // isMyMachine(val) {
     //   if (val == true) {
     //     this.getGroup(4, "sz");
     //   }
