@@ -35,3 +35,6 @@ http://106.12.219.66:81/wzSignBoard/#/productMonitor/10000005
 
 ÷·ø‚£∫http://106.12.219.66:81/Axis_library/#/index/10000013/1 
 ∆ﬂ–«÷·ø‚£∫http://106.12.219.66:81/Axis_library_qx/#/index/10000012/1
+
+
+http://106.12.219.66:81/OrderSystem/#/index

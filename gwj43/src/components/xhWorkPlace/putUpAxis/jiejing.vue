@@ -1,9 +1,10 @@
 <template>
   <div class="radio5">
     <div class="radio5_con" v-show="isTable">
-      <div class="staff"><span style="margin-left:1rem">员工号：</span><input @focus="nameFocus(1)"
-          v-model="staff_name" /><input @focus="nameFocus(2)" v-model="staff_name2" /><input @focus="nameFocus(3)"
-          v-model="staff_name3" /></div>
+      <div class="staff"><span style="margin-left:1rem">员工号：</span><input @focus="nameFocus(1)" v-model="staff_name" />
+        <!-- <input @focus="nameFocus(2)" v-model="staff_name2" /><input @focus="nameFocus(3)"
+          v-model="staff_name3" /> -->
+      </div>
       <div class="radio5Table">
         <div class="radio5Table_head">
           <div class="radio5Table_head_con" style="width:25%"><span>机台号</span></div>
@@ -40,11 +41,12 @@
       </div>
       <div class="radio5Btn">
         <div class="radio5Btn_one" style="background:rgb(94,137,229)">提交</div>
-        <div class="radio5Btn_one"
+        <!-- <div class="radio5Btn_one"
           :style=" dataList.length>0 ? 'background:rgb(204,78,77)':'background:rgb(135,146,141)'" @click="cancel()">取消
+        </div> -->
+        <div class="radio5Btn_one" style="background:rgb(135,146,141);    margin-right: 7rem;" @click="isTable=false">记录
         </div>
-        <div class="radio5Btn_one" style="background:rgb(135,146,141)" @click="isTable=false">记录</div>
-        <div class="radio5Btn_one2" style="justify-content: space-around;    height: 70%;"><img
+        <div class="radio5Btn_one2" style="justify-content: space-around; width:14rem;   height: 70%;"><img
             style="width:5rem;height:5rem" src="/static/picture/arrow2.png" @click="LastPage()" /><img
             @click="NextPage()" style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
@@ -82,29 +84,27 @@
               <option value="是">是</option>
               <option value="否">否</option>
             </select> -->
-             <el-select class="sel"  v-model="item.Fenjiao" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
-              :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
-    <el-option
-     value="是">是
-    </el-option>
-     <el-option
-     value="否">否
-    </el-option>
-  </el-select>
+            <el-select class="sel" v-model="item.Fenjiao"
+              style="font-size:1.5rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
+              :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
+              <el-option value="是">是
+              </el-option>
+              <el-option value="否">否
+              </el-option>
+            </el-select>
             <!-- <i class="el-icon-arrow-down" style=" 
       font-size: 2rem;position:absolute;right:2rem;" v-show="item.isEdit"></i> -->
           </div>
           <div
             style="width:16%;margin-left:3%;height:80%;display:flex;align-items:center;justify-content: space-around;position:relative">
-                     <el-select class="sel"   v-model="item.JieJing" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
-              :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
-    <el-option
-     value="1">1
-    </el-option>
-     <el-option
-     value="0.1">0.1
-    </el-option>
-  </el-select>
+            <el-select class="sel" v-model="item.JieJing"
+              style="font-size:1.5rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
+              :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
+              <el-option value="1">1
+              </el-option>
+              <el-option value="0.1">0.1
+              </el-option>
+            </el-select>
             <!-- <select v-model="item.JieJing" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
               :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'">
               <option value="1">1</option>
@@ -116,11 +116,12 @@
           </div>
           <div
             style="width:12%;margin-left:2%;    height: 93%;display:flex;align-items:center;justify-content: space-around;flex-direction:column;"
-            @click="NameTable2(item.id,item.isEdit,item.staff_name,item.staff_name2,item.staff_name3)"
+            @click="NameTable2(item.id,item.isEdit,item.staff_name)"
             :style="item.isEdit?'border:1px solid black;':'border:none'">
-            <span style="font-size:1rem">{{item.staff_name}}</span> <span
+            <span style="font-size:1rem">{{item.staff_name}}</span>
+            <!-- <span
               style="font-size:1rem">{{item.staff_name2}}</span> <span
-              style="font-size:1rem">{{item.staff_name3}}</span>
+              style="font-size:1rem">{{item.staff_name3}}</span> -->
           </div>
           <div
             style="width:24%;margin-left:1%;height:90%;display:flex;align-items:center;justify-content: space-around;">
@@ -139,8 +140,8 @@
 
       <div class="radio5Btn2">
         <div class="radio5Btn_one2" style="background:rgb(94,137,229)" @click="isTable=true">返回</div>
-        <div class="radio5Btn_one2" style="justify-content: space-around;"><img style="width:5rem;height:5rem"
-            src="/static/picture/arrow2.png" /><img style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
+        <div class="radio5Btn_one2" style="justify-content: space-around;width:14rem"><img
+            style="width:5rem;height:5rem" src="/static/picture/arrow2.png" /><img style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
                  -o-transform: rotate(180deg);
                  -ms-transform: rotate(180deg);
@@ -229,21 +230,7 @@
         </tr>
       </table>
     </el-dialog>
-    <el-dialog class="dia" :visible.sync="showSelectStaff" width="800px" append-to-body :close-on-click-modal="false">
 
-
-      <p style="display: inline-block;font-size: 3rem">选择需要更改的员工</p>
-      <br>
-      <br>
-      <el-radio-group v-model="selectedStaff">
-        <el-radio v-for="(item,index) in staff_nameList" :key="index" :label="item" :value="item"></el-radio>
-
-      </el-radio-group>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showSelectStaff = false">取 消</el-button>
-        <el-button type="primary" @click="sureStaff()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -253,9 +240,10 @@
     data() {
       return {
         staff_name: "",
-        staff_name2: "",
+        // staff_name2: "",
+        //    staff_name3: "",
         isTable: true,
-        staff_name3: "",
+
         staff_code: "",
         staff_code2: "",
         machine_code: "",
@@ -265,14 +253,14 @@
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: false, //代表0.1
+          isJieJing: true, //代表0.1
 
         }],
         dataListCon: [{
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: false, //代表0.1
+           isJieJing: true, //代表0.1
 
         }],
         SelectDataList: [{
@@ -281,19 +269,17 @@
           FenJiao: "",
           isEdit: false,
           staff_name: "周品道",
-          staff_name2: "周三顺",
 
-          staff_name3: "周二维",
           JieJing: "", //代表0.1
 
         }],
         showNameTable: false,
         showMachineTable: false,
         showNameTable2: false,
-        showSelectStaff: false,
+
         num: "",
         id: "",
-        selectedStaff: "",
+
         staff_nameList: [],
         id2: "",
         pageNum: 1,
@@ -302,34 +288,26 @@
       }
     },
     methods: {
-    
+
       pagination(pageNo, pageSize, array) { //数组分页函数
         var offset = (pageNo - 1) * pageSize;
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
           pageSize);
       },
 
-      sureStaff() {  //确认选中需要更改员工
-        console.log(this.selectedStaff)
-        this.showSelectStaff = false
-        this.showNameTable2 = true
-      },
-      machineFocus(id) { //需要修改哪行的machineID
 
+      machineFocus(id) { //需要修改哪行的machineID
         this.id = id
         this.showMachineTable = true;
-        
-
-
       },
-      NameTable2(id, isEdit, staff_name, staff_name2, staff_name3) { 
+
+      NameTable2(id, isEdit, staff_name, ) {
         if (isEdit == true) { //处于编辑状态时才可以设置编辑行id，选择名字弹框出现
           this.id2 = id
           // this.showNameTable2=true
           this.staff_nameList[0] = staff_name
-          this.staff_nameList[1] = staff_name2
-          this.staff_nameList[2] = staff_name3
-          this.showSelectStaff = true
+
+          this.showNameTable2 = true
 
         }
       },
@@ -339,14 +317,11 @@
 
       },
       addRow() { //新增一行
-
-
-
         this.dataListCon.push({
           id: this.dataListCon.length + 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: false, //代表0.1
+          isJieJing: true, //代表0.1
         })
         if (this.dataListCon.length % 3 == 1) {
           this.pageNum = this.pageNum + 1
@@ -354,14 +329,14 @@
         } else {
           this.dataList = this.pagination(this.pageNum, this.pageSize, this.dataListCon)
         }
-        console.log(this.dataListCon)
-        console.log(this.dataList)
+        // console.log(this.dataListCon)
+        // console.log(this.dataList)
 
 
 
       },
       LastPage() { //提交页面上一页
-        if (this.pageNum > 1) { 
+        if (this.pageNum > 1) {
           this.pageNum = this.pageNum - 1
           this.dataList = this.pagination(this.pageNum, this.pageSize, this.dataListCon)
         } else {
@@ -371,7 +346,7 @@
           });
         }
       },
-      NextPage() {  //提交页面下一页
+      NextPage() { //提交页面下一页
         if ((this.pageSize * this.pageNum) < this.dataListCon.length) {
           this.pageNum = this.pageNum + 1
           this.dataList = this.pagination(this.pageNum, this.pageSize, this.dataListCon)
@@ -383,24 +358,26 @@
         }
       },
       changefenjiao(id) { //改变分绞状态
-        for (let i = 0; i < this.dataList.length; i++) {
-          if (this.dataList[i].id == id) {
-            this.dataList[i].isFenJiao = !this.dataList[i].isFenJiao
+ 
+        this.dataList.forEach(element => {
+          if(element.id==id){
+            element.isFenJiao=!element.isFenJiao
           }
-        }
+        });
       },
       changejiejing(id) { ///改变结经状态
-        for (let i = 0; i < this.dataList.length; i++) {
-          if (this.dataList[i].id == id) {
-            this.dataList[i].isJieJing = !this.dataList[i].isJieJing
+            this.dataList.forEach(element => {
+          if(element.id==id){
+            element.isJieJing=!element.isJieJing
           }
-        }
+        });
+
       },
 
 
 
       selectTableButton(buttonName) {
-        console.log(this.focusInput)
+  
 
         this.staff_code += "";
         if (buttonName === "退格") {
@@ -447,13 +424,9 @@
 
             if (response.data.data.length >= 1) {
 
-              if (this.isStaff == 1) {
-                this.staff_name = response.data.data[0].staff_name
-              } else if (this.isStaff == 2) {
-                this.staff_name2 = response.data.data[0].staff_name
-              } else if (this.isStaff == 3) {
-                this.staff_name3 = response.data.data[0].staff_name
-              }
+
+              this.staff_name = response.data.data[0].staff_name
+
 
 
             } else {
@@ -546,35 +519,26 @@
           .then(response => {
             console.log(response.data.data)
 
+            console.log(that.id2)
 
             if (response.data.data.length >= 1) {
               that.SelectDataList.forEach(element => {
                 if (element.id == that.id2) {
-                  if (element.staff_name == that.selectedStaff) {
-                    element.staff_name = response.data.data[0].staff_name
-                  } else if (element.staff_name2 == that.selectedStaff) {
-                    element.staff_name2 = response.data.data[0].staff_name
-                  } else if (element.staff_name3 == that.selectedStaff) {
-                    element.staff_name3 = response.data.data[0].staff_name
-                  }
+
+                  element.staff_name = response.data.data[0].staff_name
+
                 }
               });
 
-              //   if (this.isStaff == 1) {
-              //     this.staff_name = response.data.data[0].staff_name
-              //   } else if (this.isStaff == 2) {
-              //     this.staff_name2 = response.data.data[0].staff_name
-              //   } else if (this.isStaff == 3) {
-              //     this.staff_name3 = response.data.data[0].staff_name
-              //   }
-
+       
+              console.log(that.SelectDataList)
 
             } else {
               this.$message.warning("员工号不正确!");
 
             }
             this.staff_code2 = ""
-            that.selectedStaff = ""
+
 
           })
 
@@ -586,8 +550,9 @@
     },
     mounted() {
       let params = this.$route.params.params.split(",");
-
       this.companyId = params[1];
+      console.log(this.$route.params.params)
+     
     },
     destroyed() {
 
@@ -635,21 +600,25 @@
 </script>
 
 <style scoped>
-.sel /deep/ input{
-  height: 52px !important;
-}
-.sel /deep/ .el-input{
-    font-size: 1.5rem;
-}
-.sel  /deep/ .el-input__inner{
-      height: 52px;
+  .sel /deep/ input {
+    height: 52px !important;
+  }
 
-}
-.sel  /deep/ .el-input__icon{
+  .sel /deep/ .el-input {
     font-size: 1.5rem;
-}
- .el-select-dropdown__item{
-  font-size: 1.5rem;
+  }
+
+  .sel /deep/ .el-input__inner {
+    height: 52px;
+
+  }
+
+  .sel /deep/ .el-input__icon {
+    font-size: 1.5rem;
+  }
+
+  .el-select-dropdown__item {
+    font-size: 1.5rem;
     padding: 0px 23px;
     position: relative;
     white-space: nowrap;
@@ -663,10 +632,12 @@
     cursor: pointer;
 
 
-}
- .el-select-dropdown{
-  min-width: 120.688px !important;
-}
+  }
+
+  .el-select-dropdown {
+    min-width: 120.688px !important;
+  }
+
   .dia /deep/ .el-button {
     font-size: 3rem;
   }
@@ -870,8 +841,8 @@
   }
 
   .radio5Btn_one2 {
-    width: 30%;
-    height: 100%;
+    width: 10rem;
+    height: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -880,8 +851,8 @@
   }
 
   .radio5Btn_one {
-    width: 21%;
-    height: 70%;
+    width: 10rem;
+    height: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
