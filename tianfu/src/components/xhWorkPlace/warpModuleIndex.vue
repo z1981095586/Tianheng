@@ -286,7 +286,7 @@
                         trigger="click">
                         <el-button slot="reference" :style="{backgroundColor:getColor(item.status,[null])}" style="height: 80px;display: inline-block" v-show="item.status===null">
                           <div :style="{height:button_height}" style="display: inline-block">
-                            <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">删除织轴</p>
+                            <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">删除经轴</p>
                           </div>
                         </el-button>
                         <div style="width: 100%;text-align: center">
@@ -332,6 +332,7 @@
                           <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="print(item)">
                             <div :style="{height:button_height}" style="display: inline-block">
                               <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">打印报表</p>
+                              
                             </div>
                           </el-button>
                           <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="cancleTap(item)">
@@ -523,6 +524,27 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      // 删除
+      cutDownAxle(item){
+        if(this.optionConfirm&&!this.$store.state.showLoadingLog){
+          let data = {};
+          this.dataSelect = item;
+          data.id = this.dataSelect.id;
+          this.$store.state.showLoadingLog = true;
+          let url = "/lm-zjwarp-plan-detail/removeZjAxis";
+          warp_api(url, data,this.companyId)
+            .then(response => {
+              this.getDetails(this.order_list.id);
+              this.$store.state.showLoadingLog = false;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }else{
+          this.showOptionConfirmTable = true;
+          this.funcName = "cutDownAxle";
+        }
       },
       getDetails(warpPlanId){
         let data = {};

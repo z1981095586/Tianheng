@@ -63,7 +63,7 @@
     >
       <div slot="title">
         <p @click="showModifiedVarieties = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
-        <el-button type="primary" style="margin-left: 5%;font-size: 3rem;font-weight: bolder;display: inline-block" @click="startPrint">确认并生成加工单</el-button>
+        <el-button type="primary" style="margin-left: 5%;font-size: 3rem;font-weight: bolder;display: inline-block" v-if="!haveBuiltOrder" @click="startPrint">确认并生成加工单</el-button>
       </div>
       <table style="text-align: center" width="100%">
         <tr>
@@ -84,7 +84,7 @@
           <td>
             <div style="font-size: 1.5rem;font-weight: bolder;margin-top: 20px;">
               <span>纬纱批号:</span>
-              <el-input ref="WeavingsupplierCode" @focus="focusInput = 'WeavingsupplierCode'" v-model="WeavingsupplierCode" @blur="all_order_list[0].lmWeavingPlanB.supplierCode = WeavingsupplierCode" style="font-size: 1.5rem; width: 240px;text-transform: uppercase; height: 50px"></el-input>
+              <el-input ref="WeavingsupplierCode" @focus="focusInput = 'WeavingsupplierCode'" v-model="WeavingsupplierCode" @blur="changeWSName" style="font-size: 1.5rem; width: 240px;text-transform: uppercase; height: 50px"></el-input>
             </div>
           </td>
           <td>
@@ -236,16 +236,19 @@
               <table class="radioTable" cellspacing='3px' cellpadding='10px' width="100%" :height="scrollerHeightTopTable" style="font-size: 50px;text-align: center">
                 <tr>
                   <td id="radio1" @click="changeRadio('radio1')" style="background-color: #409EFF;font-size: 2.2rem;">
-                    织造小票&nbsp;
+                   &nbsp;织造&nbsp; 小票
                   </td>
                   <td id="radio2" @click="changeRadio('radio2')" style="font-size: 2.2rem">
-                    更换纬纱&nbsp;
+                  &nbsp;更换&nbsp; 纬纱
+                  </td>
+                    <td id="radio5" @click="changeRadio('radio5')" style="font-size: 2.2rem">
+                   &nbsp;结经&nbsp; 报产
                   </td>
                   <td id="radio3" @click="changeRadio('radio3')" style="font-size: 2.2rem">
-                    了机预测&nbsp;
+                    &nbsp;了机&nbsp; 预测 
                   </td>
                   <td id="radio4" @click="changeRadio('radio4')" style="font-size: 2.2rem">
-                    已穿综单&nbsp;
+                    &nbsp;已穿&nbsp; 综单  
                   </td>
                 </tr>
               </table>
@@ -317,12 +320,14 @@
           </el-card>
         </div>
         <div :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}"  style="display: inline-block;margin-left: 10px">
-          <el-card style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthRight}" shadow="hover" >
+          <el-card  style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthRight}" shadow="hover" >
             <div>
-              <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none;z-index:1" @click="right_up" v-show="radio != 'radio2'">
-              <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'">
+              <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none;z-index:1" @click="right_up" v-show="radio != 'radio2'&& radio!='radio5'">
+              <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'&& radio!='radio5'">
             </div>
-            <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" >
+       
+            <jiejing  v-show="radio =='radio5'"></jiejing>
+            <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" v-show="radio!='radio5'"   >
               <table class="radioTable"  style="width: 95%" cellspacing="20px" v-show="radio === 'radio1'&&all_order_list[0]">
                 <tr>
                   <td style="text-align: center;width: 33%" @click="">
@@ -361,7 +366,7 @@
                 <div class="changeWS-row">
                   <div>
                     <span>品名:</span>
-                    <input v-model="productName" style="font-size: 1.2rem;text-transform: uppercase">
+                    <input v-model="productName" @focus="changeWSMessage" style="font-size: 1.2rem;text-transform: uppercase">
                   </div>
                   <div >
                     <span>经纱产地:</span>
@@ -380,11 +385,11 @@
                   </div>
                   <div style="margin-top: 5%;">
                     <span>纬纱批号:</span>
-                    <input v-model="WeavingsupplierCode" style="font-size: 1.2rem;text-transform: uppercase">
+                    <input v-model="WeavingsupplierCode" @focus="changeWSMessage" style="font-size: 1.2rem;text-transform: uppercase">
                   </div>
                   <div style="margin-top: 5%;">
                     <span>纬纱产地:</span>
-                    <input v-model="WeavingsupplierName" style="font-size: 1.2rem; text-transform: uppercase">
+                    <input v-model="WeavingsupplierName" @focus="changeWSMessage" style="font-size: 1.2rem; text-transform: uppercase">
                   </div>
                 </div>
                 <div class="changeWS-row">
@@ -463,11 +468,13 @@
   import changeStaffMessage from './../changeStaffMessage.vue';
   import printClothCard from './../printClothCard.vue';
   import keyBoardTable from './../../setAxleTable.vue';
+   import jiejing from './jiejing.vue';
   import screenfull from "screenfull";
   export default {
-    components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printClothCard,keyBoardTable},
+    components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printClothCard,keyBoardTable,jiejing},
     data () {
       return {
+       
         buttonList:"1234567890",
         buttonSetting:"",
         companyId:10000015,
@@ -946,7 +953,8 @@
             color:"#000000",
           }
         ],
-        focusInput:null
+        focusInput:null,
+        haveBuiltOrder: false,//已生成加工单
       }
     },
     methods: {
@@ -1053,6 +1061,7 @@
             // console.log(response.data.data);
             this.order_detail_list = response.data.data.pceClothEaches;
             this.order_detail_list_length = Math.ceil((this.order_detail_list.length - 2) / 3);
+            this.haveBuiltOrder = !!(this.order_detail_list.length > 0);
             // this.$nextTick(()=>{
             //   if(this.newCodeNum>0){
             //     for (let i = 0; i < this.newCodeNum; i++) {
@@ -1106,7 +1115,6 @@
               } else {
                 this.$message.warning("未生成织造加工单，请先提交织造上轴加工单");
               }
-
             } else {
               this.$message.warning("二维码错误或当前车间不存在这条记录");
               this.all_order_list = [];
@@ -1341,7 +1349,8 @@
       },
       changeRadio(radioId) {
         this.radio = radioId;
-        for (let i = 1; i < 5; i++) {
+        console.log(this.radio)
+        for (let i = 1; i < 6; i++) {
           document.getElementById("radio" + i).style.backgroundColor = "white";
         }
         document.getElementById(radioId).style.backgroundColor = "#409EFF";
@@ -1405,6 +1414,7 @@
           message.barCode = "P" + this.order_detail_list[0].id.substr(1, this.order_detail_list[0].id.length - 4);
           message.machineAxis = this.machineIdSelected;
           message.yieldMeterSemi = this.order_detail_list[0].yieldMeterSemi;
+          message.machineId=this.all_order_list[0].machineId;
           message.printCount = 1;
           data.push(message);
           order_detail_list.push({
@@ -1494,7 +1504,11 @@
           if(this.WeavingsupplierCode&&this.WeavingsupplierName){
             this.startPrint();
           }else{
-            this.alterPart();
+            if(this.companyId == 10000015){
+              this.startPrint();
+            }else{
+              this.alterPart();
+            }
           }
         } else {
           this.showMachineTable = true;
@@ -1685,6 +1699,14 @@
         let data = {};
         data.machineId = this.all_order_list[0].machineId ? this.all_order_list[0].machineId : this.machineIdSelected;
         data.printCode = this.barCode;
+        data.staffId = this.staff_id;
+        let shiftObject = this.$refs.headComponent.getShiftName();
+        if(shiftObject&&shiftObject.id){
+            data.shiftWork = shiftObject.id-1;
+            data.shiftStartDatetime = this.addDate(shiftObject.startTime);
+            data.shiftEndDatetime =  this.addDate(shiftObject.endTime);
+        }
+        console.log(data);
         let url = "/pce-mac-beam/upperBeam";
         warp_api_get(url, data, this.companyId)
           .then(response => {
@@ -1845,6 +1867,39 @@
             break;
         }
       },
+      //填纬纱编号映射纬纱产地
+      changeWSName(){
+        this.all_order_list[0].lmWeavingPlanB.supplierCode = this.WeavingsupplierCode;
+        let data = {};
+        data.tableName = "Supplier_LotNo";
+        data.query = {
+          LotNo: this.WeavingsupplierCode
+        };
+        common_api("/report/getSimpleReport", data,this.companyId)
+          .then(response => {
+            // console.log(response.data);
+            switch(response.data.data.length){
+              case 0:
+                this.$message.warning("没有找到对应纬纱产地");
+                break;
+              case 1:
+                this.all_order_list[0].lmWeavingPlanB.supplierName = this.WeavingsupplierName = response.data.data[0].ShortName;
+                break;
+              default:
+                this.$message.warning("找到多个对应纬纱产地，默认填写第一个");
+                this.all_order_list[0].lmWeavingPlanB.supplierName = this.WeavingsupplierName = response.data.data[0].ShortName;
+                break;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      //点击输入框更换纬纱信息
+      changeWSMessage(){
+        this.showModifiedVarieties = true;
+        this.haveBuiltOrder = true;
+      }
     },
     mounted() {
       this.getUrlMessage();
@@ -1882,6 +1937,7 @@
 </script>
 
 <style lang="less" scoped>
+
   .big_font{
     color: #616164;
     font-weight: bold;

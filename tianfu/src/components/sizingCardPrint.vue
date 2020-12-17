@@ -387,12 +387,15 @@
               printerList.push(name)
             }
           }
-          // console.log(printerList);
+          console.log(printerList);
           for (let i = 0; i < printerList.length; i++) {
             this.$nextTick(() => {
               this.printPdf(printerList[i]);
             })
           }
+          // this.$nextTick(() => {
+          //   this.printPdf();
+          // })
         },
         getDate(){
           let date = new Date();

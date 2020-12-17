@@ -393,6 +393,7 @@
                         placement="top"
                         width="800"
                         style=""
+                        :ref="refNamePopover+item.id"
                         trigger="click">
                         <table style="" cellpadding='0' border="0" width="100%">
                           <tr v-for="details in produce_details_list" :key="details.id">
@@ -429,6 +430,11 @@
                           <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)&&item.printStatus === 1&&companyId!=10000012" @click="clothPrint(item)">
                             <div :style="{height:button_height}" style="display: inline-block">
                               <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">落布打印</p>
+                            </div>
+                          </el-button>
+                          <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="cancleTap(item)">
+                            <div :style="{height:button_height}" style="display: inline-block">
+                              <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">撤销操作</p>
                             </div>
                           </el-button>
                         </div>
@@ -551,7 +557,8 @@
         focusName:"",
         axisNo:"",
         funcName:null,
-        newBarCode:""
+        newBarCode:"",
+        refNamePopover: 'popover-', 
       }
     },
     methods:{
@@ -1613,6 +1620,42 @@
               .catch(error => {
                 console.log(error);
               });
+          }
+        }
+      },
+      // 撤销
+      cancleTap(item){
+         if(!this.$store.state.showLoadingLog){
+          if(this.staff_id){
+            this.$store.state.showLoadingLog = true;
+            this.dataSelect = item;
+            this.$refs.headComponent.getStaffNameById(this.dataSelect.currentStaffId*1.0);
+            this.dataSelect.staff_name = this.printStaffName;
+            let data = {};
+            data.id = this.dataSelect.id;
+            // data.staffId = this.staff_id;
+            let url = "/lm-warp-plan-detail/initBeam";
+            warp_api(url,data,this.companyId)
+              .then(response => {
+                if(response.data.result === "fail"){
+                  let message =response.data.successMessage;
+                  this.$message.warning(message);
+                }else {
+                  console.log(response.data.data,'response.data.data')
+                  let message =response.data.successMessage;
+                  this.$message.success(message)
+                  let refName = this.refNamePopover + item.id;
+                  this.$refs[refName][0].doClose();
+                  this.getDataByCardNumber(this.barCode)
+                  this.scrollTop = false;
+                }
+                 this.$store.state.showLoadingLog = false;
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }else{
+            this.$message.warning("请选择操作员工");
           }
         }
       },

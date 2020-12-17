@@ -127,40 +127,7 @@
       </div>
     </el-dialog>
     <!--其他产量-->
-    <el-dialog
-      :visible.sync="showotherProduct"
-      width="950px"
-      append-to-body
-    >
-      <div slot="title" class="big_font" style="font-size: 40px">其他产量</div>
-      <table :data="tableData" border style="width: 100%; font-size: 1.2rem; font-weight: bolder">
-        <tr>
-          <th width="200px" >类型</th>
-          <th width="200px" >数量</th>
-          <th width="230px" >单位</th>
-          <th width="320px" >人员</th>
-        </tr>
-        <tr v-for="indexTd in 5">
-          <td type="mold"><el-select v-model="value" ></el-select></td>
-          <td type="number"><el-input @focus="enterQuantity" ></el-input></td>
-          <td type="company"><el-select  ref="companyId" v-model="companyId"></el-select></td>
-          <td type="straff">{{staff_name}}&nbsp;&nbsp; <el-button  icon="el-icon-circle-plus-outline" circle @click="increaseStaff"></el-button>&nbsp;
-            <el-button icon="el-icon-remove-outline" circle @click=""></el-button></td>
-        </tr>
-      </table>
-
-      <div style="text-align: center;margin-top: 5vw">
-        <el-button type="danger" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="add_Production">
-          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >新增</p>
-        </el-button>
-        <el-button type="success" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-right: 3vw" size="medium" @click="">
-          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;" >提交</p>
-        </el-button>
-        <el-button type="primary" style="width: 8.3vw;height: 8.5vw;margin-bottom: 5px;margin-left: 2vw" size="medium" @click="showotherProduct = false">
-          <p  style="font-weight: bolder;font-size: 1.2rem;width: 100%;line-height:1.4;letter-spacing:4px;">取消</p>
-        </el-button>
-      </div>
-    </el-dialog>
+   
     <!--数量页面-->
     <el-dialog
       :visible.sync="showBeheadednumber"
@@ -366,8 +333,26 @@
                       </el-button>
                       <el-popover
                         placement="top"
-                        width="800"
+                        width="600"
                         style="margin-left: 10px"
+                        trigger="click">
+                        <el-button slot="reference" :style="{backgroundColor:getColor(item.status,[null])}" style="height: 65px;display: inline-block" v-show="item.status===null">
+                          <div :style="{height:button_height}" style="display: inline-block">
+                            <p class="big_font" style="color: white;height: 60%;line-height:70%;margin-top: 15%">删除<br/><br/>经轴</p>
+                          </div>
+                        </el-button>
+                        <div style="width: 100%;text-align: center">
+                          <div class="big_font">这条经轴的设定米长是{{item.workQty}}米，确定要删除吗</div>
+                          <br><br>
+                          <el-button type="danger" style="height: 80px;margin-right:5px;margin-bottom: 5px" size="medium" @click="cutDownAxle(item)">
+                            <p  style="font-weight: bolder;font-size: 1.5vw;width: 100%">确认删除</p>
+                          </el-button>
+                        </div>
+                      </el-popover>
+                      <el-popover
+                        placement="top"
+                        width="800"
+                        :ref="refNamePopover+item.id"
                         trigger="click">
                         <table style="" cellpadding='0' border="0" width="100%">
                           <tr v-for="details in produce_details_list" :key="details.id">
@@ -401,8 +386,13 @@
                               <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">打印报表</p>
                             </div>
                           </el-button>
+                          <el-button :style="{backgroundColor:getColor(item.status,[2,3])}" style="height: 80px;display: inline-block" v-show="(item.status===2||item.status===3)" @click="cancleTap(item)">
+                            <div :style="{height:button_height}" style="display: inline-block">
+                              <p class="big_font" style="color: white;height: 60%;line-height:60%;margin-top: 20%">撤销操作</p>
+                            </div>
+                          </el-button>
                         </div>
-                        <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 70px;display: inline-block;background-color: #417804" slot="reference" :disabled="item.status===0||item.status===null" @click="showDetails(item)">
+                       <el-button :style="{backgroundColor:getColor(item.status,[1,2,3,4])}" style="height: 70px;display: inline-block;background-color: #417804" slot="reference"  :disabled="item.status===0||item.status===null" v-show="item.status!==null" @click="showDetails(item)">
                           <div :style="{height:button_height}" style="display: inline-block">
                             <p class="big_font" style="color: white;height: 60%;line-height:70%;margin-top: 12%">更多<br/><br/>操作</p>
                           </div>
@@ -515,7 +505,9 @@
         showBeheadednumber:false,
         showIncreasestaffpage:false,
         funcName:null,
-        number:""
+        number:"",
+        refNamePopover: 'popover-', 
+        staff_code:''
       }
     },
     methods:{
@@ -560,6 +552,28 @@
           return "gray";
         }
       },
+      // 删除
+      cutDownAxle(item){
+        if(this.optionConfirm&&!this.$store.state.showLoadingLog){
+          let data = {};
+          this.dataSelect = item;
+          data.id = this.dataSelect.id;
+          this.$store.state.showLoadingLog = true;
+          let url = "/lm-zjwarp-plan-detail/removeZjAxis";
+          warp_api(url, data,this.companyId)
+            .then(response => {
+              this.getDetails(this.order_list.id);
+              this.$store.state.showLoadingLog = false;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }else{
+          this.showOptionConfirmTable = true;
+          this.funcName = "cutDownAxle";
+        }
+      },
+      handleClose(){},
       getData(){
         let data = {};
         let url = "/lm-zjwarp-plan-b/selectZjWithOrderSheetRecent";
@@ -810,9 +824,9 @@
                     if (!this.dataSelect.actualYarnLength) {
                       this.dataSelect.actualYarnLength = this.dataSelect.workQty1 + this.dataSelect.workQty2 + this.dataSelect.workQty3;
                     }
-                    if(this.companyId !== "10000015"){
+                    // if(this.companyId !== "10000015"){
                       this.$refs.outputPrintTable.startPrint(this.order_list, this.dataSelect, this.companyId);
-                    }
+                    // }
                   })
                 }
               })
@@ -938,7 +952,7 @@
           // document.getElementById("right_down").style.display = "none";
         }
       },
-      showDetails(item){
+     showDetails(item){
         let data = {};
         data.beamName = item.axisNo;
         data.warpPlanId = this.order_list.id;
@@ -1111,6 +1125,43 @@
             .catch(error => {
               console.log(error);
             });
+        }
+      },
+      // 撤销
+      cancleTap(item){
+         if(!this.$store.state.showLoadingLog){
+          if(this.staff_id){
+            this.$store.state.showLoadingLog = true;
+            this.dataSelect = item;
+            this.$refs.headComponent.getStaffNameById(this.dataSelect.currentStaffId*1.0);
+            this.dataSelect.staff_name = this.printStaffName;
+            let data = {};
+            data.id = this.dataSelect.id;
+            // data.staffId = this.staff_id;
+            let url = "/lm-zjwarp-plan-detail/initBeam";
+            warp_api(url,data,this.companyId)
+              .then(response => {
+                //  this.$message.success("开始打印");
+                if(response.data.result === "fail"){
+                  let message =response.data.successMessage;
+                  this.$message.warning(message);
+                }else {
+                  console.log(response.data.data,'response.data.data')
+                  let message =response.data.successMessage;
+                  this.$message.success(message)
+                  let refName = this.refNamePopover + item.id;
+                  this.$refs[refName][0].doClose();
+                  this.getDataByCardNumber(this.barCode)
+                  this.scrollTop = false;
+                }
+                 this.$store.state.showLoadingLog = false;
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }else{
+            this.$message.warning("请选择操作员工");
+          }
         }
       },
       modifyAxis(item){

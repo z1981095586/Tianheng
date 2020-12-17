@@ -162,7 +162,7 @@ export function getLodop(oOBJECT, oEMBED) {
     }
     //===如下空白位置适合调用统一功能(如注册语句、语言选择等):==
     LODOP.SET_LICENSES("","A8B258E11F1AC98443ECF6783889DEAB","","");//百度云服务器
-    //LODOP.SET_LICENSES("","756DFBB94E41CD7090F1514857D17B51","","");//祥嘉服务器
+    // LODOP.SET_LICENSES("","756DFBB94E41CD7090F1514857D17B51","","");//祥嘉服务器
     //=======================================================
     return LODOP;
   } catch (err) {

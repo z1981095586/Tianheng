@@ -12,7 +12,7 @@
         <div class="line">
           <div class="line-con"></div>
         </div>
-        <div class="card-head" style="height:45%;"><span>&nbsp;&nbsp;</span><span>机台：{{id}}</span>
+        <div class="card-head" style="height:45%;"><span>&nbsp;&nbsp;</span><span>机台：{{machine}}</span>
         </div>
       </div>
 
@@ -91,7 +91,7 @@
         </div>
         <div style="height:40%;width:100%;margin-top:3%;overflow:auto;background:white;">
           <div style="width:100%;text-align:left;height:25%;" v-for="(item,index) in consumeList" :key="index"><span
-              style="margin-left:1rem">{{item.product_name}} &nbsp;&nbsp;* {{item.quantity}} </span></div>
+              style="margin-left:1rem">{{item.specification}} &nbsp;&nbsp;* {{item.quantity}} </span></div>
         </div>
 
       </div>
@@ -115,6 +115,7 @@
         selectInfo: {
           company_id: ''
         },
+        machine:this.$route.params.machine,
         maintain_type_name: this.$route.params.maintain_type_name,
         operator: '', //操作人
         dataList: [],

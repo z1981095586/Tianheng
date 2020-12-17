@@ -550,6 +550,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "RepairMachine",
+  props: ["isUpdate"],
   data() {
     return {
       MachineShow: true, //选择机台显示隐藏
@@ -637,18 +638,21 @@ export default {
       console.log(this.checkedRepairName);
       console.log(this.repairReason);
       console.log(this.checkedMaterialsList);
-      let arr = "";
+
+      let arr = [];
       this.checkedMaterialsList.forEach((element) => {});
       for (let i = 0; i < this.checkedMaterialsList.length; i++) {
         let element = this.checkedMaterialsList[i];
-        let str = "";
-        if (i == this.checkedMaterialsList.length - 1) {
-          str = "配件名称" + "：" + element.product_name + "  数量" + element.num;
-        } else {
-          str = "配件名称" + "：" + element.product_name + "  数量" + element.num + ",";
-        }
-        arr = arr + str;
+        let str = {
+          product_name: element.product_name,
+          num: element.num,
+          unit_name: element.unit_name,
+        };
+
+        arr.push(str);
       }
+      arr = JSON.stringify(arr);
+      // arr = arr.replace(/'/g, "%22").replace(/{/g, "%7b").replace(/}/g, "%7d");
       console.log(arr);
       if (this.repairReason == "") {
         this.$message({
@@ -662,18 +666,12 @@ export default {
         });
       } else {
         let url =
-          "http://112.12.1.41:8091/APP/repair_submit?company_id=" +
+          "http://112.12.1.41:8091/APP/getRepairOrder?company_id=" +
           this.company_id +
           "&machine_id=" +
           this.checkedMachineNum +
-          "&error_reason=" +
-          this.checkedRepairName +
-          "&solve=" +
-          this.repairReason +
-          "&repair_person=" +
-          "zpd" +
-          "&parts=" +
-          arr;
+          "&user_name=" +
+          "zpd";
         let that = this;
         axios
           .get(
@@ -687,19 +685,86 @@ export default {
           )
           .then(function (res) {
             console.log(res);
-            if (res.data.message == "上传成功") {
-              that.$message({
-                message: "维修成功！",
-                type: "success",
-              });
-              that.checkedMachineNum = "";
-              that.checkedRepairName = "";
-              that.repairReason = "";
-              that.checkedMaterialsList = [];
-              that.MachineShow = true;
-              that.repairShow = false;
+            if (res.data.message == "接单成功") {
+              let url2 =
+                "http://112.12.1.41:8091/APP/start_repair?company_id=" +
+                that.company_id +
+                "&machine_id=" +
+                that.checkedMachineNum;
+
+              axios
+                .get(
+                  url2,
+
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }
+                )
+                .then(function (res) {
+                  console.log(res);
+                  if (res.status == 200) {
+                    axios({
+                      url: "http://112.12.1.41:8091/APP/repair_submit",
+                      method: "get",
+                      params: {
+                        company_id: that.company_id,
+                        machine_id: that.checkedMachineNum,
+                        repair_person: "zpd",
+                        solve: that.repairReason,
+                        error_reason: that.checkedRepairName,
+                        parts: arr,
+                        get_order_date: "2020-12-14 18:00:00",
+                      },
+                    }).then(function (res) {
+                      console.log(res);
+                      if (res.data.message == "上传成功") {
+                        that.$message({
+                          message: "维修成功！",
+                          type: "success",
+                        });
+                        that.checkedMachineNum = "";
+                        that.checkedRepairName = "";
+                        that.repairReason = "";
+                        that.checkedMaterialsList = [];
+                        that.MachineShow = true;
+                        that.repairShow = false;
+                      } else {
+                        that.$message.error("维修失败！");
+                      }
+                    });
+                    // axios
+                    //   .get(
+                    //     url3,
+
+                    //     {
+                    //       headers: {
+                    //         Accept: "/",
+                    //       },
+                    //     }
+                    //   )
+                    //   .then(function (res) {
+                    //     console.log(res);
+                    //     if (res.data.message == "上传成功") {
+                    //       that.$message({
+                    //         message: "维修成功！",
+                    //         type: "success",
+                    //       });
+                    //       that.checkedMachineNum = "";
+                    //       that.checkedRepairName = "";
+                    //       that.repairReason = "";
+                    //       that.checkedMaterialsList = [];
+                    //       that.MachineShow = true;
+                    //       that.repairShow = false;
+                    //     } else {
+                    //       that.$message.error("维修失败！");
+                    //     }
+                    //   });
+                  }
+                });
             } else {
-              that.$message.error("维修失败！");
+              that.$message.error("接单失败！" + res.data.message);
             }
           });
       }
@@ -728,38 +793,13 @@ export default {
           }
         )
         .then(function (res) {
-          console.log(JSON.parse(res.data.repair_history));
+          console.log(res);
           let arr = JSON.parse(res.data.repair_history);
           arr.forEach((element) => {
             that.machineListCon.push(element);
           });
           that.total_num = that.machineListCon.length;
           that.machineList = that.pagination(1, that.page_size, that.machineListCon);
-          // if (res.data.data.length == 0) {
-          //   return;
-          // } else {
-          //   that.total_num = res.data.totalDataNum; //设置数据总条数
-
-          //   for (let i = 0; i < res.data.data.length; i++) {
-          //     if (String(res.data.data[i].machineId).indexOf("-") == -1) {
-          //       that.machineList.push(String(res.data.data[i].machineId));
-          //     }
-          //   }
-          //   console.log(that.machineList);
-          //   that.machineList = [
-          //     //假数据
-          //     {
-          //       machineId: 1011,
-          //       type: "织机报修",
-          //       time: "2020-12-11 18:00",
-          //     },
-          //     {
-          //       machineId: 1012,
-          //       type: "织机报修",
-          //       time: "2020-12-11 18:00",
-          //     },
-          //   ];
-          // }
         });
     },
     getRootCategories() {
@@ -1195,6 +1235,14 @@ export default {
     this.getMachineList();
   },
   watch: {
+    isUpdate(val) {
+      if (val == true) {
+        console.log("sd");
+        this.checkMachine = [];
+        this.machineList = [];
+        this.getMachineList();
+      }
+    },
     drawerFlag(val) {
       console.log(val);
       if (val == true) {

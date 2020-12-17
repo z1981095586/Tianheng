@@ -61,13 +61,13 @@
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
         <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 0"
-          >待保养机台:64</span
+          >待保养机台:{{ total_num }}</span
         >
         <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 1"
-          >保养逾期机台:64</span
+          >保养逾期机台:{{ total_num }}</span
         >
         <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 2"
-          >待维修机台:64</span
+          >待维修机台:{{ total_num }}</span
         >
         <!--<input placeholder="输入机台号" v-model="search_machine" />
         <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
@@ -351,7 +351,7 @@
     >
       <div class="Maintance_machine">
         维修机台：{{ checkedMachineNum
-        }}<span style="margin-left: 2rem">上报时间：2020-12-10 18:30</span>
+        }}<span style="margin-left: 2rem">上报时间：{{ reportTime }}</span>
       </div>
       <div class="Maintance_machine" style="color: black; height: 5%">
         故障分类：{{ String(checkedRepairName) }}
@@ -395,34 +395,19 @@
         </div>
       </div>
       <div class="Maintance_machine" style="color: black; height: 10%">零配件：</div>
-      <div class="Maintance_materials">
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
+      <div class="Maintance_materials" style="justify-content: flex-start">
+        <div
+          class="Maintance_materials_con"
+          style="margin-left: 1rem"
+          v-for="(item, index) in checkedMaterialsList"
+          :key="index"
+        >
+          <span>{{ item.product_name }}</span>
+          <span>{{ item.num }}{{ item.unit_name }}</span>
         </div>
       </div>
       <div class="Maintance_btn">
-        <div class="btns" style="margin: 0">确认维修</div>
+        <div class="btns" style="margin: 0" @click="sureRepair">确认维修</div>
         <div class="btns" @click="addMaterial">新增零配件</div>
         <div
           class="btns"
@@ -620,7 +605,7 @@ export default {
           machine_id: 1444,
         },
       ],
-      total_num: 100,
+      total_num: null,
       page_num: 1,
       page_size: 9,
 
@@ -630,7 +615,7 @@ export default {
       checkedTypeId: "", //选中种类id
       materialsList: [],
       materialsList2: [], //零配件列表
-      total_num2: 100,
+      total_num2: null,
       page_num2: 1,
       page_size2: 14,
       search_material: "", //输入框搜索零配件名称
@@ -661,55 +646,173 @@ export default {
       checkedRepair: [],
       checkedRepairName: "",
       repairReason: "",
+      machineListCon: [],
+      reportTime: "",
+      checkedMaterialsList: [],
+      materialsList2: [],
     };
   },
   methods: {
+    sureRepair() {
+      console.log(this.checkedMachineNum);
+      console.log(this.checkedRepairName);
+      console.log(this.repairReason);
+      console.log(this.checkedMaterialsList);
+      let arr = "";
+      this.checkedMaterialsList.forEach((element) => {});
+      for (let i = 0; i < this.checkedMaterialsList.length; i++) {
+        let element = this.checkedMaterialsList[i];
+        let str = "";
+        if (i == this.checkedMaterialsList.length - 1) {
+          str = "配件名称" + "：" + element.product_name + "  数量" + element.num;
+        } else {
+          str = "配件名称" + "：" + element.product_name + "  数量" + element.num + ",";
+        }
+        arr = arr + str;
+      }
+      console.log(arr);
+      if (this.repairReason == "") {
+        this.$message({
+          message: "处理方式未填写！",
+          type: "warning",
+        });
+      } else if (this.checkedRepairName == "") {
+        this.$message({
+          message: "故障分类未选择！",
+          type: "warning",
+        });
+      } else {
+        let url =
+          "http://112.12.1.41:8091/APP/repair_submit?company_id=" +
+          this.company_id +
+          "&machine_id=" +
+          this.checkedMachineNum +
+          "&error_reason=" +
+          this.checkedRepairName +
+          "&solve=" +
+          this.repairReason +
+          "&repair_person=" +
+          "zpd" +
+          "&parts=" +
+          arr;
+        let that = this;
+        axios
+          .get(
+            url,
+
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            if (res.data.message == "上传成功") {
+              that.$message({
+                message: "维修成功！",
+                type: "success",
+              });
+              that.checkedMachineNum = "";
+              that.checkedRepairName = "";
+              that.repairReason = "";
+              that.checkedMaterialsList = [];
+              that.IndexShow = true;
+              that.repairShow = false;
+            } else {
+              that.$message.error("维修失败！");
+            }
+          });
+      }
+    },
     getMachineList() {
       //获取机台列表
-      let url = "http://120.55.124.53:8211/machine/getMachineList";
-      let that = this;
-      that.machineList = [];
-      axios
-        .post(
-          url,
-          {
-            //           "workShopId":workshop_id,
-            //     "machineType": mac_type_id,
-            page: that.page_num,
-            pageSize: that.page_size,
-            orderType: "asc",
-            groupId: "",
-          },
-          {
-            headers: {
-              companyId: that.company_id,
-            },
-          }
-        )
-        .then(function (res) {
-          console.log(res);
-          if (res.data.data.length == 0) {
-            return;
-          } else {
-            that.total_num = res.data.totalDataNum; //设置数据总条数
 
-            for (let i = 0; i < res.data.data.length; i++) {
-              if (String(res.data.data[i].machineId).indexOf("-") == -1) {
-                that.machineList.push(String(res.data.data[i].machineId));
-              }
+      if (this.isWaitMaintance == 2) {
+        //待维修机台
+        //获取机台列表
+        let url =
+          "http://112.12.1.41:8091/APP/repair_history?company_id=10000015&isMessage=1";
+        let that = this;
+        that.machineList = [];
+        that.machineListCon = [];
+        axios
+          .get(
+            url,
+
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
             }
+          )
+          .then(function (res) {
+            console.log(res);
+            let arr = JSON.parse(res.data.repair_history);
+            arr.forEach((element) => {
+              element.machineId = element.machine_id;
+              that.machineListCon.push(element);
+            });
+            that.total_num = that.machineListCon.length;
+            that.machineList = that.pagination(
+              that.page_num,
+              that.page_size,
+              that.machineListCon
+            );
             console.log(that.machineList);
-            that.machineList = [
-              //假数据
-              {
-                machineId: 1011,
+          });
+      } else {
+        let url = "http://120.55.124.53:8211/machine/getMachineList";
+        let that = this;
+        that.machineList = [];
+        axios
+          .post(
+            url,
+            {
+              //           "workShopId":workshop_id,
+              //     "machineType": mac_type_id,
+              page: that.page_num,
+              pageSize: that.page_size,
+              orderType: "asc",
+              groupId: "",
+            },
+            {
+              headers: {
+                companyId: that.company_id,
               },
-              {
-                machineId: 1012,
-              },
-            ];
-          }
-        });
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            if (res.data.data.length == 0) {
+              return;
+            } else {
+              that.total_num = res.data.totalDataNum; //设置数据总条数
+
+              for (let i = 0; i < res.data.data.length; i++) {
+                if (String(res.data.data[i].machineId).indexOf("-") == -1) {
+                  that.machineList.push(String(res.data.data[i].machineId));
+                }
+              }
+              console.log(that.machineList);
+              that.machineList = [
+                //假数据
+                {
+                  machineId: 1011,
+                },
+                {
+                  machineId: 1012,
+                },
+              ];
+            }
+          });
+      }
+    },
+    pagination(pageNo, pageSize, array) {
+      var offset = (pageNo - 1) * pageSize;
+      return offset + pageSize >= array.length
+        ? array.slice(offset, array.length)
+        : array.slice(offset, offset + pageSize);
     },
     getRootCategories() {
       //获取物料分类
@@ -857,6 +960,13 @@ export default {
       //console.log(e);
       this.page_num = e;
       this.getMachineList();
+      if (this.isWaitMaintance == 2) {
+        this.machineList = this.pagination(
+          this.page_num,
+          this.page_size,
+          this.machineListCon
+        );
+      }
     },
 
     checkedMachine(e) {
@@ -892,6 +1002,11 @@ export default {
     sureMachine() {
       //确定机台
       console.log(this.checkedMachineNum);
+      this.machineList.forEach((element) => {
+        if (element.machine_id == this.checkedMachineNum) {
+          this.reportTime = element.submit_date;
+        }
+      });
       if (this.checkedMachineNum != "") {
         if (this.isWaitMaintance == 2) {
           //待维修界面显示
@@ -938,6 +1053,18 @@ export default {
     sureMaterial() {
       //确定物料
       console.log(this.materialsList);
+      this.checkedMaterialsList = [];
+      this.materialsList.forEach((element) => {
+        if (element.ischecked == true) {
+          this.checkedMaterialsList.push(element);
+        }
+      });
+      this.materialsList2 = this.pagination(
+        1,
+        this.page_size2,
+        this.checkedMaterialsList
+      );
+      this.total_num2 = this.materialsList2.length;
       let flag; //是否有选中的
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].ischecked == true && this.materialsList[i].num > 0) {
@@ -1013,30 +1140,6 @@ export default {
           }
         });
     },
-    lastPage() {
-      //物料上一页
-      if (this.page_num2 > 1) {
-        this.page_num2 = this.page_num2 - 1;
-        this.getInventory2();
-      } else {
-        this.$message({
-          message: "没有上一页了",
-          type: "warning",
-        });
-      }
-    },
-    nextPage() {
-      //物料下一页
-      if (this.total_num2 <= this.page_num2 * this.page_size2) {
-        this.$message({
-          message: "没有下一页了",
-          type: "warning",
-        });
-      } else {
-        this.page_num2 = this.page_num2 + 1;
-        this.getInventory2();
-      }
-    },
     getInventory2() {
       //获取物料列表分页版
       let that = this;
@@ -1085,6 +1188,31 @@ export default {
           }
         });
     },
+    lastPage() {
+      //物料上一页
+      if (this.page_num2 > 1) {
+        this.page_num2 = this.page_num2 - 1;
+        this.pagination(this.page_num2, this.page_size2, this.checkedMaterialsList);
+      } else {
+        this.$message({
+          message: "没有上一页了",
+          type: "warning",
+        });
+      }
+    },
+    nextPage() {
+      //物料下一页
+      if (this.total_num2 <= this.page_num2 * this.page_size2) {
+        this.$message({
+          message: "没有下一页了",
+          type: "warning",
+        });
+      } else {
+        this.page_num2 = this.page_num2 + 1;
+        this.pagination(this.page_num2, this.page_size2, this.checkedMaterialsList);
+      }
+    },
+
     cancel3() {
       this.noSaveDialog = true;
     },
@@ -1114,7 +1242,9 @@ export default {
 
     drawer(val) {
       //查看零配件
-      if (val == true) {
+      console.log(this.drawerFlag);
+      console.log(val);
+      if (val == true && this.drawerFlag == true) {
         this.page_num2 = 1;
         this.getInventory2();
       }

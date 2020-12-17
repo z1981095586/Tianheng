@@ -429,6 +429,7 @@
                       //console.log(that.sortByKey(ylist3, "time"))
                       let zcarr = []
                       let xlist=[]
+                         ylist3=that.sortByKey(ylist3, "time")
                       ylist3.forEach(element => {
                         zcarr.push(element.sum)
                         xlist.push(element.time)
@@ -648,8 +649,8 @@ for(let i=0;i<xlist.length;i++){
           grid: {
             bottom: "25%",
             top: "25%",
-            right: "10%",
-            left: "10%",
+          right: "9%",
+            left: "9%",
           },
           title: {
             padding: [
@@ -904,7 +905,7 @@ for(let i=0;i<xlist.length;i++){
   }
   .bottom_font{
     position: absolute;
-  top: 32.8rem;
+  top: 34.8rem;
     width: 100%;
 
     display: flex;
@@ -1011,7 +1012,7 @@ for(let i=0;i<xlist.length;i++){
 
   .card2 {
       position: absolute;
-    left: 1rem;
+    left:-1rem;
     top: 3rem;
     width: 18rem;
     height: 10rem;
@@ -1023,7 +1024,7 @@ for(let i=0;i<xlist.length;i++){
 
   .card7 {
 position: absolute;
-    right: -1rem;
+    right: 2rem;
     width: 15rem;
     height: 5rem;
     top: 4.5rem;

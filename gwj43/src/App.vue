@@ -4,9 +4,9 @@
   </div>
 </template>
 <script>
-  //import "../static/apiConfigTest.js"
+  // import "../static/apiConfigTest.js"
   //import "../static/apiConfigxj.js"
-  import "../static/apiConfig.js"
+  import "../static/apiConfig.js" // 正式
   export default {
     name: 'App'
   }

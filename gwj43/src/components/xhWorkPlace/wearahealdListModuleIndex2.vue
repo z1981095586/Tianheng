@@ -25,6 +25,19 @@
         </tr>
       </table>
     </el-dialog>
+    <el-dialog
+      :visible.sync="showConfirmBindingTable"
+      width="600px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <p style="display: inline-block;font-size: 30px">计划单品名与加工单不一致，是否继续？</p>
+      <br><br><br>
+      <div style="width: 100%;text-align: center">
+        <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px;margin-right: 10%" @click="bindingPlan(planSelected)">确定</el-button>
+        <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px" @click="showConfirmBindingTable = false">取消</el-button>
+      </div>
+    </el-dialog>
     <!--选择计划-->
     <el-dialog
       :visible.sync="showBindingPlanTable"
@@ -46,7 +59,7 @@
                 已绑定/总量：{{item.finishBeamNum}}/{{item.beamNum}}
               </td>
               <td class="big_font"  style="width: 20%">
-                品名：{{order_list.orderSheetPlan.productName}}
+                品名：{{order_list.productName}}
               </td>
               <td class="big_font"  style="width: 20%">
                 筘号：{{item.reed_no}}
@@ -81,10 +94,10 @@
             <table cellspacing='0' cellpadding='0' border="0" width="100%">
               <tr>
                 <td style="width: 40%" class="standard_font">
-                  织轴卡号：{{order_list.orderSheetPlan.orderSheetNo}}
+                  织轴卡号：{{order_list.printCode}}
                 </td>
                 <td style="width: 30%" class="standard_font">
-                  品名：{{order_list.orderSheetPlan.productName}}
+                  品名：{{order_list.productName}}
                 </td>
                 <td rowspan="6" style="width: 300px;border-width: 3px;"   @click="changeReed">
                   <div style="width: 100%;margin-top:-15px;margin-left: 20px" :style="{height:scrollerHeightRightButton}">
@@ -102,7 +115,7 @@
               </tr>
               <tr>
                 <td style="width: 40%" class="standard_font">
-                  总经根数：{{order_list.orderSheetPlan.rootNumber}}
+                  总经根数：{{order_list.rootNumber}}
                 </td>
                 <td style="width: 30%" class="standard_font">
                   米长：<span v-if="order_list.lmWarpPlanDetail">{{order_list.lmWarpPlanDetail.workQty}}</span>
@@ -110,7 +123,7 @@
               </tr>
               <tr>
                 <td style="width: 40%" class="standard_font" >
-                  轴号：<span v-if="order_list.lmWarpPlanDetail">{{order_list.lmWarpPlanDetail.axisNo}}</span>
+                  轴号：{{order_list.beamName}}
                 </td>
               </tr>
             </table>
@@ -224,32 +237,36 @@
             </div>
             <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}">
               <el-tabs type="border-card"  style="width: 92%"  v-model="rightTabs">
-                <el-tab-pane label="穿综计划" :style="{height: scrollerHeightBottomDiv}" name="rightDiv">
+                <el-tab-pane label="穿综计划" :style="{height: scrollerHeightBottomDivContent}" name="rightDiv">
                   <div id="rightDiv">
-                    <div class="standard_border" :id="'rightLabel'+ item.id"  v-if="(wearPlanId === item.id)" :style="{height:label_height_right}" v-for="item in wear_order_list" :label="item.id" :key="item.id" style="margin-bottom: 10px;border-width:2px;padding: 10px"  @click="rightLabelClick(item)">
+                    <div class="standard_border" v-if="wear_order_list[index + (planPage-1)*4-1]" :id="'rightLabel'+ wear_order_list[index + (planPage-1)*4-1].id"  :style="{height:label_height_right1}" v-for="index in 4" style="margin-bottom: 10px;border-width:2px;padding: 10px"  @click="rightLabelClick(wear_order_list[index + (planPage-1)*4-1])">
                       <table id="rightLabel" cellspacing='0' cellpadding='0' border="0" width="100%"  style="height: 100%;overflow-y: scroll;text-align: center">
                         <tr>
+                        <tr>
                           <td class="big_font" style="width: 20%">
-                            序号{{item.id}}
+                            序号{{wear_order_list[index + (planPage-1)*4-1].id}}
                           </td>
                           <td class="big_font"  style="width: 20%">
-                            已绑定/总量：{{item.finishBeamNum}}/{{item.beamNum}}
+                            已绑定/总量：{{wear_order_list[index + (planPage-1)*4-1].finishBeamNum}}/{{wear_order_list[index + (planPage-1)*4-1].beamNum}}
                           </td>
                           <td class="big_font"  style="width: 20%">
-                            筘号：{{item.reed_no}}
+                            筘号：{{wear_order_list[index + (planPage-1)*4-1].reed_no}}
                           </td>
                           <td class="big_font"  style="width: 20%">
-                            品名：{{item.productName}}
+                            品名：{{wear_order_list[index + (planPage-1)*4-1].productName}}
                           </td>
                           <td  style="width: 20%" v-if="all_order_list[0]">
-                            <!--<el-button type="success"  class="rectangleButton" @click="bindingPlan"  v-if="!(wearPlanId === item.id)">-->
-                              <!--<p  class="middleButtonFont">绑定计划</p>-->
-                            <!--</el-button>-->
-                            <!--<el-button type="danger"  class="rectangleButton" @click="reWear(item)">-->
-                            <!--<p  class="middleButtonFont">重新绑定</p>-->
-                            <!--</el-button>-->
-                            <el-button type="danger"  class="rectangleButton" @click="reWear(item)">
-                              <p  class="middleButtonFont">重复穿综</p>
+                            <el-button type="success"  class="rectangleButton" @click="confirmBinding(wear_order_list[index + (planPage-1)*4-1])"  v-if="(!(wear_order_list[0].workNow)||(all_order_list[0].status === 2&&wear_order_list[0].workNow))  &&(wear_order_list[index + (planPage-1)*4-1].finishBeamNum!==wear_order_list[index + (planPage-1)*4-1].beamNum) ">
+                              <p  class="middleButtonFont">绑定计划</p>
+                            </el-button>
+                            <!-- <el-button type="danger"  class="rectangleButton"   v-if="warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1&&!(wear_order_list[index + (planPage-1)*4-1].workNow)">
+                              <p  class="middleButtonFont">已绑定</p>
+                            </el-button> -->
+                            <el-button type="warning"  class="rectangleButton"   v-if="(warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1)&&wear_order_list[index + (planPage-1)*4-1].workNow &&all_order_list[0].status === 1">  <!--@click="reWear(wear_order_list[index + (planPage-1)*4-1])"-->
+                              <p  class="middleButtonFont">正在穿综</p>
+                            </el-button>
+                            <el-button type="info"  class="rectangleButton"   v-if="!wear_order_list[index + (planPage-1)*4-1].workNow &&(wear_order_list[index + (planPage-1)*4-1].finishBeamNum===wear_order_list[index + (planPage-1)*4-1].beamNum)">
+                              <p  class="middleButtonFont">已完成</p>
                             </el-button>
                           </td>
                         </tr>
@@ -397,6 +414,7 @@
         scrollerHeightTop:null,
         scrollerHeightBottom:null,
         scrollerHeightBottomDiv:null,
+        scrollerHeightBottomDivContent:null,
         scrollerWidthLeft:null,
         scrollerWidthRight:null,
         label_height:null,
@@ -457,6 +475,12 @@
         hisPage:1,//历史记录页码
         pageCountHis:0,//历史记录总页数
         produce_details_list:[],
+        planPage:1,//穿综计划页码
+        pageCount:0,//穿综计划页数
+        warpIdList:[],
+        wearTimes:0,
+        showConfirmBindingTable:false,
+        planSelected:[],
       }
     },
     methods:{
@@ -466,6 +490,7 @@
         this.scrollerHeightTop = ((window.innerHeight*0.98 -80) -20)*0.25 +"px";
         this.scrollerHeightBottom = ((window.innerHeight*0.98 -80) -20)*0.75 +"px";
         this.scrollerHeightBottomDiv = ((window.innerHeight*0.98 -80) -20)*0.75 -35 +"px";
+        this.scrollerHeightBottomDivContent = ((window.innerHeight*0.98 -80) -20)*0.75 -108 +"px";
         this.scrollerWidthLeft = ((window.innerWidth -10)-20)*0.25 +"px";
         this.scrollerWidthRight = ((window.innerWidth -10)-20)*0.75 +"px";
         this.scrollerWidthRightTable = ((window.innerWidth -10)-20)*0.75*0.8 +"px";
@@ -478,6 +503,7 @@
         this.buttonHeight = (((window.innerHeight*0.98 -80) -20)*0.25 - 70)/2.5 + "px";
         this.label_height =(((window.innerHeight*0.98 -80) -20)*0.75 - 65)/3 + "px";
         this.label_height_right = window.innerHeight*3*0.025 + 65 + "px";
+        this.label_height_right1 = window.innerHeight*3*0.025 + 55 + "px";
         this.button_height =((((window.innerHeight*0.98 -80) -20)*0.75 - 70)/4.5 -20)/2 +"px";
         this.upArrowTop = ((window.innerHeight*0.98 -80) -20)*0.25 +80+50+((window.innerWidth -10)-10)*0.25*0.3+"px";
         this.arrowLeft = ((window.innerWidth -10)-10)*0.25*0.82+"px";
@@ -492,48 +518,51 @@
           return "gray";
         }
       },
-      getDataByCardNumber(batchCode){
-        //console.log("查询");
-        //this.batchCode = batchCode;
-        this.batchCode = batchCode;
-        let data = {};
-        data.warpCode = batchCode;
-        let url = "/wear-weaving/selectByWarpCode";
-        warp_api_get(url, data,this.companyId)
-          .then(response => {
-            //console.log(response.data.data);
-            if(response.data.data){
-              this.order_detail_list = [];
-              this.order_detail_list.push(response.data.data);
-              this.getData();
-              this.getPlanProps();
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
+      // getDataByCardNumber(batchCode){
+      //   //console.log("查询");
+      //   //this.batchCode = batchCode;
+      //   this.batchCode = batchCode;
+      //   let data = {};
+      //   data.warpCode = batchCode;
+      //   let url = "/wear-weaving/selectByWarpCode";
+      //   warp_api_get(url, data,this.companyId)
+      //     .then(response => {
+      //       //console.log(response.data.data);
+      //       if(response.data.data){
+      //         this.order_detail_list = [];
+      //         this.order_detail_list.push(response.data.data);
+      //         this.getData();
+      //         this.getPlanProps();
+      //       }
+      //     })
+      //     .catch(error => {
+      //       console.log(error);
+      //     });
+      // },
       batchCodeChange(){
         if(this.clock){
           clearInterval(this.clock);
         }
         this.clock = setTimeout(this.searchCode,500);
       },
+
       searchCode(){
         if(this.batchCodeNow){
-            if(this.batchCodeNow!== this.batchCode.substr(0-this.batchCodeNow.length)){
-              this.batchCodeNow = this.batchCode;
-             // this.getDataByCardNumber(this.batchCodeNow);
-              this.getPlanProps(this.batchCodeNow);
-            }else{
-              this.$message.warning("重复扫码");
-              this.batchCode = this.batchCodeNow;
-              this.$store.state.showLoadingLog = false;
-            }
+          if(this.batchCodeNow!== this.batchCode.substr(0-this.batchCodeNow.length)){
+            this.batchCodeNow = this.batchCode;
+            // this.getDataByCardNumber(this.batchCodeNow);
+            this.getData(this.batchCodeNow);
+            //this.searchInputCode(this.batchCodeNow);
+          }else{
+            this.$message.warning("重复扫码");
+            this.batchCode = this.batchCodeNow;
+            this.$store.state.showLoadingLog = false;
+          }
         }else{
           this.batchCodeNow = this.batchCode;
           //this.getDataByCardNumber(this.batchCode);
-          this.getPlanProps(this.batchCodeNow);
+          this.getData(this.batchCodeNow);
+          //this.searchInputCode(this.batchCodeNow);
         }
       },
       getLabelColor(status){
@@ -607,22 +636,21 @@
             document.getElementById("right_down").style.display = "inline-block";
             break;
           case "rightDiv":
-            if(document.getElementById(this.rightTabs).scrollTop-parseInt(this.label_height)*3-60>=0){
-              document.getElementById(this.rightTabs).scrollTop-= (parseInt(this.label_height)*3+60);
-              document.getElementById("right_down").style.display = "inline-block";
-            }else{
-              document.getElementById(this.rightTabs).scrollTop = 0;
-              //  document.getElementById("right_up").style.display = "none";
-              document.getElementById("right_down").style.display = "inline-block";
+            if(this.planPage>1){
+              this.planPage--;
+              if(this.planPage === 1){
+                document.getElementById("right_up").style.display = "none";
+              }
             }
+            document.getElementById("right_down").style.display = "inline-block";
             break;
         }
       },
       right_down(){
-       // console.log(this.rightTabs);
+        // console.log(this.rightTabs);
         switch(this.rightTabs) {
           case "rightLabelHis":
-           // console.log("总"+this.pageCountHis+"现"+this.hisPage);
+            // console.log("总"+this.pageCountHis+"现"+this.hisPage);
             if(this.hisPage<this.pageCountHis){
               this.hisPage++;
               if(this.hisPage === this.pageCountHis){
@@ -632,14 +660,13 @@
             document.getElementById("right_up").style.display = "inline-block";
             break;
           case "rightDiv":
-            if(document.getElementById(this.rightTabs).scrollTop+parseInt(this.label_height)*3+46<=document.getElementById(this.rightTabs).scrollHeight){
-              document.getElementById(this.rightTabs).scrollTop+= (parseInt(this.label_height)*3+46);
-              document.getElementById("right_up").style.display = "inline-block";
-            }else{
-              document.getElementById(this.rightTabs).scrollTop = document.getElementById(this.rightTabs).scrollHeight;
-              // document.getElementById("right_down").style.display = "none";
-              document.getElementById("right_up").style.display = "inline-block";
+            if(this.planPage<this.pageCount){
+              this.planPage++;
+              if(this.planPage === this.pageCount){
+                document.getElementById("right_down").style.display = "none";
+              }
             }
+            document.getElementById("right_up").style.display = "inline-block";
             break;
         }
         // console.log(document.getElementById(this.rightTabs).scrollTop+parseInt(this.label_height)*3+46);
@@ -672,8 +699,8 @@
               this.$message.warning(message);
             }else{
               this.$message.success("开始穿综成功");
-              this.getData();
-              this.getDataByCardNumber(item.printCode);
+              this.getData(this.batchCodeNow);
+              //this.getDataByCardNumber(item.printCode);
             }
           })
           .catch(error => {
@@ -687,47 +714,76 @@
         warp_api_get(url, data,this.companyId)
           .then(response => {
             this.$message.success("结束穿综成功");
-            this.getData();
-            this.getDataByCardNumber(item.printCode);
+            this.getData(this.batchCodeNow);
+            //this.getDataByCardNumber(item.printCode);
           })
           .catch(error => {
             console.log(error);
           });
       },
-      getData(){
-        let data = {};
-        let url = "/wear-weaving/selectRecent";
-        warp_api_get(url, data,this.companyId)
+      getData(printCode){
+        let data = {
+          printCode:printCode
+        };
+        let url = "/wear-weaving/selectIdByPrintCode";
+        warp_api(url, data,this.companyId)
           .then(response => {
-            //console.log(response.data.data[0]);
+            //console.log(response.data.data);
+            this.wear_order_list[0].workNow = false;
             this.all_order_list = response.data.data;
-            if(this.batchCode){
-              this.shiftToTop()
+            this.warpIdList = [];
+            for (let i = 0; i < this.all_order_list.length; i++) {
+              this.warpIdList.push(this.all_order_list[i].wearPlanId)
             }
-            else{
-              if(response.data.data.length>0){
-                this.order_list = response.data.data[0];
-              }
+            this.changeOrder();
+            this.wearTimes = this.warpIdList.length;
+            if(response.data.data.length>0){
+              this.order_list = response.data.data[0];
             }
           })
           .catch(error => {
             console.log(error);
           });
       },
-      changeByCardNumber(item){
-       // console.log(item);
-        this.order_list = item;
-        this.getDataByCardNumber(item.printCode)
+      changeOrder(){
+        console.log(this.warpIdList);
+        for (let i = 0; i < this.warpIdList.length; i++) {
+          this.wear_order_list.map((item,index)=> {
+            // if(item.id === this.warpIdList[i]){
+            //   this.wear_order_list.push(this.wear_order_list.splice(index , 1)[0]);
+            // }
+            if(item.finish_beam_num === item.beam_num){
+               this.wear_order_list.push(this.wear_order_list.splice(index , 1)[0]);
+            }
+          })
+        }
+        console.log(this.wear_order_list);
+        if(this.all_order_list.length>0){
+          this.wear_order_list.map((item,index)=> {
+            if(item.id === this.all_order_list[0].wearPlanId){
+              this.wear_order_list.unshift(this.wear_order_list.splice(index , 1)[0]);
+              this.wear_order_list[0].workNow = true;
+            }
+          })
+        }
+        console.log(this.wear_order_list);
       },
+      // changeByCardNumber(item){
+      //  // console.log(item);
+      //   this.order_list = item;
+      //   this.getDataByCardNumber(item.printCode)
+      // },
       //更换筘号
       changeReedNumber(){
         this.changeReedTable = false;
         let url = "/wear-weaving-plan/updateReedNo";
         warp_api(url,{reedNo:this.reedNum,id:this.dataSelect.id},this.companyId)
           .then(response => {
-            console.log(response);
             if(this.batchCode){
-              this.getPlanProps();
+              this.wearWeavingPlan();
+              this.$nextTick(()=>{
+                this.getData(this.batchCode);
+              });
             }else{
               this.wearWeavingPlan();
             }
@@ -776,7 +832,7 @@
         };
         common_api("/report/getSimpleReport", data,this.companyId)
           .then(response => {
-           // console.log(response.data);
+            // console.log(response.data);
             if(response.data.result === "ok"){
               this.wear_order_list = response.data.data;
               for (let i = 0; i < response.data.data.length; i++) {
@@ -784,6 +840,8 @@
                 this.wear_order_list[i].beamNum = this.wear_order_list[i].beam_num;
                 this.wear_order_list[i].productName = this.wear_order_list[i].product_name;
               }
+              this.pageCount = Math.ceil(this.wear_order_list.length/4);
+              this.changeOrder();
             }else{
               this.$message.warning("暂无可用的穿综计划");
               this.wear_order_list = [];
@@ -798,6 +856,7 @@
         data.printCode = this.batchCode;
         warp_api_get("/wear-weaving-plan/selectByPrintCodeProductName", data,this.companyId)
           .then(response => {
+            console.log(response.data);
             this.wearPlanId = null;
             if(response.data.result === "ok"){
               this.wear_order_list = response.data.data.wearWeavingPlans;
@@ -819,7 +878,8 @@
       },
       //绑定穿综计划
       bindingPlan(item){
-       // console.log(item);
+        // console.log(item);
+        this.showConfirmBindingTable = false;
         this.$store.state.showLoadingLog = true;
         let url = "/lm-warp-plan-detail/selectAllByPrintCode";
         warp_api(url,{printCode:this.batchCode},this.companyId)
@@ -837,38 +897,15 @@
             };
             warp_api("/wear-weaving/insertWear", data,this.companyId)
               .then(response1 => {
-                console.log(response1);
-                this.showBindingPlanTable = false;
                 this.$store.state.showLoadingLog = false;
-                this.wearWeavingPlan();
-                this.getPlanProps(this.batchCodeNow);
-                // if(response1.data.result === "OK"){
-                //   if(item.id){
-                //     warp_api("/wear-weaving-plan/syncFinish",{wearPlanId:item.id},this.companyId)
-                //       .then(response2 => {
-                //         common_api("/report/getSimpleReport",
-                //           {
-                //             query:{
-                //               print_code:this.batchCode
-                //             }
-                //           },this.companyId)
-                //           .then(response => {
-                //             if(response.data.result === "ok"){
-                //               this.saveOption(15,response.data.data[0].id);
-                //             }
-                //           })
-                //           .catch(error => {
-                //             console.log(error);
-                //           });
-                //       })
-                //       .catch(error => {
-                //         console.log(error);
-                //       });
-                //   }
-                // }else{
-                //   this.$message.error("操作失败");
-                //   this.$store.state.showLoadingLog = false;
-                // }
+                if(response1.data.result === "fail"){
+                  this.$message.warning(response1.data.successMessage)
+                }else{
+                  this.getData(this.batchCodeNow);
+                  this.$nextTick(()=>{
+                    this.wearWeavingPlan();
+                  });
+                }
               })
               .catch(error => {
                 console.log(error);
@@ -877,7 +914,15 @@
           .catch(error => {
             console.log(error);
           });
-       },
+      },
+      confirmBinding(data){
+        if(this.all_order_list[0].productName !== data.productName){
+          this.planSelected = data;
+          this.showConfirmBindingTable = true
+        }else{
+          this.bindingPlan(data);
+        }
+      },
       //保存历史纪录
       saveOption(code,detailId){
         if(code&&detailId){
@@ -892,12 +937,15 @@
       },
       //搜索项置顶
       shiftToTop(){
-        for(let i in this.all_order_list){
-          if(this.all_order_list[i].printCode === this.batchCode){
-            this.all_order_list.unshift(this.all_order_list.splice(i , 1)[0]);
+        for (let j = 0; j < this.warpIdList.length; j++) {
+          for(let i = 0; i < this.wear_order_list.length;i++){
+            if(this.wear_order_list[i].id === this.warpIdList[j]){
+              alert(1);
+              this.wear_order_list.unshift(this.wear_order_list.splice(i , 1)[0]);
+            }
           }
         }
-        document.getElementById("leftDiv").scrollTop = 0;
+        console.log(this.wear_order_list);
       },
       //点击事件
       rightLabelClick(item){
@@ -933,7 +981,7 @@
         }
       },
       changeTimeRange(){
-       // console.log(this.timeRangeSelect);
+        // console.log(this.timeRangeSelect);
         switch(this.timeRangeSelect){
           case "最近一天":
             this.dateStart = this.standardDateTransferToYMD(new Date().getTime() - 3600 * 1000 * 24);
@@ -949,7 +997,7 @@
             break;
         }
         this.$nextTick(()=>{
-         this.getHistory()
+          this.getHistory()
         })
       },
       //获取历史记录
@@ -965,12 +1013,12 @@
         data.sortColumn = "update_time";
         common_api("/report/getSimpleReport", data,this.companyId)
           .then(response => {
-             //console.log(response.data);
-             if(response.data.result === "ok"){
-               this.historyList = response.data.data;
-               this.pageCountHis = Math.ceil(response.data.data.length/3);
-               this.hisPage = 1;
-             }
+            //console.log(response.data);
+            if(response.data.result === "ok"){
+              this.historyList = response.data.data;
+              this.pageCountHis = Math.ceil(response.data.data.length/3);
+              this.hisPage = 1;
+            }
           })
           .catch(error => {
             console.log(error);
@@ -1014,8 +1062,19 @@
             i = item.wearWeavings.length;
           }
         }
-
       },
+      searchInputCode(printCode){
+        let data = {
+          "printCode":printCode
+        };
+        warp_api("/wear-weaving/selectIdByPrintCode", data,this.companyId)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     mounted() {
       let params = this.$route.params.params.split(",");

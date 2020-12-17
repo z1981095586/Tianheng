@@ -114,7 +114,7 @@
           let pageHeight = "6cm";
           let pageWidth = "8cm";
           let strBodyStyle = "<style>td{ text-align: center;font-size: 14px;}</style>";
-          let strFormHtml = strBodyStyle+"<body>" +document.getElementById("printTableXJ").innerHTML +"</body>";
+          let strFormHtml = strBodyStyle+"<body>" +document.getElementById("printTable").innerHTML +"</body>";
           LODOP.PRINT_INIT("流水单");
           LODOP.ADD_PRINT_BARCODE(5, 5, 55, 55, "QRCode",  this.warpInfoData.printCode);
           LODOP.SET_PRINT_STYLEA(0,"AngleOfPageInside",-90);

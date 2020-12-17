@@ -449,7 +449,7 @@
             return param
           }
           let time = hour + ":"+minute+":"+seconds;
-         // console.log(this.shiftManageList);
+         console.log(this.shiftManageList,'shiftManageList');
           for (let i = 0; i < this.shiftManageList.length; i++) {
             this.shiftManageList[i].id = i+1;
             if(this.shiftManageList[i].endTime>this.shiftManageList[i].startTime){

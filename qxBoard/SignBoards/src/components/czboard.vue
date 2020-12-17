@@ -13,11 +13,34 @@
         </div>
       
         </div>
-          <div class="board_con_top_con">
-        <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
-  {{item}}
+          <div class="board_con_top_con"  v-for="(item,index) in tableData" :key="index">
+        <div class="board_con_top_con_one">
+  {{index+1}}
         </div>
-      
+          <div class="board_con_top_con_one">
+  {{item.workshop}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.product_name}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.mac_type_name}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.beam_num}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.mac_type_id}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.status}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.reed_no}}
+        </div>
+            <div class="board_con_top_con_one">
+  {{item.reed_width}}
+        </div>
         </div>
        
         </div>
@@ -39,7 +62,7 @@
          剩余
        </div>
        </div>
-          <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    dczList" :key="index">
+          <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index">
              <div class="board_con_bottom_left_left_tablehead_one">
          {{item.product_name}}
        </div>
@@ -61,15 +84,15 @@
          <div class="img1" >
   <img src="/static/img/circle2.png" id="img1" />
   <div class="img_span">
-    <span>S40今日穿综根数</span>
-    <span>98543</span>
+    <span>{{sum1Name}}今日穿综根数</span>
+    <span>{{sum1}}</span>
   </div>
          </div>
          <div class="img2">
   <img src="/static/img/circle2.png"  id="img2"  />
     <div class="img_span2">
-    <span>S40今日穿综根数</span>
-    <span>98543</span>
+    <span>{{sum2Name}}今日穿综根数</span>
+    <span>{{sum2}}</span>
   </div>
          </div>
        
@@ -90,7 +113,7 @@
   // 2: {name: "兰棉", id: 4}
   // 3: {name: "佳而美", id: 5}
   import axios from 'axios';
-  let host1 = "http://47.110.242.174:10086";
+  let host1 = "http://106.12.219.66:8227";
   import {
     getUrl,
     wzBoard_api
@@ -110,10 +133,15 @@
         // clpmList: [],
         // yczList: [],
         // yczListLength: 0,
+        sum1:"",
+        sum2:"",
+        sum1Name:"",
+        sum2Name:"",
         product_nameList: [],
-        dczList:[],
-        // companyname:"",
+      tableData2:[],
+         companyname:"",
          root_numberList: [],
+         tableData:[]
         // legendList: [],
         // xList: [],
         // sList: []
@@ -317,7 +345,7 @@ splitLine:{
 
                 })
                 .then(response => {
-                   console.log(response)
+                   //console.log(response)
                   let list = []
                   for (let j = 0; j < response.data.data.length; j++) {
 
@@ -348,8 +376,8 @@ splitLine:{
               // }
         
             // }
-            console.log(xList)
-            console.log(sList)
+            //console.log(xList)
+            //console.log(sList)
 
 //           }).then(() => {
 
@@ -441,7 +469,7 @@ splitLine:{
 //           series: that.sortByKey(sList,"name")
 //         };
 
-//         //console.log(option.series[0])
+//         ////console.log(option.series[0])
 //         myChart1.setOption(
 //           option);
 //         window.addEventListener('resize', function () {
@@ -453,6 +481,39 @@ splitLine:{
 //           })
       },
     // 对象排序
+    getsum(){
+      let that=this
+      console.log(this. getNowFormatDate())
+    axios({
+                  url: host1 + '/report/getSimpleReport',
+                  method: 'post',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'companyId': this.companyId
+                  },
+                  data: {
+
+                    tableName: "wear_weaving",
+pageNum:1,
+pageSize:2,
+selectLikeFields:{
+  create_date:this. getNowFormatDate()
+},
+               
+                    selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
+                    groupByColumn: ['machine_id']
+
+                  }
+
+                })
+                .then(response => {
+                  console.log(response)
+                  that.sum1=response.data.data[0].sum
+                  that.sum2=response.data.data[1].sum
+                  that.sum1Name=response.data.data[0].machine_id
+ that.sum2Name=response.data.data[1].machine_id
+                })
+    },
       sortByKey(array, key) {
         return array.sort(function (a, b) {
           let x = a[key];
@@ -496,7 +557,7 @@ groupByColumn:["product_name"],
 
           })
           .then(res => {
-            //console.log(res)
+            ////console.log(res)
             for (let i = 0; i < res.data.data.length; i++) {
               that.product_nameList.push(res.data.data[i].product_name)
               that.root_numberList.push({
@@ -528,13 +589,13 @@ groupByColumn:["product_name"],
           if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
             preTop = o.scrollTop;
             o.scrollTop += 1;
-                  //console.log(preTop)
-            //console.log(o.scrollHeight)
-            //console.log(o.scrollTop)
+                  ////console.log(preTop)
+            ////console.log(o.scrollHeight)
+            ////console.log(o.scrollTop)
             if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
 
 
-            //console.log("asd")
+            ////console.log("asd")
                   // that.getData2()
                 that.getdata3()
 //  that.echart2() //机台产量对比统计图
@@ -582,7 +643,7 @@ t=null
 
           })
           .then(res => {
-            //console.log(res)
+            ////console.log(res)
             for (let i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].machine_id == -1) {
                 res.data.data[i].machine_id = "手工穿综"
@@ -613,13 +674,13 @@ t=null
           if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
             preTop = o.scrollTop;
             o.scrollTop += 1;
-                  //console.log(preTop)
-            //console.log(o.scrollHeight)
-            //console.log(o.scrollTop)
+                  ////console.log(preTop)
+            ////console.log(o.scrollHeight)
+            ////console.log(o.scrollTop)
             if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
 
 
-            //console.log("asd")
+            ////console.log("asd")
                   // that.getData2()
                 that.getdata2()
 //  that.echart2() //机台产量对比统计图
@@ -666,7 +727,7 @@ t=null
 
           })
           .then(res => {
-            //////console.log(res)
+            ////////console.log(res)
             let list = res.data.data
             list = list.reduce((obj, item) => {
               let find = obj.find(i => i.product_name === item.product_name)
@@ -677,7 +738,7 @@ t=null
               find ? (find.root_number += item.root_number, find.frequency++) : obj.push(_d)
               return obj
             }, [])
-            //////console.log(list)
+            ////////console.log(list)
             list = that.sortByKey(list, "root_number")
             let list2 = []
             for (let i = list.length - 1; i >= 0; i--) {
@@ -692,7 +753,9 @@ t=null
       getdata() { //今日待穿综记录
         let date = this.getNowFormatDate()
         let that = this
-        //////console.log(date)
+        that.tableData=[]
+        that.tableData2=[]
+        ////////console.log(date)
         axios({
             url: host1 + '/report/getSimpleReport',
             method: 'post',
@@ -703,52 +766,43 @@ t=null
             data: {
 
               tableName: "wear_weaving_plan",
-              //   sort: "DESC",
-              //   sortColumn: "aef",
+                 sort: "ASC",
+              sortColumn: "status",
               selectLikeFields: {
                 // update_time:date
               },
-              query: {
-                status: 0
-              }
+              // query: {
+              //   status: 0
+              // },
+              pageNum:1,
+              pageSize:100
 
             }
 
           })
           .then(response => {
-
+console.log(response)
             for (let i = 0; i < response.data.data.length; i++) {
-              axios({
-                  url: host1 + '/report/getSimpleReport',
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'companyId': that.companyId
-                  },
-                  data: {
-
-                    tableName: "wear_weaving",
-                    //   sort: "DESC",
-                    //   sortColumn: "aef",
-                    query: {
-                      wear_plan_id: response.data.data[i].id
-                    }
-
-                  }
-
-                })
-                .then(res => {
-                  //////console.log(res.data.data.length)
-                  response.data.data[i].beamNum2 = res.data.data.length;
-
-
-                })
-              response.data.data[i].update_time = response.data.data[i].update_time.substr(0, 10)
+              if(response.data.data[i].status==2){
+  that.tableData2.push(response.data.data[i])
+} //今日已完成列表
+              if(response.data.data[i].workshop_id==1){
+                response.data.data[i].workshop="一分厂"
+              }else if(response.data.data[i].workshop_id==2){
+                response.data.data[i].workshop="二分厂"
+              }else if(response.data.data[i].workshop_id==3){
+                response.data.data[i].workshop="三分厂"
+              }
+              if(response.data.data[i].status==0){
+                response.data.data[i].status="未开始"
+              }else  if(response.data.data[i].status==1){
+                response.data.data[i].status="进行中"
+              }
+             that.tableData.push(response.data.data[i])
 
             }
-           console.log(response)
-            that.dczList = response.data.data
-       
+            console.log(that.tableData2)
+        
           })
       },
                   startmarquee(lh, speed, delay) {
@@ -771,9 +825,9 @@ t=null
           if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
             preTop = o.scrollTop;
             o.scrollTop += 1;
-                  //console.log(preTop)
-            //console.log(o.scrollHeight)
-            //console.log(o.scrollTop)
+                  ////console.log(preTop)
+            ////console.log(o.scrollHeight)
+            ////console.log(o.scrollTop)
             if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
 
 
@@ -803,8 +857,8 @@ t=null
         setTimeout(start, delay);
       },
       echart() {
-        ////console.log(this.product_nameList)
-        ////console.log(this.root_numberList)
+        //////console.log(this.product_nameList)
+        //////console.log(this.root_numberList)
         let myChart1 = this.$echarts.init(document.getElementById('echart'));
         // 绘制图表
         myChart1.clear();
@@ -944,7 +998,7 @@ t=null
           series: that.sList
         };
 
-        ////console.log(option)
+        //////console.log(option)
         myChart1.setOption(
           option);
         window.addEventListener('resize', function () {
@@ -982,8 +1036,9 @@ t=null
         this.companyname="七星"
     
       }
+      this.getsum()
       this. clEchart()
-      this.pzEchart()
+   
       this.rotate()
       this.getdata()
       // this.getdata()

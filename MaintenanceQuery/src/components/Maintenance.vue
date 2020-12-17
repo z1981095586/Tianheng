@@ -520,7 +520,7 @@
           let data3 = {
             product_id: this.consume_list[j].id,
             product_name: this.consume_list[j].name,
-            specification: this.consume_list[j].specification,
+            specification: this.consume_list[j].product_name,
             quantity: this.consume_list[j].stockQuantity
           }
           arr3.push(data3)

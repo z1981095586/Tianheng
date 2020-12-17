@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-------------------打印区-落布明细---------------------->
-    <div style="text-align: center;font-size: 12px; display: none" v-for="(item,index) in printData" :class="'printCloths' + index">
+    <div style="text-align: center;font-size: 12px; display: none" v-for="(item,index) in printData" :class="'printCloths' + index" >
       <table border="1" border-color="gray" width="260" cellspacing="0" cellpadding="1" style="font-size: 12px; margin-bottom: 1px; text-align: center; line-height: 14px;text-transform: uppercase;"  :key="'printData'+index">
         <!--<caption align="top" style="font-size: 14px; font-weight: bold">落布卡</caption>-->
         <tr>
@@ -18,7 +18,8 @@
         </tr>
         <tr>
           <td style="width: 70px">每卷米数</td>
-          <td colspan=4>{{item.yieldMeterSemi || ""}}</td>
+          <td colspan=4></td>
+          <!-- <td colspan=4>{{item.yieldMeterSemi || ""}}</td> -->
         </tr>
         <tr>
           <td style="width: 70px">卷号</td>
@@ -50,7 +51,7 @@
         </tr>
       </table>
     </div>
-    <div style="text-align: center;font-size: 12px; display: none" v-for="(item,index) in printData" :class="'printClothsXJ' + index">
+    <div style="text-align: center;font-size: 12px; display: none" v-for="(item,index) in printData" :class="'printClothsXJ' + index" :key="index">
       <table cellspacing='0' cellpadding='0' border="1" width="65%" style="margin-left: 2%" >
         <tr>
           <td style="height: 1cm">{{orderData.productName}}</td>
@@ -85,14 +86,13 @@
         }
         this.orderData = orderData;
         this.printData = printData;
-        console.log(printData);
-        console.log(orderData);
+        console.log(printData,'printData');
+        console.log(orderData,'orderData');
         let count = LODOP.GET_PRINTER_COUNT();
         let printerList = [];
         if(count ===0 ){
           this.$message.error( "未连接打印机,请重新连接打印机")
-        }
-        else{
+        } else{
           for (let i = 0; i < count; i++) {
             //根据设备序号获取设备名
             let name = LODOP.GET_PRINTER_NAME(i);
@@ -101,7 +101,8 @@
             }
           }
         }
-        // console.log(printerList);
+        // printerList.push(LODOP.GET_PRINTER_NAME(0))
+        console.log(printerList,'printerList');
         for (let i = 0; i < printerList.length; i++) {
           this.$nextTick(()=>{
             this.print(printerList[i]);
@@ -116,12 +117,13 @@
         const LODOP = getLodop();
         //打印初始化
         if(this.$store.state.companyId*1.0 === 10000022){
+          LODOP.PRINT_INIT("布票");
           for(let i = 0; i < this.printData.length; i++){
+            console.log()
             let pageHeight = "4cm";
             let pageWidth = "6cm";
             let strBodyStyle = "<style>td{ text-align: center;font-size: 14px;}</style>";
             let strFormHtml = strBodyStyle+"<body>" +document.querySelector('.printClothsXJ' + i).innerHTML +"</body>";
-            LODOP.PRINT_INIT("布票");
             LODOP.SET_PRINT_PAGESIZE(0,"6cm","4cm","");
             LODOP.ADD_PRINT_BARCODE(40, 5, 80, 80, "QRCode", this.printData[i].id);
             LODOP.SET_PRINT_STYLEA(0,"AngleOfPageInside",-90);
@@ -188,8 +190,8 @@
           });
       },
       savePrintStatus(){
-        if(this.printCode === 0){
-          this.message.success("新增布票成功");
+        if(this.printMode === 0){
+          this.$message.success("新增布票成功");
         }else {
           if(this.printData[0].printCode){
             this.$message.success("打印信息储存成功");

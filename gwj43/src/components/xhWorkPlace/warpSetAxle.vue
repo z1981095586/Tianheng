@@ -1,9 +1,10 @@
 <template>
     <div style="width: 800px;height: 500px;margin-left: 5px">
       <div style="display: inline-block;height: 50px;line-height: 50px;margin-bottom: 5px">
-        <p style="display: inline-block;font-size: 25px">输入第几缸和第几轴:</p>
-        <el-input ref="cylindersNumber" style="width: 200px;display: inline-block;font-size: 25px" @focus="focusInput ='cylindersNumber'" v-model="cylindersNumber"></el-input>
-        <el-input ref="axisNumber" style="width: 200px;display: inline-block;font-size: 25px" @focus="focusInput ='axisNumber'" v-model="axisNumber"></el-input>
+        <p style="display: inline-block;font-size: 25px"  v-if="isJs">输入第几缸和第几轴:</p>
+        <el-input ref="cylindersNumber" style="width: 200px;display: inline-block;font-size: 25px" @focus="focusInput ='cylindersNumber'" v-model="cylindersNumber"  v-if="isJs"></el-input>
+        <p style="display:inline-block;font-size: 25px" v-if="isJs">-</p>
+        <el-input ref="axisNumber" style="width: 200px;display: inline-block;font-size: 25px" @focus="focusInput ='axisNumber'" v-model="axisNumber"  v-if="isJs"></el-input>
         <p style="display: inline-block;font-size: 25px">输入需要绑定的经轴号:</p>
         <el-input ref="axleNumber" style="width: 500px;display: inline-block;font-size: 25px" @focus="focusInput ='axleNumber'" v-model="axleNumber"></el-input>
       </div><br><br>
@@ -35,20 +36,26 @@
           buttonList:"123JX456AH7890B",
           focusInput:null,
           axleNumber:"",
-          cylindersNumber:'"',
+          cylindersNumber:'',
           axisNumber:"",
           companyId:null,
+          isJs:false
         }
       },
       methods:{
+        getIfIsJs(isJs){
+          this.isJs = isJs;
+        },
         getButtonList(buttonList){
           this.buttonList = buttonList;
         },
-        returnMain(step,status,data){
+        returnMain(step,status,data1,data2,data3){
           let emitData = {};
           emitData.step = step;
           emitData.status = status;
-          emitData.data = data;
+          emitData.axleNumber = data1;
+          emitData.cylindersNumber = data2;
+          emitData.axisNumber = data3;
           this.$emit('closeSetAxleTable',emitData);
           this.axleNumber = "";
           this.cylindersNumber = "";
@@ -56,24 +63,50 @@
         },
         submitData(status){
           this.$store.state.showLoadingLog = true;
-          this.returnMain(1,status,this.axleNumber);
-          this.returnMain(1,status,this.cylindersNumber);
-          this.returnMain(1,status,this.axisNumber);
+          if(this.isJs){
+            this.returnMain(1,status,this.axleNumber,this.cylindersNumber,this.axisNumber);
+          }else{
+            this.returnMain(1,status,this.axleNumber)
+          }
         },
         selectTableButton(buttonName){
          if(buttonName === "退格"){
-            this.axleNumber = this.axleNumber.substring(0,this.axleNumber.length-1);
-           this.cylindersNumber = this.cylindersNumber.substring(0,this.cylindersNumber.length-1);
-           this.axisNumber = this.axisNumber.substring(0,this.axisNumber.length-1)
+           switch (this.focusInput) {
+             case "axleNumber":
+               this.axleNumber = this.axleNumber.substring(0,this.axleNumber.length-1);
+               break;
+             case "cylindersNumber":
+               this.cylindersNumber = this.cylindersNumber.substring(0,this.cylindersNumber.length-1);
+               break;
+             case "axisNumber":
+               this.axisNumber = this.axisNumber.substring(0,this.axisNumber.length-1);
+               break;
+           }
           }else{
-            this.axleNumber += buttonName;
-            this.cylindersNumber += buttonName;
-            this.axisNumber += buttonName;
+           switch (this.focusInput) {
+             case "axleNumber":
+               this.axleNumber += buttonName;
+               break;
+             case "cylindersNumber":
+               this.cylindersNumber += buttonName;
+               break;
+             case "axisNumber":
+               this.axisNumber += buttonName;
+               break;
+           }
           }
           //对焦
-          this.$refs.axleNumber.focus();
-          this.$refs.cylindersNumber.focus();
-          this.$refs.axisNumber.focus();
+          switch (this.focusInput) {
+            case "axleNumber":
+              this.$refs.axleNumber.focus();
+              break;
+            case "cylindersNumber":
+              this.$refs.cylindersNumber.focus();
+              break;
+            case "axisNumber":
+              this.$refs.axisNumber.focus();
+              break;
+          }
         },
       },
       mounted() {

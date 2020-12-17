@@ -259,14 +259,17 @@
                             品名：{{wear_order_list[index + (planPage-1)*4-1].productName}}
                           </td>
                           <td  style="width: 20%" v-if="all_order_list[0]">
-                            <el-button type="success"  class="rectangleButton" @click="confirmBinding(wear_order_list[index + (planPage-1)*4-1])"  v-if="!(warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1 )&&(!(wear_order_list[0].workNow)||(all_order_list[0].status === 2&&wear_order_list[0].workNow))">
+                            <el-button type="success"  class="rectangleButton" @click="confirmBinding(wear_order_list[index + (planPage-1)*4-1])"  v-if="(!(wear_order_list[0].workNow)||(all_order_list[0].status === 2&&wear_order_list[0].workNow))  &&(wear_order_list[index + (planPage-1)*4-1].finishBeamNum!==wear_order_list[index + (planPage-1)*4-1].beamNum) ">
                               <p  class="middleButtonFont">绑定计划</p>
                             </el-button>
-                            <el-button type="danger"  class="rectangleButton"   v-if="warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1&&!(wear_order_list[index + (planPage-1)*4-1].workNow)">  <!--@click="reWear(wear_order_list[index + (planPage-1)*4-1])"-->
+                            <!-- <el-button type="danger"  class="rectangleButton"   v-if="warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1&&!(wear_order_list[index + (planPage-1)*4-1].workNow)">  
                               <p  class="middleButtonFont">已绑定</p>
-                            </el-button>
-                            <el-button type="warning"  class="rectangleButton"   v-if="(warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1)&&wear_order_list[index + (planPage-1)*4-1].workNow">  <!--@click="reWear(wear_order_list[index + (planPage-1)*4-1])"-->
+                            </el-button> -->
+                            <el-button type="warning"  class="rectangleButton"   v-if="(warpIdList.indexOf(wear_order_list[index + (planPage-1)*4-1].id) > -1)&& wear_order_list[index + (planPage-1)*4-1].workNow &&all_order_list[0].status === 1">  <!--@click="reWear(wear_order_list[index + (planPage-1)*4-1])"-->
                               <p  class="middleButtonFont">正在穿综</p>
+                            </el-button>
+                            <el-button type="info"  class="rectangleButton"   v-if="!wear_order_list[index + (planPage-1)*4-1].workNow &&(wear_order_list[index + (planPage-1)*4-1].finishBeamNum===wear_order_list[index + (planPage-1)*4-1].beamNum)"> 
+                              <p  class="middleButtonFont">已完成</p>
                             </el-button>
                           </td>
                         </tr>
@@ -727,8 +730,10 @@
           printCode:printCode
         };
         let url = "/wear-weaving/selectIdByPrintCode";
+
         warp_api(url, data,this.companyId)
           .then(response => {
+            this.wear_order_list[0].workNow = false;
             //console.log(response.data.data);
             this.all_order_list = response.data.data;
             this.warpIdList = [];
@@ -749,8 +754,11 @@
         console.log(this.warpIdList);
         for (let i = 0; i < this.warpIdList.length; i++) {
           this.wear_order_list.map((item,index)=> {
-            if(item.id === this.warpIdList[i]){
-              this.wear_order_list.push(this.wear_order_list.splice(index , 1)[0]);
+            // if(item.id === this.warpIdList[i]){
+            //   this.wear_order_list.push(this.wear_order_list.splice(index , 1)[0]);
+            // }
+            if(item.finish_beam_num=== item.beam_num){
+               this.wear_order_list.push(this.wear_order_list.splice(index , 1)[0]);
             }
           })
         }

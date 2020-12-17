@@ -18,7 +18,8 @@
           </tr>
           <tr>
             <td style="width: 70px">每卷米数</td>
-            <td colspan=4>{{item.yieldMeterSemi || ""}}</td>
+            <td colspan=4></td>
+            <!-- <td colspan=4>{{item.yieldMeterSemi || ""}}</td> -->
           </tr>
           <tr>
             <td style="width: 70px">卷号</td>
@@ -136,7 +137,7 @@
             LODOP.NewPage();
           }
           if(this.$store.state.openOutline){
-           //alert(1);
+          //  alert(1);
             LODOP.PREVIEW();
           }else{
             LODOP.PRINT();
@@ -164,8 +165,8 @@
             });
         },
         savePrintStatus() {
-          if (this.printCode === 0) {
-            this.message.success("新增布票成功");
+          if (this.printMode === 0) {
+            this.$message.success("新增布票成功");
           } else {
             if (this.printData[0].printCode) {
               this.$message.success("打印信息储存成功");

@@ -32,7 +32,7 @@
       </div> -->
       <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
         <div class="scroller">
-          <div class="card" @click="toDetail(item.id,item.maintain_type_name)" v-for="(item,index) in dataList" :key="index">
+          <div class="card" @click="toDetail(item.id,item.maintain_type_name,item.machine_id)" v-for="(item,index) in dataList" :key="index">
             <div class="card-con"><span>保养项目：{{item.maintain_type_name}}</span></div>
               <div class="card-con2" style="margin-top:10px;"><span>保养设备：{{item.machine_id}}</span></div>
                 <div class="card-con2"><span>保养完成时间：{{item.maintain_time}}</span></div>
@@ -103,7 +103,7 @@
 
         })
       },
-      toDetail(id,maintain_type_name) {
+      toDetail(id,maintain_type_name,machine_id) {
        
         this.$router.push({ //跳转并传参数
           path: '/Maintenance_history_detail',
@@ -115,7 +115,8 @@
             company_id: this.selectInfo.company_id,
             id: id,
            staff_id :this.staff_id,
-            maintain_type_name:maintain_type_name
+            maintain_type_name:maintain_type_name,
+            machine:machine_id
           }
 
         })

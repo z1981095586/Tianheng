@@ -4,9 +4,7 @@
     
        <el-table
     :data="dataList"
-    height="450"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
+   height="481" border style="width: 100%;font-size:1.5rem;margin-bottom:1rem;">
     <el-table-column
       prop="type"
       label="类型"
@@ -123,9 +121,7 @@
     
           <el-table
     :data="showData"
-    height="450"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
+   height="481" border style="width: 100%;font-size:1.5rem;margin-bottom:1rem;">
     <el-table-column
       prop="type"
       label="类型"
@@ -760,6 +756,10 @@ this.pageNum=this.pageNum+1
                 console.log(response.data.data)
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
+                         if(element.person.indexOf(response.data.data[0].staff_name)!=-1){
+                   this.$message.warning("人员已存在！");
+                }else{
+
                   if (that.isadd2 == true) {
                     console.log(element.person)
                     if(element.person==""){
@@ -788,6 +788,7 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
                   //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
                   // }
                   }
+                }
                 
 
                 } else {

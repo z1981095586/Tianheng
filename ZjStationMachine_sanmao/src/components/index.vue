@@ -62,27 +62,44 @@
           </div>
         </div>
       </div>
-      <div class="head"><span style=" justify-content: flex-start;">品号：239-2394-2备份</span><span style="font-size:2rem"
-          v-text="isZJ1? '整经记录1':'整经记录2'"></span><span style="    justify-content: flex-end;">机台：701</span></div>
+      <div class="head"><span style=" justify-content: flex-start;">品号：239-2394-2备份</span><span style="font-size:2rem" 
+        v-show="isZJ1==0"  >整经记录{{isZJ1+1}}</span><span style="font-size:2rem" 
+        v-show="isZJ1==1"  >整经记录{{isZJ1+1}}</span><span style="font-size:2rem" 
+        v-show="isZJ1==2"  >整经记录{{isZJ1+1}}</span><span style="    justify-content: flex-end;">机台：701</span></div>
+        
+        
       <div class="con2">
-        <div class="con2_left" v-show="isZJ1">
+        <div class="con2_left" v-show="isZJ1==0">
           <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj_zjgh2" /> <span>整经长度</span><input
               v-model="form.zj_zjcd" /> </div>
-          <div class="con2_left_con"><span>把数</span><input v-model="form.zj_bs" /> <span>扫尾把数</span><input
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
               v-model="form.zj_swbs" /> </div>
-          <div class="con2_left_con"><span>轴号</span><input v-model="form.zj_zh" /> <span>倒轴工号</span><input
+                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw6" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
               v-model="form.zj_dzgh" /> </div>
-          <div class="con2_left_con"><span>备注</span><input v-model="form.zj_bz" style="width:35rem" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj_bz" style="width:35rem" /> </div>
         </div>
-        <div class="con2_left" v-show="!isZJ1">
+           <div class="con2_left" v-show="isZJ1==1">
           <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj2_zjgh2" /> <span>整经长度</span><input
               v-model="form.zj2_zjcd" /> </div>
-          <div class="con2_left_con"><span>把数</span><input v-model="form.zj2_bs" /> <span>扫尾把数</span><input
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj2_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
               v-model="form.zj2_swbs" /> </div>
-          <div class="con2_left_con"><span>轴号</span><input v-model="form.zj2_zh" /> <span>倒轴工号</span><input
+                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj2_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw6" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj2_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
               v-model="form.zj2_dzgh" /> </div>
-          <div class="con2_left_con"><span>备注</span><input v-model="form.zj2_bz" style="width:35rem" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj2_bz" style="width:35rem" /> </div>
         </div>
+             <div class="con2_left" v-show="isZJ1==2">
+          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj3_zjgh2" /> <span>整经长度</span><input
+              v-model="form.zj3_zjcd" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj3_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
+              v-model="form.zj3_swbs" /> </div>
+                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj3_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw6" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj3_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
+              v-model="form.zj3_dzgh" /> </div>
+          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj3_bz" style="width:35rem" /> </div>
+        </div>
+   
         <div class="con2_right">
           <span class="con2_right_con">匹长：999</span>
           <span class="con2_right_con">匹数：999</span>
@@ -177,7 +194,7 @@
         timer: "",
         time: "",
         enabled: false,
-        isZJ1: true,
+        isZJ1: 0,
         printCode: "",
         dialogVisible3: false,
         dialogVisible4: false,
@@ -197,17 +214,42 @@
           zj_zjgh2: "",
           zj_zjcd: "",
           zj_bs: "",
+          zj_sw1:"",
+            zj_sw2:"",
+              zj_sw3:"",
+                zj_sw4:"",
+                  zj_sw5:"",
+                    zj_sw6:"",
           zj_swbs: "",
           zj_zh: "",
           zj_dzgh: "",
           zj_bz: "",
           zj2_zjgh2: "",
+              zj2_sw1:"",
+            zj2_sw2:"",
+              zj2_sw3:"",
+                zj2_sw4:"",
+                  zj2_sw5:"",
+                    zj2_sw6:"",
           zj2_zjcd: "",
           zj2_bs: "",
           zj2_swbs: "",
           zj2_zh: "",
           zj2_dzgh: "",
-          zj2_bz: ""
+          zj2_bz: "",
+                zj3_zjgh2: "",
+              zj3_sw1:"",
+            zj3_sw2:"",
+              zj3_sw3:"",
+                zj3_sw4:"",
+                  zj3_sw5:"",
+                    zj3_sw6:"",
+          zj3_zjcd: "",
+          zj3_bs: "",
+          zj3_swbs: "",
+          zj3_zh: "",
+          zj3_dzgh: "",
+          zj3_bz: ""
         },
 
       }
@@ -224,7 +266,13 @@
 
       },
       jjFinish() {
-        this.isZJ1 = !this.isZJ1
+        if(this.isZJ1==0){
+          this.isZJ1=1
+        }else if(this.isZJ1==1){
+          this.isZJ1=2
+        }else if(this.isZJ1==2){
+          this.isZJ1=0
+        }
       },
       Finish() {
 
@@ -566,7 +614,7 @@
   }
 
   .con2_left {
-    width: 80%;
+    width: 85%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -583,22 +631,22 @@
   }
 
   .con2_left_con span {
-    margin-left: 3rem;
-    margin-right: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 10px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     width: 8rem;
   }
 
   .con2_left_con input {
     width: 11rem;
-    height: 3.5rem;
+    height: 2.5rem;
     border: 1px solid black;
   }
 
   .con2_right {
-    width: 20%;
+    width: 13%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -612,8 +660,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    font-size: 1.6rem;
+    align-items: flex-end;
+    font-size: 1rem;
     color: #808080;
   }
 

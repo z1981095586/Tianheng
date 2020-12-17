@@ -321,7 +321,7 @@
             <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" >
               <table class="radioTable"  style="width: 84%" cellspacing="20px" v-show="radio === 'radio1'&&all_order_list[0]">
                 <tr>
-                  <td style="text-align: center;width: 33%" @click="">
+                  <td style="text-align: center;width: 33%">
                     <div style="height:15vh" @click="addBySelf">
                       <div style="height:5vh;font-size: 2vw;border-bottom: 1px solid lightgray;"><Icon type="md-add" /></div>
                       <div style="height:10vh;font-size: 2vw;margin-top: 2%;font-weight: bolder">手动新增</div>
@@ -426,7 +426,19 @@
               <div class="pass-bill" v-show="radio === 'radio4'">
                 <div class="recorded-F"><span>当前第{{yczPage}}页，每页7条，已记录:&nbsp;&nbsp;{{yczListLength}}条</span></div><br><br>
                 <div class="board_con_bottom" :style="{height: scrollerHeightPassBill+'px'}" id="board_con_bottom">
-                  <div class="board_con_bottom_one" v-for="index in 6" :key="'ycz'+index" v-if="(6*yczPage + index -1)<=yczListLength">
+                  <template v-if="yczListLength<=7">
+                      <div class="board_con_bottom_one" v-for="(item,index) in yczList" :key="'ycz'+index" >
+                        <span>织轴卡号:{{item.print_code}}</span>
+                        <span>机台号:{{item.machine_id}}</span>
+                        <span>总经根数:{{item.root_number}}</span>
+                        <span>品名:{{item.product_name}}</span>
+                        <span>轴号:{{item.beam_name}}</span>
+                        <span>筘号:{{item.reed_no}}</span>
+                        <span style="color: #606266">{{item.create_time}}</span>
+                      </div>
+                  </template>
+                  <template v-if="yczListLength>7">
+                    <div class="board_con_bottom_one" v-for="index in 6" :key="'ycz'+index" v-if="(6*yczPage + index -1)<= yczListLength">
                     <span>织轴卡号:{{yczList[6*yczPage + index -1].print_code}}</span>
                     <span>机台号:{{yczList[6*yczPage + index -1].machine_id}}</span>
                     <span>总经根数:{{yczList[6*yczPage + index -1].root_number}}</span>
@@ -435,6 +447,8 @@
                     <span>筘号:{{yczList[6*yczPage + index -1].reed_no}}</span>
                     <span style="color: #606266">{{yczList[6*yczPage + index -1].create_time}}</span>
                   </div>
+                  </template>
+                
                 </div>
               </div>
             </div>
@@ -1359,16 +1373,18 @@
           print_count:id+1,
           axisNo: this.all_order_list[0].axisNo
         }];
+        
         let order_list = {
           productNameWeaving: this.all_order_list[0].productNameWeaving,
           machineAxis: this.all_order_list[0].machineId
         };
         order_list.productName = this.all_order_list[0].productNameWeaving;
-        order_list.supplierCode = this.all_order_list[0].lmZjwarpPlanB.supplierCode;
+        order_list.ZjwarpsupplierCode = this.all_order_list[0].lmZjwarpPlanB.supplierCode;
         order_list.supplierName = this.all_order_list[0].lmZjwarpPlanB.supplierName;
         order_list.supplierCode = this.all_order_list[0].lmWeavingPlanB.supplierCode;
         order_list.supplierName = this.all_order_list[0].lmWeavingPlanB.supplierName;
         order_list.yieldMeterSemi = this.all_order_list[0].yieldMeterSemi;
+        console.log(order_detail_list,order_list,'order_detail_list')
         this.$refs.printClothCard.getData(order_list,order_detail_list,0);
       },
       //了机预测td变色
@@ -1401,6 +1417,7 @@
           message.barCode = "P" + this.order_detail_list[0].id.substr(1, this.order_detail_list[0].id.length - 4);
           message.machineAxis = this.machineIdSelected;
           message.yieldMeterSemi = this.order_detail_list[0].yieldMeterSemi;
+          message.machineId=this.all_order_list[0].machineId;
           message.printCount = 1;
           data.push(message);
           order_detail_list.push({
@@ -1426,7 +1443,7 @@
             console.log(this.all_order_list[0]);
             console.log(order_detail_list);
             order_list.productName = this.all_order_list[0].productNameWeaving;
-            order_list.supplierCode = this.all_order_list[0].lmZjwarpPlanB.supplierCode;
+            order_list.ZjwarpsupplierCode = this.all_order_list[0].lmZjwarpPlanB.supplierCode;
             order_list.supplierName = this.all_order_list[0].lmZjwarpPlanB.supplierName;
             order_list.supplierCode = this.all_order_list[0].lmWeavingPlanB.supplierCode;
             order_list.supplierName = this.all_order_list[0].lmWeavingPlanB.supplierName;
@@ -1675,6 +1692,14 @@
         data.machineId = this.all_order_list[0].machineId?this.all_order_list[0].machineId:this.machineIdSelected;
         data.printCode = this.barCode;
         data.staffId = this.staff_id;
+        let shiftObject = this.$refs.headComponent.getShiftName();
+        console.log(shiftObject,'shiftObject')
+
+        if(shiftObject&&shiftObject.id){
+            data.shiftWork = shiftObject.id-1;
+            data.shiftStartDatetime = this.addDate(shiftObject.startTime);
+            data.shiftEndDatetime =  this.addDate(shiftObject.endTime);
+        }
         let url = "/pce-mac-beam/upperBeam";
         warp_api_get(url, data,this.companyId)
           .then(response => {

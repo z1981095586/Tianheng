@@ -84,7 +84,7 @@
       },
       methods:{
         startPrint(warpInfoData,warpDataSelect,companyId){
-          console.log(warpDataSelect);
+          console.log(warpDataSelect,'warpDataSelect');
           this.headData = warpInfoData;
           this.warpInfoData = warpDataSelect;
           this.companyId = companyId;
@@ -112,6 +112,7 @@
         },
         printPdf() {
           let  LODOP = getLodop();
+          console.log(LODOP,'LODOP')
           // let pageHeight = this.printConfig.printHeight * 100;
           // let pageWidth = this.printConfig.printWidth * 100;
           let pageHeight = "6cm";
@@ -125,6 +126,7 @@
            LODOP.ADD_PRINT_BARCODE(5, 66, 230, 43, "128B",  this.warpInfoData.printCode);
            LODOP.ADD_PRINT_HTM("16mm","0mm", pageWidth, pageHeight,
             strFormHtml);
+            console.log(strFormHtml,'strFormHtml')
           LODOP.SET_PRINT_PAGESIZE(2,pageWidth,pageHeight,"");
           if(this.$store.state.openOutline){
             LODOP.PREVIEW();

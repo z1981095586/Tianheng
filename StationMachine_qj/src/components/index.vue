@@ -39,7 +39,7 @@
 
     <History v-show="isHistory"></History>
 
-    <RepairMachine v-show="isRepair"></RepairMachine>
+    <RepairMachine v-show="isRepair" :isUpdate="isRepair"></RepairMachine>
     <Maitance v-show="isMaitance"></Maitance>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
           style: "background:white;color:#F25643",
         },
         {
-          label: "保养",
+          label: "批量保养",
           class: "oneTab",
           style: "background:white;color:#18BC83",
         },
@@ -115,7 +115,7 @@ export default {
         if (this.tabList[i].label == "维修") {
           this.tabList[i].style = "background:white;color:#F25643;";
         }
-        if (this.tabList[i].label == "保养") {
+        if (this.tabList[i].label == "批量保养") {
           this.tabList[i].style = "background:white;color:#4352F2;";
         }
       }
@@ -154,7 +154,7 @@ export default {
             this.isRepair = true;
             return;
           }
-          if (this.tabList[i].label == "保养") {
+          if (this.tabList[i].label == "批量保养") {
             this.tabList[i].style = "background:#4352F2;color:white;";
             this.isMyMachine = false;
             this.isChaPian = false;
