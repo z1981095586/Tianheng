@@ -214,17 +214,17 @@
             取消
           </div>
         </div>
-        <!-- <div class="operationPane_con_machineList_btn_right">
+        <div class="operationPane_con_machineList_btn_right">
           <el-pagination
             background
             small
             :pager-count="4"
-            @current-change="CurrentChange"
+            @current-change="CurrentTypeChange"
             layout="prev, pager, next"
-            :total="total_num"
+            :total="TypeTotal_num"
           >
           </el-pagination>
-        </div> -->
+        </div>
       </div>
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 3rem; width: 95%; top: 18px">
@@ -412,7 +412,12 @@
             <i class="el-icon-minus" style="font-size: 1.5rem"></i>
           </button>
           <input
-            style="width: 7.5rem; height: 5rem; font-size: 3.5rem"
+            style="
+              width: 7.5rem;
+              height: 5rem;
+              font-size: 3.5rem;
+              border: 1px solid black;
+            "
             v-model="materialNum"
           />
           <button
@@ -630,6 +635,10 @@ export default {
       page_num3: 1,
       page_size3: 14,
       allMaterialList: [],
+      TypeTotal_num: null,
+      typeListCon: [],
+      typePageSize: 8,
+      typePageNum: 1,
     };
   },
   methods: {
@@ -802,12 +811,22 @@ export default {
           that.machineList = that.pagination(1, that.page_size, that.machineListCon);
         });
     },
+    CurrentTypeChange(e) {
+      //零配件类型分页
+      this.typePageNum = e;
+
+      this.typeList = this.pagination(
+        this.typePageNum,
+        this.typePageSize,
+        this.typeListCon
+      );
+    },
     getRootCategories() {
       //获取物料分类
       //获取分类根目录
       let url = "http://120.55.124.53:8206/api/product/getFullCategories";
       let that = this;
-      that.typeList = [];
+      that.typeListCon = [];
       axios
         .post(
           url,
@@ -824,10 +843,12 @@ export default {
 
           for (let i = 0; i < res.data.data.children.length; i++) {
             if (res.data.data.children[i].categories_id == 8) {
-              that.typeList = res.data.data.children[i].children;
+              that.typeListCon = res.data.data.children[i].children;
             }
           }
-          console.log(that.typeList);
+          that.TypeTotal_num = that.typeListCon.length;
+          that.typeList = that.pagination(1, that.typePageSize, that.typeListCon);
+          console.log(that.typeListCon);
         });
     },
     addMaterial() {
@@ -1288,6 +1309,10 @@ export default {
 </script>
 
 <style scoped>
+.operationPane_con_machineList2 /deep/ .el-checkbox-button,
+.el-checkbox-button__inner {
+  float: left;
+}
 .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
   font-size: 1rem;
   padding: 10px 27px;

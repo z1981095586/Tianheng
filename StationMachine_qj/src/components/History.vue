@@ -132,7 +132,7 @@
           v-for="(item, index) in consumeMaterials"
           :key="index"
         >
-          <span>{{ item.specification }}</span>
+          <span>{{ item.product_name }}</span>
           <span>{{ item.quantity }}个</span>
         </div>
       </div>
@@ -208,7 +208,7 @@
           v-for="(item, index) in consumeMaterialsCon"
           :key="index"
         >
-          <span>{{ item.specification }}</span>
+          <span>{{ item.product_name }}</span>
           <span>{{ item.quantity }}个</span>
         </div>
       </div>
@@ -494,6 +494,7 @@ export default {
                 that.repairTime = arr[0].date;
                 that.repairReason = arr[0].error_reason;
                 that.repairPartsCon = JSON.parse(arr[0].parts);
+
                 console.log(that.repairPartsCon);
                 if (that.repairPartsCon.length >= 16) {
                   for (let i = 0; i < 16; i++) {
@@ -541,6 +542,11 @@ export default {
           .then(function (res) {
             console.log(res);
             res.data.result.consumeMaterials.forEach((element) => {
+              // if (String(element.specification) != " ") {
+              //   console.log("sda");
+              // } else {
+              //   element.specification = element.product_name;
+              // }
               that.consumeMaterialsCon.push(element);
             });
 

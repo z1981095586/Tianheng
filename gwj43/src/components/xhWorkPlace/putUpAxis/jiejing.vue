@@ -40,7 +40,7 @@
     align-items: center;"><i class="el-icon-plus"></i><span>增加一行</span></div>
       </div>
       <div class="radio5Btn">
-        <div class="radio5Btn_one" style="background:rgb(94,137,229)">提交</div>
+        <button class="radio5Btn_one" style="background:rgb(94,137,229)" v-preventReClick @click="inserts()">提交</button>
         <!-- <div class="radio5Btn_one"
           :style=" dataList.length>0 ? 'background:rgb(204,78,77)':'background:rgb(135,146,141)'" @click="cancel()">取消
         </div> -->
@@ -288,7 +288,17 @@
       }
     },
     methods: {
+      inserts(){
+         console.log(this.staff_name)
+         console.log(this.dataListCon)
+           if(this.staff_name==""){
+               this.$message.warning("请先填写员工姓名!");
+           }else if(this.dataListCon.length==0){
+              this.$message.warning("至少有一行数据!");
+           }else{
 
+           }
+      },
       pagination(pageNo, pageSize, array) { //数组分页函数
         var offset = (pageNo - 1) * pageSize;
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
@@ -329,12 +339,13 @@
         } else {
           this.dataList = this.pagination(this.pageNum, this.pageSize, this.dataListCon)
         }
-        // console.log(this.dataListCon)
-        // console.log(this.dataList)
+        // //console.log(this.dataListCon)
+        // //console.log(this.dataList)
 
 
 
       },
+ 
       LastPage() { //提交页面上一页
         if (this.pageNum > 1) {
           this.pageNum = this.pageNum - 1
@@ -419,26 +430,15 @@
             headers: headers
           })
           .then(response => {
-            console.log(response.data.data)
-
+            //console.log(response.data.data)
 
             if (response.data.data.length >= 1) {
-
-
               this.staff_name = response.data.data[0].staff_name
-
-
-
             } else {
               this.$message.warning("员工号不正确!");
-
             }
             this.staff_code = ""
           })
-
-
-
-
 
       },
       selectTableButton2(buttonName) {
@@ -517,9 +517,9 @@
             headers: headers
           })
           .then(response => {
-            console.log(response.data.data)
+            //console.log(response.data.data)
 
-            console.log(that.id2)
+            //console.log(that.id2)
 
             if (response.data.data.length >= 1) {
               that.SelectDataList.forEach(element => {
@@ -531,7 +531,7 @@
               });
 
        
-              console.log(that.SelectDataList)
+              //console.log(that.SelectDataList)
 
             } else {
               this.$message.warning("员工号不正确!");
@@ -551,8 +551,7 @@
     mounted() {
       let params = this.$route.params.params.split(",");
       this.companyId = params[1];
-      console.log(this.$route.params.params)
-     
+  
     },
     destroyed() {
 
@@ -568,7 +567,7 @@
               this.dataListCon[i] = newV[0]
             }
           }
-          console.log(this.dataListCon)
+       
         }
       },
       isTable(val) { //提交页面显示初始化数据

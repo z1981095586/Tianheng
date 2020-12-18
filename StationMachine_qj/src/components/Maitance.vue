@@ -10,11 +10,75 @@
       <div class="main_btn" @click="toMaintance(0)">每日保养</div>
       <div class="main_btn" @click="toMaintance(1)">每周保养</div>
       <div class="main_btn" @click="toMaintance(2)">每月保养</div>
-      <div class="main_btn" @click="toMaintance(2)">每年保养</div>
+      <div class="main_btn" @click="toMaintance(3)">每年保养</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 首页-->
-
+    <!-- 我的机台选机台-->
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="MachineShow"
+    >
+      <div class="operationPane_con_machineList">
+        <el-checkbox-group
+          @change="checkedMachine"
+          v-model="checkMachine"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in machineList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.machineId"
+            :key="index"
+            >{{ item.machineId }}</el-checkbox-button
+          >
+        </el-checkbox-group>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
+            确认
+          </div>
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">
+            取消
+          </div>
+        </div>
+        <div class="operationPane_con_machineList_btn_right">
+          <el-pagination
+            background
+            small
+            :pager-count="4"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :total="total_num"
+          >
+          </el-pagination>
+        </div>
+      </div>
+      <!-- <div class="leftLabel"><span>选机台</span></div> -->
+      <div class="search" style="left: 4rem; width: 95%; top: 18px">
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 0"
+          >待保养机台:{{ total_num }}</span
+        >
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 1"
+          >保养逾期机台:{{ total_num }}</span
+        >
+        <span style="font-size: 1.7rem; color: red" v-show="isWaitMaintance == 2"
+          >待维修机台:{{ total_num }}</span
+        >
+        <!--<input placeholder="输入机台号" v-model="search_machine" />
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
+          确认
+        </div> -->
+        <span style="color: red; margin-left: 1rem"
+          >选中机台：{{ this.checkedMachineNum }}</span
+        >
+      </div>
+      <img src="../../static/img/close.png" @click="cancel()" />
+    </div>
+    <!-- 我的机台选机台-->
     <!-- 保养界面-->
     <div
       class="operationPane_con"
@@ -26,113 +90,38 @@
       "
       v-show="MaintanceShow"
     >
-      <div class="Maintance_machine">保养机台:{{ checkedMachineNum }}</div>
+      <div class="Maintance_machine">保养机台:{{ String(checkMachine) }}</div>
       <div class="Maintance_object">
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次01</span>
+        <span style="font-size: 1.5rem; float: left; margin-right: 1rem">项次:</span>
+        <div
+          class="Maintance_object_con"
+          style="width: auto"
+          v-for="(item, index) in objList"
+          :key="index"
+        >
+          <span style="margin-right: 1rem; width: 1.2rem">{{ index + 1 }}.</span>
           <el-checkbox
             style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次02</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次03</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次04</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
+            v-model="item.isChecked"
+            :label="item.name"
+            >{{ item.name }}</el-checkbox
+          >
         </div>
       </div>
-      <div class="Maintance_materials">
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
+      <div class="Maintance_materials" style="justify-content: flex-start">
+        <div
+          class="Maintance_materials_con"
+          style="margin-left: 1rem"
+          v-for="(item, index) in checkedMaterialsList"
+          v-show="index <= 5"
+          :key="index"
+        >
+          <span>{{ item.product_name }}</span>
+          <span>{{ item.num }}{{ item.unit_name }}</span>
         </div>
       </div>
       <div class="Maintance_btn">
-        <div class="btns" style="margin: 0">确认保养</div>
+        <div class="btns" style="margin: 0" @click="sureMaitance()">确认保养</div>
         <div class="btns" @click="addMaterial">新增零配件</div>
         <div
           class="btns"
@@ -206,17 +195,17 @@
             取消
           </div>
         </div>
-        <!-- <div class="operationPane_con_machineList_btn_right">
+        <div class="operationPane_con_machineList_btn_right">
           <el-pagination
             background
             small
             :pager-count="4"
-            @current-change="CurrentChange"
+            @current-change="CurrentTypeChange"
             layout="prev, pager, next"
-            :total="total_num"
+            :total="TypeTotal_num"
           >
           </el-pagination>
-        </div> -->
+        </div>
       </div>
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 3rem; width: 95%; top: 18px">
@@ -296,13 +285,14 @@
     >
       <span style="font-size: 1.5rem; margin: 1rem">零配件详情</span>
       <div style="width: 93%; height: 78%">
-        <div class="material_ones" style="background: grey; color: white">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="material_ones" style="background: grey; color: white">
-          <span>配件名称</span>
-          <span>99个</span>
+        <div
+          class="material_ones"
+          v-for="(item, index) in checkedMaterialsList"
+          :key="index"
+          style="background: grey; color: white"
+        >
+          <span>{{ item.product_name }}</span>
+          <span>{{ item.num }}{{ item.unit_name }}</span>
         </div>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -311,7 +301,7 @@
             class="operationPane_con_machineList_btn_leftBtn"
             @click="
               peijianShow = false;
-              IndexShow = true;
+              MaintanceShow = true;
             "
           >
             返回
@@ -323,7 +313,7 @@
         src="../../static/img/close.png"
         @click="
           peijianShow = false;
-          IndexShow = true;
+          MaintanceShow = true;
         "
       />
     </div>
@@ -341,17 +331,10 @@
     >
       <span style="font-size: 1.5rem; margin: 1rem">项次详情</span>
       <div style="width: 93%; height: 78%">
-        <div class="material_ones">
-          <el-checkbox>备选项</el-checkbox>
-        </div>
-        <div class="material_ones">
-          <el-checkbox>备选项</el-checkbox>
-        </div>
-        <div class="material_ones">
-          <el-checkbox>备选项</el-checkbox>
-        </div>
-        <div class="material_ones">
-          <el-checkbox>备选项</el-checkbox>
+        <div class="material_ones" v-for="(item, index) in objList" :key="index">
+          <el-checkbox v-model="item.isChecked" :label="item.name">{{
+            item.name
+          }}</el-checkbox>
         </div>
       </div>
       <div class="operationPane_con_machineList_btn">
@@ -360,7 +343,7 @@
             class="operationPane_con_machineList_btn_leftBtn"
             @click="
               xiangciShow = false;
-              IndexShow = true;
+              MaintanceShow = true;
             "
           >
             返回
@@ -391,7 +374,12 @@
             <i class="el-icon-minus" style="font-size: 1.5rem"></i>
           </button>
           <input
-            style="width: 7.5rem; height: 5rem; font-size: 3.5rem"
+            style="
+              width: 7.5rem;
+              height: 5rem;
+              font-size: 3.5rem;
+              border: 1px solid black;
+            "
             v-model="materialNum"
           />
           <button
@@ -526,19 +514,10 @@ export default {
       checkMachine: [], //选中机台列表
       checkedMachineNum: "",
       machineList: [
-        {
-          machine_id: 1234,
-        },
-        {
-          machine_id: 1222,
-        },
-        {
-          machine_id: 1333,
-        },
-        {
-          machine_id: 1444,
-        },
+    
       ],
+      checkedMaterialsList: [],
+      machineListCon: [],
       total_num: 100,
       page_num: 1,
       page_size: 9,
@@ -558,6 +537,7 @@ export default {
       materialNumDialog: false,
 
       company_id: 10000015,
+
       isWaitMaintance: null, //是否待保养，0带保养，1保养预期，2待维修
       reasonlist: [
         {
@@ -580,53 +560,142 @@ export default {
       checkedRepair: [],
       checkedRepairName: "",
       repairReason: "",
+      objList: [],
+      TypeTotal_num: null,
+      typeListCon: [],
+      typePageSize: 8,
+      typePageNum: 1,
+mac_type_id:"030100",
+      workshop_id: "",
+      maintain_type_id: "",
     };
   },
   methods: {
-    getMachineList() {
-      //获取机台列表
-      let url = "http://120.55.124.53:8211/machine/getMachineList";
+    sureMaitance() {
+      //确认保养
+      console.log(this.checkMachine);
+      console.log(this.objList);
+      console.log(this.checkedMaterialsList);
+      console.log(this.workshop_id);
+      let maintainList = [];
+      let maintainMaterial = [];
+      let json = {};
+      let json2 = {};
+      this.objList.forEach((element) => {
+        if (element.isChecked == true) {
+          json.tick = 1;
+        } else {
+          json.tick = 0;
+        }
+
+        json.maintain_item_id = element.id;
+
+        maintainList.push(json);
+        json = {};
+      });
+      console.log(maintainList);
+      this.checkedMaterialsList.forEach((element) => {
+        json2.product_id = element.product_id;
+        json2.product_name = element.product_name;
+        json2.specification = element.specification;
+        json2.quantity = element.num;
+        maintainMaterial.push(json2);
+        json2 = {};
+      });
+      console.log(maintainMaterial);
+      let url = "http://120.55.124.53:8206/api/maintain/submitMaintainBatch";
       let that = this;
       that.machineList = [];
       axios
         .post(
           url,
           {
-            //           "workShopId":workshop_id,
-            //     "machineType": mac_type_id,
-            page: that.page_num,
-            pageSize: that.page_size,
-            orderType: "asc",
-            groupId: "",
+            maintainMainRecord: {
+              operator: "zpd",
+              machine_id_list: that.checkMachine,
+
+              mac_type_id: that.mac_type_id,
+              maintain_type_id: that.maintain_type_id,
+              workshop_id: that.workshop_id,
+            },
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            maintainList: maintainList,
+            maintainMaterial: maintainMaterial,
           },
           {
-            headers: {
-              companyId: that.company_id,
-            },
+            // headers: {
+            //   companyId: that.company_id,
+            // },
           }
         )
         .then(function (res) {
           console.log(res);
-          if (res.data.data.length == 0) {
+          if (res.data.message == "成功") {
+            that.$message({
+              message: "保养成功！",
+              type: "success",
+            });
+          } else {
+            that.$message.error("保养失败！");
+          }
+          that.MaintanceShow = false;
+          that.IndexShow = true;
+        });
+    },
+    CurrentTypeChange(e) {
+      //零配件类型分页
+      this.typePageNum = e;
+
+      this.typeList = this.pagination(
+        this.typePageNum,
+        this.typePageSize,
+        this.typeListCon
+      );
+    },
+    pagination(pageNo, pageSize, array) {
+      var offset = (pageNo - 1) * pageSize;
+      return offset + pageSize >= array.length
+        ? array.slice(offset, array.length)
+        : array.slice(offset, offset + pageSize);
+    },
+    getMachineList() {
+      //获取机台列表
+      let url = "http://120.55.124.53:8206/api/maintain/getMyMachine";
+      let that = this;
+      that.machineList = [];
+      that.machineListCon = [];
+      axios
+        .post(
+          url,
+          {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            staff_id: 1,
+          },
+          {
+            // headers: {
+            //   companyId: that.company_id,
+            // },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          if (res.data.result.length == 0) {
+            that.total_num = 0;
             return;
           } else {
-            that.total_num = res.data.totalDataNum; //设置数据总条数
+            that.total_num = res.data.result.length; //设置数据总条数
 
-            for (let i = 0; i < res.data.data.length; i++) {
-              if (String(res.data.data[i].machineId).indexOf("-") == -1) {
-                that.machineList.push(String(res.data.data[i].machineId));
-              }
+            for (let i = 0; i < res.data.result.length; i++) {
+              res.data.result[i].machineId = res.data.result[i].machine_id;
+              that.machineListCon.push(res.data.result[i]);
             }
+            that.workshop_id = that.machineListCon[0].workshop_id;
+            that.machineList = that.pagination(1, that.page_size, that.machineListCon);
             console.log(that.machineList);
-            that.machineList = [
-              //假数据
-              {
-                machineId: 1011,
-              },
-              {
-                machineId: 1012,
-              },
-            ];
           }
         });
     },
@@ -635,7 +704,7 @@ export default {
       //获取分类根目录
       let url = "http://120.55.124.53:8206/api/product/getFullCategories";
       let that = this;
-      that.typeList = [];
+      that.typeListCon = [];
       axios
         .post(
           url,
@@ -652,10 +721,12 @@ export default {
 
           for (let i = 0; i < res.data.data.children.length; i++) {
             if (res.data.data.children[i].categories_id == 8) {
-              that.typeList = res.data.data.children[i].children;
+              that.typeListCon = res.data.data.children[i].children;
             }
           }
-          console.log(that.typeList);
+          that.TypeTotal_num = that.typeListCon.length;
+          that.typeList = that.pagination(1, that.typePageSize, that.typeListCon);
+          console.log(that.typeListCon);
         });
     },
     addMaterial() {
@@ -671,7 +742,9 @@ export default {
     toMaintance(isWaitMaintance) {
       //显示保养界面
       this.IndexShow = false;
-      this.MaintanceShow = true;
+      this.MachineShow = true;
+      this.isWaitMaintance = isWaitMaintance;
+      console.log(this.isWaitMaintance);
     },
 
     choosedMaterial() {
@@ -774,7 +847,11 @@ export default {
       //机台分页
       //console.log(e);
       this.page_num = e;
-      this.getMachineList();
+      this.machineList = this.pagination(
+        this.page_num,
+        this.page_size,
+        this.machineListCon
+      );
     },
 
     checkedMachine(e) {
@@ -856,7 +933,20 @@ export default {
     sureMaterial() {
       //确定物料
       console.log(this.materialsList);
+      this.checkedMaterialsList = [];
+      this.materialsList.forEach((element) => {
+        if (element.ischecked == true) {
+          this.checkedMaterialsList.push(element);
+        }
+      });
+      this.materialsList2 = this.pagination(
+        1,
+        this.page_size2,
+        this.checkedMaterialsList
+      );
+      this.total_num2 = this.materialsList2.length;
       let flag; //是否有选中的
+
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].ischecked == true && this.materialsList[i].num > 0) {
           flag = true;
@@ -1019,6 +1109,44 @@ export default {
   },
   watch: {
     //监听页面显示执行相应的获取数据函数
+    isWaitMaintance(val) {
+      let maintain_type_id;
+      if (val == 0) {
+        maintain_type_id = 39;
+      } else if (val == 1) {
+        maintain_type_id = 40;
+      } else if (val == 2) {
+        maintain_type_id = 41;
+      } else if (val == 3) {
+        maintain_type_id = 42;
+      }
+      this.maintain_type_id = maintain_type_id;
+      let url = "http://120.55.124.53:8206/api/maintain/getMaintain";
+      let that = this;
+      that.objList = [];
+      axios
+        .post(
+          url,
+          {
+            mac_type_id: that.mac_type_id,
+            maintain_type_id: maintain_type_id,
+          },
+          {
+            headers: {
+              companyID: that.company_id,
+            },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          for (let i = 0; i < res.data.data[0].maintainItemList.length; i++) {
+            if (res.data.data[0].maintainItemList[i].confirm == 1) {
+              res.data.data[0].maintainItemList[i].isChecked = true;
+              that.objList.push(res.data.data[0].maintainItemList[i]);
+            }
+          }
+        });
+    },
     MaterialsTypeShow(val) {
       if (val == true) {
         this.getRootCategories();
@@ -1563,9 +1691,6 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_object {
   width: 95%;
   height: 35%;
-
-  display: flex;
-  flex-direction: column;
 }
 
 .Maintance_object_con {

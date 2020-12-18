@@ -93,111 +93,36 @@
     >
       <div class="Maintance_machine">保养机台:{{ checkedMachineNum }}</div>
       <div class="Maintance_object">
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次01</span>
+        <span style="font-size: 1.5rem; float: left; margin-right: 1rem">项次:</span>
+        <div
+          class="Maintance_object_con"
+          style="width: auto"
+          v-for="(item, index) in objList"
+          :key="index"
+        >
+          <span style="margin-right: 1rem; width: 1.2rem">{{ index + 1 }}.</span>
           <el-checkbox
             style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次02</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次03</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <div class="Maintance_object_con">
-          <span style="margin-right: 4rem">项次04</span>
-          <el-checkbox
-            style="margin-right: 2rem"
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          ></el-checkbox>
-
-          <el-checkbox-group v-model="checkedCities">
-            <el-checkbox
-              style="margin-left: 3rem"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
+            v-model="item.isChecked"
+            :label="item.name"
+            >{{ item.name }}</el-checkbox
+          >
         </div>
       </div>
-      <div class="Maintance_materials">
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
-        </div>
-        <div class="Maintance_materials_con">
-          <span>配件名称</span>
-          <span>99个</span>
+      <div class="Maintance_materials" style="justify-content: flex-start">
+        <div
+          class="Maintance_materials_con"
+          style="margin-left: 1rem"
+          v-for="(item, index) in checkedMaterialsList"
+          v-show="index <= 5"
+          :key="index"
+        >
+          <span>{{ item.product_name }}</span>
+          <span>{{ item.num }}{{ item.unit_name }}</span>
         </div>
       </div>
       <div class="Maintance_btn">
-        <div class="btns" style="margin: 0">确认保养</div>
+        <div class="btns" style="margin: 0" @click="sureMaitance()">确认保养</div>
         <div class="btns" @click="addMaterial">新增零配件</div>
         <div
           class="btns"
@@ -261,17 +186,17 @@
             取消
           </div>
         </div>
-        <!-- <div class="operationPane_con_machineList_btn_right">
+        <div class="operationPane_con_machineList_btn_right">
           <el-pagination
             background
             small
             :pager-count="4"
-            @current-change="CurrentChange"
+            @current-change="CurrentTypeChange"
             layout="prev, pager, next"
-            :total="total_num"
+            :total="TypeTotal_num"
           >
           </el-pagination>
-        </div> -->
+        </div>
       </div>
       <!-- <div class="leftLabel"><span>选机台</span></div> -->
       <div class="search" style="left: 3rem; width: 95%; top: 18px">
@@ -401,6 +326,7 @@
           style="margin-left: 1rem"
           v-for="(item, index) in checkedMaterialsList"
           :key="index"
+          v-show="index <= 5"
         >
           <span>{{ item.product_name }}</span>
           <span>{{ item.num }}{{ item.unit_name }}</span>
@@ -459,7 +385,12 @@
             <i class="el-icon-minus" style="font-size: 1.5rem"></i>
           </button>
           <input
-            style="width: 7.5rem; height: 5rem; font-size: 3.5rem"
+            style="
+              width: 7.5rem;
+              height: 5rem;
+              font-size: 3.5rem;
+              border: 1px solid black;
+            "
             v-model="materialNum"
           />
           <button
@@ -591,20 +522,7 @@ export default {
       search_machine: "",
       checkMachine: [], //选中机台列表
       checkedMachineNum: "",
-      machineList: [
-        {
-          machine_id: 1234,
-        },
-        {
-          machine_id: 1222,
-        },
-        {
-          machine_id: 1333,
-        },
-        {
-          machine_id: 1444,
-        },
-      ],
+      machineList: [],
       total_num: null,
       page_num: 1,
       page_size: 9,
@@ -649,10 +567,89 @@ export default {
       machineListCon: [],
       reportTime: "",
       checkedMaterialsList: [],
-      materialsList2: [],
+
+      objList: [], //项次
+      TypeTotal_num: null,
+      typeListCon: [],
+      typePageSize: 8,
+      typePageNum: 1,
+      jsonData: {},
+      mac_type_id: "030100",
     };
   },
   methods: {
+    sureMaitance() {
+      //确认保养
+      console.log(this.checkedMachineNum);
+      console.log(this.objList);
+      console.log(this.checkedMaterialsList);
+      console.log(this.jsonData);
+      let maintainList = [];
+      let maintainMaterial = [];
+      let json = {};
+      let json2 = {};
+      this.objList.forEach((element) => {
+        if (element.isChecked == true) {
+          json.tick = 1;
+        } else {
+          json.tick = 0;
+        }
+
+        json.maintain_item_id = element.id;
+
+        maintainList.push(json);
+        json = {};
+      });
+      console.log(maintainList);
+      this.checkedMaterialsList.forEach((element) => {
+        json2.product_id = element.product_id;
+        json2.product_name = element.product_name;
+        json2.specification = element.specification;
+        json2.quantity = element.num;
+        maintainMaterial.push(json2);
+        json2 = {};
+      });
+      console.log(maintainMaterial);
+      let url = "http://120.55.124.53:8206/api/maintain/submitMaintain";
+      let that = this;
+      // that.machineList = [];
+      axios
+        .post(
+          url,
+          {
+            maintainMainRecord: {
+              operator: "zpd",
+              machine_id: that.checkedMachineNum,
+              mac_type_id: that.mac_type_id,
+              maintain_type_id: that.jsonData.maintain_type_id,
+              workshop_id: that.jsonData.workshop_id,
+            },
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            maintainList: maintainList,
+            maintainMaterial: maintainMaterial,
+          },
+          {
+            // headers: {
+            //   companyId: that.company_id,
+            // },
+          }
+        )
+        .then(function (res) {
+          console.log(res);
+          if (res.data.message == "成功") {
+            that.$message({
+              message: "保养成功！",
+              type: "success",
+            });
+          } else {
+            that.$message.error("保养失败！");
+          }
+          that.MaintanceShow = false;
+          that.IndexShow = true;
+        });
+    },
     sureRepair() {
       console.log(this.checkedMachineNum);
       console.log(this.checkedRepairName);
@@ -762,64 +759,77 @@ export default {
             console.log(that.machineList);
           });
       } else {
-        let url = "http://120.55.124.53:8211/machine/getMachineList";
+        let days_to_expire;
+        if (this.isWaitMaintance == 0) {
+          days_to_expire = 9999;
+        } else if (this.isWaitMaintance == 1) {
+          days_to_expire = 1;
+        }
+        let url = "http://120.55.124.53:8206/api/maintain/getRecentMaintainRecord2";
         let that = this;
         that.machineList = [];
         axios
           .post(
             url,
             {
-              //           "workShopId":workshop_id,
-              //     "machineType": mac_type_id,
-              page: that.page_num,
-              pageSize: that.page_size,
-              orderType: "asc",
-              groupId: "",
+              macRelation: {
+                mac_type_id: that.mac_type_id,
+              },
+              selectInfo: {
+                company_id: that.company_id,
+                page_size: that.page_size,
+                page_num: that.page_num,
+              },
+              days_to_expire: days_to_expire,
+              staff_id: 11,
             },
             {
-              headers: {
-                companyId: that.company_id,
-              },
+              // headers: {
+              //   companyId: that.company_id,
+              // },
             }
           )
           .then(function (res) {
             console.log(res);
-            if (res.data.data.length == 0) {
+            if (res.data.result.machine_list.length == 0) {
+              that.total_num = 0;
               return;
             } else {
-              that.total_num = res.data.totalDataNum; //设置数据总条数
+              that.total_num = res.data.result.total_data_num; //设置数据总条数
 
-              for (let i = 0; i < res.data.data.length; i++) {
-                if (String(res.data.data[i].machineId).indexOf("-") == -1) {
-                  that.machineList.push(String(res.data.data[i].machineId));
-                }
+              for (let i = 0; i < res.data.result.machine_list.length; i++) {
+                res.data.result.machine_list[i].machineId =
+                  res.data.result.machine_list[i].machine_id;
+                that.machineList.push(res.data.result.machine_list[i]);
               }
               console.log(that.machineList);
-              that.machineList = [
-                //假数据
-                {
-                  machineId: 1011,
-                },
-                {
-                  machineId: 1012,
-                },
-              ];
             }
           });
       }
     },
+
     pagination(pageNo, pageSize, array) {
       var offset = (pageNo - 1) * pageSize;
       return offset + pageSize >= array.length
         ? array.slice(offset, array.length)
         : array.slice(offset, offset + pageSize);
     },
+    CurrentTypeChange(e) {
+      //零配件类型分页
+      this.typePageNum = e;
+
+      this.typeList = this.pagination(
+        this.typePageNum,
+        this.typePageSize,
+        this.typeListCon
+      );
+    },
     getRootCategories() {
       //获取物料分类
       //获取分类根目录
       let url = "http://120.55.124.53:8206/api/product/getFullCategories";
       let that = this;
-      that.typeList = [];
+      that.typeListCon = [];
       axios
         .post(
           url,
@@ -836,10 +846,12 @@ export default {
 
           for (let i = 0; i < res.data.data.children.length; i++) {
             if (res.data.data.children[i].categories_id == 8) {
-              that.typeList = res.data.data.children[i].children;
+              that.typeListCon = res.data.data.children[i].children;
             }
           }
-          console.log(that.typeList);
+          that.TypeTotal_num = that.typeListCon.length;
+          that.typeList = that.pagination(1, that.typePageSize, that.typeListCon);
+          console.log(that.typeListCon);
         });
     },
     addMaterial() {
@@ -999,6 +1011,7 @@ export default {
       }
       console.log(this.checkedTypeId);
     },
+
     sureMachine() {
       //确定机台
       console.log(this.checkedMachineNum);
@@ -1014,8 +1027,49 @@ export default {
           this.MachineShow = false;
           this.repairShow = true;
         } else {
-          this.MachineShow = false;
-          this.MaintanceShow = true;
+          let json = null;
+          let flag = null;
+          this.machineList.forEach((element) => {
+            if (element.machine_id == this.checkedMachineNum) {
+              element.maintain.forEach((elements) => {
+                if (elements.expire_time == element.expire_time) {
+                  if (flag != true) {
+                    json = elements;
+                    flag = true;
+                  }
+                }
+              });
+            }
+          });
+          console.log(json);
+          this.jsonData = json;
+          let url = "http://120.55.124.53:8206/api/maintain/getMaintain";
+          let that = this;
+          that.objList = [];
+          axios
+            .post(
+              url,
+              {
+                mac_type_id: that.mac_type_id,
+                maintain_type_id: json.maintain_type_id,
+              },
+              {
+                headers: {
+                  companyID: that.company_id,
+                },
+              }
+            )
+            .then(function (res) {
+              console.log(res);
+              for (let i = 0; i < res.data.data[0].maintainItemList.length; i++) {
+                if (res.data.data[0].maintainItemList[i].confirm == 1) {
+                  res.data.data[0].maintainItemList[i].isChecked = true;
+                  that.objList.push(res.data.data[0].maintainItemList[i]);
+                }
+              }
+              that.MachineShow = false;
+              that.MaintanceShow = true;
+            });
         }
       } else {
         this.$message({
@@ -1059,6 +1113,7 @@ export default {
           this.checkedMaterialsList.push(element);
         }
       });
+
       this.materialsList2 = this.pagination(
         1,
         this.page_size2,
@@ -1079,6 +1134,8 @@ export default {
           this.MaterialsShow = false;
           this.repairShow = true;
         } else {
+          console.log(this.materialsList2);
+          console.log(this.checkedMaterialsList);
           this.MaterialsShow = false;
           this.MaintanceShow = true;
         }
@@ -1249,7 +1306,13 @@ export default {
         this.getInventory2();
       }
     },
-
+    IndexShow(val) {
+      if (val == true) {
+        this.checkedMachineNum = "";
+        this.checkMachine = [];
+        this.checkedMaterialsList = [];
+      }
+    },
     MachineShow(val) {
       if (val == true) {
         this.page_num = 1;
@@ -1774,15 +1837,14 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_object {
   width: 95%;
   height: 35%;
-
-  display: flex;
-  flex-direction: column;
 }
 
 .Maintance_object_con {
   width: 100%;
   height: 25%;
   display: flex;
+  float: left;
+
   align-items: center;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
