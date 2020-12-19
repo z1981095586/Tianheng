@@ -555,7 +555,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "RepairMachine",
-  props: ["isUpdate"],
+  props: ["isUpdate","staff_name"],
   data() {
     return {
       MachineShow: true, //选择机台显示隐藏
@@ -680,7 +680,7 @@ export default {
           "&machine_id=" +
           this.checkedMachineNum +
           "&user_name=" +
-          "zpd";
+          this.staff_name;
         let that = this;
         axios
           .get(
@@ -720,7 +720,7 @@ export default {
                       params: {
                         company_id: that.company_id,
                         machine_id: that.checkedMachineNum,
-                        repair_person: "zpd",
+                        repair_person: that.staff_name,
                         solve: that.repairReason,
                         error_reason: that.checkedRepairName,
                         parts: arr,

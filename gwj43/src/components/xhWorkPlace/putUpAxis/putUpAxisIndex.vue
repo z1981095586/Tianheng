@@ -321,12 +321,12 @@
         </div>
         <div :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}"  style="display: inline-block;margin-left: 10px">
           <el-card  style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthRight}" shadow="hover" >
-            <div>
-              <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none;z-index:1" @click="right_up" v-show="radio != 'radio2'&& radio!='radio5'">
-              <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'&& radio!='radio5'">
+            <div v-show="radio !='radio5'">
+              <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none;z-index:1" @click="right_up" v-show="radio != 'radio2'">
+              <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'">
             </div>
        
-            <jiejing  v-show="radio =='radio5'"></jiejing>
+            <jiejing  v-show="radio =='radio5'" :barCode="barCode"></jiejing>
             <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" v-show="radio!='radio5'"   >
               <table class="radioTable"  style="width: 95%" cellspacing="20px" v-show="radio === 'radio1'&&all_order_list[0]">
                 <tr>
@@ -1352,6 +1352,7 @@
         console.log(this.radio)
         for (let i = 1; i < 6; i++) {
           document.getElementById("radio" + i).style.backgroundColor = "white";
+      
         }
         document.getElementById(radioId).style.backgroundColor = "#409EFF";
         if (this.radio == 'radio4') {

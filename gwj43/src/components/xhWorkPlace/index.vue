@@ -210,8 +210,8 @@
       width="950px"
       append-to-body
       :close-on-click-modal="false"
-    >
-      <otherProductTable ref="otherProductTable"  :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false"></otherProductTable>
+    > 
+      <otherProductTable ref="otherProductTable" :workshopId="workshopId"  :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false"></otherProductTable>
     </el-dialog>
     <div style="height: 80px;background-color: #29374b;width: 100%">
       <headComponent ref="headComponent" @selectWorker="selectWorker" @getData="getDataRefresh" @getStaffNameById="getStaffNameById" @returnFunc="returnFunc"></headComponent>

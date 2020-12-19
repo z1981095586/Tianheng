@@ -492,6 +492,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "Maitance",
+  props: ["staff_name", "staff_id"],
   data() {
     return {
       IndexShow: true,
@@ -513,9 +514,7 @@ export default {
       search_machine: "",
       checkMachine: [], //选中机台列表
       checkedMachineNum: "",
-      machineList: [
-    
-      ],
+      machineList: [],
       checkedMaterialsList: [],
       machineListCon: [],
       total_num: 100,
@@ -565,7 +564,7 @@ export default {
       typeListCon: [],
       typePageSize: 8,
       typePageNum: 1,
-mac_type_id:"030100",
+      mac_type_id: "030100",
       workshop_id: "",
       maintain_type_id: "",
     };
@@ -611,7 +610,7 @@ mac_type_id:"030100",
           url,
           {
             maintainMainRecord: {
-              operator: "zpd",
+              operator: that.staff_name,
               machine_id_list: that.checkMachine,
 
               mac_type_id: that.mac_type_id,
@@ -673,7 +672,7 @@ mac_type_id:"030100",
             selectInfo: {
               company_id: that.company_id,
             },
-            staff_id: 1,
+            staff_id: that.staff_id,
           },
           {
             // headers: {

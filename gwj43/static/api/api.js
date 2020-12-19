@@ -5,6 +5,7 @@ let api57 = window.apiRoot.api57;
 export function warp_api(url, data,companyId)
 {
   let totalUrl= api66 + ':8763';
+  // let totalUrl="http://47.110.242.174"+ ':8763';
   totalUrl+=url;
   let headers= {
     'Content-Type': 'application/json',

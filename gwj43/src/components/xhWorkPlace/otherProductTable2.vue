@@ -122,6 +122,13 @@
           <el-table
     :data="showData"
    height="481" border style="width: 100%;font-size:1.5rem;margin-bottom:1rem;">
+       <el-table-column
+      type="index"
+      label="序号"
+       width="80" >
+  
+          
+    </el-table-column>
     <el-table-column
       prop="type"
       label="类型"
@@ -258,7 +265,7 @@
 <script>
   import axios from 'axios'
   export default {
-      props:['order_list','otherProduceDialogShow'],
+      props:['order_list','otherProduceDialogShow',"workshopId"],
     data() {
       return {
         buttonList: "1234567890",
@@ -740,7 +747,8 @@ this.pageNum=this.pageNum+1
               "pageSize": 1000,
               "selectFields": ["staff_code", "staff_name"],
               'query': {
-                staff_code: this.staff_code2
+                staff_code: this.staff_code2,
+                 workshop_id:this.workshopId
               }
             };
 
@@ -822,7 +830,8 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
               "pageSize": 1000,
               "selectFields": ["staff_code", "staff_name"],
               'query': {
-                staff_code: this.staff_code
+                staff_code: this.staff_code,
+                 workshop_id:this.workshopId
               }
             };
 
@@ -865,7 +874,7 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
       this.getOpiton()
       let params = this.$route.params.params.split(",");
 
-
+       console.log(params)
       this.companyId = params[1];
       this.getData()
       console.log(document.getElementById("num2"))

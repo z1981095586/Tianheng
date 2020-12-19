@@ -44,11 +44,11 @@
         <!-- <div class="radio5Btn_one"
           :style=" dataList.length>0 ? 'background:rgb(204,78,77)':'background:rgb(135,146,141)'" @click="cancel()">取消
         </div> -->
-        <div class="radio5Btn_one" style="background:rgb(135,146,141);    margin-right: 7rem;" @click="isTable=false">记录
+        <div class="radio5Btn_one" style="background:rgb(135,146,141);    margin-right: 20rem;" @click="isTable=false">记录
         </div>
-        <div class="radio5Btn_one2" style="justify-content: space-around; width:14rem;   height: 70%;"><img
-            style="width:5rem;height:5rem" src="/static/picture/arrow2.png" @click="LastPage()" /><img
-            @click="NextPage()" style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
+        <div class="radio5Btn_one2" style="justify-content: space-around; width:21rem;   height: 70%;"><img
+            style="width:7rem;height:7rem" src="/static/picture/arrow2.png" @click="LastPage()" /><img
+            @click="NextPage()" style="width:7rem;height:7rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
                  -o-transform: rotate(180deg);
                  -ms-transform: rotate(180deg);
@@ -85,7 +85,7 @@
               <option value="否">否</option>
             </select> -->
             <el-select class="sel" v-model="item.Fenjiao"
-              style="font-size:1.5rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
+              style="font-size:2rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
               :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
               <el-option value="是">是
               </el-option>
@@ -98,7 +98,7 @@
           <div
             style="width:16%;margin-left:3%;height:80%;display:flex;align-items:center;justify-content: space-around;position:relative">
             <el-select class="sel" v-model="item.JieJing"
-              style="font-size:1.5rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
+              style="font-size:2rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
               :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
               <el-option value="1">1
               </el-option>
@@ -118,7 +118,7 @@
             style="width:12%;margin-left:2%;    height: 93%;display:flex;align-items:center;justify-content: space-around;flex-direction:column;"
             @click="NameTable2(item.id,item.isEdit,item.staff_name)"
             :style="item.isEdit?'border:1px solid black;':'border:none'">
-            <span style="font-size:1rem">{{item.staff_name}}</span>
+            <span style="font-size:2rem">{{item.staff_name}}</span>
             <!-- <span
               style="font-size:1rem">{{item.staff_name2}}</span> <span
               style="font-size:1rem">{{item.staff_name3}}</span> -->
@@ -140,8 +140,8 @@
 
       <div class="radio5Btn2">
         <div class="radio5Btn_one2" style="background:rgb(94,137,229)" @click="isTable=true">返回</div>
-        <div class="radio5Btn_one2" style="justify-content: space-around;width:14rem"><img
-            style="width:5rem;height:5rem" src="/static/picture/arrow2.png"  @click="LastPage2()"  /><img style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
+        <div class="radio5Btn_one2" style="justify-content: space-around;width:21rem"><img
+            style="width:7rem;height:7rem" src="/static/picture/arrow2.png"  @click="LastPage2()"  /><img style="width:7rem;height:7rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
                  -o-transform: rotate(180deg);
                  -ms-transform: rotate(180deg);
@@ -149,109 +149,109 @@
 
       </div>
     </div>
-    <el-dialog :visible.sync="showNameTable" width="800px" append-to-body :close-on-click-modal="false">
+    <el-dialog :visible.sync="showNameTable" width="1200px" append-to-body :close-on-click-modal="false">
 
 
       <p style="display: inline-block;font-size: 3rem">输入员工号</p>
       <el-input size="medium" id="staff_code" ref="staff_code" v-model="staff_code" style="font-size: 3rem;width: 400px"
         class="standard_input"></el-input>
       <br> <br>
-      <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+      <table width="620px" cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
         <tr v-for="indexTr in 2">
           <td v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+            <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
               size="medium" @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
             </el-button>
           </td>
           <td v-if="indexTr===1">
             <el-button type="primary"
-              style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+              style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="getPermission">确定</el-button>
           </td>
           <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+            <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="selectTableButton('退格')">退格</el-button>
           </td>
         </tr>
       </table>
     </el-dialog>
-    <el-dialog :visible.sync="showMachineTable" width="800px" append-to-body :close-on-click-modal="false">
+    <el-dialog :visible.sync="showMachineTable" width="1200px" append-to-body :close-on-click-modal="false">
 
 
       <p style="display: inline-block;font-size: 3rem">输入机台号</p>
       <el-input size="medium" id="machine_code" ref="machine_code" v-model="machine_code"
         style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
       <br> <br>
-      <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+      <table width="620px" cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
         <tr v-for="indexTr in 2">
           <td v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+            <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
               size="medium" @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
             </el-button>
           </td>
           <td v-if="indexTr===1">
             <el-button type="primary"
-              style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+              style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="getPermission2">确定</el-button>
           </td>
           <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+            <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="selectTableButton2('退格')">退格</el-button>
           </td>
         </tr>
       </table>
     </el-dialog>
-    <el-dialog :visible.sync="showNameTable2" width="800px" append-to-body :close-on-click-modal="false">
+    <el-dialog :visible.sync="showNameTable2" width="1200px" append-to-body :close-on-click-modal="false">
 
 
       <p style="display: inline-block;font-size: 3rem">输入员工号</p>
       <el-input size="medium" id="staff_code2" ref="staff_code2" v-model="staff_code2"
         style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
       <br> <br>
-      <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+      <table width="620px" cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
         <tr v-for="indexTr in 2">
           <td v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+            <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
               size="medium" @click="selectTableButton3(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
             </el-button>
           </td>
           <td v-if="indexTr===1">
             <el-button type="primary"
-              style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+              style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="getPermission3">确定</el-button>
           </td>
           <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+            <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="selectTableButton3('退格')">退格</el-button>
           </td>
         </tr>
       </table>
     </el-dialog>
-     <el-dialog :visible.sync="showMachineTable2" width="800px" append-to-body :close-on-click-modal="false">
+     <el-dialog :visible.sync="showMachineTable2" width="1200px" append-to-body :close-on-click-modal="false">
 
 
       <p style="display: inline-block;font-size: 3rem">输入机台号</p>
       <el-input size="medium" id="machine_code2" ref="machine_code2" v-model="machine_code2"
         style="font-size: 3rem;width: 400px" class="standard_input"></el-input>
       <br> <br>
-      <table width="620px" cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+      <table width="620px" cellspacing='0' cellpadding='0' height="400px" style="display: inline-block">
         <tr v-for="indexTr in 2">
           <td v-for="indexTd in 5" style="text-align: center;">
-            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px"
+            <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
               size="medium" @click="selectTableButton4(buttonList[(indexTr-1)*5+indexTd-1])">
-              <p style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+              <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
             </el-button>
           </td>
           <td v-if="indexTr===1">
             <el-button type="primary"
-              style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder"
+              style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="getPermission4">确定</el-button>
           </td>
           <td v-if="indexTr===2">
-            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px"
+            <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
               @click="selectTableButton4('退格')">退格</el-button>
           </td>
         </tr>
@@ -263,7 +263,7 @@
 
 <script>
 //var test="http://47.110.242.174:10086"
-var test="http://106.12.219.66:8227"
+ var test="http://106.12.219.66:8227"
   import axios from 'axios'
     import { warp_api } from "../../../../static/api/api.js";
   export default {
@@ -888,7 +888,8 @@ this.SelectDataList.forEach(element => {
      display: none;
    }
   .sel /deep/ input {
-    height: 52px !important;
+    height: 82px !important;
+    font-size: 2rem;
   }
 
   .sel /deep/ .el-input {
@@ -945,7 +946,7 @@ this.SelectDataList.forEach(element => {
   }
 
   .radio5 {
-    height: 454.48px;
+   height: 683.8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -966,7 +967,7 @@ this.SelectDataList.forEach(element => {
     height: 20%;
     display: flex;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     position: relative;
 
   }
@@ -983,7 +984,7 @@ this.SelectDataList.forEach(element => {
     width: 25%;
     height: 70%;
     margin-right: 1rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
     border: 1px solid black;
   }
 
@@ -1010,7 +1011,7 @@ this.SelectDataList.forEach(element => {
     width: 20%;
     margin-left: 2%;
     height: 80%;
-    font-size: 1.3rem;
+    font-size: 2rem;
     border: 1px solid black;
   }
 
@@ -1037,7 +1038,7 @@ this.SelectDataList.forEach(element => {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 2rem;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     background: rgb(254, 250, 184);
@@ -1076,6 +1077,7 @@ this.SelectDataList.forEach(element => {
     width: 95%;
     height: 80%;
     border: 1px solid black;
+    font-size: 2rem;
   }
 
   .table_btn {
@@ -1084,7 +1086,7 @@ this.SelectDataList.forEach(element => {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 2rem;
     border: 1px solid black;
   }
 
@@ -1095,14 +1097,14 @@ this.SelectDataList.forEach(element => {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.5rem;
 
 
     border: 1px solid black;
   }
 
   .addRow i {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-right: 0.5rem;
   }
 
@@ -1128,22 +1130,22 @@ this.SelectDataList.forEach(element => {
   }
 
   .radio5Btn_one2 {
-    width: 10rem;
-    height: 4rem;
+    width: 16rem;
+    height: 6rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     color: white;
   }
 
   .radio5Btn_one {
-    width: 10rem;
-    height: 4rem;
+   width: 16rem;
+    height: 6rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     color: white;
   }
 

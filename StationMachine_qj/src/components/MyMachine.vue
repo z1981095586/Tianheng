@@ -503,6 +503,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "MyMachine",
+  props: ["staff_name", "staff_id"],
   data() {
     return {
       IndexShow: true,
@@ -618,7 +619,7 @@ export default {
           url,
           {
             maintainMainRecord: {
-              operator: "zpd",
+              operator: that.staff_name,
               machine_id: that.checkedMachineNum,
               mac_type_id: that.mac_type_id,
               maintain_type_id: that.jsonData.maintain_type_id,
@@ -781,7 +782,7 @@ export default {
                 page_num: that.page_num,
               },
               days_to_expire: days_to_expire,
-              staff_id: 11,
+              staff_id: that.staff_id,
             },
             {
               // headers: {

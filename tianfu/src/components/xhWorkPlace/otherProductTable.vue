@@ -319,7 +319,7 @@
   import axios from 'axios'
 
   export default {
-        props:['order_list','otherProduceDialogShow'],
+        props:['order_list','otherProduceDialogShow',"workshopId"],
     data() {
       return {
         buttonList: "1234567890",
@@ -803,7 +803,8 @@ query:{
               "pageSize": 1000,
               "selectFields": ["staff_code", "staff_name"],
               'query': {
-                staff_code: this.staff_code2
+                staff_code: this.staff_code2,
+                 workshop_id:this.workshopId
               }
             };
 
@@ -883,7 +884,8 @@ query:{
               "pageSize": 1000,
               "selectFields": ["staff_code", "staff_name"],
               'query': {
-                staff_code: this.staff_code
+                staff_code: this.staff_code,
+                 workshop_id:this.workshopId
               }
             };
 

@@ -232,13 +232,16 @@
               <table class="radioTable" cellspacing='0' cellpadding='0' width="100%" :height="scrollerHeightTopTable" style="font-size: 50px;text-align: center">
                 <tr>
                   <td id="radio1" @click="changeRadio('radio1')" style="background-color: #409EFF;font-size: 4rem">
-                    织造小票
+                  织造小票
                   </td>
                   <td id="radio2" @click="changeRadio('radio2')" style="font-size: 4rem">
-                    更换纬纱
+               更换纬纱
+                  </td>
+                     <td id="radio5" @click="changeRadio('radio5')" style="font-size: 4rem">
+                   结经报产
                   </td>
                   <td id="radio3" @click="changeRadio('radio3')" style="font-size: 4rem">
-                    了机预测
+                了机预测 
                   </td>
                   <td id="radio4" @click="changeRadio('radio4')" style="font-size: 4rem">
                     已穿综单
@@ -314,11 +317,12 @@
         </div>
         <div :style="{height: scrollerHeightBottom,width:scrollerWidthLeft}"  style="display: inline-block;margin-left: 10px">
           <el-card style="width: 100%;" :style="{height: scrollerHeightBottom,width:scrollerWidthRight}" shadow="hover" >
-            <div>
+            <div v-show="radio !='radio5'">
               <img id="right_up" :src="arrow_icon" :style="{top:upArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(90deg);display: none;z-index:1" @click="right_up" v-show="radio != 'radio2'">
               <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'">
             </div>
-            <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" >
+               <jiejing  v-show="radio =='radio5'" :barCode="barCode"></jiejing>
+            <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" v-show="radio!='radio5'" >
               <table class="radioTable"  style="width: 84%" cellspacing="20px" v-show="radio === 'radio1'&&all_order_list[0]">
                 <tr>
                   <td style="text-align: center;width: 33%">
@@ -467,8 +471,9 @@
   import changeStaffMessage from './../changeStaffMessage.vue';
   import printClothCard from './../printClothCard.vue';
   import screenfull from "screenfull";
+     import jiejing from './jiejing.vue';
   export default {
-    components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printClothCard},
+    components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printClothCard,jiejing},
     data () {
       return {
         buttonList:"1234567890",
@@ -1350,7 +1355,7 @@
       },
       changeRadio(radioId) {
         this.radio = radioId;
-        for (let i = 1; i < 5; i++) {
+        for (let i = 1; i < 6; i++) {
           document.getElementById("radio" + i).style.backgroundColor = "white";
         }
         document.getElementById(radioId).style.backgroundColor = "#409EFF";

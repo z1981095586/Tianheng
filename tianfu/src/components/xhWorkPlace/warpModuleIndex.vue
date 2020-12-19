@@ -133,7 +133,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <otherProductTable ref="otherProductTable" :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
+      <otherProductTable ref="otherProductTable" :workshopId="workshopId" :order_list="order_list"  :otherProduceDialogShow="otherProduceDialogShow" @cancel="otherProduceDialogShow=false" ></otherProductTable>
     </el-dialog>
     <!--其他产量对话框-->
     <!--头部-->

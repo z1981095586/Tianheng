@@ -7,99 +7,103 @@
     <div class="board">
       <div class="board_con">
         <div class="board_con_top">
-         <div class="board_con_top_con">
-        <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
-  {{item}}
-        </div>
-      
-        </div>
-          <div class="board_con_top_con"  v-for="(item,index) in tableData" :key="index">
-        <div class="board_con_top_con_one">
-  {{index+1}}
-        </div>
-          <div class="board_con_top_con_one">
-  {{item.workshop}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.product_name}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.mac_type_name}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.beam_num}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.mac_type_id}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.status}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.reed_no}}
-        </div>
-            <div class="board_con_top_con_one">
-  {{item.reed_width}}
-        </div>
-        </div>
-       
+          <div class="board_con_top_con">
+            <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
+              {{item}}
+            </div>
+
+          </div>
+          <div style="display:flex;flex-direction:column;overflow:auto;height: 18rem;" id="s1">
+            <div class="board_con_top_con" v-for="(item,index) in tableData" :key="index">
+              <div class="board_con_top_con_one">
+                {{index+1}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.workshop}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.product_name}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.mac_type_name}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.beam_num}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.mac_type_id}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.status}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.reed_no}}
+              </div>
+              <div class="board_con_top_con_one">
+                {{item.reed_width}}
+              </div>
+            </div>
+          </div>
+
         </div>
         <div class="board_con_bottom">
-       <div class="board_con_bottom_left">
-       <div class="board_con_bottom_left_left">
-       <div class="board_con_bottom_left_left_title">
-今日已完成
-       </div>
-       <div style="overflow: auto;">
-       <div class="board_con_bottom_left_left_tablehead">
-             <div class="board_con_bottom_left_left_tablehead_one">
-         品种
-       </div>
-          <div class="board_con_bottom_left_left_tablehead_one">
-         数量
-       </div>
-          <div class="board_con_bottom_left_left_tablehead_one">
-         剩余
-       </div>
-       </div>
-          <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index">
-             <div class="board_con_bottom_left_left_tablehead_one">
-         {{item.product_name}}
-       </div>
-          <div class="board_con_bottom_left_left_tablehead_one">
-      {{item.finish_beam_num}}
-       </div>
-          <div class="board_con_bottom_left_left_tablehead_one">
-    {{item.beam_num-item.finish_beam_num}}
-       </div>
-       </div>
- 
-       </div>
-        </div><div class="board_con_bottom_left_right" id="dailyEchart">
-       
-        </div>
-        </div>
-        <div class="board_con_bottom_right">
-       <div class="board_con_bottom_right_img">
-         <div class="img1" >
-  <img src="/static/img/circle2.png" id="img1" />
-  <div class="img_span">
-    <span>{{sum1Name}}今日穿综根数</span>
-    <span>{{sum1}}</span>
-  </div>
-         </div>
-         <div class="img2">
-  <img src="/static/img/circle2.png"  id="img2"  />
-    <div class="img_span2">
-    <span>{{sum2Name}}今日穿综根数</span>
-    <span>{{sum2}}</span>
-  </div>
-         </div>
-       
-           
-       </div>
-        <div class="board_con_bottom_right_echart" id="pzEchart"></div>
-        </div>
+          <div class="board_con_bottom_left">
+            <div class="board_con_bottom_left_left">
+              <div class="board_con_bottom_left_left_title">
+                今日已完成
+              </div>
+              <div>
+                <div class="board_con_bottom_left_left_tablehead">
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    品种
+                  </div>
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    数量
+                  </div>
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    剩余
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;overflow:auto;height: 13rem;" id="s2">
+                  <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index">
+                    <div class="board_con_bottom_left_left_tablehead_one">
+                      {{item.product_name}}
+                    </div>
+                    <div class="board_con_bottom_left_left_tablehead_one">
+                      {{item.finish_beam_num}}
+                    </div>
+                    <div class="board_con_bottom_left_left_tablehead_one">
+                      {{item.beam_num-item.finish_beam_num}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="board_con_bottom_left_right" id="dailyEchart">
+
+            </div>
+          </div>
+          <div class="board_con_bottom_right">
+            <div class="board_con_bottom_right_img">
+              <div class="img1">
+                <img src="../../static/img/circle2.png" id="img1" />
+                <div class="img_span">
+                  <span>{{sum1Name}}今日穿综根数</span>
+                  <span>{{sum1}}</span>
+                </div>
+              </div>
+              <div class="img2">
+                <img src="../../static/img/circle2.png" id="img2" />
+                <div class="img_span2">
+                  <span>{{sum2Name}}今日穿综根数</span>
+                  <span>{{sum2}}</span>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="board_con_bottom_right_echart" id="pzEchart"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -125,395 +129,253 @@
         lang: 'zh',
         workshopId: '3',
         companyId: "", //公司库表Id
-        tableTitle:[
-          "序号","分厂","品种","穿棕机型","穿棕轴数","织机机型","完成情况","筘号","筘幅",
+        tableTitle: [
+          "序号", "分厂", "品种", "穿棕机型", "穿棕轴数", "织机机型", "完成情况", "筘号", "筘幅",
         ],
         // dczList: [],
         // dczListLength: 0,
         // clpmList: [],
         // yczList: [],
         // yczListLength: 0,
-        sum1:"",
-        sum2:"",
-        sum1Name:"",
-        sum2Name:"",
+        sum1: "",
+        sum2: "",
+        sum1Name: "",
+        sum2Name: "",
         product_nameList: [],
-      tableData2:[],
-         companyname:"",
-         root_numberList: [],
-         tableData:[]
+        tableData2: [],
+        companyname: "",
+        root_numberList: [],
+        tableData: []
         // legendList: [],
         // xList: [],
         // sList: []
       }
     },
     methods: {
+      getWearAnalysis() {
+        let url = "http://120.55.124.53:7070/wear-weaving/getWearAnalysis"
+        axios({
+            url: url,
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'companyId': this.companyId
+            },
+            data: {
+              "bean": {
+                "day": 30
+              }
 
-rotate () {
-  var rotateVal = 0 // 旋转角度
-      var InterVal // 定时器
-       var rotateVal2 = 0 // 旋转角度
-		
-				InterVal = setInterval(function () {
-					var img = document.getElementById('img1')
-					rotateVal += 1
-					// 设置旋转属性(顺时针)
-					img.style.transform = 'rotate(' + rotateVal + 'deg)'
-					// 设置旋转属性(逆时针)
-					//img.style.transform = 'rotate(-' + rotateVal + 'deg)'
-					// 设置旋转时的动画  匀速0.1s
+            }
+
+          })
+          .then(response => {
+            let xList = []
+            let yList = []
+            console.log(response)
+            // let m=this.toGetMonth();
+            response.data.data.forEach(element => {
+
+              // if(element.ddate.substr(5,2)==String(m)){
+              xList.push(element.ddate)
+              yList.push(element.rootNumber)
+              // }
+
+            });
+            console.log(xList)
+            console.log(yList)
+            this.clEchart(xList, yList)
+
+          })
+      },
+
+      toGetMonth() {
+        var myDate = new Date();
+        let m = myDate.getMonth();
+        if (m < 10) {
+          m = "0" + m
+        }
+        console.log(m)
+        return m
+      },
+      rotate() {
+        var rotateVal = 0 // 旋转角度
+        var InterVal // 定时器
+        var rotateVal2 = 0 // 旋转角度
+
+        InterVal = setInterval(function () {
+          var img = document.getElementById('img1')
+          rotateVal += 1
+          // 设置旋转属性(顺时针)
+          img.style.transform = 'rotate(' + rotateVal + 'deg)'
+          // 设置旋转属性(逆时针)
+          //img.style.transform = 'rotate(-' + rotateVal + 'deg)'
+          // 设置旋转时的动画  匀速0.1s
           img.style.transition = '0.1s linear'
-          			var img2 = document.getElementById('img2')
-					rotateVal2 += 1
-					// 设置旋转属性(顺时针)
-					img2.style.transform = 'rotate(' + rotateVal2 + 'deg)'
-					// 设置旋转属性(逆时针)
-					//img.style.transform = 'rotate(-' + rotateVal + 'deg)'
-					// 设置旋转时的动画  匀速0.1s
-					img2.style.transition = '0.1s linear'
-				}, 100)
-			},
+          var img2 = document.getElementById('img2')
+          rotateVal2 += 1
+          // 设置旋转属性(顺时针)
+          img2.style.transform = 'rotate(' + rotateVal2 + 'deg)'
+          // 设置旋转属性(逆时针)
+          //img.style.transform = 'rotate(-' + rotateVal + 'deg)'
+          // 设置旋转时的动画  匀速0.1s
+          img2.style.transition = '0.1s linear'
+        }, 100)
+      },
 
-      pzEchart(){
-             let myChart1 = this.$echarts.init(document.getElementById('pzEchart'));
+      pzEchart() {
+        let myChart1 = this.$echarts.init(document.getElementById('pzEchart'));
         // 绘制图表
         myChart1.clear();
-        let that=this
-let option = {
-  
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
+        let that = this
+        let option = {
 
-    series: [
-        {
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+
+          series: [{
             name: '访问来源',
             type: 'pie',
-          radius: ['50%', '80%'],
+            radius: ['50%', '80%'],
             center: ['52%', '50%'],
-            label:{
-              position:"inside",
+            label: {
+              position: "inside",
               formatter: '{d}% {b}'
             },
-            labelLine:{
-              show:false
+            labelLine: {
+              show: false
             },
-           
-            data:that.root_numberList,
+
+            data: that.root_numberList,
             emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
             }
-        }
-    ]
-};
-  myChart1.setOption(
+          }]
+        };
+        myChart1.setOption(
           option);
         window.addEventListener('resize', function () {
           myChart1.resize();
         })
       },
-      clEchart(){
-               let myChart1 = this.$echarts.init(document.getElementById('dailyEchart'));
+      clEchart(xList, yList) {
+        let myChart1 = this.$echarts.init(document.getElementById('dailyEchart'));
         // 绘制图表
         myChart1.clear();
-let option = {
-  title:{
- text:"穿棕产量日对比",
- textStyle:{
-   color:"#87D3F7",
-   fontSize:15
- },
- left:"center",
- top:15
-  },
-    color: ['#87D3F7'],
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-               axisTick: {
-            show:false
+        let option = {
+          title: {
+            text: "穿棕产量日对比",
+            textStyle: {
+              color: "#87D3F7",
+              fontSize: 15
             },
-            axisLine:{
-              lineStyle:{
-                 color:"#87D3F7"
+            left: "center",
+            top: 15
+          },
+          color: ['#87D3F7'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [{
+
+            type: 'category',
+            data: xList,
+            axisTick: {
+              show: false
+            },
+
+            //            axisLabel: { //  如果这个字段不设置，echarts会根据屏宽及横坐标数据自动给出间隔
+            //  interval: 2, // 间隔长度，可自定义（如果是时间格式，echarts会自动处理）
+
+            // },
+            axisLine: {
+              lineStyle: {
+                color: "#87D3F7"
               }
             }
-        }
-    ],
-    yAxis: [
-        {
-       
-splitLine:{
-    show:true,
-    lineStyle:{
-        type:'dashed'
-    }
-},
-              axisTick: {
-            show:false
+          }],
+          yAxis: [{
+
+
+            splitLine: {
+              show: true,
+              lineStyle: {
+                type: 'dashed'
+              }
+            },
+            axisTick: {
+              show: false
             },
             type: 'value',
-               axisLine:{
-              lineStyle:{
-                 color:"#87D3F7"
+            axisLine: {
+              lineStyle: {
+                color: "#87D3F7"
               }
             }
-        }
-    ],
-    series: [
-        {
-            name: '直接访问',
-            type: 'bar',
+          }],
+          series: [{
+            name: '日产量',
+            type: 'line',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220]
-        }
-    ]
-};
-      myChart1.setOption(
+            data: yList
+          }]
+        };
+        myChart1.setOption(
           option);
         window.addEventListener('resize', function () {
           myChart1.resize();
         })
       },
-      getclph() {
+
+      // 对象排序
+      getsum() {
         let that = this
-        let xList = []
-        let sList = []
-        let l=[]
-        let legendList = []
-        // axios({
-        //     url: host1 + '/report/getSimpleReport',
-        //     method: 'post',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //       'companyId': that.companyId
-        //     },
-        //     data: {
+        //console.log(this. getNowFormatDate())
+        axios({
+            url: host1 + '/report/getSimpleReport',
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'companyId': this.companyId
+            },
+            data: {
 
-        //       tableName: "wear_weaving",
+              tableName: "wear_weaving",
+              pageNum: 1,
+              pageSize: 2,
+              selectLikeFields: {
+                create_date: this.getNowFormatDate()
+              },
 
+              selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
+              groupByColumn: ['machine_id']
 
-        //       selectFields: ["distinct(machine_id)"],
-        //       //  selectFields:["sum(root_number)","machine_id","start_datetime"]
+            }
 
-        //     }
-
-        //   })
-        //   .then(res => {
-
-
-      //       for (let i = 0; i < res.data.data.length; i++) {
-      //         // if(res.data.data[i].machine_id=="cz02#"){
-      // legendList.push(res.data.data[i].machine_id)
-              axios({
-                  url: host1 + '/report/getSimpleReport',
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'companyId': that.companyId
-                  },
-                  data: {
-
-                    tableName: "wear_weaving",
-
-
-                    query: {
-                      // machine_id: res.data.data[i].machine_id
-                    },
-                    selectFields: ["sum(root_number)", "machine_id", "create_date"],
-                    groupByColumn: ['create_date']
-
-                  }
-
-                })
-                .then(response => {
-                   //console.log(response)
-                  let list = []
-                  for (let j = 0; j < response.data.data.length; j++) {
-
-                    if (that.xList.indexOf(response.data.data[j].create_date.substr(5, 5)) == -1) {
-
-                      xList.push(response.data.data[j].create_date.substr(5, 5))
-            
-                    }
-        
-
-                    list.push(response.data.data[j]['sum(root_number)'])
-                  }
-             
-                  sList.push({
-                    // itemStyle: { //柱图背景色
-                    //   color: '#64D4E6'
-                    // },
-                    name: res.data.data[i].machine_id,
-                    data: list,
-                    label: {
-                      show: true,
-                      position: 'top'
-                    },
-                    type: 'bar'
-                  })
-
-                })
-              // }
-        
-            // }
-            //console.log(xList)
-            //console.log(sList)
-
-//           }).then(() => {
-
-//              that.legendList=legendList
-//              that.xList=xList
-//              that.sList=sList
-
-//     setTimeout(() => {
-//              let myChart1 = this.$echarts.init(document.getElementById('echart2'));
-//         // 绘制图表
-//         myChart1.clear();
-//        let option = {
-//  color:['#1F78B4','#1AFF00'],
-//           title: {
-
-//             left: "center",
-//             top: "3%",
-//             textStyle: {
-//               color: "#00FFDC",
-//               fontSize: 18,
-//               fontWeight: "normal"
-//             },
-//             text: "每日产量占比"
-//           },
-//           xAxis: {
-//             type: 'category',
-//             data: xList,
-//             axisLabel: {
-//               show: true,
-//               textStyle: {
-//                 color: "rgba(238,219,219,1)",
-//                 fontSize: 10
-//               }
-//             },
-//             axisLine: {
-//               lineStyle: {
-//                 color: "rgba(255, 255, 255, 0)",
-//                 width: 1
-//               }
-//             },
-//             axisTick: {
-//               show: false
-//             }
-//           },
-
-//           // legend: {
-//           //   right: "5%",
-//           //   top: "17%",
-//           //   textStyle: {
-//           //     color: "#fff"
-//           //   },
-//           //   data: legendList
-//           // },
-//           yAxis: {
-//             type: 'value',
-//             name: "米",
-//             nameTextStyle: {
-//               color: "#979797",
-//               fontSize: 10
-//             },
-//             splitLine: {
-//               show: false,
-//               lineStyle: {
-//                 type: 'dashed',
-//                 color: "#979797",
-//               }
-//             },
-//             axisLine: {
-//               lineStyle: {
-//                 color: "rgba(255, 255, 255, 0)",
-//                 width: 1
-//               }
-//             },
-//             nameLocation: "end",
-//             axisLabel: {
-//               show: true,
-//               textStyle: {
-//                 color: "#979797",
-//                 fontSize: 10
-//               }
-//             },
-//           },
-//           grid: {
-//             left: '10%',
-//             bottom: "12%",
-//             top: '40%',
-//             right: "8%"
-//           },
-//           series: that.sortByKey(sList,"name")
-//         };
-
-//         ////console.log(option.series[0])
-//         myChart1.setOption(
-//           option);
-//         window.addEventListener('resize', function () {
-//           myChart1.resize();
-//         })
-//     }, 1000);
-
-
-//           })
+          })
+          .then(response => {
+            //console.log(response)
+            that.sum1 = response.data.data[0].sum
+            that.sum2 = response.data.data[1].sum
+            that.sum1Name = response.data.data[0].machine_id
+            that.sum2Name = response.data.data[1].machine_id
+          })
       },
-    // 对象排序
-    getsum(){
-      let that=this
-      console.log(this. getNowFormatDate())
-    axios({
-                  url: host1 + '/report/getSimpleReport',
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'companyId': this.companyId
-                  },
-                  data: {
-
-                    tableName: "wear_weaving",
-pageNum:1,
-pageSize:2,
-selectLikeFields:{
-  create_date:this. getNowFormatDate()
-},
-               
-                    selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
-                    groupByColumn: ['machine_id']
-
-                  }
-
-                })
-                .then(response => {
-                  console.log(response)
-                  that.sum1=response.data.data[0].sum
-                  that.sum2=response.data.data[1].sum
-                  that.sum1Name=response.data.data[0].machine_id
- that.sum2Name=response.data.data[1].machine_id
-                })
-    },
       sortByKey(array, key) {
         return array.sort(function (a, b) {
           let x = a[key];
@@ -538,6 +400,8 @@ selectLikeFields:{
       },
       getdata4() { //品种产量对比
         let that = this
+        that.root_numberList = []
+        that.product_nameList = []
         axios({
             url: host1 + '/report/getSimpleReport',
             method: 'post',
@@ -548,8 +412,8 @@ selectLikeFields:{
             data: {
 
               tableName: "wear_weaving",
-groupByColumn:["product_name"],
- selectFields: ["sum(root_number) as root_number","product_name" ],
+              groupByColumn: ["product_name"],
+              selectFields: ["sum(root_number) as root_number", "product_name"],
 
 
 
@@ -557,7 +421,7 @@ groupByColumn:["product_name"],
 
           })
           .then(res => {
-            ////console.log(res)
+            //////console.log(res)
             for (let i = 0; i < res.data.data.length; i++) {
               that.product_nameList.push(res.data.data[i].product_name)
               that.root_numberList.push({
@@ -569,94 +433,12 @@ groupByColumn:["product_name"],
             }
           })
       },
-   startmarquee3(lh, speed, delay) {
+
+
+
+      startmarquee2(lh, speed, delay) {
         let that = this
-       
-        let o = document.getElementById("s3")
-        var t;
-        var oHeight = o.offsetHeight; /**/ /** div的高度 **/
-        var p = false;
 
-        var preTop = 0;
-        o.scrollTop = 0;
-
-        function start() {
-          t = setInterval(scrolling, speed);
-          o.scrollTop += 1;
-        }
-
-        function scrolling() {
-          if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
-            preTop = o.scrollTop;
-            o.scrollTop += 1;
-                  ////console.log(preTop)
-            ////console.log(o.scrollHeight)
-            ////console.log(o.scrollTop)
-            if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
-
-
-            ////console.log("asd")
-                  // that.getData2()
-                that.getdata3()
-//  that.echart2() //机台产量对比统计图
-//                 that.echart1() //验布疵点排序统计图
-              
-//               for(var i = 1; i < 1000; i++) {
-// t=clearInterval(i);
-// }
-t=clearInterval(t)
-t=null
-//  that.timer=clearInterval(that.timer)
-//                  that.changeWorkshopTiming()
-                
-
-                that.startmarquee3(30, 50, 80)
-          
-            }
-          } else {
-           t= clearInterval(t);
-            setTimeout(start, delay);
-          }
-        }
-        setTimeout(start, delay);
-      },
-      
-      getdata3() { //今日已穿综记录
-        let that = this
-        axios({
-            url: host1 + '/report/getSimpleReport',
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              'companyId': that.companyId
-            },
-            data: {
-
-              tableName: "wear_weaving",
-              sort: "DESC",
-              sortColumn: "create_time",
-              query: {
-                status: 2
-              }
-
-            }
-
-          })
-          .then(res => {
-            ////console.log(res)
-            for (let i = 0; i < res.data.data.length; i++) {
-              if (res.data.data[i].machine_id == -1) {
-                res.data.data[i].machine_id = "手工穿综"
-              }
-            }
-            that.yczList = res.data.data
-            that.yczListLength = res.data.data.length
-
-          })
-      },
-            startmarquee2(lh, speed, delay) {
-        let that = this
-       
         let o = document.getElementById("s2")
         var t;
         var oHeight = o.offsetHeight; /**/ /** div的高度 **/
@@ -674,32 +456,32 @@ t=null
           if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
             preTop = o.scrollTop;
             o.scrollTop += 1;
-                  ////console.log(preTop)
-            ////console.log(o.scrollHeight)
-            ////console.log(o.scrollTop)
+            //////console.log(preTop)
+            //////console.log(o.scrollHeight)
+            //////console.log(o.scrollTop)
             if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
 
 
-            ////console.log("asd")
-                  // that.getData2()
-                that.getdata2()
-//  that.echart2() //机台产量对比统计图
-//                 that.echart1() //验布疵点排序统计图
-              
-//               for(var i = 1; i < 1000; i++) {
-// t=clearInterval(i);
-// }
-t=clearInterval(t)
-t=null
-//  that.timer=clearInterval(that.timer)
-//                  that.changeWorkshopTiming()
-                
+              //////console.log("asd")
+              // that.getData2()
+              that.getdata2()
+              //  that.echart2() //机台产量对比统计图
+              //                 that.echart1() //验布疵点排序统计图
 
-                that.startmarquee2(30, 50, 80)
-          
+              //               for(var i = 1; i < 1000; i++) {
+              // t=clearInterval(i);
+              // }
+              t = clearInterval(t)
+              t = null
+              //  that.timer=clearInterval(that.timer)
+              //                  that.changeWorkshopTiming()
+
+
+              that.startmarquee2(30, 50, 80)
+
             }
           } else {
-           t= clearInterval(t);
+            t = clearInterval(t);
             setTimeout(start, delay);
           }
         }
@@ -727,7 +509,7 @@ t=null
 
           })
           .then(res => {
-            ////////console.log(res)
+            //////////console.log(res)
             let list = res.data.data
             list = list.reduce((obj, item) => {
               let find = obj.find(i => i.product_name === item.product_name)
@@ -738,7 +520,7 @@ t=null
               find ? (find.root_number += item.root_number, find.frequency++) : obj.push(_d)
               return obj
             }, [])
-            ////////console.log(list)
+            //////////console.log(list)
             list = that.sortByKey(list, "root_number")
             let list2 = []
             for (let i = list.length - 1; i >= 0; i--) {
@@ -749,13 +531,12 @@ t=null
 
           })
       },
- 
-      getdata() { //今日待穿综记录
+      getdata2() { //今日待穿综记录
         let date = this.getNowFormatDate()
         let that = this
-        that.tableData=[]
-        that.tableData2=[]
-        ////////console.log(date)
+
+        that.tableData2 = []
+        //////////console.log(date)
         axios({
             url: host1 + '/report/getSimpleReport',
             method: 'post',
@@ -766,7 +547,7 @@ t=null
             data: {
 
               tableName: "wear_weaving_plan",
-                 sort: "ASC",
+              sort: "ASC",
               sortColumn: "status",
               selectLikeFields: {
                 // update_time:date
@@ -774,40 +555,81 @@ t=null
               // query: {
               //   status: 0
               // },
-              pageNum:1,
-              pageSize:100
+              pageNum: 1,
+              pageSize: 100
 
             }
 
           })
           .then(response => {
-console.log(response)
+            //console.log(response)
             for (let i = 0; i < response.data.data.length; i++) {
-              if(response.data.data[i].status==2){
-  that.tableData2.push(response.data.data[i])
-} //今日已完成列表
-              if(response.data.data[i].workshop_id==1){
-                response.data.data[i].workshop="一分厂"
-              }else if(response.data.data[i].workshop_id==2){
-                response.data.data[i].workshop="二分厂"
-              }else if(response.data.data[i].workshop_id==3){
-                response.data.data[i].workshop="三分厂"
-              }
-              if(response.data.data[i].status==0){
-                response.data.data[i].status="未开始"
-              }else  if(response.data.data[i].status==1){
-                response.data.data[i].status="进行中"
-              }
-             that.tableData.push(response.data.data[i])
+              if (response.data.data[i].status == 2) {
+                that.tableData2.push(response.data.data[i])
+              } //今日已完成列表
+
 
             }
-            console.log(that.tableData2)
-        
+            //console.log(that.tableData2)
+
           })
       },
-                  startmarquee(lh, speed, delay) {
+      getdata() { //今日待穿综记录
+        let date = this.getNowFormatDate()
         let that = this
-       
+        that.tableData = []
+
+        //////////console.log(date)
+        axios({
+            url: host1 + '/report/getSimpleReport',
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'companyId': that.companyId
+            },
+            data: {
+
+              tableName: "wear_weaving_plan",
+              sort: "ASC",
+              sortColumn: "status",
+              selectLikeFields: {
+                // update_time:date
+              },
+              // query: {
+              //   status: 0
+              // },
+              pageNum: 1,
+              pageSize: 100
+
+            }
+
+          })
+          .then(response => {
+            //console.log(response)
+            for (let i = 0; i < response.data.data.length; i++) {
+
+              if (response.data.data[i].workshop_id == 1) {
+                response.data.data[i].workshop = "一分厂"
+              } else if (response.data.data[i].workshop_id == 2) {
+                response.data.data[i].workshop = "二分厂"
+              } else if (response.data.data[i].workshop_id == 3) {
+                response.data.data[i].workshop = "三分厂"
+              }
+              if (response.data.data[i].status == 0) {
+                response.data.data[i].status = "未开始"
+              } else if (response.data.data[i].status == 1) {
+                response.data.data[i].status = "进行中"
+              }
+              that.tableData.push(response.data.data[i])
+
+            }
+
+
+          })
+      },
+      startmarquee(lh, speed, delay) {
+        let that = this
+
         let o = document.getElementById("s1")
         var t;
         var oHeight = o.offsetHeight; /**/ /** div的高度 **/
@@ -825,193 +647,49 @@ console.log(response)
           if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
             preTop = o.scrollTop;
             o.scrollTop += 1;
-                  ////console.log(preTop)
-            ////console.log(o.scrollHeight)
-            ////console.log(o.scrollTop)
+            //////console.log(preTop)
+            //////console.log(o.scrollHeight)
+            //////console.log(o.scrollTop)
             if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
 
 
-      
-                  // that.getData2()
-                that.getdata()
-//  that.echart2() //机台产量对比统计图
-//                 that.echart1() //验布疵点排序统计图
-              
-//               for(var i = 1; i < 1000; i++) {
-// t=clearInterval(i);
-// }
-t=clearInterval(t)
-t=null
-//  that.timer=clearInterval(that.timer)
-//                  that.changeWorkshopTiming()
-                
 
-                that.startmarquee(30, 50, 80)
-          
+              // that.getData2()
+              that.getdata()
+              //  that.echart2() //机台产量对比统计图
+              //                 that.echart1() //验布疵点排序统计图
+
+              //               for(var i = 1; i < 1000; i++) {
+              // t=clearInterval(i);
+              // }
+              t = clearInterval(t)
+              t = null
+              //  that.timer=clearInterval(that.timer)
+              //                  that.changeWorkshopTiming()
+
+
+              that.startmarquee(30, 50, 80)
+
             }
           } else {
-           t= clearInterval(t);
+            t = clearInterval(t);
             setTimeout(start, delay);
           }
         }
         setTimeout(start, delay);
       },
-      echart() {
-        //////console.log(this.product_nameList)
-        //////console.log(this.root_numberList)
-        let myChart1 = this.$echarts.init(document.getElementById('echart'));
-        // 绘制图表
-        myChart1.clear();
-        let that = this;
-        let option = {
-          color: ['#FB9A99', '#33A02C', '#B2DF8A', '#A6CEE3', '#1F78B4'],
-          title: {
 
-            left: "center",
-            top: "3%",
-            textStyle: {
-              color: "#00FFDC",
-              fontSize: 18,
-              fontWeight: "normal"
-            },
-            text: "品种产量对比"
-          },
-
-          legend: {
-            orient: 'vertical',
-            right: "16%",
-            type: 'scroll',
-            textStyle: {
-              color: "#fff"
-            },
-            top: '25%',
-            data: that.product_nameList
-          },
-
-          series: [{
-            label: { //去除饼图的指示折线label
-              normal: {
-                show: false,
-                position: 'inside',
-                formatter: "{b}:{d}%"
-              },
-            },
-            name: '访问来源',
-            type: 'pie',
-            radius: '70%',
-            center: ['30%', '60%'],
-            data: that.root_numberList,
-
-          }]
-        };
-        myChart1.setOption(
-          option);
-        window.addEventListener('resize', function () {
-          myChart1.resize();
-        })
-      },
-      echart2() {
-        let myChart1 = this.$echarts.init(document.getElementById('echart2'));
-        // 绘制图表
-        myChart1.clear();
-        let that = this
-
-   
-
-        let option = {
-
-          title: {
-
-            left: "center",
-            top: "3%",
-            textStyle: {
-              color: "#00FFDC",
-              fontSize: 18,
-              fontWeight: "normal"
-            },
-            text: "每日产量对比"
-          },
-          xAxis: {
-            type: 'category',
-            data: that.xList,
-            axisLabel: {
-              show: true,
-              textStyle: {
-                color: "rgba(238,219,219,1)",
-                fontSize: 10
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255, 255, 255, 0)",
-                width: 1
-              }
-            },
-            axisTick: {
-              show: false
-            }
-          },
-
-          legend: {
-            right: "5%",
-            top: "17%",
-            textStyle: {
-              color: "#fff"
-            },
-            data: that.legendList
-          },
-          yAxis: {
-            type: 'value',
-            name: "米",
-            nameTextStyle: {
-              color: "#979797",
-              fontSize: 10
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                type: 'dashed',
-                color: "#979797",
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255, 255, 255, 0)",
-                width: 1
-              }
-            },
-            nameLocation: "end",
-            axisLabel: {
-              show: true,
-              textStyle: {
-                color: "#979797",
-                fontSize: 10
-              }
-            },
-          },
-          grid: {
-            left: '10%',
-            bottom: "12%",
-            top: '40%',
-            right: "8%"
-          },
-          series: that.sList
-        };
-
-        //////console.log(option)
-        myChart1.setOption(
-          option);
-        window.addEventListener('resize', function () {
-          myChart1.resize();
-        })
-      },
-            changeWorkshopTiming: function () {
+      changeWorkshopTiming: function () {
         const timer = setInterval(() => {
 
-  
-      this.getdata3()
-      this.getdata4()
-      this.getclph()
+
+          this.getsum()
+
+
+          this.getWearAnalysis()
+          this.getdata()
+          this.getdata2()
+          this.getdata4()
           //  this.getdata()
         }, 15000);
         // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
@@ -1028,32 +706,27 @@ t=null
 
     },
     mounted() {
-      this.companyId=this.$route.params.id
-      if(this.companyId=="10000022"){
-        this.companyname="祥嘉"
-            host1="http://47.99.156.243:8227"
-      }else if(this.companyId=="10000012"){
-        this.companyname="七星"
-    
+      this.companyId = this.$route.params.id
+      if (this.companyId == "10000022") {
+        this.companyname = "祥嘉"
+        host1 = "http://47.99.156.243:8227"
+      } else if (this.companyId == "10000012") {
+        this.companyname = "七星"
+
       }
       this.getsum()
-      this. clEchart()
-   
-      this.rotate()
+
+
+      this.getWearAnalysis()
       this.getdata()
-      // this.getdata()
-      // this.getdata2()
-  
-      // this.getdata3()
-      //     this. startmarquee2(30,50,80)
-      // this.startmarquee(30,50,80)
-      // this.startmarquee3(30,50,80)
-       this.getdata4()
-      //  this.getclph()
+      this.getdata2()
+      this.getdata4()
+      //  this. changeWorkshopTiming()
+      this.startmarquee2(30, 50, 80)
+      this.startmarquee(30, 50, 80)
+      this.rotate()
 
 
-
-      //   this.getData()
       //      const timer = setTimeout(() => {
 
       //  this.startmarquee(30, 30, 80)
@@ -1102,7 +775,7 @@ t=null
 
   .board {
     width: 100%;
-    height:48rem;
+    height: 48rem;
     /* height: 71%; */
     display: flex;
     align-items: center;
@@ -1122,18 +795,20 @@ t=null
     height: 47%;
     margin-bottom: 2%;
     display: flex;
-flex-direction: column;
-overflow: auto;
-    background: rgb(15,49,83);
+    flex-direction: column;
+    overflow: auto;
+    background: rgb(15, 49, 83);
   }
+
   .board_con_top_con {
     width: 100%;
-  height: 2.6rem;
-    
+    height: 2.6rem;
+
     display: flex;
-    
+
   }
-   .board_con_top_con_one {
+
+  .board_con_top_con_one {
     width: 11.1%;
     height: 100%;
     color: white;
@@ -1143,32 +818,35 @@ overflow: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
   }
 
   .board_con_bottom {
     width: 100%;
-     height: 47%;
- 
-  display: flex;
-  align-items: center;
+    height: 47%;
+
+    display: flex;
+    align-items: center;
   }
-    .board_con_bottom_left {
+
+  .board_con_bottom_left {
     width: 60%;
-     height: 100%;
+    height: 100%;
 
-  display: flex;
+    display: flex;
 
   }
+
   .board_con_bottom_left_left {
     width: 50%;
-     height: 100%;
+    height: 100%;
 
-  display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
   }
-  .board_con_bottom_left_left_title{
+
+  .board_con_bottom_left_left_title {
     width: 99%;
     height: 4rem;
     font-size: 1.7rem;
@@ -1180,60 +858,66 @@ flex-direction: column;
     border-radius: 8px;
     justify-content: center;
   }
-    .board_con_bottom_left_left_tablehead{
+
+  .board_con_bottom_left_left_tablehead {
     width: 100%;
     height: 2.85rem;
     font-size: 1.3rem;
     font-weight: 500;
     color: white;
-       background: rgb(15,49,83);
-   
+    background: rgb(15, 49, 83);
+
     display: flex;
- 
+
   }
-   .board_con_bottom_left_left_tablehead_one{
+
+  .board_con_bottom_left_left_tablehead_one {
     width: 33.3%;
     height: 2.8rem;
 
     border-right: 1px solid black;
     border-bottom: 1px solid black;
-   
+
     display: flex;
     align-items: center;
     justify-content: center;
- 
+
   }
-    .board_con_bottom_left_right {
+
+  .board_con_bottom_left_right {
     width: 50%;
-     height: 100%;
+    height: 100%;
 
-  display: flex;
+    display: flex;
 
   }
-  
-    .board_con_bottom_right {
+
+  .board_con_bottom_right {
     width: 40%;
-     height: 100%;
- 
-  display: flex;
+    height: 100%;
+
+    display: flex;
 
 
   }
-     .board_con_bottom_right_img {
+
+  .board_con_bottom_right_img {
     width: 40%;
-     height: 100%;
-   position: relative;
+    height: 100%;
+    position: relative;
 
 
   }
-  .img1{
+
+  .img1 {
     width: 11rem;
     height: 11rem;
     position: absolute;
-        left: 15px;
+    left: 15px;
     top: 15px;
   }
-  .img_span{
+
+  .img_span {
     position: absolute;
     width: 6rem;
     height: 6rem;
@@ -1241,10 +925,11 @@ flex-direction: column;
     flex-direction: column;
     font-size: 1.5rem;
     color: white;
-      left: 33px;
+    left: 33px;
     top: 35px;
   }
-    .img_span2{
+
+  .img_span2 {
     position: absolute;
     width: 6rem;
     height: 6rem;
@@ -1252,34 +937,37 @@ flex-direction: column;
     flex-direction: column;
     font-size: 1.5rem;
     color: white;
-      left: 35px;
+    left: 35px;
     top: 37px;
   }
-  .img1 img{
-     width: 11rem;
+
+  .img1 img {
+    width: 11rem;
     height: 11rem;
-      
+
   }
 
-    .img2{
-     width: 11rem;
+  .img2 {
+    width: 11rem;
     height: 11rem;
     position: absolute;
-        right: 0px;
+    right: 0px;
     bottom: 0px;
-   
+
   }
-      .img2 img{
-     width: 11rem;
+
+  .img2 img {
+    width: 11rem;
     height: 11rem;
- 
+
   }
-       .board_con_bottom_right_echart {
+
+  .board_con_bottom_right_echart {
     width: 60%;
-     height: 100%;
- 
+    height: 100%;
+
 
 
   }
-  
+
 </style>
