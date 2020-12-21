@@ -271,10 +271,7 @@ var test="http://106.12.219.66:8227"
     data() {
       return {
         staff_name: "",
-        // staff_name2: "",
-        //    staff_name3: "",
         isTable: true,
-
         staff_code: "",
         staff_code2: "",
         machine_code: "",
@@ -286,7 +283,6 @@ var test="http://106.12.219.66:8227"
           machineId: "",
           isFenJiao: true,
           isJieJing: true, //代表0.1
-
         }],
         dataListCon: [{
           id: 1,

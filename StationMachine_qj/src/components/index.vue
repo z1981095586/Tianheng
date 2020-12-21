@@ -39,7 +39,7 @@
       </div>
     </div>
     <MyMachine
-      :staff_id="staff_id"
+      :staff_id="staffId"
       :staff_name="staff_name"
       v-show="isMyMachine"
     ></MyMachine>
@@ -51,11 +51,7 @@
       v-show="isRepair"
       :isUpdate="isRepair"
     ></RepairMachine>
-    <Maitance
-      :staff_id="staff_id"
-      :staff_name="staff_name"
-      v-show="isMaitance"
-    ></Maitance>
+    <Maitance :staff_id="staffId" :staff_name="staff_name" v-show="isMaitance"></Maitance>
     <el-dialog
       :visible.sync="showNameTable"
       width="800px"
@@ -184,13 +180,15 @@ export default {
   methods: {
     close() {
       console.log(this.staff_name);
+
       if (this.staff_name != null) {
         this.showNameTable = false;
+        return;
       } else {
-        this.$message({
-          message: "请先登录！",
-          type: "warning",
-        });
+        // this.$message({
+        //   message: "请先登录！",
+        //   type: "warning",
+        // });
         this.showNameTable = true;
       }
     },

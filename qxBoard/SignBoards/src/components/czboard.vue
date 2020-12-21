@@ -178,6 +178,7 @@
 
               // if(element.ddate.substr(5,2)==String(m)){
               xList.push(element.ddate)
+              //   xList.push(element.ddate.substr(8,2))
               yList.push(element.rootNumber)
               // }
 
