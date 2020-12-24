@@ -1,60 +1,38 @@
 <template>
-  <div class="content" >
+  <div class="content">
 
-    <!-- <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">维修记录</span>
-    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back"></i> -->
-
-    <!--出库单详细-->
     <div class="all-page">
-
-
-      <div class="query">
-        <span style="margin-left:10px;font-size:0.5em;margin-right:10px">机台号</span>
-        <el-input size="small" style="width:20%;" v-model="selectInfo.machineId"></el-input>
-        <span style="margin:10px;font-size:0.5em">故障搜索</span>
-        <el-input size="small" style="width:39%;" v-model="selectInfo.errorReason"></el-input>
-
+      <div class="input">
+        <input @keyup.13="search(true)" type="search" ref="input1" placeholder="输入机台号" v-model="machineId" />
+        <input @keyup.13="search(true)" type="search" ref="input1" placeholder="输入人员" v-model="staff_name" /> <i
+          class="el-icon-search" style="font-size:1.3rem;"></i>
       </div>
-      <div class="query">
-        <span style="margin-left:10px;font-size:0.5em;margin-right:10px">开始时间</span>
-        <el-date-picker v-model="selectInfo.startDate" type="date" style="width:30%;margin-right:10px" size="small"
-          value-format="yyyy-MM-dd">
-        </el-date-picker>
-        <span style="margin-left:5px;font-size:0.5em;margin-right:5px">结束时间</span>
-        <el-date-picker v-model="selectInfo.endDate" type="date" style="width:30%;margin-right:10px" size="small"
-          value-format="yyyy-MM-dd" >
-        </el-date-picker>
 
-      </div>
-      <div class="query">
-        <span style="margin:10px;font-size:0.5em">零部件使用</span>
-        <el-input size="small" style="width:48%;" v-model="selectInfo.parts"></el-input>
-        <el-button type="primary" style="width:20%;margin-left:2.5%" size="mini" @click="getData(true)">搜索</el-button>
-      </div>
-      <div class="table">
-        <div class="table_con">
-          <el-table :data="tableData" :header-cell-style="headerCellStyle" :cell-style="cellStyle"
-            @cell-click="cellCick" border max-height="440" style="width: 100%;font-size:0.5em;">
-            <el-table-column prop="machineId" width="65" label="机台号">
-            </el-table-column>
-            <el-table-column prop="date" width="70" label="处理时间">
-            </el-table-column>
-            <el-table-column prop="errorReason" width="75" label="故障描述">
-            </el-table-column>
-            <el-table-column prop="solve" label="处理办法">
-            </el-table-column>
-            <el-table-column prop="img1" width="70" label="图片">
-              <template slot-scope="scope">
-                <el-image :src="scope.row.img1" lazy :preview-src-list="urls"></el-image>
-              </template>
-            </el-table-column>
-          </el-table>
+      <scroller height="100%" :onRefresh="refresh" :onInfinite="inf" ref="my_scroller">
+        <div class="scroller">
+          <div v-for="(item,index) in tableData" :key="'data_'+index" class="cardBox">
+            <div class="cardBox_con">
+              <div class="line"></div>
+              <div class="cardBox_con_con" @click="toDetail(item)">
+
+                <span style="width:100%;text-align:left;margin-bottom:0.5rem">机台号：{{item.machineId}}</span>
+                <div
+                  style="width:100%;text-align:left;display:flex;font-size:0.8rem;color:rgba(0,0,0,0.5);justify-content: space-between;margin-bottom:0.5rem">
+                  <span style="wdith:50%;">故障类型：{{item.errorReason}}</span><span
+                    style="width:50%;">描述：{{item.remark}}</span></div>
+                <span
+                  style="width:100%;text-align:left;font-size:0.8rem;color:rgba(0,0,0,0.5);margin-bottom:0.5rem">处理方式：{{item.solve}}</span>
+                <span
+                  style="width:100%;text-align:left;font-size:0.8rem;color:rgba(0,0,0,0.5);margin-bottom:1rem">使用配件：{{item.parts}}</span>
+                <div
+                  style="width:100%;text-align:left;display:flex;font-size:0.8rem;color:rgba(0,0,0,0.8);justify-content: space-between;margin-bottom:0rem">
+                  <span>维修人：{{item.repairPerson}}</span><span>完成时间：{{item.date}}</span></div>
+              </div>
+            </div>
+          </div>
+
         </div>
-
-      </div>
-
-      <el-pagination class="bottom" background layout="prev, next" :total="total" @prev-click="prev" @next-click="next">
-      </el-pagination>
+      </scroller>
 
     </div>
 
@@ -64,84 +42,124 @@
 
 <script>
   import axios from 'axios'
-
+  import VueScroller from "vue-scroller" //引入vue-scroller，用来做上拉加载下拉刷新
   export default {
     name: 'repairHistory',
     data() {
       return {
-        urls: [
-          "http://47.110.95.57/Img_compress/20200409110500pic1.jpg",
-        ],
+
         tableData: [],
         selectInfo: {
           company_id: '',
-          startDate: "",
-          endDate: "",
-          parts: "",
-          errorReason: "",
-          machineId: ""
+
         },
+        staff_name: "",
+        machineId: "",
         pageNum: 1,
-        total: null
+        pageSize: 4,
+        total: null,
+        IsSearch: false
       }
     },
     methods: {
-      prev() { //上一页
-        if (this.pageNum > 1) {
-          this.pageNum--;
-          this.getData()
-        }
-      },
-      next() { //下一页
-        this.pageNum++;
+      search() {
+        this.IsSearch = true
+        this.tableData = []
         this.getData()
+
       },
-      back() { 
+
+      toDetail(data) {
+        this.$router.push({ //跳转并传参数
+          path: '/repairHistoryDetail',
+          name: 'repairHistoryDetail',
+          params: {
+            data: data,
+            company_id: this.selectInfo.company_id
+          }
+
+        })
+      },
+      back() {
         nativeMethod.closeActivity();
       },
-      headerCellStyle() {
-        return "background:rgb(204,204,204);color:black;padding: 2px 0;    text-align: center;"
+      refresh() { //下拉刷新函数
+        this.pageNum = 1;
+        this.tableData = [];
+        setTimeout(() => { //不设置定时器会出现bug
+          this.getData(); //获取数据列表
+          this.$refs.my_scroller.finishPullToRefresh(); //关闭下拉刷新函数
+        }, 500);
       },
-      cellStyle() {
-        return "padding: 5px 0;    text-align: center;"
+      inf() {
+
+
+        setTimeout(() => {
+
+          if (this.tableData.length == this.total) { //如果数据总条数等于当前数据列表长度了，那就关闭上拉加载了
+
+            this.$refs.my_scroller.finishInfinite(true);
+            return;
+          } else if (this.tableData.length == 0) { //如果查到没数据了，那就关闭上拉加载了
+            this.$refs.my_scroller.finishInfinite(true);
+            return;
+          } else { //否则就++，获取下一页数据
+            this.pageNum++;
+            this.IsSearch = false
+            this.getData();
+          }
+
+        }, 500);
+
+
       },
-      cellCick(row, column, cell, event) { //显示大图
-        this.urls = []
-        if (row.img1 != null) {
-          this.urls.push(row.img1)
-        }
-        if (row.img2 != null) {
-          this.urls.push(row.img2)
-        }
-        if (row.img3 != null) {
-          this.urls.push(row.img3)
-        }
-      },
-      getData(IsSearch) {//获取数据
+
+      getData() { //获取数据
         let url = "http://106.12.219.66:8227/report/getRepairSubmit"
         let that = this
-       if(IsSearch==true){
-         that.pageNum=1
-       }
+        if (this.IsSearch == true) {
+          that.pageNum = 1
+        }
+        console.log(this.IsSearch)
+        console.log(that.pageNum)
         axios({
             url: url,
             method: "post",
             data: {
-              "startDate": that.selectInfo.startDate,
-              "endDate": that.selectInfo.endDate,
-              "machineId": that.selectInfo.machineId,
-              "errorReason": that.selectInfo.errorReason,
-              "parts": that.selectInfo.parts,
+
+              "machineId": that.machineId,
+
+              repairPerson: that.staff_name,
               "pageNum": that.pageNum,
-              "pageSize": 4
+              "pageSize": that.pageSize
             },
             headers: {
               companyId: that.selectInfo.company_id
             }
           })
           .then(res => {
-            that.total = res.data.data.total
-            that.tableData = res.data.data.list
+
+
+            if (res.data.data.list.length == 0) {
+
+              that.$refs.my_scroller.finishInfinite(true)
+              return
+            } else {
+              that.total = res.data.data.total //设置数据总条数
+              that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
+              for (let i = 0; i < res.data.data.list.length; i++) {
+                res.data.data.list[i].parts = res.data.data.list[i].parts.replace(/,/g, ""); //取消字符串中出现的所有逗号 
+
+                that.tableData.push(res.data.data.list[i])
+              }
+
+              if (that.tableData.length == that.total) {
+                that.$refs.my_scroller.finishInfinite(true) //上拉获取数据回调函数停止使用
+              } else {
+                that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
+              }
+            }
+
           })
       },
     },
@@ -149,56 +167,98 @@
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
-      });     
+      });
       this.selectInfo.company_id = this.$route.params.company_id;
+      this.tableData = []
       this.getData()
 
+    },
+    watch: {
+      machineId(val) {
+        if (val == "") {
+
+
+          this.search()
+        }
+      },
+      staff_name(val) {
+        if (val == "") {
+
+          this.search()
+        }
+      },
     }
   }
 
 </script>
 
 <style scoped>
-  .bottom {
-    position: fixed;
-    bottom: 17px;
-    left: 35%;
-  }
-  .table {
+  .cardBox {
+    height: 11rem;
     width: 100%;
-    height: 75%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
-  .table_con {
-    width: 95%;
-    height: 95%;
-    border-top: 1px solid grey;
+
+  .cardBox_con {
+    width: 90%;
+    height: 90%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+
   }
-  .table_body {
+
+  .cardBox_con_con {
+    width: 90%;
+    height: 90%;
+    display: flex;
+
+    flex-direction: column;
+    align-items: flex-start;
+
+  }
+
+  .line {
+    position: absolute;
+    bottom: 2.5rem;
     width: 100%;
-    height: 93%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
   }
-  .query /deep/ .el-input--suffix .el-input__inner {
-    padding-right: 0;
+
+  .scroller {
+    height: 80%;
+    overflow: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
   }
-  .query /deep/ .el-range-editor--small .el-range-input {
-    font-size: 0.5em;
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
-  .shortselect3 {
+
+  .shortselect {
     border: 0;
     display: block;
     position: relative;
     min-height: 1.146667rem;
     line-height: 1.146667rem;
     white-space: nowrap;
-    padding-left: 30px;
-    padding-right: 30px;
-    width: 40%;
-    height: 32px;
-    border: 1px solid #DCDFE6;
-    border-radius: 4px;
+    position: fixed;
+    right: 15px;
+    top: 12px;
     font-size: 12px;
     color: rgb(21, 153, 204);
     overflow: hidden;
@@ -213,63 +273,351 @@
 
   .all-page /deep/ ._v-container {
     position: absolute;
-    top: 19%;
+    top: 50px;
+    left: 0;
+
   }
 
-  span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .select span {
+
+
+    margin-top: 0px;
+
+    font-size: 12px;
+    outline: none;
+
+
+    color: rgb(21, 153, 204);
+
+
+    border-radius: 4px;
+
+
+    width: 80px;
+    position: fixed;
+    top: 10px;
+    right: 0px;
+
   }
 
+  .text {
+
+
+    height: 20px;
+
+
+    -webkit-appearance: none;
+
+
+    appearance: none;
+
+
+    border: none;
+
+
+    font-size: 12px;
+
+
+    padding: 0px 10px;
+
+
+    display: block;
+
+
+    width: 100%;
+
+
+    -webkit-box-sizing: border-box;
+
+
+    box-sizing: border-box;
+
+
+    background-color: #FFFFFF;
+
+
+    color: rgb(65, 152, 199);
+
+
+    border-radius: 4px;
+
+
+  }
+
+
+
+  .el-dropdown {
+    color: #606266;
+    font-size: 17px;
+    /* float: right; */
+    /* position: absolute; */
+    width: 100px;
+    position: fixed;
+    right: 0px;
+    top: 10px;
+  }
+
+  .bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .content {
+    position: relative;
+    overflow: auto;
+    padding-top: 10px;
+  }
+
+
+
+
+  .submit {
+    width: 49%;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(49, 153, 102);
+    color: white;
+  }
+
+  .cancel {
+    width: 49%;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(255, 153, 102);
+    color: white;
+  }
+
+  .add {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .input-number {
+    width: 29%;
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+  }
+
+
+
+  .input {
+    width: 100%;
+    height: 42px;
+
+    padding-bottom: 5px;
+    background: white;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+  }
+
+  .input input {
+    width: 47%;
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid #DCDFE6;
+  }
+
+  .input input:focus {
+    outline: none;
+
+  }
+
+  .input i {
+    position: absolute;
+    right: 35px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+
+  }
+
+  .input input::-webkit-input-placeholder {
+    font-size: 0.7rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .contain {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .all-page {
-    /* margin-top: 12px; */
+
     width: 100%;
+
     height: 100vh;
-    background-color: #f5f5f5;
+
+    background-color: rgb(242, 242, 242);
     display: flex;
     flex-direction: column;
     position: fixed;
     left: 0;
+
   }
-  .query {
-    width: 100%;
-    height: 6%;
+
+  .head {
+    width: 95%;
+    height: 30px;
     display: flex;
+    justify-content: space-around;
+
+  }
+
+  .line {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
-  .scroller {
-    height: 80%;
-    overflow: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+  .line-con {
+    width: 95%;
+    height: 1.5px;
+    background: rgb(242, 242, 245);
   }
+
   .card {
-    width: 90%;
-    height: 200px;
-    background: white;
+    width: 95%;
+    height: 80px;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
+    background: white;
+    font-size: 0.9rem;
+    position: relative;
+    font-weight: 400;
+    border-radius: 4px;
+  }
+
+  .card_border {
+    width: 95%;
+    height: 80px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    font-size: 0.9rem;
+    position: relative;
+    font-weight: 400;
+    border: 1px solid red;
+    border-radius: 4px;
+  }
+
+  .check {
+    position: absolute;
+    right: 15px;
+    top: 23px;
+
+  }
+
+  .el-checkbox__inner {
+    border-radius: 8px;
+  }
+
+  .check .el-checkbox .el-checkbox__input .el-checkbox__inner {
+    border-radius: 8px;
+  }
+
+  .check /deep/ .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: red;
+    border-color: red;
+  }
+
+  .card2 {
+    width: 95%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    font-size: 0.9rem;
+
+    font-weight: 400;
+  }
+
+  .card-head {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
   }
-  .card-con {
+
+  .card-head span {
+    margin-left: 5px;
+  }
+
+  .card-content {
+    width: 100%;
+    height: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-content2 {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content-one {
     width: 90%;
+    display: flex;
+
+  }
+
+  .content-one span {
+    width: 50%;
     text-align: left;
-    line-height: 37px;
-    height: 37px;
-    color: black;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
   }
-  .detail {
+
+  .content-two {
     width: 90%;
-    height: 44px;
+    display: flex;
+
+  }
+
+  .content-two span {
+    margin-right: 10px;
+    text-align: left;
+
+  }
+
+  .con {
+    width: 45%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    color: red;
+    justify-content: flex-start;
+    font-size: 0.9rem;
+
+    font-weight: 400;
   }
+
+  .con span {
+    margin-left: 5px;
+  }
+
 </style>

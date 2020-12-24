@@ -73,23 +73,48 @@
               style="margin-right:9rem;margin-left:3rem">品号：扫码后显示</span><span>色号</span><span>轴号</span><span>整经长度</span>
           </div>
         </div>
-        <div class="con1_bottom">
-          <div class="con1_bottom_con">
+        <div class="con1_bottom" style="    display: flex;
+    flex-direction: column;">
+<div style="display:flex;justify-content: space-around;width:100%;">
+          <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号1</span>
-            <input v-model="cz1" />
+            <input v-model="cz1" style="width:7rem;" />
           </div>
-          <div class="con1_bottom_con">
+          <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号2</span>
-            <input v-model="cz2" />
+            <input v-model="cz2" style="width:7rem;" />
           </div>
-          <div class="con1_bottom_con">
+          <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号3</span>
-            <input v-model="cz3" />
+            <input v-model="cz3" style="width:7rem;" />
           </div>
-          <div class="con1_bottom_con">
+          <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号4</span>
-            <input v-model="cz4" />
+            <input v-model="cz4"  style="width:7rem;" />
           </div>
+</div>
+<div style="display:flex;justify-content: space-around;width:100%;">
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号1系数</span>
+            <input v-model="xs1" style="width:7rem;" v-show="xsFlag1" />
+              <input v-model="xs1" style="width:7rem;" disabled v-show="!xsFlag1" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号2系数</span>
+         <input v-model="xs2" style="width:7rem;" v-show="xsFlag2" />
+              <input v-model="xs2" style="width:7rem;" disabled v-show="!xsFlag2" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号3系数</span>
+       <input v-model="xs3" style="width:7rem;" v-show="xsFlag3" />
+              <input v-model="xs3" style="width:7rem;" disabled v-show="!xsFlag3" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号4系数</span>
+            <input v-model="xs4" style="width:7rem;" v-show="xsFlag4" />
+              <input v-model="xs4" style="width:7rem;" disabled v-show="!xsFlag4" />
+          </div>
+</div>
         </div>
       </div>
       <div class="con2">
@@ -233,6 +258,14 @@
         cz2: "",
         cz3: "",
         cz4: "",
+        xs1:"",
+        xs2:"",
+        xs3:"",
+        xs4:"",
+        xsFlag1:false,
+        xsFlag2:false,
+        xsFlag3:false,
+        xsFlag4:false,
         gs: "",
         fcr: "",
         ndxs: "",
@@ -355,6 +388,36 @@
           this.enabled3 = false
           this.printCode = ""
         }
+      },
+      cz1(val){
+        console.log(val)
+           if(val==""){
+             this.xsFlag1=false
+           }else{
+             this.xsFlag1=true
+           }
+          
+      },
+           cz2(val){
+           if(val==""){
+             this.xsFlag2=false
+           }else{
+             this.xsFlag2=true
+           }
+      },
+           cz3(val){
+           if(val==""){
+             this.xsFlag3=false
+           }else{
+             this.xsFlag3=true
+           }
+      },
+           cz4(val){
+           if(val==""){
+             this.xsFlag4=false
+           }else{
+             this.xsFlag4=true
+           }
       },
       queryShow(val) { //当选择上轴组页面显示时加载数据
         if (val == true) {
@@ -513,7 +576,7 @@ body{
 
   .head {
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     height: 4rem;
     background: #317CCD;
     display: flex;
@@ -542,7 +605,7 @@ body{
 
   .con1_top {
     width: 100%;
-    height: 50%;
+    height: 7rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -563,7 +626,7 @@ body{
 
   .con1_bottom {
     width: 100%;
-    height: 46%;
+    height: 9rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -621,7 +684,7 @@ body{
 
   .btns {
     width: 10rem;
-    height: 70%;
+    height: 62%;
     background: #A3D897;
     border-top: 3px solid #ffffff;
     border-left: 3px solid #ffffff;

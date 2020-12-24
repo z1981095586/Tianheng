@@ -591,6 +591,7 @@
 
         this.getRootCategories()
       }
+   
 
     },
     watch: {

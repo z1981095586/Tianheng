@@ -179,8 +179,6 @@ export default {
   },
   methods: {
     close() {
-      console.log(this.staff_name);
-
       if (this.staff_name != null) {
         this.showNameTable = false;
         return;

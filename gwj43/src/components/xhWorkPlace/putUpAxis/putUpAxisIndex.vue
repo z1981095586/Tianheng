@@ -326,7 +326,7 @@
               <img id="right_down" :src="arrow_icon" :style="{top:downArrowTop,left:arrowRight,width:arrowWidth}" style="position: fixed;webkit-transform: rotate(-90deg);z-index:1" @click="right_down" v-show="radio != 'radio2'">
             </div>
        
-            <jiejing  v-show="radio =='radio5'" :barCode="barCode"></jiejing>
+            <jiejing  v-show="radio =='radio5'" :shift="shift"  :workShopId="workShopId" :barCode="barCode"></jiejing>
             <div class="left-bottomDiv" :style="{height: scrollerHeightBottomDiv}" id="rightDiv"  @mousedown="mousedown1" @touchstart="mousedown1" @mousemove="move1" @mouseup="end1" @touchmove.prevent="move1"  @touchend="end1" v-show="radio!='radio5'"   >
               <table class="radioTable"  style="width: 95%" cellspacing="20px" v-show="radio === 'radio1'&&all_order_list[0]">
                 <tr>
@@ -474,7 +474,7 @@
     components:{headComponent,setAxleTable,outputSubmitTable,outputPrintTable,changeStaffMessage,printClothCard,keyBoardTable,jiejing},
     data () {
       return {
-       
+      shift:"",
         buttonList:"1234567890",
         buttonSetting:"",
         companyId:10000015,
@@ -970,6 +970,7 @@
         this.$refs.headComponent.changeMainTitle("天衡织造工位操作系统");//调用headComponent中的方法,在页面html部分中用ref定义组件,然后用$refs.headComponent
         this.workShopId = this.$refs.headComponent.getWorkShop();
         this.$refs.headComponent.sendMachineType("030100", this.workshopId);
+       
         // this.getData();
         this.getMachineList();
         this.machineSchedule();
@@ -1286,18 +1287,70 @@
       confirmAddPermission() {
 
       },
-      addDate(time) {
-        let date = new Date();
-        let month = date.getMonth() + 1;
-        if (month < 10) {
-          month = "0" + month
+      // addDate(time) {
+      //   let date = new Date();
+      //   let month = date.getMonth() + 1;
+      //   if (month < 10) {
+      //     month = "0" + month
+      //   }
+      //   let day = date.getDate();
+      //   if (day < 10) {
+      //     day = "0" + day
+      //   }
+      //   return date.getFullYear() + "-" + month + "-" + day + " " + time;
+      // },
+      addDate(time1,time2){
+        let date =  new Date();
+        let month = date.getMonth()+1;
+        if(month<10){
+          month="0"+month
         }
         let day = date.getDate();
-        if (day < 10) {
-          day = "0" + day
+        if(day<10){
+          day="0"+day
         }
-        return date.getFullYear() + "-" + month + "-" + day + " " + time;
+        let currentTime = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
+        let startTime = parseInt(time1.substring(0,2))*3600+parseInt(time1.substring(3,5))*60+parseInt(time1.substring(6,8));
+        let endTime = parseInt(time2.substring(0,2))*3600+parseInt(time2.substring(3,5))*60+parseInt(time2.substring(6,8));
+        if(startTime>endTime){
+          if(startTime>currentTime){
+            let date1 =  new Date();
+            date1.setTime(date1.getTime()-24*60*60*1000);
+            let month1 = date1.getMonth()+1;
+            if(month1<10){
+              month1="0"+month
+            }
+            let day1 = date1.getDate();
+            if(day1<10){
+              day1="0"+day
+            }
+            return {
+              st:date1.getFullYear()+"-" + month1 + "-" + day1+" "+time1,
+              et:date.getFullYear()+"-"+month+"-"+day+" "+time2
+            };
+          }else{
+            let date2 =  new Date();
+            date2.setTime(date2.getTime()+24*60*60*1000);
+            let month2 = date2.getMonth()+1;
+            if(month2<10){
+              month2="0"+month
+            }
+            let day2 = date2.getDate();
+            if(day2<10){
+              day2="0"+day
+            }
+            return {
+              st:date.getFullYear()+"-"+month+"-"+day+" "+time1,
+              et:date2.getFullYear()+"-" + month2 + "-" + day2+" "+time2
+            };
+          }
+        }else{
+          return {st:date.getFullYear()+"-"+month+"-"+day+" "+time1,
+            et:date.getFullYear()+"-"+month+"-"+day+" "+time2
+          };
+        }
       },
+
       rightLabelClick(item) {
         console.log(item);
         if (this.clickedRightLabel) {
@@ -1702,10 +1755,15 @@
         data.printCode = this.barCode;
         data.staffId = this.staff_id;
         let shiftObject = this.$refs.headComponent.getShiftName();
+        // if(shiftObject&&shiftObject.id){
+        //     data.shiftWork = shiftObject.id-1;
+        //     data.shiftStartDatetime = this.addDate(shiftObject.startTime);
+        //     data.shiftEndDatetime =  this.addDate(shiftObject.endTime);
+        // }
         if(shiftObject&&shiftObject.id){
-            data.shiftWork = shiftObject.id-1;
-            data.shiftStartDatetime = this.addDate(shiftObject.startTime);
-            data.shiftEndDatetime =  this.addDate(shiftObject.endTime);
+          data.shiftWork = shiftObject.id-1;
+          data.shiftStartDatetime = this.addDate(shiftObject.startTime,shiftObject.endTime).st;
+          data.shiftEndDatetime =  this.addDate(shiftObject.startTime,shiftObject.endTime).et;
         }
         console.log(data);
         let url = "/pce-mac-beam/upperBeam";
@@ -1909,6 +1967,7 @@
       window.onresize = () => {
         this.changeWindow();
       };
+
       // alert(this.scrollerWidthLeft);
     },
     computed:{
@@ -1917,6 +1976,9 @@
       }
     },
     watch:{
+      staff_name(val){
+ this.shift=this.$refs.headComponent.getShiftName()
+      },
       watchLoadingState(newVal,oldVal) {
         if(newVal){
           clearTimeout(this.$store.state.commonClock);

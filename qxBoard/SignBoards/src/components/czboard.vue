@@ -25,13 +25,13 @@
                 {{item.product_name}}
               </div>
               <div class="board_con_top_con_one">
-                {{item.mac_type_name}}
+                {{item.machine_id}}
               </div>
               <div class="board_con_top_con_one">
                 {{item.beam_num}}
               </div>
               <div class="board_con_top_con_one">
-                {{item.mac_type_id}}
+                {{item.mac_type_name}}
               </div>
               <div class="board_con_top_con_one">
                 {{item.status}}
@@ -88,14 +88,14 @@
               <div class="img1">
                 <img src="../../static/img/circle2.png" id="img1" />
                 <div class="img_span">
-                  <span>{{sum1Name}}今日穿综根数</span>
+                  <span>S40今日穿综根数</span>
                   <span>{{sum1}}</span>
                 </div>
               </div>
               <div class="img2">
                 <img src="../../static/img/circle2.png" id="img2" />
                 <div class="img_span2">
-                  <span>{{sum2Name}}今日穿综根数</span>
+                  <span>S60今日穿综根数</span>
                   <span>{{sum2}}</span>
                 </div>
               </div>
@@ -358,23 +358,69 @@
 
               tableName: "wear_weaving",
               pageNum: 1,
-              pageSize: 2,
-              selectLikeFields: {
-                create_date: this.getNowFormatDate()
-              },
+              pageSize: 3,
+           
 
               selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
-              groupByColumn: ['machine_id']
+              groupByColumn: ['machine_id'],
+              query:{
+                machine_id:"S40"
+              }
 
             }
 
           })
           .then(response => {
-            //console.log(response)
-            that.sum1 = response.data.data[0].sum
-            that.sum2 = response.data.data[1].sum
-            that.sum1Name = response.data.data[0].machine_id
-            that.sum2Name = response.data.data[1].machine_id
+            console.log(response)
+            // let arr=[]
+            // response.data.data.forEach(element => {
+            //   if(element.machine_id!="-1"){
+            //     arr.push(element)
+            //   }
+            // });
+             that.sum1 =response.data.data[0].sum
+            // that.sum2 = arr[1].sum
+      
+          })
+            axios({
+            url: host1 + '/report/getSimpleReport',
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'companyId': this.companyId
+            },
+            data: {
+
+              tableName: "wear_weaving",
+              pageNum: 1,
+              pageSize: 3,
+           
+
+              selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
+              groupByColumn: ['machine_id'],
+              query:{
+                machine_id:"S60"
+              }
+
+            }
+
+          })
+          .then(response => {
+            console.log(response)
+            // let arr=[]
+            // response.data.data.forEach(element => {
+            //   if(element.machine_id!="-1"){
+            //     arr.push(element)
+            //   }
+            // });
+            if(response.data.data.length>0){
+that.sum2 =response.data.data[0].sum
+            }else{
+              that.sum2 =0
+            }
+             
+            // that.sum2 = arr[1].sum
+      
           })
       },
       sortByKey(array, key) {
@@ -551,10 +597,10 @@
               sort: "ASC",
               sortColumn: "status",
               selectLikeFields: {
-                // update_time:date
+                 update_time:date
               },
               // query: {
-              //   status: 0
+              //   status: 2
               // },
               pageNum: 1,
               pageSize: 100
@@ -563,13 +609,10 @@
 
           })
           .then(response => {
-            //console.log(response)
+            console.log(response)
             for (let i = 0; i < response.data.data.length; i++) {
-              if (response.data.data[i].status == 2) {
                 that.tableData2.push(response.data.data[i])
-              } //今日已完成列表
-
-
+              //今日已完成列表
             }
             //console.log(that.tableData2)
 
@@ -619,15 +662,35 @@
               if (response.data.data[i].status == 0) {
                 response.data.data[i].status = "未开始"
               } else if (response.data.data[i].status == 1) {
-                response.data.data[i].status = "进行中"
+                // let num= that.GetPercent(response.data.data[i].finish_beam_num,response.data.data[i].beam_num) 
+                response.data.data[i].status = "进行中("+response.data.data[i].finish_beam_num+"/"+response.data.data[i].beam_num+")"
+               
+              } else if (response.data.data[i].status == 2) {
+                response.data.data[i].status = "已完成"
               }
-              that.tableData.push(response.data.data[i])
+              if( response.data.data[i].status!="已完成"){
+that.tableData.push(response.data.data[i])
+              }
+              
 
             }
 
 
           })
       },
+       GetPercent(num, total) {
+    /// <summary>
+    /// 求百分比
+    /// </summary>
+    /// <param name="num">当前数</param>
+    /// <param name="total">总数</param>
+    num = parseFloat(num);
+    total = parseFloat(total);
+    if (isNaN(num) || isNaN(total)) {
+        return "-";
+    }
+    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
+},
       startmarquee(lh, speed, delay) {
         let that = this
 

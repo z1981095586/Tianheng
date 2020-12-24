@@ -10,6 +10,7 @@
           <div class="radio5Table_head_con" style="width:25%"><span>机台号</span></div>
           <div class="radio5Table_head_con"><span>是否分绞</span></div>
           <div class="radio5Table_head_con"><span>结经次数</span></div>
+               <div class="radio5Table_head_con"><span>删除</span></div>
         </div>
         <div class="radio5Table_con">
           <div class="radio5Table_con_row" v-for="(item,index) in dataList" :key="index">
@@ -29,7 +30,13 @@
                 <span>1</span></div>
               <div class="table_btn" @click="changejiejing(item.id)"
                 :style=" !item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
-                <span>0.1</span></div>
+                <span>0.5</span></div>
+            </div>
+                <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
+            
+              <div class="table_btn" @click="deleteItems(item.id)"
+                style=" background:red;color:white;border:none;border-radius:8px;">
+                <span>删除</span></div>
             </div>
           </div>
         </div>
@@ -102,13 +109,13 @@
               :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
               <el-option value="1">1
               </el-option>
-              <el-option value="0.1">0.1
+              <el-option value="0.5">0.5
               </el-option>
             </el-select>
             <!-- <select v-model="item.JieJing" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
               :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'">
               <option value="1">1</option>
-              <option value="0.1">0.1</option>
+              <option value="0.5">0.5</option>
             </select>
             
             <i class="el-icon-arrow-down" style="
@@ -267,9 +274,10 @@
   import axios from 'axios'
     import { warp_api } from "../../../../static/api/api.js";
   export default {
-    props:['barCode'],
+     props:['barCode','shift'],
     data() {
       return {
+          workShopId:"",
         staff_name: "",
         // staff_name2: "",
         //    staff_name3: "",
@@ -285,14 +293,14 @@
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.1
+          isJieJing: true, //代表0.5
 
         }],
         dataListCon: [{
           id: 1,
           machineId: "",
           isFenJiao: true,
-           isJieJing: true, //代表0.1
+           isJieJing: true, //代表0.5
 
         }],
         SelectDataList: [{
@@ -302,7 +310,7 @@
           isEdit: false,
           staff_name: "周品道",
 
-          JieJing: "", //代表0.1
+          JieJing: "", //代表0.5
 
         }],
         showNameTable: false,
@@ -388,7 +396,7 @@ this.SelectDataList.forEach(element => {
        if(element.JieJing=="1"){
             data.stopWarping="1"
            }else{
-             data.stopWarping="0.1"
+             data.stopWarping="0.5"
            }
   
         warp_api(url, data, this.companyId)
@@ -427,13 +435,15 @@ this.SelectDataList.forEach(element => {
              if(element.isJieJing==true){
              json.stopWarping="1"
            }else{
-             json.stopWarping="0.1"
+             json.stopWarping="0.5"
            }
            json.machineId=element.machineId
            json.printCode=this.barCode
            json.staffId=this.staffId
            json.staffName=this.staff_name
-          
+            json.workshopId=this.workShopId
+          json.shiftStartDatetime=this.getNowFormatDate()+" "+this.shift.startTime
+           json.shiftEndDatetime=this.getNowFormatDate()+" "+this.shift.endTime
            stopWarpingReports.push(json)
            json={}
          });
@@ -464,7 +474,7 @@ this.SelectDataList.forEach(element => {
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.1
+          isJieJing: true, //代表0.5
 
         }]
         this.dataListCon=this.dataList
@@ -473,6 +483,21 @@ this.SelectDataList.forEach(element => {
             console.log(error);
           });
            }
+      },
+            getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
       },
             getData() {
         let url = test+'/report/getSimpleReport';
@@ -485,9 +510,9 @@ this.SelectDataList.forEach(element => {
           "tableName": "stop_warping_report",
           "pageNum": this.pageNum2,
           "pageSize": this.pageSize2,
-// query:{
-//   warping_id:String(this.order_list.id)
-// }
+query:{
+  workshop_id:String(this.workShopId)
+},
         };
 
         let that = this
@@ -515,8 +540,8 @@ this.SelectDataList.forEach(element => {
                }
                  if(element.stop_warping==1){
               element.JieJing="1"
-               }else if(element.stop_warping==0.1){
-                  element.JieJing="0.1"
+               }else if(element.stop_warping==0.5){
+                  element.JieJing="0.5"
                }else{
                   element.JieJing=""
                }
@@ -555,12 +580,28 @@ this.SelectDataList.forEach(element => {
         this.isStaff = id
 
       },
-      addRow() { //新增一行
-        this.dataListCon.push({
+     addRow() { //新增一行
+ 
+        if(this.dataListCon.length==0&&this.dataList.length==0){
+               this.dataList=[{
+          id: 1,
+          machineId: "",
+          isFenJiao: true,
+          isJieJing: true, //代表0.5
+        }];
+        this.dataListCon=[{
+          id: 1,
+          machineId: "",
+          isFenJiao: true,
+           isJieJing: true, //代表0.5
+
+        }]
+        }else{
+       this.dataListCon.push({
           id: this.dataListCon.length + 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.1
+          isJieJing: true, //代表0.5
         })
         if (this.dataListCon.length % 3 == 1) {
           this.pageNum = this.pageNum + 1
@@ -568,8 +609,9 @@ this.SelectDataList.forEach(element => {
         } else {
           this.dataList = this.pagination(this.pageNum, this.pageSize, this.dataListCon)
         }
-        // //console.log(this.dataListCon)
-        // //console.log(this.dataList)
+        }
+        console.log(this.dataListCon)
+        console.log(this.dataList)
 
 
 
@@ -618,18 +660,43 @@ this.SelectDataList.forEach(element => {
           });
         }
       },
-      changefenjiao(id) { //改变分绞状态
+          changefenjiao(id,isFenJiao) { //改变分绞状态
  
         this.dataList.forEach(element => {
+             if(element.id==id){
+           if(isFenJiao==element.isFenJiao){
+
+           }else{
+             element.isFenJiao=!element.isFenJiao
+           }
+             }
+        });
+      },
+      deleteItems(id){
+      
+         this.dataList.forEach(element => {
+             
           if(element.id==id){
-            element.isFenJiao=!element.isFenJiao
+            this.dataList.splice(this.dataList.indexOf(element),1)
+          }
+        });
+        
+         this.dataListCon.forEach(element => {
+             
+          if(element.id==id){
+            this.dataListCon.splice(this.dataListCon.indexOf(element),1)
           }
         });
       },
-      changejiejing(id) { ///改变结经状态
+      changejiejing(id,isJieJing) { ///改变结经状态
             this.dataList.forEach(element => {
+             
           if(element.id==id){
-            element.isJieJing=!element.isJieJing
+           if(isJieJing==element.isJieJing){
+
+           }else{
+             element.isJieJing=!element.isJieJing
+           }
           }
         });
 
@@ -667,7 +734,8 @@ this.SelectDataList.forEach(element => {
           "pageSize": 1000,
           "selectFields": ["staff_code", "staff_name"],
           'query': {
-            staff_code: this.staff_code
+            staff_code: this.staff_code,
+                 workshop_id:this.workShopId
           }
         };
 
@@ -786,7 +854,8 @@ this.SelectDataList.forEach(element => {
           "pageSize": 1000,
           "selectFields": ["staff_code", "staff_name"],
           'query': {
-            staff_code: this.staff_code2
+            staff_code: this.staff_code2,
+                 workshop_id:this.workShopId
           }
         };
 
@@ -834,12 +903,15 @@ this.SelectDataList.forEach(element => {
     mounted() {
       let params = this.$route.params.params.split(",");
       this.companyId = params[1];
-       
+         this.workShopId=params[2]
     },
     destroyed() {
 
     },
     watch: {
+      shift(val){
+console.log(val)
+      },
       dataList: { //datalist改变datalistcon也改变数据
         deep: true, //深度监听设置为 true
         handler: function (newV, oldV) {
@@ -860,14 +932,14 @@ this.SelectDataList.forEach(element => {
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.1
+            isJieJing: false, //代表0.5
 
           }]
           this.dataListCon = [{
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.1
+            isJieJing: false, //代表0.5
 
           }]
           this.pageNum = 1
