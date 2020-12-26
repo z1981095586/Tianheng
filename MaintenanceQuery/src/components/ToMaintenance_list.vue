@@ -17,6 +17,7 @@
           <span>保养历史记录</span><i class="el-icon-arrow-right"></i>
         </div>
 
+
       </div>
       <div class="choose2" @click="toCheck()">
         <div class="choose-con">
@@ -115,7 +116,6 @@
 
     },
     mounted() {
-      // this.macRelation.machine_id = this.$route.params.machine_id;
       this.operator = this.$route.params.operator
       this.selectInfo.company_id = this.$route.params.company_id;
       this.staff_id= this.$route.params.staff_id
@@ -184,3 +184,5 @@
     justify-content: space-around;
   }
 </style>
+
+

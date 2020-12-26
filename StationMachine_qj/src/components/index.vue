@@ -139,6 +139,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      workshopId: this.$route.params.workshopId,
       company_id: "10000015",
       workshop_id: "",
       showNameTable: true,
@@ -229,6 +230,7 @@ export default {
         // selectFields: ["staff_code", "staff_name"],
         query: {
           staff_code: this.staff_code,
+          workshop_id: this.workshopId,
         },
       };
 
@@ -323,7 +325,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(this.workshopId);
+  },
   watch: {
     // isMyMachine(val) {
     //   if (val == true) {

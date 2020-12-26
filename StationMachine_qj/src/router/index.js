@@ -7,7 +7,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:workshopId',
       name: 'index',
       component: index
     },

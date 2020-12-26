@@ -496,6 +496,7 @@ export default {
   data() {
     return {
       IndexShow: true,
+      workshopId: this.$route.params.workshopId,
       MachineShow: false, //选择机台显示隐藏
       MaintanceShow: false, //
       MaterialsTypeShow: false, //选零配件种类
@@ -1082,7 +1083,7 @@ export default {
 
           for (let i = 0; i < res.data.data.productModel.length; i++) {
             //push消耗物料数据
-            // res.data.data.productModel[i].stockQuantitydata = res.data.data.product[i].stockQuantity
+
             res.data.data.productModel[i].isinputShow = false;
             res.data.data.productModel[i].stockQuantityShow = 0;
             res.data.data.productModel[i].id = res.data.data.productModel[i].product_id;
@@ -1096,16 +1097,7 @@ export default {
       this.noSaveDialog = true;
     },
   },
-  mounted() {
-    for (let i = 0; i < 20; i++) {
-      this.materialsList.push({
-        num: 0,
-        id: i,
-        name: "螺杆机" + i,
-        ischecked: false,
-      });
-    }
-  },
+  mounted() {},
   watch: {
     //监听页面显示执行相应的获取数据函数
     isWaitMaintance(val) {
@@ -1156,7 +1148,6 @@ export default {
         this.getInventory();
       }
     },
-
     drawer(val) {
       //查看零配件
       if (val == true) {
@@ -1164,7 +1155,6 @@ export default {
         this.getInventory2();
       }
     },
-
     MachineShow(val) {
       if (val == true) {
         this.page_num = 1;
@@ -1176,6 +1166,10 @@ export default {
 </script>
 
 <style scoped>
+.el-checkbox-button__inner {
+  border: 1px solid #dcdfe6;
+  border-left: 1px solid #dcdfe6;
+}
 .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
   font-size: 2rem;
   padding: 20px 27px;

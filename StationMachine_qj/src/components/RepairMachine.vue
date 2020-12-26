@@ -555,11 +555,12 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "RepairMachine",
-  props: ["isUpdate","staff_name"],
+  props: ["isUpdate", "staff_name"],
   data() {
     return {
       MachineShow: true, //选择机台显示隐藏
       MaintanceShow: false, //
+      workshopId: this.$route.params.workshopId,
       MaterialsTypeShow: false, //选零配件种类
       MaterialsShow: false, //物料界面
       repairShow: false, //维修界面
@@ -805,7 +806,16 @@ export default {
           console.log(res);
           let arr = JSON.parse(res.data.repair_history);
           arr.forEach((element) => {
-            that.machineListCon.push(element);
+            if (
+              !element.repair_typename ||
+              element.repair_typename == "" ||
+              element.repair_typename == null
+            ) {
+              element.repair_typename = "未填写";
+            }
+            if (that.workshopId.indexOf(element.workshop_id) != -1) {
+              that.machineListCon.push(element);
+            }
           });
           that.total_num = that.machineListCon.length;
           that.machineList = that.pagination(1, that.page_size, that.machineListCon);

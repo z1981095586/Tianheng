@@ -606,10 +606,8 @@ this.pageNum=this.pageNum+1
 
       },
       addName2(id) {
-
         this.showNameTable2 = true
         this.id2 = id
-
         this.focusInput2 = "staff_code"
         this.isadd2 = true
         console.log(document.getElementById("staffcode"))
@@ -646,6 +644,7 @@ this.pageNum=this.pageNum+1
         this.focusInput = focusInput
       },
       selectTableButton2(buttonName) {
+ 
         console.log(document.getElementById("staffcode"))
         if (this.focusInput2 === "num") {
           this.num2 += "";
@@ -729,9 +728,7 @@ this.pageNum=this.pageNum+1
         console.log(this.id2)
         // let key=0
         this.showData.forEach(element => {
-        //  if(key==0){
-        //    key=1
-        //  }
+   
           element.nameList = []
           if (element.id == this.id2) {
             console.log(element.id)
@@ -801,7 +798,6 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
 
                 } else {
                   this.$message.warning("员工号不正确!");
-
                 }
                 this.staff_code2 = ""
               })
@@ -874,7 +870,7 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
       this.getOpiton()
       let params = this.$route.params.params.split(",");
 
-       console.log(params)
+      console.log(params)
       this.companyId = params[1];
       this.getData()
       console.log(document.getElementById("num2"))
@@ -893,7 +889,6 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
         }
       },
           otherProduceDialogShow(val){
-   
        if(val==true){
           this.isSelect=true
        }
@@ -916,8 +911,7 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
   letter-spacing:4px
 }
   .add {
- 
-    width: 30%;
+width: 30%;
 height:5rem;
 margin-right: 1rem;
     display: flex;

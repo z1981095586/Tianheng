@@ -47,11 +47,9 @@
     name: 'repairHistory',
     data() {
       return {
-
         tableData: [],
         selectInfo: {
           company_id: '',
-
         },
         staff_name: "",
         machineId: "",
@@ -126,10 +124,8 @@
             url: url,
             method: "post",
             data: {
-
               "machineId": that.machineId,
-
-              repairPerson: that.staff_name,
+              "repairPerson": that.staff_name,
               "pageNum": that.pageNum,
               "pageSize": that.pageSize
             },
@@ -149,7 +145,6 @@
               that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
               for (let i = 0; i < res.data.data.list.length; i++) {
                 res.data.data.list[i].parts = res.data.data.list[i].parts.replace(/,/g, ""); //取消字符串中出现的所有逗号 
-
                 that.tableData.push(res.data.data.list[i])
               }
 
@@ -158,6 +153,7 @@
               } else {
                 that.$refs.my_scroller.finishInfinite(false) //上拉获取数据回调函数停止使用
               }
+           
             }
 
           })
@@ -171,19 +167,15 @@
       this.selectInfo.company_id = this.$route.params.company_id;
       this.tableData = []
       this.getData()
-
     },
     watch: {
       machineId(val) {
         if (val == "") {
-
-
           this.search()
         }
       },
       staff_name(val) {
         if (val == "") {
-
           this.search()
         }
       },
@@ -218,10 +210,8 @@
     width: 90%;
     height: 90%;
     display: flex;
-
     flex-direction: column;
     align-items: flex-start;
-
   }
 
   .line {
@@ -272,6 +262,9 @@
   }
 
   .all-page /deep/ ._v-container {
+
+
+    
     position: absolute;
     top: 50px;
     left: 0;
@@ -279,42 +272,22 @@
   }
 
   .select span {
-
-
     margin-top: 0px;
-
     font-size: 12px;
     outline: none;
-
-
     color: rgb(21, 153, 204);
-
-
     border-radius: 4px;
-
-
     width: 80px;
     position: fixed;
     top: 10px;
     right: 0px;
-
   }
 
   .text {
-
-
     height: 20px;
-
-
     -webkit-appearance: none;
-
-
     appearance: none;
-
-
     border: none;
-
-
     font-size: 12px;
 
 

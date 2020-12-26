@@ -160,16 +160,11 @@
     name: 'repairHistoryDetail',
     data() {
       return {
-
-
         selectInfo: {
           company_id: '',
-
         },
         data: {},
         noImage: null
-
-
       }
     },
     methods: {
@@ -209,8 +204,7 @@
       }
 
       this.data = this.$route.params.data
-      //   this.tableData=[]
-      //    this.getData()
+      
 
     }
   }
@@ -236,17 +230,14 @@
     align-items: flex-end;
     justify-content: center;
     position: relative;
-
   }
 
   .cardBox_con_con {
     width: 90%;
     height: 90%;
     display: flex;
-
     flex-direction: column;
     align-items: flex-start;
-
   }
 
   .line {
@@ -287,12 +278,9 @@
     margin-top: 10px;
     width: 90%;
     height: 92%;
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
-
   }
 
   .choose {

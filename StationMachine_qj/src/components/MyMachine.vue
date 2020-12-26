@@ -507,6 +507,7 @@ export default {
   data() {
     return {
       IndexShow: true,
+      workshopId: this.$route.params.workshopId,
       MachineShow: false, //选择机台显示隐藏
       MaintanceShow: false, //
       MaterialsTypeShow: false, //选零配件种类
@@ -748,8 +749,10 @@ export default {
             console.log(res);
             let arr = JSON.parse(res.data.repair_history);
             arr.forEach((element) => {
-              element.machineId = element.machine_id;
-              that.machineListCon.push(element);
+              if (that.workshopId.indexOf(element.workshop_id) != -1) {
+                element.machineId = element.machine_id;
+                that.machineListCon.push(element);
+              }
             });
             that.total_num = that.machineListCon.length;
             that.machineList = that.pagination(
@@ -1325,6 +1328,10 @@ export default {
 </script>
 
 <style>
+.el-checkbox-button__inner {
+  border: 1px solid #dcdfe6;
+  border-left: 1px solid #dcdfe6;
+}
 .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
   font-size: 2rem;
   padding: 20px 27px;

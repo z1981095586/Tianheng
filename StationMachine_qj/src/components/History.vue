@@ -294,7 +294,10 @@
             :label="item.id"
             :key="index"
             ><span>机台号：{{ item.machine_id }}</span
-            ><span style="margin: 0.5rem">{{ item.operator }}</span
+            ><span style="margin: 0.5rem" v-show="item.operator != ''">{{
+              item.operator
+            }}</span
+            ><span style="margin: 0.5rem" v-show="item.operator == ''">未填写</span
             ><span>保养时间：{{ item.maintain_time }}</span>
           </el-checkbox-button>
         </el-checkbox-group>
@@ -352,6 +355,7 @@ export default {
   name: "History",
   data() {
     return {
+      workshopId: this.$route.params.workshopId,
       company_id: "10000015",
       isMainShow: true, //页面显示隐藏
       repairShow: false,
@@ -436,7 +440,16 @@ export default {
           console.log(res);
           let arr = JSON.parse(res.data.repair_history);
           arr.forEach((element) => {
-            that.machineListCon.push(element);
+            if (
+              element.submit_person == "" ||
+              !element.submit_person ||
+              element.submit_person == null
+            ) {
+              element.submit_person = "未填写";
+            }
+            if (that.workshopId.indexOf(element.workshop_id) != -1) {
+              that.machineListCon.push(element);
+            }
           });
           that.total_num = that.machineListCon.length;
           that.machineList = that.pagination(
@@ -505,7 +518,6 @@ export default {
                     that.repairParts.push(that.repairPartsCon[i]);
                   }
                 }
-                console.log(that.repairParts);
                 that.repairSolve = arr[0].solve;
               });
           }
@@ -590,6 +602,7 @@ export default {
       this.checkedCities = val ? this.cities : [];
       this.isIndeterminate = false;
     },
+
     peijianBack() {
       if (this.isRepair == true) {
         this.peijianShow = false;
@@ -599,6 +612,7 @@ export default {
         this.maitanceShow = true;
       }
     },
+
     xiangciBack() {
       if (this.isRepair == true) {
         this.xiangciShow = false;
@@ -613,15 +627,7 @@ export default {
       let that = this;
       that.machineList = [];
       let maintainMainRecord = {};
-      // if (that.macRelation.machine_id != "") {
-      //   maintainMainRecord = {
-      //     machine_id: that.macRelation.machine_id
-      //   }
-      // } else {
-      //   maintainMainRecord = {
 
-      //   }
-      // }
       axios
         .post(
           url,
@@ -639,7 +645,6 @@ export default {
           {}
         )
         .then(function (res) {
-          console.log(res);
           that.total_num = res.data.result.total_data_num;
           res.data.result.maintainRecord.forEach((element) => {
             that.machineList.push(element);
@@ -649,24 +654,6 @@ export default {
   },
   mounted() {},
   watch: {
-    // isRepair(val) {
-    //   this.checkMachine = [];
-    //   this.repairPeople = "";
-    //   this.repairTime = "";
-    //   this.repairParts = [];
-    //   this.repairPartsCon = [];
-    //   this.repairReason = "";
-    //   this.repairSolve = "";
-
-    //   this.total_num = null;
-    //   this.page_num = 1;
-    //   this.page_size = 9;
-    //   if (val == true) {
-    //     this.getRepairList();
-    //   } else {
-    //     this.getMaitanceList();
-    //   }
-    // },
     ListShow(val) {
       if (val == true) {
         this.checkMachine = [];
@@ -676,15 +663,12 @@ export default {
         this.repairPartsCon = [];
         this.repairReason = "";
         this.repairSolve = "";
-
         this.total_num = null;
         this.page_num = 1;
         this.page_size = 9;
         if (this.isRepair == true) {
           this.getRepairList();
         } else {
-          console.log("11");
-
           this.getMaitanceList();
         }
       }
@@ -748,7 +732,6 @@ export default {
   background: grey;
   color: white;
   width: 11%;
-
   float: left;
   height: 43%;
   margin-bottom: 0.2rem;
@@ -780,7 +763,6 @@ export default {
 .Maintance_btn {
   width: 95%;
   height: 20%;
-
   display: flex;
   align-items: center;
 }
@@ -802,7 +784,6 @@ export default {
 .Maintance_machine {
   width: 95%;
   height: 15%;
-
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -819,10 +800,8 @@ export default {
 
 .Maintance_machine .span1 {
   font-size: 1.5rem;
-
   display: -ms-flexbox;
   display: flex;
-
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -834,7 +813,6 @@ export default {
 .pz_left {
   width: 45%;
   height: 80%;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -867,7 +845,6 @@ export default {
   width: 100%;
   height: 2rem;
   display: flex;
-
   align-items: center;
   color: black;
 }
