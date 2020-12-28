@@ -1407,6 +1407,7 @@ export default {
   justify-content: flex-start;
 }
 
+
 .search input {
   border: 1px solid #000;
   height: 3rem;
@@ -1890,9 +1891,14 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
-  display: flex;
+    white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   font-size: 1.5rem;
 }
 

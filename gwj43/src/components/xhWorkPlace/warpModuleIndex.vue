@@ -1236,15 +1236,7 @@
       changeWorker(){
         this.$refs.headComponent.changeWorker();
       },
-      // clickDetailsChangeStaff(item){
-      //   if(this.selectId!== item.id){
-      //     this.selectId = item.id;
-      //     if(item.currentStaffId){
-      //       this.staff_id = item.currentStaffId;
-      //     }
-      //     this.$refs.headComponent.changeStaff(this.staff_id);
-      //   }
-      // }
+
       otherOutput(){
         this.showotherProduct= true;
 

@@ -626,26 +626,28 @@ export default {
       let url = "http://120.55.124.53:8206/api/maintain/getMaintainRecordPage";
       let that = this;
       that.machineList = [];
-      let maintainMainRecord = {};
+      let maintainMainRecord = {
+        workshop_id: that.workshopId,
+      };
 
       axios
         .post(
           url,
           {
             maintainMainRecord,
-
             selectInfo: {
               company_id: that.company_id,
               page_size: that.page_size,
               page_num: that.page_num,
-              // start_time: that.start_time,
-              // end_time: that.end_time
             },
           },
           {}
         )
         .then(function (res) {
           that.total_num = res.data.result.total_data_num;
+          if (res.data.result.maintainRecord.length == 0) {
+            that.total_num = 0;
+          }
           res.data.result.maintainRecord.forEach((element) => {
             that.machineList.push(element);
           });
@@ -692,7 +694,6 @@ export default {
 .material_ones {
   width: 13%;
   margin-left: 4rem;
-
   float: left;
   height: 16%;
   margin-bottom: 0.5rem;
@@ -754,10 +755,15 @@ export default {
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
-  display: flex;
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
+  justify-content: center; */
+  font-size: 1.5rem;
 }
 
 .Maintance_btn {

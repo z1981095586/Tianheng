@@ -778,6 +778,7 @@ export default {
             {
               macRelation: {
                 mac_type_id: that.mac_type_id,
+                workshop_id: that.workshopId,
               },
               selectInfo: {
                 company_id: that.company_id,
@@ -1903,9 +1904,14 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
-  display: flex;
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   font-size: 1.5rem;
 }
 

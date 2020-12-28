@@ -31,15 +31,15 @@
     </div>
 
   </div> -->
-  <div class="content" style="padding-top:10px;">
+  <div class="content" >
 
-    <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">维修详情</span>
-    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back()"></i>
+    <!-- <span style="font-size: 1rem;font-weight: bold;margin-bottom: -1rem">维修详情</span>
+    <i class="el-icon-arrow-left" style="position:fixed;left:17px;top:13px;" @click="back()"></i> -->
 
     <!--出库单详细-->
     <div class="all-page">
       <div class="all-page_con">
-        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);    height: 2.3%;">基础信息</span>
+        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);  ">基础信息</span>
         <div class="cardBox" style="    height: 27%;">
           <div class="cardBox_con">
             <div class="line"></div>
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);    height: 2.3%;">使用零配件</span>
+        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);    ">使用零配件</span>
         <div class="cardBox" style="    height: 20%;">
           <div class="cardBox_con">
 
@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);    height: 2.3%;">维修照片</span>
+        <span style="font-size:0.8rem;color:rgba(0,0,0,0.5);    ">维修照片</span>
         <div class="cardBox" style="height: 14%;">
           <div class="cardBox_con">
 
@@ -263,7 +263,7 @@
   }
 
   .all-page {
-    margin-top: 12px;
+  
     width: 100%;
     height: 100vh;
     background-color: #f5f5f5;
@@ -277,7 +277,7 @@
   .all-page_con {
     margin-top: 10px;
     width: 90%;
-    height: 92%;
+    height: 98%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
