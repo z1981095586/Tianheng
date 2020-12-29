@@ -6,6 +6,7 @@ import board from '../components/board'
 import board2 from '../components/board2'
 import board3 from '../components/board3'
 import board4 from '../components/board4'
+import  boardRy from '../components/boardRy.vue'; //瑞域广华织造看板
 import ybBoard from '../components/ybBoard'
 import ybBoard2 from '../components/ybBoard2'
 import ybBoard3 from '../components/ybBoard3'
@@ -58,6 +59,12 @@ export default new Router({
       name:'board3',
       component:board3
     },
+    {
+      path:"/boardRy/:id",
+      name:'boardRy',
+      component:boardRy
+    },
+
     {
       path:"/board4/:id/:groups",
       name:'board4',

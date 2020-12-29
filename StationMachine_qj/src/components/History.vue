@@ -226,12 +226,7 @@
     <!--项次详情-->
     <div
       class="operationPane_con"
-      style="
-        display: flex;
-
-        align-items: center;
-        flex-direction: column;
-      "
+      style="display: flex; align-items: center; flex-direction: column"
       v-show="xiangciShow"
     >
       <span style="font-size: 1.5rem; margin: 1rem">项次详情</span>
@@ -347,7 +342,6 @@
 <script>
 let host = "http://120.55.124.53:12140";
 import axios from "axios";
-import keyboard from "@/components/keyboard";
 export default {
   components: {
     keyboard,
