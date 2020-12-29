@@ -54,12 +54,12 @@
         <div class="radio5Btn_one" style="background:rgb(135,146,141);    margin-right: 7rem;" @click="isTable=false">记录
         </div>
         <div class="radio5Btn_one2" style="justify-content: space-around; width:14rem;   height: 70%;"><img
-            style="width:5rem;height:5rem" src="/static/picture/arrow2.png" @click="LastPage()" /><img
+            style="width:5rem;height:5rem" :src="imgsrc" @click="LastPage()" /><img
             @click="NextPage()" style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
                  -o-transform: rotate(180deg);
                  -ms-transform: rotate(180deg);
-                 transform: rotate(180deg);" src="/static/picture/arrow2.png" /></div>
+                 transform: rotate(180deg);" :src="imgsrc" /></div>
       </div>
     </div>
     <div class="radio5_con" v-show="!isTable">
@@ -148,11 +148,11 @@
       <div class="radio5Btn2">
         <div class="radio5Btn_one2" style="background:rgb(94,137,229)" @click="isTable=true">返回</div>
         <div class="radio5Btn_one2" style="justify-content: space-around;width:14rem"><img
-            style="width:5rem;height:5rem" src="/static/picture/arrow2.png"  @click="LastPage2()"  /><img style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
+            style="width:5rem;height:5rem" :src="imgsrc"  @click="LastPage2()"  /><img style="width:5rem;height:5rem;   -webkit-transform: rotate(180deg);
                  -moz-transform: rotate(180deg);
                  -o-transform: rotate(180deg);
                  -ms-transform: rotate(180deg);
-                 transform: rotate(180deg);" src="/static/picture/arrow2.png"  @click="NextPage2()" /></div>
+                 transform: rotate(180deg);" :src="imgsrc"  @click="NextPage2()" /></div>
 
       </div>
     </div>
@@ -269,8 +269,8 @@
 </template>
 
 <script>
-//var test="http://47.110.242.174:10086"
-var test="http://106.12.219.66:8227"
+var test="http://47.110.242.174:10086"
+//var test="http://106.12.219.66:8227"
   import axios from 'axios'
     import { warp_api } from "../../../../static/api/api.js";
   export default {
@@ -281,6 +281,7 @@ var test="http://106.12.219.66:8227"
         staff_name: "",
         isTable: true,
         staff_code: "",
+      imgsrc:require("../../../../static/picture/arrow2.png"),
     
         staff_code2: "",
         machine_code: "",
@@ -440,7 +441,9 @@ this.SelectDataList.forEach(element => {
             json.printCode=this.barCode
            json.staffId=this.staffId
            json.staffName=this.staff_name
-
+if(json.printCode==null){
+  json.printCode=""
+}
            json.workshopId=this.workShopId
           json.shiftStartDatetime=this.getNowFormatDate()+" "+this.shift.startTime
            json.shiftEndDatetime=this.getNowFormatDate()+" "+this.shift.endTime
@@ -454,9 +457,9 @@ this.SelectDataList.forEach(element => {
            }else if(this.dataListCon.length==0){
               this.$message.warning("至少有一行数据!");
            }
-           else if(this.barCode==""||this.barCode==null){
-               this.$message.warning("请先输入批号!");
-           }
+          //  else if(this.barCode==""||this.barCode==null){
+          //      this.$message.warning("请先输入批号!");
+          //  }
            else{
              console.log(stopWarpingReports)
   let url = "/stop-warping-report/insertList";
@@ -745,8 +748,12 @@ selectLikeFields:{
           "selectFields": ["staff_code", "staff_name"],
           'query': {
             staff_code: this.staff_code,
-             workshop_id:this.workShopId
+           
+          },
+          selectLikeFields:{
+  workshop_id:this.workShopId
           }
+          
         };
 
         let that = this

@@ -804,8 +804,11 @@ query:{
               "selectFields": ["staff_code", "staff_name"],
               'query': {
                 staff_code: this.staff_code2,
-                 workshop_id:this.workshopId
-              }
+      
+              },
+             selectLikeFields:{
+  workshop_id:this.workShopId
+          }
             };
 
             let that = this
@@ -885,8 +888,11 @@ query:{
               "selectFields": ["staff_code", "staff_name"],
               'query': {
                 staff_code: this.staff_code,
-                 workshop_id:this.workshopId
-              }
+           
+              },
+             selectLikeFields:{
+  workshop_id:this.workShopId
+          }
             };
 
             let that = this

@@ -183,6 +183,7 @@
 
     },
     mounted() {
+   
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
@@ -204,8 +205,12 @@
       }
 
       this.data = this.$route.params.data
-      
+        let me = this;
+         window['back'] = (url) => {
+             me.back(); // 这个也就是我定义的方法
+         }
 
+    
     }
   }
 

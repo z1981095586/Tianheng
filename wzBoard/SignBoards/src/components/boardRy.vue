@@ -467,11 +467,9 @@ span{
   .board {
     width: 100%;
     height: 93%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
   }
 
   .board_con {
@@ -480,7 +478,6 @@ span{
     border: 2px solid white;
     display: flex;
     position: relative;
-
   }
   .bottom_font{
     position: absolute;
@@ -498,7 +495,6 @@ span{
     height: 100%;
     display: flex;
     flex-direction: column;
-
   }
 
   .board_con_left_top {
@@ -506,7 +502,6 @@ span{
     height: 60%;
     display: flex;
     flex-direction: column;
-
     border-right: 2px solid white;
     border-bottom: 2px solid white;
   }
@@ -514,7 +509,6 @@ span{
   .board_con_left_top_con {
     width: 100%;
     height: 85%;
-
     overflow: auto;
   }
 
@@ -541,7 +535,6 @@ span{
     width: 100%;
     height: 40%;
     display: flex;
-
     flex-direction: column;
     border-right: 2px solid white;
 
