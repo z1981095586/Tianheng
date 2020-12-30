@@ -135,7 +135,7 @@
           })
           .then(res => {
 
-
+console.log(res)
             if (res.data.data.list.length == 0) {
 
               that.$refs.my_scroller.finishInfinite(true)
@@ -144,7 +144,9 @@
               that.total = res.data.data.total //设置数据总条数
               that.$refs.my_scroller.finishPullToRefresh(true) ////下拉获取数据回调函数停止使用
               for (let i = 0; i < res.data.data.list.length; i++) {
-                res.data.data.list[i].parts = res.data.data.list[i].parts.replace(/,/g, ""); //取消字符串中出现的所有逗号 
+                if(res.data.data.list[i].parts){
+                  res.data.data.list[i].parts = res.data.data.list[i].parts.replace(/,/g, ""); //取消字符串中出现的所有逗号 
+                }
                 that.tableData.push(res.data.data.list[i])
               }
 
@@ -160,13 +162,16 @@
       },
     },
     mounted() {
+    
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
       });
+        
       this.selectInfo.company_id = this.$route.params.company_id;
       this.tableData = []
       this.getData()
+          nativeMethod.flag('true');
     },
     watch: {
       machineId(val) {

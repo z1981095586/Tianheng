@@ -98,10 +98,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">
             确认
           </div>
           <div
@@ -204,10 +201,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass2()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">
             确认
           </div>
           <div
@@ -233,6 +227,29 @@
     >
       <div class="operationPane_con_uppershaft">
         <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
+        <div class="chooseBtn">
+          <div class="chooseBtn_con" style="justify-content: flex-end">
+            <div
+              class="pane_btn_one"
+              @click="
+                szMainShow = false;
+                isKaiChe = true;
+              "
+              style="background: #a3d897; width: 77%; font-size: 1.5rem"
+            >
+              <span>更换开车工</span>
+            </div>
+          </div>
+          <div class="chooseBtn_con">
+            <div class="chooseBtn_con_label"><span>开车工</span></div>
+            <div
+              class="chooseBtn_con_btn"
+              style="background: white; border: 1px solid black"
+            >
+              <span>{{ kcgName }}</span>
+            </div>
+          </div>
+        </div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
@@ -304,6 +321,7 @@
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 上轴部分主菜单-->
+
     <!-- 上轴部分选机台-->
     <div
       class="operationPane_con"
@@ -329,16 +347,10 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             确认
           </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="cancel()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">
             取消
           </div>
         </div>
@@ -358,11 +370,7 @@
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
         <span style="font-size: 1.7rem">搜索：</span
         ><input placeholder="输入机台号" v-model="search_machine" />
-        <div
-          class="checked_machine_btn_one"
-          style="height: 3rem"
-          @click="search()"
-        >
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
           确认
         </div>
         <span style="color: red; margin-left: 1rem"
@@ -382,21 +390,13 @@
         <div class="shift">
           <div class="shift_con">
             <span>班次：</span
-            ><select
-              :disabled="!isStartChange"
-              v-model="className"
-              @change="classChange"
-            >
+            ><select :disabled="!isStartChange" v-model="className" @change="classChange">
               <option value="A班">A班</option>
               <option value="B班">B班</option>
               <option value="C班">C班</option>
             </select>
           </div>
-          <div
-            class="shift_con"
-            v-for="(item, index) in staffList"
-            :key="index"
-          >
+          <div class="shift_con" v-for="(item, index) in staffList" :key="index">
             <span>{{ item.label }}：</span>
             <div
               :class="item.isSelected ? 'staffCheck2' : 'staffCheck'"
@@ -435,9 +435,7 @@
           </div>
           <div
             class="operationPane_con_machineList_btn_leftBtn"
-            :style="
-              isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'
-            "
+            :style="isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'"
             @click="save()"
           >
             保存
@@ -462,6 +460,77 @@
     </div>
     <!-- 上轴换班-->
     <!-- 上轴部分操作栏组件-->
+    <!--开车工选姓名-->
+    <div
+      class="operationPane_con"
+      style="display: flex; justify-content: center; align-items: flex-start"
+      v-show="isKaiChe"
+    >
+      <div class="operationPane_con_machineList">
+        <el-checkbox-group
+          v-model="KaiCheName"
+          style="width: 100%; height: 100%"
+          :max="1"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in KaiCheStaffNameList"
+            style="magin: 1rem; font-size: 2rem"
+            :label="item.staff_name"
+            :key="index"
+            >{{ item.staff_name }}</el-checkbox-button
+          >
+        </el-checkbox-group>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="saveKaiChe()">
+            保存
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            style=""
+            @click="gobackKaiChe()"
+          >
+            返回
+          </div>
+        </div>
+        <div class="operationPane_con_machineList_btn_right">
+          <el-pagination
+            background
+            small
+            :pager-count="3"
+            @current-change="CurrentChange"
+            layout="prev, pager, next"
+            :page-size="page_size3"
+            :total="total_num3"
+          >
+          </el-pagination>
+        </div>
+      </div>
+
+      <div class="search" style="left: 4rem; width: 95%; top: 18px">
+        <span style="font-size: 1.5rem">开出工：</span
+        ><input
+          style="font-size: 1.5rem; width: 10rem"
+          disabled
+          v-model="KaiCheName"
+        /><span
+          style="color: red; margin-left: 1rem"
+          v-html="
+            isChooseAclass2 == 0
+              ? '当前选中：运转班' + 'A组'
+              : isChooseAclass2 == 1
+              ? '当前选中：运转班' + 'B组'
+              : isChooseAclass2 == 2
+              ? '当前选中：运转班' + 'C组'
+              : ''
+          "
+        ></span>
+      </div>
+      <img src="../../static/img/close.png" @click="gobackKaiChe()" />
+    </div>
+    <!-- 开车工选姓名-->
   </div>
 </template>
 
@@ -484,6 +553,7 @@ export default {
       isCheckedMachine: false, //是否选中机台
       isStartChange: false, //换班是否开始修改
       issaoma: false,
+      isKaiChe: false,
       staffList: [
         {
           label: "上轴工01",
@@ -595,6 +665,13 @@ export default {
       isYunzhuan: null,
       className: "",
       search_machine: "",
+      kcgName: "",
+      kcgId: "",
+      KaiCheName: [],
+      KaiCheStaffNameList: [],
+      page_size3: 21,
+      page_num3: 1,
+      total_num3: null,
     };
   },
   methods: {
@@ -687,6 +764,11 @@ export default {
 
       this.szIndexShow = false;
       this.szMainShow = true;
+      if (this.staffList2[0]) {
+        console.log(this.staffList2[0]);
+        this.kcgName = this.staffList2[0].staffName;
+        this.kcgId = this.staffList2[0].id;
+      }
       //console.log(this.staffList2);
 
       // this.szMachineShow = true;
@@ -777,7 +859,6 @@ export default {
       this.szIndexShow = false;
       this.UpdatePeopleShow = true;
       //console.log(this.isChooseAclass);
-      //console.log(this.staffList);
     },
     cancelClass() {
       this.UpdatePeopleShow = false;
@@ -855,7 +936,6 @@ export default {
           },
         ];
       }
-      //console.log(this.staffList);
     },
     CurrentChange(e) {
       //console.log(e);
@@ -1012,6 +1092,7 @@ export default {
       if (isYunzhuan == true) {
         this.isChooseAclass = "0";
         this.szMainShow = false;
+
         this.szMachineShow = false;
         this.szIndexShow = false;
         this.UpdatePeopleShow = false;
@@ -1425,9 +1506,70 @@ export default {
         //   //console.log(that.total_num2)
       });
     },
+    getStaffList2() {
+      let url = "http://106.12.219.66:8227/report/getSimpleReport";
+      let data = {
+        tableName: "s_staff",
+        sort: "DESC",
+        sortCloumn: "id",
+        selectFields: ["id", "staff_name"],
+        pageNum: this.page_num3,
+        pageSize: this.page_size3,
+        query: {
+          staff_organization_id: 35, //上轴工
+        },
+      };
+      let headers = {
+        companyId: this.company_id,
+      };
+      this.KaiCheStaffNameList = [];
+      let that = this;
+      axios({
+        url: url,
+        method: "post",
+        headers: headers,
+        data: data,
+
+        // headers: headers
+      }).then((res) => {
+        //console.log(res);
+        let arr = res.data.data;
+        for (let i = 0; i < arr.length; i++) {
+          arr[i].checked = false;
+          that.KaiCheStaffNameList.push(arr[i]);
+        }
+        that.total_num3 = res.data.total;
+        //   //console.log(that.total_num2)
+      });
+    },
+    saveKaiChe() {
+      if (this.KaiCheName[0] != "") {
+        this.kcgName = this.KaiCheName[0];
+        this.KaiCheStaffNameList.forEach((element) => {
+          if (element.staff_name == this.kcgName) {
+            this.kcgId = element.id;
+          }
+        });
+      }
+      this.isKaiChe = false;
+      this.szMainShow = true;
+      console.log(this.kcgId);
+      console.log(this.kcgName);
+    },
+    gobackKaiChe() {
+      this.isKaiChe = false;
+      this.szMainShow = true;
+    },
   },
   mounted() {},
   watch: {
+    isKaiChe(val) {
+      if (val == true) {
+        this.KaiCheName = [];
+        this.page_num3 = 1;
+        this.getStaffList2();
+      }
+    },
     pch(val) {
       //批轴号事件
       let url = host + "/api/stationMachine/getAxisInfo";
@@ -1488,6 +1630,7 @@ export default {
         this.getGroup();
       }
     },
+
     // isYunzhuan(val){
     //   if(val==false){
     //     //console.log(this.Cclass)
@@ -1675,7 +1818,7 @@ export default {
 }
 
 .operationPane_con_uppershaft {
-  width: 85%;
+  width: 91%;
 
   height: 70%;
   margin-bottom: 3%;
@@ -1799,11 +1942,7 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-prev
-  .el-icon {
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
@@ -1882,11 +2021,7 @@ export default {
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-next
-  .el-icon,
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
@@ -1919,7 +2054,7 @@ export default {
 }
 
 .chooseBtn {
-  width: 30%;
+  width: 21%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1937,7 +2072,7 @@ export default {
 }
 
 .chooseBtn_con_label {
-  width: 50%;
+  width: 77%;
   height: 4rem;
   background: #317ccd;
   color: white;
@@ -1948,7 +2083,7 @@ export default {
 }
 
 .chooseBtn_con_btn {
-  width: 50%;
+  width: 77%;
   height: 5rem;
   background: #a3d897;
   color: black;

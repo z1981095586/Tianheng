@@ -46,16 +46,16 @@
             <div class="cardBox_con_con">
 
               <div
-                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;margin-bottom:1rem">
+                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;margin-bottom:1rem" >
                 <span>机台号</span><span style="width:50%;text-align:right;">{{data.machineId}}</span></div>
               <div
-                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;margin-bottom:1rem">
+                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;"  :style="isHeight?'margin-bottom:5%':'margin-bottom:3%'">
                 <span>故障类型</span><span style="width:50%;text-align:right;">{{data.errorReason}}</span></div>
               <div
-                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;margin-bottom:1rem">
+                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;"  :style="isHeight?'margin-bottom:5%':'margin-bottom:3%'">
                 <span>维修人</span><span style="width:50%;text-align:right;">{{data.repairPerson}}</span></div>
               <div
-                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;margin-bottom:1rem">
+                style="width:100%;text-align:left;display:flex;font-size:1rem;justify-content: space-between;"  :style="isHeight?'margin-bottom:5%':'margin-bottom:3%'">
                 <span>完成时间</span style="width:50%;text-align:right;"><span>{{data.date}}</span></div>
 
             </div>
@@ -115,7 +115,7 @@
     align-items: flex-end;
     font-size: 1rem;
     justify-content: space-between;
-    margin-bottom: 0.5rem;"><span>故障描述：</span></div>
+    " :style="isHeight?'margin-bottom:0rem':'margin-bottom:0.5'"><span>故障描述：</span></div>
               <el-input type="textarea" disabled style="    margin-bottom: 1rem;" v-model="data.remark">
               </el-input>
 
@@ -136,7 +136,7 @@
     align-items: flex-end;
     font-size: 1rem;
     justify-content: space-between;
-    margin-bottom: 0.5rem;"><span>处理方式：</span></div>
+   " :style="isHeight?'margin-bottom:0rem':'margin-bottom:0.5'"><span>处理方式：</span></div>
               <el-input type="textarea" disabled style="    margin-bottom: 1rem;" v-model="data.solve">
               </el-input>
 
@@ -164,7 +164,9 @@
           company_id: '',
         },
         data: {},
-        noImage: null
+        noImage: null,
+        isHeight:false
+
       }
     },
     methods: {
@@ -179,11 +181,17 @@
           }
 
         })
+   
       },
 
     },
     mounted() {
-   
+  console.log(window.screen.height)
+  if(window.screen.height>650){
+    this.isHeight=true
+  }else{
+    this.isHeight=false
+  }
       history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, window.location.href);
@@ -206,10 +214,10 @@
 
       this.data = this.$route.params.data
         let me = this;
-         window['back'] = (url) => {
+         window['back'] = () => {
              me.back(); // 这个也就是我定义的方法
          }
-
+      nativeMethod.flag('false');
     
     }
   }
