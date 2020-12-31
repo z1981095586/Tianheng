@@ -154,6 +154,10 @@ export default {
       IsSearch: false,
       QxWorkShop: [
         {
+          workshop_name: "七星总分厂",
+          workshop_id: "",
+        },
+        {
           workshop_name: "七星一分厂",
           workshop_id: 1,
         },
@@ -212,7 +216,6 @@ export default {
       setTimeout(() => {
         if (this.tableData.length == this.total) {
           //如果数据总条数等于当前数据列表长度了，那就关闭上拉加载了
-
           this.$refs.my_scroller.finishInfinite(true);
           return;
         } else if (this.tableData.length == 0) {
@@ -239,6 +242,7 @@ export default {
       console.log(that.pageNum);
       let jsonData;
       if (that.selectInfo.company_id == "10000012") {
+        //七星
         jsonData = {
           workshopId: that.workshop_id,
           parts: that.parts,
@@ -246,7 +250,6 @@ export default {
           startDate: that.start_date,
           endDate: that.end_date,
           machineId: that.machineId,
-
           repairPerson: that.staff_name,
           pageNum: that.pageNum,
           pageSize: that.pageSize,
@@ -260,6 +263,7 @@ export default {
           pageSize: that.pageSize,
         };
       }
+
       axios({
         url: url,
         method: "post",
@@ -333,6 +337,7 @@ export default {
   border-radius: 4px;
   border: 1px solid #dcdfe6;
 }
+
 .cardBox {
   height: 11rem;
   width: 100%;
