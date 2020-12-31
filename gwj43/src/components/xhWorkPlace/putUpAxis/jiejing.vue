@@ -426,7 +426,12 @@ this.SelectDataList.forEach(element => {
          console.log(this.workShopId)
          let stopWarpingReports=[]
          let json={}
+         let flag;
          this.dataListCon.forEach(element => {
+           if(element.machineId==""||element.machineId==null){
+              flag=false
+              return
+           }
            if(element.isFenJiao==true){
              json.fenJiao="1"
            }else{
@@ -451,6 +456,10 @@ if(json.printCode==null){
            stopWarpingReports.push(json)
            json={}
          });
+         if(flag==false){
+             this.$message.warning("机台号不能为空，请确认!");
+             return
+         }
           console.log(this.barCode)
            if(this.staff_name==""){
                this.$message.warning("请先填写员工姓名!");
@@ -522,15 +531,10 @@ query:{
   workshop_id:String(this.workShopId)
 },
 selectLikeFields:{
-  update_time:date
+  create_time:date
 }
-
-
         };
-
         let that = this
-     
-    
           that.SelectDataList = []
         axios({
             url: url,
@@ -541,7 +545,6 @@ selectLikeFields:{
           .then(response => {
             console.log(response.data.data)
             that.total2=response.data.total
-  
             response.data.data.forEach(element => {
               element.isEdit=false
                if(element.fen_jiao==1){
@@ -568,8 +571,6 @@ selectLikeFields:{
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
           pageSize);
       },
-
-
       machineFocus(id) { //需要修改哪行的machineID
         this.id = id
         this.showMachineTable = true;
@@ -583,15 +584,12 @@ selectLikeFields:{
           this.id2 = id
           // this.showNameTable2=true
           this.staff_nameList[0] = staff_name
-
           this.showNameTable2 = true
-
         }
       },
       nameFocus(id) {
         this.showNameTable = true;
         this.isStaff = id
-
       },
       addRow() { //新增一行
  
@@ -718,8 +716,6 @@ selectLikeFields:{
 
 
       selectTableButton(buttonName) {
-  
-
         this.staff_code += "";
         if (buttonName === "退格") {
           this.staff_code = this.staff_code.substring(0, this.staff_code.length - 1)
@@ -727,14 +723,9 @@ selectLikeFields:{
           this.staff_code += buttonName;
         }
         document.getElementById("staff_code").focus()
-
-
-
       },
       getPermission() { //员工号3个
-
         this.showNameTable = false
-
         let url = test+'/report/getSimpleReport';
         let headers = {
           'Content-Type': 'application/json',
@@ -748,16 +739,12 @@ selectLikeFields:{
           "selectFields": ["staff_code", "staff_name"],
           'query': {
             staff_code: this.staff_code,
-           
           },
           selectLikeFields:{
   workshop_id:this.workShopId
           }
-          
         };
-
         let that = this
-
         axios({
             url: url,
             method: method,
@@ -766,7 +753,6 @@ selectLikeFields:{
           })
           .then(response => {
             console.log(response.data.data)
-
             if (response.data.data.length >= 1) {
               this.staff_name = response.data.data[0].staff_name
               this.staffId= response.data.data[0].staff_code
@@ -775,10 +761,8 @@ selectLikeFields:{
             }
             this.staff_code = ""
           })
-
       },
       selectTableButton2(buttonName) {
-
 
         this.machine_code += "";
         if (buttonName === "退格") {
@@ -800,17 +784,8 @@ selectLikeFields:{
           }
         }
         this.machine_code = ""
-
-
-
-
-
-
-
-
       },
   selectTableButton4(buttonName) {
-
 
         this.machine_code2 += "";
         if (buttonName === "退格") {
@@ -819,8 +794,6 @@ selectLikeFields:{
           this.machine_code2 += buttonName;
         }
         document.getElementById("machine_code2").focus()
-
-
 
       },
       getPermission4() { //机器id输入
@@ -832,12 +805,6 @@ selectLikeFields:{
           }
         }
         this.machine_code2 = ""
-
-
-
-
-
-
 
 
       },
@@ -872,12 +839,12 @@ selectLikeFields:{
           "selectFields": ["staff_code", "staff_name"],
           'query': {
             staff_code: this.staff_code2,
-             workshop_id:this.workShopId
+          },
+              selectLikeFields:{
+  workshop_id:this.workShopId
           }
         };
-
         let that = this
-
         axios({
             url: url,
             method: method,
@@ -1039,15 +1006,12 @@ selectLikeFields:{
     width: 100%;
 
   }
-
   .radio5_con {
     width: 98%;
     height: 98%;
     display: flex;
     flex-direction: column;
-
   }
-
   .staff {
     width: 100%;
     height: 20%;
@@ -1055,7 +1019,6 @@ selectLikeFields:{
     align-items: center;
     font-size: 1.5rem;
     position: relative;
-
   }
 
   .line {

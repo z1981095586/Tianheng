@@ -36,5 +36,7 @@ http://106.12.219.66:81/wzSignBoard/#/productMonitor/10000005
 轴库：http://106.12.219.66:81/Axis_library/#/index/10000013/1 
 七星轴库：http://106.12.219.66:81/Axis_library_qx/#/index/10000012/1
 
+http://106.12.219.66:81/wzboard/#/boardRy/10000020 广华织造看板
+http://106.12.219.66:81/wzboard/#/boardRy/10000017 瑞域织造看板
 
 http://106.12.219.66:81/OrderSystem/#/index

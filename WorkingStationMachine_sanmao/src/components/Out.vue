@@ -96,10 +96,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">
             确认
           </div>
           <div
@@ -199,10 +196,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass2()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">
             确认
           </div>
           <div
@@ -227,11 +221,7 @@
       v-show="isShift"
     >
       <div class="operationPane_con_machineList">
-        <el-checkbox-group
-          v-model="checkName"
-          style="width: 100%; height: 100%"
-          :max="1"
-        >
+        <el-checkbox-group v-model="checkName" style="width: 100%; height: 100%" :max="1">
           <el-checkbox-button
             size="medium"
             v-for="(item, index) in StaffNameList"
@@ -244,10 +234,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="save()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="save()">
             保存
           </div>
           <div
@@ -277,7 +264,7 @@
         ><input
           style="font-size: 1.5rem; width: 10rem"
           disabled
-          v-model="String(this.checkedName).replace(/ /g, '')"
+          :value="String(this.checkedName).replace(/ /g, '')"
         /><span
           style="color: red; margin-left: 1rem"
           v-html="
@@ -1462,11 +1449,7 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-prev
-  .el-icon {
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
@@ -1529,11 +1512,7 @@ export default {
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-next
-  .el-icon,
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }

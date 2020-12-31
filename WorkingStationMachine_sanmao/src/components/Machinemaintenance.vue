@@ -430,11 +430,6 @@ export default {
       });
       this.total_num = val.total_num;
     },
-    questionList(val) {
-      // val.forEach(element => {
-      //   });
-      //console.log(val);
-    },
   },
 };
 </script>
@@ -574,7 +569,6 @@ export default {
 .allPage_con_right_left_one {
   width: 45%;
   height: 30%;
-
   margin: 0.5rem;
   float: left;
   display: flex;

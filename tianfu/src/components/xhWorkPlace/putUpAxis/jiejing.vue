@@ -426,7 +426,12 @@ this.SelectDataList.forEach(element => {
          console.log(this.staffId)
          let stopWarpingReports=[]
          let json={}
+         let flag;
          this.dataListCon.forEach(element => {
+                if(element.machineId==""||element.machineId==null){
+              flag=false
+              return
+           }
            if(element.isFenJiao==true){
              json.fenJiao="1"
            }else{
@@ -450,6 +455,10 @@ this.SelectDataList.forEach(element => {
            stopWarpingReports.push(json)
            json={}
          });
+               if(flag==false){
+             this.$message.warning("机台号不能为空，请确认!");
+             return
+         }
          console.log(this.barCode)
            if(this.staff_name==""){
                this.$message.warning("请先填写员工姓名!");
@@ -505,6 +514,7 @@ this.SelectDataList.forEach(element => {
         return currentdate;
       },
             getData() {
+                let date = this.getNowFormatDate()
         let url = test+'/report/getSimpleReport';
         let headers = {
           'Content-Type': 'application/json',
@@ -518,6 +528,9 @@ this.SelectDataList.forEach(element => {
 query:{
   workshop_id:String(this.workShopId)
 },
+selectLikeFields:{
+  create_time:date
+}
         };
 
         let that = this
