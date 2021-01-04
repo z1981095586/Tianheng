@@ -735,33 +735,88 @@ export default {
         let that = this;
         that.machineList = [];
         that.machineListCon = [];
-        axios
-          .get(
-            url,
+        let url2 = "http://47.110.95.57:8091/APP/getMachine";
 
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then(function (res) {
-            console.log(res);
-            let arr = JSON.parse(res.data.repair_history);
-            arr.forEach((element) => {
-              if (that.workshopId.indexOf(element.workshop_id) != -1) {
-                element.machineId = element.machine_id;
-                that.machineListCon.push(element);
-              }
+        axios({
+          url: url2,
+          method: "post",
+          params: {
+            company_id: that.company_id,
+            user_id: that.staff_id,
+          },
+        }).then(function (response) {
+          console.log(response.data.data.length);
+          if (response.data.data.length == 0) {
+            that.$message({
+              message: "没有机台获取到！",
+              type: "warning",
             });
-            that.total_num = that.machineListCon.length;
-            that.machineList = that.pagination(
-              that.page_num,
-              that.page_size,
-              that.machineListCon
-            );
-            console.log(that.machineList);
-          });
+            return;
+          }
+          let datalist = response.data.data;
+          axios
+            .get(
+              url,
+
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then(function (res) {
+              console.log(res);
+              let arr = JSON.parse(res.data.repair_history);
+              arr.forEach((element) => {
+                if (
+                  !element.repair_typename ||
+                  element.repair_typename == "" ||
+                  element.repair_typename == null
+                ) {
+                  element.repair_typename = "未填写";
+                }
+                if (that.workshopId.indexOf(element.workshop_id) != -1) {
+                  if (datalist.indexOf(element.machine_id) != -1) {
+                    that.machineListCon.push(element);
+                  }
+                }
+              });
+              that.total_num = that.machineListCon.length;
+              that.machineList = that.pagination(1, that.page_size, that.machineListCon);
+            });
+        });
+        // let url =
+        //   "http://112.12.1.41:8091/APP/repair_history?company_id=10000015&isMessage=1";
+        // let that = this;
+        // that.machineList = [];
+        // that.machineListCon = [];
+        // axios
+        //   .get(
+        //     url,
+
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //     }
+        //   )
+        //   .then(function (res) {
+        //     console.log(res);
+        //     let arr = JSON.parse(res.data.repair_history);
+        //     arr.forEach((element) => {
+        //       if (that.workshopId.indexOf(element.workshop_id) != -1) {
+        //         element.machineId = element.machine_id;
+        //         that.machineListCon.push(element);
+        //       }
+        //     });
+        //     that.total_num = that.machineListCon.length;
+        //     that.machineList = that.pagination(
+        //       that.page_num,
+        //       that.page_size,
+        //       that.machineListCon
+        //     );
+        //     console.log(that.machineList);
+        //   });
       } else {
         let days_to_expire;
         if (this.isWaitMaintance == 0) {

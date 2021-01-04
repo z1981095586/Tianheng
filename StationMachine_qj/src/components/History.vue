@@ -343,9 +343,7 @@
 let host = "http://120.55.124.53:12140";
 import axios from "axios";
 export default {
-  components: {
-    keyboard,
-  },
+  components: {},
   name: "History",
   data() {
     return {

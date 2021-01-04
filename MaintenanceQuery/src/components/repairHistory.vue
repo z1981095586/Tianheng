@@ -1,25 +1,70 @@
 <template>
   <div class="content">
     <div class="all-page">
+      <div class="input" v-show="selectInfo.company_id == '10000012'">
+        <!-- <select
+          name="bbxb"
+          id="selecte"
+          style="width: 97%"
+          class="shortselect3"
+          @change="change"
+        >
+          <option :value="item.workshop_id" v-for="item in QxWorkShop">
+            {{ item.workshop_name }}
+          </option>
+        </select> -->
+        <el-select
+          style="width: 97%"
+          v-model="workshop"
+          @change="change"
+          placeholder="请选择"
+        >
+          <el-option
+            :value="item.workshop_id"
+            v-for="item in QxWorkShop"
+            :key="item.value"
+            :label="item.workshop_name"
+          >
+          </el-option>
+        </el-select>
+        <!-- <div style="width: 47%; height: 36px"></div> -->
+      </div>
       <div class="input">
-        <input
+        <!-- <input
           @keyup.13="search(true)"
           type="search"
           ref="input1"
           placeholder="输入机台号"
           v-model="machineId"
-        />
-        <input
+        /> -->
+        <!-- <input
           @keyup.13="search(true)"
           type="search"
           ref="input1"
           placeholder="输入人员"
           v-model="staff_name"
-        />
-        <i class="el-icon-search" style="font-size: 1.3rem"></i>
+        /> -->
+        <el-input
+          @keyup.13="search(true)"
+          type="search"
+          style="width: 47%"
+          ref="input1"
+          placeholder="输入机台号"
+          prefix-icon="el-icon-search"
+          v-model="machineId"
+        ></el-input>
+        <el-input
+          @keyup.13="search(true)"
+          type="search"
+          style="width: 47%"
+          ref="input1"
+          placeholder="输入人员"
+          v-model="staff_name"
+          prefix-icon="el-icon-search"
+        ></el-input>
       </div>
       <div class="input" v-show="selectInfo.company_id == '10000012'">
-        <input
+        <!-- <input
           @keyup.13="search(true)"
           type="search"
           ref="input1"
@@ -33,7 +78,26 @@
           placeholder="输入零配件"
           v-model="parts"
         />
-        <i class="el-icon-search" style="font-size: 1.3rem"></i>
+        <i class="el-icon-search" style="font-size: 1.3rem; right: 20px"></i>
+        <i class="el-icon-search" style="font-size: 1.3rem"></i> -->
+        <el-input
+          @keyup.13="search(true)"
+          type="search"
+          ref="input1"
+          style="width: 47%"
+          placeholder="输入故障"
+          v-model="problem"
+          prefix-icon="el-icon-search"
+        ></el-input>
+        <el-input
+          @keyup.13="search(true)"
+          type="search"
+          ref="input1"
+          style="width: 47%"
+          placeholder="输入零配件"
+          v-model="parts"
+          prefix-icon="el-icon-search"
+        ></el-input>
       </div>
       <div class="input" v-show="selectInfo.company_id == '10000012'">
         <el-date-picker
@@ -55,14 +119,7 @@
         >
         </el-date-picker>
       </div>
-      <div class="input" v-show="selectInfo.company_id == '10000012'">
-        <select name="bbxb" id="selecte" class="shortselect3" @change="change">
-          <option :value="item.workshop_id" v-for="item in QxWorkShop">
-            {{ item.workshop_name }}
-          </option>
-        </select>
-        <div style="width: 47%; height: 36px"></div>
-      </div>
+
       <scroller
         height="100%"
         :onRefresh="refresh"
@@ -170,6 +227,7 @@ export default {
           workshop_id: 3,
         },
       ],
+      workshop: "七星总分厂",
       parts: "",
       workshop_id: "",
       problem: "",
@@ -179,8 +237,8 @@ export default {
   },
   methods: {
     change(e) {
-      console.log(e.target.value);
-      this.workshop_id = e.target.value;
+      console.log(e);
+      this.workshop_id = e;
       this.search(true);
     },
     search() {
@@ -331,6 +389,12 @@ export default {
 </script>
 
 <style scoped>
+.el-select /deep/ input {
+  text-align: center;
+}
+.el-select /deep/ .el-input__suffix {
+  right: 30%;
+}
 .shortselect3 {
   width: 47%;
   height: 36px;
@@ -543,7 +607,7 @@ span {
 
 .input i {
   position: absolute;
-  right: 35px;
+  left: 35px;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 700;
 }

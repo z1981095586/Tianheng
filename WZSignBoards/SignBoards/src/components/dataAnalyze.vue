@@ -54,11 +54,31 @@
               </div>
               <div class="mod_efficiency">
                 <el-row>
-                  <el-col :span="12">
+                  <el-col :span="9" style="text-align: right">
                     <div id="efficiencyChart2" style="width: 100%;height: 13rem;"></div>
                   </el-col>
-                  <el-col :span="12">
-                    <div id="efficiencyChart3" style="width: 100%;height: 13rem;"></div>
+                  <el-col :span="6">
+                    <div class="efficiency-center-wrap">
+                        <div class="workshop-title">织造一部</div>
+                        <div class="shift-wrap">
+                            <div class="a-shift-title">A班</div>
+                            <div class="b-shift-title">B班</div>
+                        </div>
+                      <div class="shift-wrap">
+                        <div class="a-shift-title">{{Awanzhou1Efficiency}}%</div>
+                        <div class="b-shift-title">{{Bwanzhou1Efficiency}}%</div>
+                      </div>
+                    </div>
+                    <div class="efficiency-center-wrap" style="margin-top: -1rem">
+                      <div class="workshop-title">织造二部</div>
+                      <div class="shift-wrap">
+                        <div class="a-shift-title">{{Awanzhou2Efficiency}}%</div>
+                        <div class="b-shift-title">{{Bwanzhou2Efficiency}}%</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="9" style="text-align: left">
+                    <div id="efficiencyChart3" style="width: 100%;height: 13rem"></div>
                   </el-col>
                 <!--  <el-col :span="8">
                     <div class="mod_efficiency_title">佳而美B班效率</div>
@@ -67,48 +87,68 @@
                 </el-row>
                 <el-row >
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">A班效率</div>
+                    <div class="mod_efficiency_title">折标：米/台</div>
                     <div id="AEfficiencyChart2" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">B班效率</div>
+                    <div class="mod_efficiency_title">转速/分</div>
                     <div id="BEfficiencyChart2" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">A班效率</div>
+                    <div class="mod_efficiency_title">折标：米/台</div>
                     <div id="AEfficiencyChart3" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">B班效率</div>
+                    <div class="mod_efficiency_title">转速/分</div>
                     <div id="BEfficiencyChart3" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                 </el-row>
               </div>
               <div class="mod_efficiency" style="margin-top: 0.5rem">
                 <el-row>
-                  <el-col :span="12">
+                  <el-col :span="9">
                     <div id="efficiencyChart4" style="width: 100%;height: 13rem;"></div>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="6">
+                    <div class="efficiency-center-wrap">
+                      <div class="workshop-title">兰棉</div>
+                      <div class="shift-wrap">
+                        <div class="a-shift-title">A班</div>
+                        <div class="b-shift-title">B班</div>
+                      </div>
+                      <div class="shift-wrap">
+                        <div class="a-shift-title">{{AlanmianEfficiency}}%</div>
+                        <div class="b-shift-title">{{BlanmianEfficiency}}%</div>
+                      </div>
+                    </div>
+                    <div class="efficiency-center-wrap" style="margin-top: -1rem">
+                      <div class="workshop-title">佳而美</div>
+                      <div class="shift-wrap">
+                        <div class="a-shift-title">{{AjiaermeiEfficiency}}%</div>
+                        <div class="b-shift-title">{{BjiaermeiEfficiency}}%</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="9">
                     <div id="efficiencyChart5" style="width: 100%;height: 13rem;"></div>
                   </el-col>
 
                 </el-row>
                 <el-row >
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">A班效率</div>
+                    <div class="mod_efficiency_title">折标：米/台</div>
                     <div id="AEfficiencyChart4" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">B班效率</div>
+                    <div class="mod_efficiency_title">转速/分</div>
                     <div id="BEfficiencyChart4" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">A班效率</div>
+                    <div class="mod_efficiency_title">折标：米/台</div>
                     <div id="AEfficiencyChart5" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                   <el-col :span="6">
-                    <div class="mod_efficiency_title">B班效率</div>
+                    <div class="mod_efficiency_title">转速/分</div>
                     <div id="BEfficiencyChart5" style="width: 100%;height: 10rem;"></div>
                   </el-col>
                 </el-row>
@@ -257,12 +297,11 @@
           //===================产量推移数据===========================
           productMonths: [],
           totalProductSeries:[],
-          //===================产量推移数据结束===========================
 
 
           //===================问题聚焦===========================
           problemOptions:[{value:'4',label:'效率优秀设备'},{value:'5',label:'产量优秀设备'},{value:'1',label:'效率落后设备'},{value:'2',label:'产量落后设备'},{value:'3',label:'断头落后设备'}],//问题种类选项
-          problemDefaultValue:'4',//问题默认值
+          problemDefaultValue:'1',//问题默认值
           maxEfficiency:'95',//最高效率
           avgEfficiency:'89',//平均效率
           machineEfficiency:[//机器号 开机效率
@@ -301,11 +340,19 @@
 
           //===================报警设备===========================
           unusualStop:[],
-          //===================报警设备===========================
 
           //===================品种===========================
-          styleList:[]
-          //===================品种===========================
+          styleList:[],
+
+          //===================效率===========================
+          Awanzhou1Efficiency:'',
+          Bwanzhou1Efficiency:'',
+          Awanzhou2Efficiency:'',
+          Bwanzhou2Efficiency: '',
+          AlanmianEfficiency:'',
+          BlanmianEfficiency:'',
+          AjiaermeiEfficiency:'',
+          BjiaermeiEfficiency:'',
 
         }
       },
@@ -381,7 +428,7 @@
           let value = efficiency;
           option = {
             title: {
-              text: '{a|'+ value +'}{c|%}',
+              text: '{a|'+ value +'}{c|}',
               x: 'center',
               y: 'center',
               textStyle: {
@@ -598,7 +645,7 @@
                 }
               },
                 {
-                  value: 100-value,
+                  value: '100%',
                   name: "",
                   label: {
                     normal: {
@@ -682,81 +729,6 @@
                 formatter: "{a} <br/>{c} {b}"
               },
               series : [
-               /* {
-                  height:'200',
-                  name:'效率',
-                  type:'gauge',
-                  center : ['20%', '50%'],    // 默认全局居中
-                  radius : '70%',
-                  min:0,
-                  max:100,
-                  endAngle:45,
-                  splitNumber:10,
-                  axisLine: {            // 坐标轴线
-                    lineStyle: {       // 属性lineStyle控制线条样式
-                      color: [[0.29, 'lime'],[0.86, '#1e90ff'],[1, '#ff4500']],
-                      width: 2,
-                      shadowColor : '#fff', //默认透明
-                      shadowBlur: 10
-                    }
-                  },
-                  axisLabel: {            // 坐标轴小标记
-                    textStyle: {       // 属性lineStyle控制线条样式
-                      fontWeight: 'bolder',
-                      color: '#fff',
-                      fontSize:8,
-                      shadowColor : '#fff', //默认透明
-                      shadowBlur: 10
-                    }
-                  },
-                  axisTick: {            // 坐标轴小标记
-                    length :12,        // 属性length控制线长
-                    lineStyle: {       // 属性lineStyle控制线条样式
-                      color: 'auto',
-                      shadowColor : '#fff', //默认透明
-                      shadowBlur: 10
-                    }
-                  },
-                  splitLine: {           // 分隔线
-                    length :20,         // 属性length控制线长
-                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                      width:3,
-                      color: '#fff',
-                      shadowColor : '#fff', //默认透明
-                      shadowBlur: 10
-                    }
-                  },
-                  pointer: {
-                    width:5,
-                    shadowColor : '#fff', //默认透明
-                    shadowBlur: 5
-                  },
-                  title : {
-                    offsetCenter: [0, '-30%'],       // x, y，单位px
-                    textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                      fontWeight: 'bolder',
-                      fontStyle: 'italic',
-                      color: '#24acff',
-                      shadowColor : '#fff', //默认透明
-                      shadowBlur: 10
-                    }
-                  },
-                  detail : {
-                    //backgroundColor: 'rgba(30,144,255,0.8)',
-                    // borderWidth: 1,
-                    borderColor: '#fff',
-                    shadowColor : '#fff', //默认透明
-                    shadowBlur: 5,
-                    width: 80,
-                    height:30,
-                    offsetCenter: [20, '30%'],       // x, y，单位px
-                    textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                      fontWeight: 'bolder',
-                      color: '#fff'
-                    }
-                  },
-                  data:[{value: lanmianEfficiency, name: '兰棉'}]
-                },*/
                 {
                   name:'效率',
                   type:'gauge',
@@ -1285,7 +1257,6 @@
             }
           })
             .then(response => {
-              console.log(response)
               let data = response.data.data;
               this.totalYield = data.totalYield;
               let Awanzhou1Efficiency = '';
@@ -1320,14 +1291,31 @@
               BjiaermeiEfficiency = jiaermeiEfficiency.list[1];
               totaljiaermeiEfficiency = jiaermeiEfficiency.list[2];
 
-              this.getABEfficiency('A',2,Awanzhou1Efficiency);
-              this.getABEfficiency('A',3,Awanzhou2Efficiency);
-              this.getABEfficiency('A',4,AlanmianEfficiency);
-              this.getABEfficiency('A',5,AjiaermeiEfficiency);
-              this.getABEfficiency('B',2,Bwanzhou1Efficiency);
-              this.getABEfficiency('B',3,Bwanzhou2Efficiency);
-              this.getABEfficiency('B',4,BlanmianEfficiency);
-              this.getABEfficiency('B',5,BjiaermeiEfficiency);
+              this.Awanzhou1Efficiency = Awanzhou1Efficiency;
+              this.Bwanzhou1Efficiency = Bwanzhou1Efficiency;
+              this.Awanzhou2Efficiency = Awanzhou2Efficiency;
+              this.Bwanzhou2Efficiency = Bwanzhou2Efficiency;
+              this.AlanmianEfficiency = AlanmianEfficiency;
+              this.BlanmianEfficiency = BlanmianEfficiency;
+              this.AjiaermeiEfficiency = AjiaermeiEfficiency;
+              this.BjiaermeiEfficiency = BjiaermeiEfficiency;
+              let wanzhou1AvgProductMeter = Number(wanzhou1Efficiency.avgProductMeterXs);
+              let wanzhou1Rpm = parseInt(wanzhou1Efficiency.rpm);
+              let wanzhou2AvgProductMeter = Number(wanzhou2Efficiency.avgProductMeterXs);
+              let wanzhou2Rpm = parseInt(wanzhou2Efficiency.rpm);
+              let lanmianAvgProductMeter = Number(lanmianEfficiency.avgProductMeterXs);
+              let lanmianRpm = parseInt(lanmianEfficiency.rpm);
+              let jemAvgProductMeter = Number(jiaermeiEfficiency.avgProductMeterXs);
+              let jemRpm = parseInt(jiaermeiEfficiency.rpm);
+
+              this.getABEfficiency('A',2,wanzhou1AvgProductMeter);
+              this.getABEfficiency('A',3,wanzhou2AvgProductMeter);
+              this.getABEfficiency('A',4,lanmianAvgProductMeter);
+              this.getABEfficiency('A',5,jemAvgProductMeter);
+              this.getABEfficiency('B',2,wanzhou1Rpm);
+              this.getABEfficiency('B',3,wanzhou2Rpm);
+              this.getABEfficiency('B',4,lanmianRpm);
+              this.getABEfficiency('B',5,jemRpm);
               this.getWorkshopEfficiency(totalwanzhou1Efficiency,'一部',2);
               this.getWorkshopEfficiency(totalwanzhou2Efficiency,'二部',3);
               this.getWorkshopEfficiency(totallanmianEfficiency,'兰棉',4);
@@ -1451,10 +1439,6 @@
           // return t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()+" "+t.getHours()+":"+t.getMinutes()+":"+t.getSeconds()+"."+t.getMilliseconds();
         },
       },
-
-
-
-
       filters:{
         formatDate(time){
           let date = new Date(time);
@@ -1511,6 +1495,37 @@
     width: 100%;
     height: 23rem;
     background-position: center;
+  }
+  .efficiency-center-wrap{
+
+  }
+  .workshop-title{
+    background-image: url("../static/img/workshopNameBar.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 8rem;
+    height: 2rem;
+    font-size: 1.1rem;
+    line-height: 2rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+  }
+  .shift-wrap{
+    display: flex;
+  }
+  .a-shift-title{
+    flex: 1;
+    text-align: center;
+    color: #01e1d4;
+    font-size: 1rem;
+    margin: .2rem 0;
+  }
+  .b-shift-title{
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    margin: .2rem 0;
+    color: #d1e607;
   }
   .mod_efficiency_title{
     font-size: 1rem;
@@ -1581,24 +1596,10 @@
     color: #00b7b7;
     cursor:pointer;
   }
-  .warpStop{
-    background-image: url("../static/img/chart3.png") !important;
-  }
-  .sizingStop{
-    background-image: url("../static/img/chart2.png") !important;
-  }
   .tbText{
     font-weight: bolder;
     font-size: 1.2rem;
     color: lightblue;
-  }
-  .deviceState{
-    width: 100%;
-    height: 46rem;
-  }
-  .deviceStateCharts{
-    width: 100%;
-    height: 100%;
   }
 
   .failureEquipment{
@@ -1629,13 +1630,7 @@
     height: 58.5rem;
     margin: 0;
   }
-  .productionTime{
-    background-image: url("../static/img/bk4.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    height: 23rem;
-    margin: 0;
-  }
+
   .problemsFocus{
     background-image: url("../static/img/bk4.png");
     background-size: 100% 100%;
@@ -1643,110 +1638,7 @@
     height: 23rem;
     margin: 0;
   }
-  .warningPush{
-    background-image: url("../static/img/bk4.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    height: 23rem;
-    margin: 0;
-  }
-  .totalProductionImg{
-    background-image: url("../static/img/circle.png");
-    background-repeat: no-repeat;
-    background-size: 85% 100%;
-    width: 100%;
-    height: 9.5rem;
-    text-align: center;
-    vertical-align: middle;
-  }
-  .sizingImg{
-    background-image: url("../static/img/chart1.png");
-    background-repeat: no-repeat;
-    background-size: 100% 50%;
-    width: 80%;
-    height: 10rem;
-    margin-left: 1rem;
-    margin-top: 1rem;
-  }
-  .warpImg{
-    width: 100%;
-  }
-  .warpMachine{
-    background-image: url("../static/img/chart4.png");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    width: 65%;
-    height: 6rem;
-  }
-  .progress {
-    width: 100%;
-    height: 1.2rem;
-    background: rgba(66, 125, 177, 0.63);
-    border-radius: 5px;
-    text-align: center;
-    color: #fff;
-    font-weight: lighter;
-  }
 
-  .progressing {
-    position: relative;
-    float: left;
-    margin: 0 auto;
-    height: 1.2rem;
-    background: #427db1;
-    border-radius: 5px;
-
-  }
-  .percentage{
-    position: absolute;
-    z-index: 4;
-  }
-  .zjProgress {
-    margin-top: -2.8rem;
-    width: 80%;
-    height: 1.2rem;
-    background: rgba(215, 248, 135, 0.39);
-    border-radius: 5px;
-    text-align: center;
-    color: #fff;
-    font-weight: lighter;
-    margin-left: 0.8rem;
-  }
-  .zjProgressing {
-    position: relative;
-    float: left;
-    margin: 0 auto;
-    height: 1.2rem;
-    background: #d7f886;
-    border-radius: 5px;
-
-  }
-  .zjPercentage{
-    position: absolute;
-    z-index: 4;
-    color: black;
-    font-weight: bold;
-  }
-  .sizingDetail{
-    background: rgba(122,121,121,0.63);
-
-  }
-  .sizingDetailTitle{
-    text-align: center;
-    height: 2rem;
-    padding: 0.5rem 0;
-    border: 1px solid rgba(121, 121, 121, 0.63);
-    color: white;
-  }
-  .eltabs{
-    width: 33rem;
-  }
-
-  .dataTable{
-    background-color:transparent !important;
-    margin-left: 0.1rem;
-    width: 95%;
-  }
 
   .el-table::before{
    height: 0;

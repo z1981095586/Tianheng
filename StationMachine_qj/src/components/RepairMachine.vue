@@ -555,7 +555,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "RepairMachine",
-  props: ["isUpdate", "staff_name"],
+  props: ["isUpdate", "staff_name", "staff_id"],
   data() {
     return {
       MachineShow: true, //选择机台显示隐藏
@@ -792,34 +792,56 @@ export default {
       let that = this;
       that.machineList = [];
       that.machineListCon = [];
-      axios
-        .get(
-          url,
+      let url2 = "http://47.110.95.57:8091/APP/getMachine";
 
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then(function (res) {
-          console.log(res);
-          let arr = JSON.parse(res.data.repair_history);
-          arr.forEach((element) => {
-            if (
-              !element.repair_typename ||
-              element.repair_typename == "" ||
-              element.repair_typename == null
-            ) {
-              element.repair_typename = "未填写";
-            }
-            if (that.workshopId.indexOf(element.workshop_id) != -1) {
-              that.machineListCon.push(element);
-            }
+      axios({
+        url: url2,
+        method: "post",
+        params: {
+          company_id: that.company_id,
+          user_id: that.staff_id,
+        },
+      }).then(function (response) {
+        console.log(response.data.data.length);
+        if (response.data.data.length == 0) {
+          that.$message({
+            message: "没有机台获取到！",
+            type: "warning",
           });
-          that.total_num = that.machineListCon.length;
-          that.machineList = that.pagination(1, that.page_size, that.machineListCon);
-        });
+          return;
+        }
+        let datalist = response.data.data;
+        axios
+          .get(
+            url,
+
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then(function (res) {
+            console.log(res);
+            let arr = JSON.parse(res.data.repair_history);
+            arr.forEach((element) => {
+              if (
+                !element.repair_typename ||
+                element.repair_typename == "" ||
+                element.repair_typename == null
+              ) {
+                element.repair_typename = "未填写";
+              }
+              if (that.workshopId.indexOf(element.workshop_id) != -1) {
+                if (datalist.indexOf(element.machine_id) != -1) {
+                  that.machineListCon.push(element);
+                }
+              }
+            });
+            that.total_num = that.machineListCon.length;
+            that.machineList = that.pagination(1, that.page_size, that.machineListCon);
+          });
+      });
     },
     CurrentTypeChange(e) {
       //零配件类型分页
@@ -1407,7 +1429,6 @@ export default {
   justify-content: flex-start;
 }
 
-
 .search input {
   border: 1px solid #000;
   height: 3rem;
@@ -1891,7 +1912,7 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
-    white-space: nowrap;
+  white-space: nowrap;
 
   overflow: hidden;
 

@@ -47,6 +47,7 @@
     <History v-show="isHistory"></History>
 
     <RepairMachine
+      :staff_id="staffId"
       :staff_name="staff_name"
       v-show="isRepair"
       :isUpdate="isRepair"
