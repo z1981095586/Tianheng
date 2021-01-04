@@ -516,11 +516,10 @@ export default {
       drawer: false, //查看零配件抽屉
       drawerFlag: null, //查看零配件抽屉是否需要根据配件种类参数获取
       noSaveDialog: false,
-      checkedCities: ["上海", "北京"],
-      cities: ["上海", "北京", "广州", "深圳"],
+      checkedCities: [],
+      cities: [],
       checkAll: false,
       isIndeterminate: true,
-
       search_machine: "",
       checkMachine: [], //选中机台列表
       checkedMachineNum: "",
@@ -528,7 +527,6 @@ export default {
       total_num: null,
       page_num: 1,
       page_size: 9,
-
       typeList: [],
       checkType: [], //选中机台列表
       checkedTypeName: "", //选中种类名称
@@ -545,24 +543,7 @@ export default {
 
       company_id: 10000015,
       isWaitMaintance: null, //是否待保养，0带保养，1保养预期，2待维修
-      reasonlist: [
-        {
-          label: "经停",
-          value: "经停",
-        },
-        {
-          label: "纬停",
-          value: "纬停",
-        },
-        {
-          label: "疵点",
-          value: "疵点",
-        },
-        {
-          label: "设备",
-          value: "设备",
-        },
-      ],
+      reasonlist: [],
       checkedRepair: [],
       checkedRepairName: "",
       repairReason: "",
@@ -785,38 +766,6 @@ export default {
               that.machineList = that.pagination(1, that.page_size, that.machineListCon);
             });
         });
-        // let url =
-        //   "http://112.12.1.41:8091/APP/repair_history?company_id=10000015&isMessage=1";
-        // let that = this;
-        // that.machineList = [];
-        // that.machineListCon = [];
-        // axios
-        //   .get(
-        //     url,
-
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //     }
-        //   )
-        //   .then(function (res) {
-        //     console.log(res);
-        //     let arr = JSON.parse(res.data.repair_history);
-        //     arr.forEach((element) => {
-        //       if (that.workshopId.indexOf(element.workshop_id) != -1) {
-        //         element.machineId = element.machine_id;
-        //         that.machineListCon.push(element);
-        //       }
-        //     });
-        //     that.total_num = that.machineListCon.length;
-        //     that.machineList = that.pagination(
-        //       that.page_num,
-        //       that.page_size,
-        //       that.machineListCon
-        //     );
-        //     console.log(that.machineList);
-        //   });
       } else {
         let days_to_expire;
         if (this.isWaitMaintance == 0) {
@@ -1270,7 +1219,6 @@ export default {
         datas = {
           page: that.page_num2,
           pageNum: that.page_size2,
-
           categories_id: this.checkedTypeId,
         };
       } else {

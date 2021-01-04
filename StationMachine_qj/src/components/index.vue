@@ -251,6 +251,7 @@ export default {
           that.workshop_id = response.data.data[0].workshop_id;
           this.showNameTable = false;
         } else {
+          this.showNameTable = true;
           that.$message.warning("员工号不正确!");
         }
         that.staff_code = "";

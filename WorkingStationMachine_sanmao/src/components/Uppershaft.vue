@@ -228,7 +228,14 @@
       <div class="operationPane_con_uppershaft">
         <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
         <div class="chooseBtn">
-          <div class="chooseBtn_con" style="justify-content: flex-end">
+          <div class="chooseBtn_con">
+            <div class="chooseBtn_con_label" style="background: none; width: 77%">
+              <el-input
+                style="width: 100%; font-size: 1.5rem"
+                v-model="gh"
+                placeholder="请输入箍号"
+              ></el-input>
+            </div>
             <div
               class="pane_btn_one"
               @click="
@@ -672,6 +679,7 @@ export default {
       page_size3: 21,
       page_num3: 1,
       total_num3: null,
+      gh: "",
     };
   },
   methods: {
@@ -1048,6 +1056,8 @@ export default {
             machine_id: this.machine_id,
             print_code: this.pch,
             shang_zhou_ren: String(nameList),
+            kai_ce_gong_id: this.kcgId,
+            gu_hao: this.gh,
           };
           let that = this;
           axios({

@@ -124,7 +124,7 @@
     <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
-        <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem;border:none;" />
+        <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem; border: 1px solid black;" />
         <img src="../../static/img/saomiao.gif" style="width:10rem;" />
 
         <div class="stopBtn" @click="dialogVisible = false">停止扫码</div>
