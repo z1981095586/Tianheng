@@ -39,8 +39,8 @@
               <div class="board_con_right_top_con2_left"><span style="font-size:2rem;width:4rem">低效机台</span></div>
               <div class="board_con_right_top_con2_right">
                 <div class="board_con_right_top_con2_right_con" v-for="(item,index) in djxlList" :key="index"><span
-                    style="font-size:2.5rem;width:50%;text-align:left;margin-left:10%">#{{item.machineid}}</span><span
-                    style="font-size:2.5rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.shiftEfficiencyF}}%</span></div>
+                    style="font-size:2rem;width:50%;text-align:left;margin-left:10%">#{{item.machineid}}</span><span
+                    style="font-size:2rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.shiftEfficiencyF}}%</span></div>
                               
               </div>
             </div>
@@ -76,8 +76,8 @@
             <div class="board_con_right_top_con">      <div class="board_con_right_top_con2_left"><span style="font-size:2rem;width:4rem">断头排名</span></div>
                       <div class="board_con_right_top_con2_right">
                 <div class="board_con_right_top_con2_right_con" v-for="(item,index) in dtpmList" :key="index"><span
-                    style="font-size:2.5rem;width:50%;text-align:left;margin-left:10%">#{{item.MachineID}}</span><span
-                    style="font-size:2.5rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.weft_c}}次</span></div>
+                    style="font-size:2rem;width:50%;text-align:left;margin-left:10%">#{{item.MachineID}}</span><span
+                    style="font-size:2rem;color:rgb(213,119,80);width:40%;text-align:left">{{item.weft_c}}次</span></div>
                          
               </div></div>
           </div>
@@ -466,7 +466,7 @@ span{
 
   .board {
     width: 100%;
-    height: 93%;
+    height: 67%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -518,7 +518,7 @@ span{
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .board_title {
@@ -552,7 +552,7 @@ span{
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .board_con_right {
@@ -618,7 +618,7 @@ span{
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: 2.5rem;
+    font-size: 2rem;
 
   }
   
