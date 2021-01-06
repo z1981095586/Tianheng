@@ -694,7 +694,7 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
     height: 100%;
     display: flex;
     color: white;
-    font-size: 1.6em;
+    font-size: 1.4em;
     justify-content: flex-start;
     align-items: center;
   }

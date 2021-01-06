@@ -547,7 +547,7 @@ window.close();
     height: 100%;
     display: flex;
     color: white;
-    font-size: 1.6em;
+    font-size: 1.4em;
     margin-top: 10%;
     justify-content: flex-start;
     align-items: center;

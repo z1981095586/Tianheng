@@ -35,6 +35,8 @@
           <div class="kcgk_con" v-show="kcgk_show">
             <div :class="[item.flag==true? item.in :item.out]" :style="item.back" v-for="(item,index) in dataList"
               :key="index" @click="StockinOut(item.library_name,item.flag)"><span>{{item.library_name}}</span></div>
+              <div class="xn_btn">虚拟出库</div>
+              <div class="xn_btn2">虚拟入库</div>
           </div>
           <div class="crmx_con" v-show="crmx_show">
             <div class="table">
@@ -1598,9 +1600,45 @@
   .kcgk_con {
     width: 100%;
     height: 100%;
+    position: relative;
 
   }
-
+  .xn_btn {
+    width: 8rem;
+    height: 4rem;
+    background: chocolate;
+    position: absolute;
+    right: 20%;
+ bottom: -34px;
+    font-size: 1.5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  .xn_btn2 {
+    width: 8rem;
+    height: 4rem;
+    background: chocolate;
+    position: absolute;
+    right: 2%;
+    bottom: -34px;
+    font-size: 1.5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
   .kcgk_con_one_in {
     width: 9%;
     height: 50px;

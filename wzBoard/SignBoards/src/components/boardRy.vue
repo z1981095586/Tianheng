@@ -29,11 +29,11 @@
           <div class="board_con_right_top">
             <div class="board_con_right_top_con1">
               <div class="board_con_right_top_con1_con"><span
-                  style="font-size:2rem;width:4rem;margin-left:5%;margin-right:35%;">当班效率</span><span
-                  style="font-size:3rem">{{dbxl}}%</span></div>
+                  style="font-size:2rem;width:5rem;margin-left:3%;margin-right:35%;">当班效率</span><span
+                  style="font-size:2.3rem">{{dbxl}}%</span></div>
               <div class="board_con_right_top_con1_con"><span
-                  style="font-size:2rem;width:4rem;margin-left:5%;margin-right:35%;">当班产量</span><span
-                  style="font-size:3rem">{{zbcl}}米</span></div>
+                  style="font-size:2rem;width:5rem;margin-left:3%;margin-right:35%;">当班产量</span><span
+                  style="font-size:2.3rem">{{zbcl}}m</span></div>
             </div>
             <div class="board_con_right_top_con2">
               <div class="board_con_right_top_con2_left"><span style="font-size:2rem;width:4rem">低效机台</span></div>
@@ -140,7 +140,7 @@ dtpmList:[],//断头排名数据
     methods: {
           changeWorkshopTiming:function (){
           const timer = setInterval(() =>{
-     
+
          
     
             // let index = '';
