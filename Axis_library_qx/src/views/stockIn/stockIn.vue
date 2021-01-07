@@ -23,7 +23,8 @@
     <div class="line"></div>
     <div class="contain">
       <div class="aside">
-        <span>入库操作</span>
+        <span v-show="!isxuni">入库操作</span>
+         <span v-show="isxuni">虚拟入库操作</span>
       </div>
       <div class="main">
         <div class="stockIn_info">
@@ -102,7 +103,8 @@
       dialogVisibleClose: false,
       showclose: false,
       autofocus: true,
-      product_nameList:[]
+      product_nameList:[],
+      isxuni:null
     }),
 
     methods: {
@@ -113,15 +115,17 @@
           name: 'people',
           params: {
             lastPath: "stockIn",
-            library_name: this.library_name
+            library_name: this.library_name,
+            isxuni:this.isxuni
           }
 
         })
 
       },
       warehousing() { //确认提交
-
-        if (this.axis_no == undefined) {
+console.log(this.isxuni)
+        if(this.isxuni==false){
+          if (this.axis_no == undefined) {
           this.axis_no = ""
         }
         if (this.product_name == undefined) {
@@ -195,6 +199,82 @@
             }
 
           })
+        }
+        }else{
+          if (this.axis_no == undefined) {
+          this.axis_no = ""
+        }
+        if (this.product_name == undefined) {
+          this.product_name = ""
+        }
+        if (this.meter == undefined) {
+          this.meter = ""
+        }
+        if (this.staff_id == "") {
+          this.$message({
+            type: 'error',
+            message: '操作人员为空！'
+          });
+        } else if (this.library_name === "") {
+          this.$message({
+            type: 'error',
+            message: '库位号为空！'
+          });
+        } else if (this.axis_no === "") {
+          this.$message({
+            type: 'error',
+            message: '轴号为空！'
+          });
+        } else if (this.product_name === "") {
+          this.$message({
+            type: 'error',
+            message: '入库批号为空！'
+          });
+        } else if (this.meter === "") {
+          this.$message({
+            type: 'error',
+            message: '入库米数为空！'
+          });
+        } else {
+          let url = "http://120.55.124.53:8206/api/axis/virtualWarehousing"
+          let that = this
+          axios({
+            method: "post",
+            url: url,
+            data: {
+              selectInfo: {
+                company_id: Number(that.$store.state.companyID)
+              },
+            
+              axis: {
+
+                axis_no: that.axis_no,
+                product_name: that.product_name,
+                total_work_qty: that.meter,
+                user_id: that.staff_name,
+                print_code: that.print_code
+              }
+            },
+            headers: {
+
+            }
+          }).then((res) => {
+            //console.log(res);
+            if (res.data.message == "成功") {
+              that.$message({
+                type: 'success',
+                message: '操作成功！'
+              });
+              that.back()
+            } else {
+              that.$message({
+                type: 'error',
+                message: res.data.message + '！'
+              });
+            }
+
+          })
+        }
         }
 
       },
@@ -350,9 +430,14 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
         this.staff_name = this.$store.state.peopleData.staff_name
         this.staff_id = this.$store.state.peopleData.staff_id
       }
+console.log(this.$route.params.isxuni)
+this.isxuni=this.$route.params.isxuni
 
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
+      if(this.isxuni==true){
+  this.library_name="虚拟库位"
+}
       this.getAxisInfo()
       this.getPinMinPiHao()
 

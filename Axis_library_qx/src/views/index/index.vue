@@ -35,8 +35,8 @@
           <div class="kcgk_con" v-show="kcgk_show">
             <div :class="[item.flag==true? item.in :item.out]" :style="item.back" v-for="(item,index) in dataList"
               :key="index" @click="StockinOut(item.library_name,item.flag)"><span>{{item.library_name}}</span></div>
-              <div class="xn_btn">虚拟出库</div>
-              <div class="xn_btn2">虚拟入库</div>
+              <div class="xn_btn" @click="xnck()">虚拟出库</div>
+              <div class="xn_btn2" @click="xnrk()">虚拟入库</div>
           </div>
           <div class="crmx_con" v-show="crmx_show">
             <div class="table">
@@ -60,6 +60,12 @@
               </el-table>
             </div>
             <div class="page_btn">
+               <div class="xn_btn" @click="xnmx()" style="width: 7rem;
+    height: 4rem;
+      border-radius: 4px;
+
+    right: 7%;
+    bottom: -6rem;">虚拟明细</div>
               <div class="top_jiantou" @click="crmx_pageReduce"><img src="../../static/images/shangjiantou.png"></div>
               <div class="current_page"><span>第</span><span>{{page_num}}/{{page_num2}}</span><span>页</span></div>
               <div class="bottom_jiantou" @click="crmx_pageAdd"><img src="../../static/images/xiajiantou.png"></div>
@@ -133,7 +139,7 @@
         <span>即将关闭当前系统，若需使用需要输入网址！</span></div>
       <!-- <el-drawer title="" :visible.sync="mm_visible2" direction="btt" :modal="mm_modal" :show-close="mm_showclose"
         size="61%">
-        <vue-touch-keyboard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
+        <vue-touch-keybo。；【  ，ard style="font-size: 2em;" :options="mm_options" v-if="mm_visible2" :next="mm_next"
           :layout="mm_layout" :cancel="mm_hide" :accept="mm_accept" :input="mm_input" />
       </el-drawer> -->
       <span slot="footer" class="dialog-footer">
@@ -233,7 +239,7 @@
     data: () => ({
 
 
-
+  
       companyID: "", //公司ID
       library_num: "", //几号库
       network: true, //是否联网
@@ -346,12 +352,37 @@
         timers: null,
         preventClickEvent: false
       },
-      end_date: 3
+      end_date: 3,
+      crmxFlag:false
     }),
 
 
 
     methods: {
+      xnmx(){
+this.crmxFlag=!this.crmxFlag
+this.page_num = 1
+
+this.getInAndOutRecord()
+      },
+      xnrk(){
+  this.$router.push({
+            path: '/stockIn',
+            name: 'stockIn',
+            params: {
+          isxuni:true
+            }
+          })
+      },
+          xnck(){
+  this.$router.push({
+            path: '/stockOut',
+            name: 'stockOut',
+            params: {
+          isxuni:true
+            }
+          })
+      },
       shutdown() { //关闭页面
         this.$store.commit('clear', true)
         console.log(this.$store.state)
@@ -568,7 +599,7 @@
               library_name: library_name,
               axis_name: axis_name,
               style_name: style_name,
-              library_num_list: [1, 2]
+              library_num_list: [1, 2,100]
             }
           },
           headers: {
@@ -814,16 +845,26 @@
       getInAndOutRecord() { //获取出入库明细
         let url = "http://120.55.124.53:8206/api/axis/getInAndOutRecord"
         let that = this
-
-        axios({
-          method: "post",
-          url: url,
-          data: {
+let data={}
+if(that.crmxFlag==true){
+  data={ //虚拟出入库明细
+            company_id: that.companyID,
+            page_num: that.page_num,
+            page_size: that.page_size,
+            library_num: 100
+          }
+}else{
+  data={
             company_id: that.companyID,
             page_num: that.page_num,
             page_size: that.page_size,
             library_num: that.library_num
-          },
+          }
+}
+        axios({
+          method: "post",
+          url: url,
+          data: data,
           headers: {
 
           }
@@ -1160,6 +1201,7 @@
             path: '/stockIn',
             name: 'stockIn',
             params: {
+              isxuni:false,
               library_name: this.library_name,
               library_num: this.library_num
             }
@@ -1170,6 +1212,7 @@
             path: '/stockOut',
             name: 'stockOut',
             params: {
+                   isxuni:false,
               library_name: this.library_name,
               library_num: this.library_num
             }
@@ -1226,7 +1269,7 @@
       },
 
       crmx_pageReduce() { //出入明细上一页
-
+ console.log(this.flag)
         if (this.page_num > 1) {
           this.page_num = this.page_num - 1
         }
@@ -1234,6 +1277,7 @@
 
       },
       crmx_pageAdd() { //出入明细下一页
+      console.log(this.flag)
         if (this.flag == true) { //只有不是最后一页才可下一页操作
           this.page_num = this.page_num + 1
           this.getInAndOutRecord()
@@ -1712,6 +1756,8 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+
+    position: relative;
 
 
   }

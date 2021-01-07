@@ -144,8 +144,21 @@
               </el-col>
               <div class="pop" v-if="showModal" style="height:40vh;width:25vw">
                 <div class="name">
-                  <div @click="clicklinks1">浙江瑞域纺织有限公司</div>
-                  <div @click="clicklinks2"> 浙江广华纺织有限公司</div>
+              <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000017" target="_blank" >浙江瑞域纺织有限公司</a>
+                 <br>
+                  <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" >浙江广华纺织有限公司</a>
+                     <br>
+                      <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" >浙江鑫海纺织有限公司</a>
+                         <br>
+                          <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" > 浙江七星纺织有限公司</a>
+                             <br>
+                              <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" >  浙江万舟纺织有限公司</a>
+                                 <br>
+                                  <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" > 浙江奇锦纺织有限公司</a>
+                                     <br>
+                                      <a  href="http://106.12.219.66:81/TIISignBoard/dist/#/10000020" target="_blank" >  浙江祥嘉纺织公司</a>
+                  <!-- <div @click="clicklinks2"> 浙江广华纺织有限公司</div>
+
                   浙江鑫海纺织有限公司
                   <br>
                   浙江七星纺织有限公司
@@ -154,7 +167,7 @@
                   <br>
                   浙江奇锦纺织有限公司
                   <br>
-                  浙江祥嘉纺织公司
+                  浙江祥嘉纺织公司 -->
                 </div>
               </div>
             </div>
@@ -180,7 +193,7 @@
           <div class="message_table">
             <table class="table" cellspacing="0">
               <tr class="first_tr1">
-                <th class="first_th1">实政信息</th>
+                <th class="first_th1">时政信息</th>
                 <th class="second_th1">更多信息</th>
               </tr>
             </table>
@@ -197,7 +210,7 @@
             </vue-seamless-scroll>
           </div>
         </div>
-        <div class="bottom_font"><span>Copyright © 浙江天衡信息技术有限公司</span></div>
+        <div class="bottom_font"><span>Copyright © 浙江布威信息技术有限公司</span></div>
       </div>
       <div class="right" style="height:90vh;width:27%">
         <div class="right1" style="height:29vh">
@@ -2338,12 +2351,14 @@
       clickProps(e) {
         window.open(this.urllll[e.target.id], "newwin", "toolbar=no,scrollbars=" + scroll + ",menubar=no");
       },
-      clicklinks1() {
-        window.location.href = "http://106.12.219.66:81/TIISignBoard/dist/#/10000017";
-      },
-      clicklinks2() {
-        window.location.href = "http://106.12.219.66:81/TIISignBoard/dist/#/10000020";
-      }
+      // clicklinks1() {
+      //   window.open("http://106.12.219.66:81/TIISignBoard/dist/#/10000017");  
+      //   // window.location.href = "http://106.12.219.66:81/TIISignBoard/dist/#/10000017";
+      // },
+      // clicklinks2() {
+      //   window.open("http://106.12.219.66:81/TIISignBoard/dist/#/10000020");  
+      //   // window.location.href = "http://106.12.219.66:81/TIISignBoard/dist/#/10000020";
+      // }
     },
 
     mounted() {
@@ -2980,5 +2995,9 @@
     position: absolute;
     color: #008BB0;
     text-align: left;
+  }
+  .name a{
+      color: #008BB0;
+      text-decoration:none;
   }
 </style>

@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/centerdata',
+    path: '/centerdata/:user/:pass',
     name: 'centerdata',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

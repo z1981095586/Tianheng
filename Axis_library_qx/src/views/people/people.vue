@@ -103,7 +103,8 @@
       lastPath:"",
       dataList: [
 
-      ]
+      ],
+      isxuni:null
     }),
 
     methods: {
@@ -197,7 +198,8 @@ window.close();
         })
           // this.$router.push("/index/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
         }else if(this.lastPath=="stockIn"){
-             this.$router.push({
+      if(this.isxuni==false){
+               this.$router.push({
                path: '/stockIn',
           name: 'stockIn',
           params:{
@@ -206,9 +208,21 @@ window.close();
            library_name:this.library_name
           }
         })
+      }else{
+               this.$router.push({
+               path: '/stockIn',
+          name: 'stockIn',
+          params:{
+       companyId:this.$store.state.companyID,
+      isxuni:this.isxuni
+          }
+        })
+      }
             // this.$router.push("/stockIn/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
         }else if(this.lastPath=="stockOut"){
-               this.$router.push({
+     
+              if(this.isxuni==false){
+              this.$router.push({
                path: '/stockOut',
           name: 'stockOut',
           params:{
@@ -217,6 +231,16 @@ window.close();
            library_name:this.library_name
           }
         })
+      }else{
+               this.$router.push({
+              path: '/stockOut',
+          name: 'stockOut',
+          params:{
+       companyId:this.$store.state.companyID,
+      isxuni:this.isxuni
+          }
+        })
+      }
             // this.$router.push("/stockOut/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
         }else if(this.lastPath=="peopleIn"){
             // this.$router.push("/peopleIn")
@@ -471,6 +495,7 @@ window.close();
         this.staff_id = this.$store.state.peopleData.staff_id
       }
       this.lastPath=this.$route.params.lastPath
+      this.isxuni=this.$route.params.isxuni
             this.library_name=this.$route.params.library_name
       console.log(this.$route.params.lastPath)
       let timer = setInterval(this.getTime, 1000);

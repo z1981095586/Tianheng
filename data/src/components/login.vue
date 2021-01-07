@@ -25,7 +25,7 @@
       <div class="right" style="height:90vh;width:27%">
 
       </div>
-      <div class="bottom_font"><span>Copyright © 浙江天衡信息技术有限公司</span></div>
+      <div class="bottom_font"><span>Copyright © 浙江布威信息技术有限公司</span></div>
     </div>
 
 

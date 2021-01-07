@@ -23,22 +23,25 @@
     <div class="line"></div>
     <div class="contain">
       <div class="aside">
-        <span>出库操作</span>
+        <span v-show="!isxuni">出库操作</span>
+            <span v-show="isxuni">虚拟出库操作</span>
       </div>
       <div class="main">
         <div class="stockIn_info">
-
-          <div class="stockIn_span">
-            <div class="span_con"><span>出库批号：{{style_name}}</span></div>
+ <div class="stockIn_input"><span>批次扫描：</span>
+            <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
+          </div>
+          <div class="stockIn_span" v-show="!isxuni">
+            <div class="span_con"><span >出库批号：{{style_name}}</span></div>
           </div>
           <div class="stockIn_span">
             <div class="span_con">
             <span>出库库位：{{ library_name}}</span>
-            <span>出库轴号：{{axis_name}}</span>
+            <span v-show="!isxuni">出库轴号：{{axis_name}}</span>
             </div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><span>出库米数：{{meter_num}}</span><span>出库人员：{{staff_name}}</span></div>
+            <div class="span_con"><span v-show="!isxuni">出库米数：{{meter_num}}</span><span>出库人员：{{staff_name}}</span></div>
           </div>
         </div>
         <div class="bottom_btn">
@@ -72,6 +75,8 @@
       axis_name: "", //出库轴号
      dialogVisibleClose:false,
       showclose:false,
+      isxuni:null,
+      print_code:""
     }),
 
     methods: {
@@ -103,7 +108,8 @@ window.close();
 
       },
       outOfStock() { //出库
-        let url = "http://120.55.124.53:8206/api/axis/outOfStock"
+       if(this.isxuni==false){
+          let url = "http://120.55.124.53:8206/api/axis/outOfStock"
         let that = this
   if (that.staff_id == "") {
           that.$message({
@@ -149,6 +155,52 @@ window.close();
 
         })
         }
+       }else{
+          let url = "http://120.55.124.53:8206/api/axis/virtualOutOfStock"
+        let that = this
+  if (that.print_code == "") {
+          that.$message({
+            type: 'error',
+            message: '请先扫码！'
+          });
+        }  else {
+        axios({
+          method: "post",
+          url: url,
+          data: {
+            selectInfo: {
+              company_id: Number(that.$store.state.companyID)
+            },
+            axis:{
+              print_code:that.print_code,
+ user_id:that.staff_name
+            }
+         
+           
+
+
+          },
+          headers: {
+          }
+        }).then((res) => {
+          //console.log(res);
+          if (res.data.message == "成功") {
+            that.$message({
+              type: 'success',
+              message: '操作成功！'
+            });
+             that.back()
+          } else {
+            that.$message({
+              type: 'error',
+              message: '操作失败！'
+            });
+          }
+
+
+        })
+        }
+       }
       },
       inventoryInquiry() { //获取出库轴信息
         let url = "http://120.55.124.53:8206/api/axis/inventoryInquiry"
@@ -248,7 +300,13 @@ window.close();
       }
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
-      this.inventoryInquiry()
+      this.isxuni=this.$route.params.isxuni
+     if(this.isxuni==true){
+  this.library_name="虚拟库位"
+}else{
+   this.inventoryInquiry()
+}
+   
     },
       beforeDestroy() {
        if (this.timer) {
@@ -272,7 +330,27 @@ window.close();
     color: black;
 
   }
+  .stockIn_input {
+    width: 90%;
+    height: 20%;
 
+    margin: 2%;
+    display: flex;
+    align-items: center;
+  }
+
+  .stockIn_input span {
+    width: 25%;
+    color: white;
+    font-size: 1.6em;
+    margin: 3%;
+  }
+
+  .stockIn_info input {
+    width: 75%;
+    height: 80%;
+    font-size: 1.6em;
+  }
   .kc_table /deep/ .el-table th,
   .el-table tr {
     background-color: rgb(179, 206, 248);
