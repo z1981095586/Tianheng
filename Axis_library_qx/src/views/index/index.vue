@@ -47,11 +47,11 @@
                 </el-table-column>
                 <el-table-column prop="is_take" label="操作" width="60">
                 </el-table-column>
-                <el-table-column prop="library_name" label="库位" width="60">
+                <el-table-column prop="library_name" label="库位" width="109">
                 </el-table-column>
                 <el-table-column prop="axis_name" label="轴号" width="60">
                 </el-table-column>
-                <el-table-column prop="style_name" label="批号" width="159">
+                <el-table-column prop="style_name" label="批号" width="110">
                 </el-table-column>
                 <el-table-column prop="meter_num" label="长度" width="60">
                 </el-table-column>
@@ -247,7 +247,7 @@
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
-      page_size: 8, //出入明细pagesize
+      page_size: 7, //出入明细pagesize
       page_num: 1, //出入明细pagenum
       page_num2: null, //出入明细总页数
       flag: true, //判断是否最后一页
@@ -799,6 +799,7 @@ this.getInAndOutRecord()
           headers: {}
         }).then((res) => {
           console.log(res)
+          // res.data.result=that.sortByKey(res.data.result, "id")
           if (res.data.result.length == 0) {
 
 
@@ -824,6 +825,8 @@ this.getInAndOutRecord()
               }
               that.dataList.push(res.data.result[i])
             }
+     
+           
           }
 
 
@@ -882,6 +885,7 @@ if(that.crmxFlag==true){
             that.flag = true //不是最后一页可以继续
             that.tableData = [] //初始化表格
             for (let i = 0; i < res.data.result.in_and_out_record_list.length; i++) {
+            
               if (res.data.result.in_and_out_record_list[i].is_take == 1) { //出入库状态判断
                 res.data.result.in_and_out_record_list[i].is_take = "入库"
               } else if (res.data.result.in_and_out_record_list[i].is_take == 0) {
