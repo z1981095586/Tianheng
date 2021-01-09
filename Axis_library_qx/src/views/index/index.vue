@@ -799,7 +799,7 @@ this.getInAndOutRecord()
           headers: {}
         }).then((res) => {
           console.log(res)
-          // res.data.result=that.sortByKey(res.data.result, "id")
+          // res.data.result=that.sortByKey(res.data.result, "library_name")
           if (res.data.result.length == 0) {
 
 
@@ -810,7 +810,10 @@ this.getInAndOutRecord()
           } else {
 
             that.dataList = []
+            let arr=[]
             for (let i = 0; i < res.data.result.length; i++) {
+       
+        res.data.result[i].library_name=parseInt(res.data.result[i].library_name)
               if (res.data.result[i].is_take == 1) {
                 res.data.result[i].flag = true
               } else if (res.data.result[i].is_take == 0) {
@@ -823,9 +826,12 @@ this.getInAndOutRecord()
                 res.data.result[i].in = "kcgk_con_one_in"
                 res.data.result[i].out = "kcgk_con_one_out"
               }
-              that.dataList.push(res.data.result[i])
+              arr.push(res.data.result[i])
             }
-     
+           arr=that.sortByKey(arr, "library_name")
+          for(let i=arr.length-1;i>0;i--){
+            that.dataList.push(arr[i])
+          }
            
           }
 
