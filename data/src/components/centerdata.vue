@@ -1125,6 +1125,11 @@
         let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds())
         this.nowDate = yy + '年' + mm + '月' + dd + '日'
         this.nowTime = hou + ':' + min + ':' + sec
+            if(this.nowTime=="01:00:00"){
+        this.regionaloutputvalueChart()
+          this.userregistrationChart();
+             this.poweronefficiencyChart();
+          }
       },
       //各区域产值图表
       regionaloutputvalueChart: function () {
@@ -2334,18 +2339,20 @@
       },
       getDataTiming: function () {
         const timer = setInterval(() => {
-          this.userregistrationChart();
-          this.poweronefficiencyChart();
+        
+       
           this.educationbackgroundChart();
           this.governmentinformation();
           this.onlineinformation();
           this.repairstatistics();
           this.userDetails();
           // this.getDataTiming();
-          this.regionaloutputvalueChart()
-
+      
 
         }, 4000);
+       
+     
+    
       },
       //链接
       clickProps(e) {

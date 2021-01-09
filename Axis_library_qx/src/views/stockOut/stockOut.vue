@@ -16,7 +16,7 @@
       <div class="head_right">
         <div class="right_con">
           <div class="time">{{time}}</div>
-           <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
+          <div class="shutdown"><img @click="dialogVisibleClose=true" src="../../static/images/shutdown.png" /></div>
         </div>
       </div>
     </div>
@@ -24,20 +24,20 @@
     <div class="contain">
       <div class="aside">
         <span v-show="!isxuni">出库操作</span>
-            <span v-show="isxuni">虚拟出库操作</span>
+        <span v-show="isxuni">虚拟出库操作</span>
       </div>
       <div class="main">
         <div class="stockIn_info">
- <div class="stockIn_input"><span>批次扫描：</span>
+          <div class="stockIn_input"><span>批次扫描：</span>
             <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
           </div>
           <div class="stockIn_span" v-show="!isxuni">
-            <div class="span_con"><span >出库批号：{{style_name}}</span></div>
+            <div class="span_con"><span>出库批号：{{style_name}}</span></div>
           </div>
           <div class="stockIn_span">
             <div class="span_con">
-            <span>出库库位：{{ library_name}}</span>
-            <span v-show="!isxuni">出库轴号：{{axis_name}}</span>
+              <span>出库库位：{{ library_name}}</span>
+              <span v-show="!isxuni">出库轴号：{{axis_name}}</span>
             </div>
           </div>
           <div class="stockIn_span">
@@ -64,7 +64,7 @@
   export default {
     name: "stockOut",
     data: () => ({
-  network: true,
+      network: true,
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
@@ -73,134 +73,132 @@
       style_name: "", //批号
       meter_num: "", //出库米数
       axis_name: "", //出库轴号
-     dialogVisibleClose:false,
-      showclose:false,
-      isxuni:null,
-      print_code:""
+      dialogVisibleClose: false,
+      showclose: false,
+      isxuni: null,
+      print_code: ""
     }),
 
     methods: {
-              shutdown(){//关闭页面
-         this.$store.commit('clear', true)
-         console.log(this.$store.state)
-var userAgent = navigator.userAgent;
-if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-window.open('','_self').close()  
+      shutdown() { //关闭页面
+        this.$store.commit('clear', true)
+        console.log(this.$store.state)
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+          window.open('', '_self').close()
 
-window.location.href = "about:blank"
-}else {
-window.opener = null;
-window.open("about:blank", "_self");
-window.close();
-}
+          window.location.href = "about:blank"
+        } else {
+          window.opener = null;
+          window.open("about:blank", "_self");
+          window.close();
+        }
       },
-            toPeople() { //跳转到操作人员更改
+      toPeople() { //跳转到操作人员更改
 
         this.$router.push({ //跳转
           path: '/people',
           name: 'people',
-          params:{
-            lastPath:"stockOut",
-               library_name:this.library_name
+          params: {
+            lastPath: "stockOut",
+            library_name: this.library_name
           }
 
         })
 
       },
       outOfStock() { //出库
-       if(this.isxuni==false){
+        if (this.isxuni == false) {
           let url = "http://120.55.124.53:8206/api/axis/outOfStock"
-        let that = this
-  if (that.staff_id == "") {
-          that.$message({
-            type: 'error',
-            message: '操作人员为空！'
-          });
-        } else if (that.library_name == "") {
-          that.$message({
-            type: 'error',
-            message: '库位号为空！'
-          });
+          let that = this
+          if (that.staff_id == "") {
+            that.$message({
+              type: 'error',
+              message: '操作人员为空！'
+            });
+          } else if (that.library_name == "") {
+            that.$message({
+              type: 'error',
+              message: '库位号为空！'
+            });
+          } else {
+            axios({
+              method: "post",
+              url: url,
+              data: {
+                selectInfo: {
+                  company_id: Number(that.$store.state.companyID)
+                },
+                library_name: String(that.library_name),
+                library_num: that.library_num,
+                user_id: that.staff_name
+
+
+              },
+              headers: {}
+            }).then((res) => {
+              //console.log(res);
+              if (res.data.message == "成功") {
+                that.$message({
+                  type: 'success',
+                  message: '操作成功！'
+                });
+                that.back()
+              } else {
+                that.$message({
+                  type: 'error',
+                  message: '操作失败！'
+                });
+              }
+
+
+            })
+          }
         } else {
-        axios({
-          method: "post",
-          url: url,
-          data: {
-            selectInfo: {
-              company_id: Number(that.$store.state.companyID)
-            },
-            library_name: that.library_name,
-            library_num: that.library_num,
-            user_id:that.staff_name
-
-
-          },
-          headers: {
-          }
-        }).then((res) => {
-          //console.log(res);
-          if (res.data.message == "成功") {
-            that.$message({
-              type: 'success',
-              message: '操作成功！'
-            });
-             that.back()
-          } else {
-            that.$message({
-              type: 'error',
-              message: '操作失败！'
-            });
-          }
-
-
-        })
-        }
-       }else{
           let url = "http://120.55.124.53:8206/api/axis/virtualOutOfStock"
-        let that = this
-  if (that.print_code == "") {
-          that.$message({
-            type: 'error',
-            message: '请先扫码！'
-          });
-        }  else {
-        axios({
-          method: "post",
-          url: url,
-          data: {
-            selectInfo: {
-              company_id: Number(that.$store.state.companyID)
-            },
-            axis:{
-              print_code:that.print_code,
- user_id:that.staff_name
-            }
-         
-           
-
-
-          },
-          headers: {
-          }
-        }).then((res) => {
-          //console.log(res);
-          if (res.data.message == "成功") {
-            that.$message({
-              type: 'success',
-              message: '操作成功！'
-            });
-             that.back()
-          } else {
+          let that = this
+          if (that.print_code == "") {
             that.$message({
               type: 'error',
-              message: '操作失败！'
+              message: '请先扫码！'
             });
+          } else {
+            axios({
+              method: "post",
+              url: url,
+              data: {
+                selectInfo: {
+                  company_id: Number(that.$store.state.companyID)
+                },
+                axis: {
+                  print_code: that.print_code,
+                  user_id: that.staff_name
+                }
+
+
+
+
+              },
+              headers: {}
+            }).then((res) => {
+              //console.log(res);
+              if (res.data.message == "成功") {
+                that.$message({
+                  type: 'success',
+                  message: '操作成功！'
+                });
+                that.back()
+              } else {
+                that.$message({
+                  type: 'error',
+                  message: '操作失败！'
+                });
+              }
+
+
+            })
           }
-
-
-        })
         }
-       }
       },
       inventoryInquiry() { //获取出库轴信息
         let url = "http://120.55.124.53:8206/api/axis/inventoryInquiry"
@@ -213,11 +211,11 @@ window.close();
               company_id: Number(that.$store.state.companyID)
             },
             axisLib: {
-                      library_name: that.library_name,
-               library_num_list: [that.library_num]
+              library_name: that.library_name,
+              library_num_list: [that.library_num]
             }
           },
-          timeout:1000,
+          timeout: 1000,
           headers: {
 
           }
@@ -235,19 +233,19 @@ window.close();
           }
 
 
-        },function (err) {
+        }, function (err) {
           //console.log(err)
-      //  if (err == "Error: timeout of 1000ms exceeded"||"Error: Network Error") { //超时1000毫秒显示断网图标
-      //       that.network = false
-      //          that.$message({
-      //         type: 'warning',
-      //         message: '网络掉线了！' 
-      //       });
-      //     } else {
+          //  if (err == "Error: timeout of 1000ms exceeded"||"Error: Network Error") { //超时1000毫秒显示断网图标
+          //       that.network = false
+          //          that.$message({
+          //         type: 'warning',
+          //         message: '网络掉线了！' 
+          //       });
+          //     } else {
 
 
-      //       that.network = true
-      //     }
+          //       that.network = true
+          //     }
         })
       },
       getTime() { //获取时间
@@ -276,14 +274,14 @@ window.close();
       },
       back() { //返回主页
 
-      
+
         // this.$router.push("/index/:" + this.$store.state.companyID + "/:" + this.$store.state.library_num)
-           this.$router.push({
-               path: '/index',
+        this.$router.push({
+          path: '/index',
           name: 'index',
-          params:{
-       companyId:this.$store.state.companyID,
-       library_num:this.$store.state.library_num
+          params: {
+            companyId: this.$store.state.companyID,
+            library_num: this.$store.state.library_num
           }
         })
 
@@ -300,18 +298,18 @@ window.close();
       }
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
-      this.isxuni=this.$route.params.isxuni
-     if(this.isxuni==true){
-  this.library_name="虚拟库位"
-}else{
-   this.inventoryInquiry()
-}
-   
+      this.isxuni = this.$route.params.isxuni
+      if (this.isxuni == true) { //虚拟出库按钮进来的
+        this.library_name = "虚拟库位"
+      } else {
+        this.inventoryInquiry()
+      }
+
     },
-      beforeDestroy() {
-       if (this.timer) {
-          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
-        }
+    beforeDestroy() {
+      if (this.timer) {
+        clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+      }
     },
 
 
@@ -330,6 +328,7 @@ window.close();
     color: black;
 
   }
+
   .stockIn_input {
     width: 90%;
     height: 20%;
@@ -351,6 +350,7 @@ window.close();
     height: 80%;
     font-size: 1.6em;
   }
+
   .kc_table /deep/ .el-table th,
   .el-table tr {
     background-color: rgb(179, 206, 248);
@@ -393,7 +393,7 @@ window.close();
 
   }
 
- .line {
+  .line {
     background: white;
     width: 99%;
     height: 0.5vh;
@@ -402,31 +402,32 @@ window.close();
   .head_left {
     width: 50%;
     height: 100%;
-    display: flex;   align-items: flex-end;
+    display: flex;
+    align-items: flex-end;
   }
 
   .head_right {
     width: 50%;
     height: 100%;
     display: flex;
-       align-items: center;
+    align-items: center;
     justify-content: flex-end;
   }
 
   .logo {
 
     width: 300px;
-     margin-bottom: 17px;
+    margin-bottom: 17px;
     margin-left: 2%;
   }
 
   .icon {
     height: 100%;
     width: 20%;
-   margin-bottom: 17px;
+    margin-bottom: 17px;
     display: flex;
     justify-content: center;
-     align-items: flex-end;
+    align-items: flex-end;
     margin-left: 25px;
   }
 
@@ -439,9 +440,9 @@ window.close();
   }
 
   .name {
- margin-bottom: 20px;
+    margin-bottom: 20px;
     background: rgb(22, 101, 227);
- min-width: 20%;
+    min-width: 20%;
     min-height: 38%;
     border: 1.5px solid white;
     border-radius: 8px;
@@ -452,16 +453,21 @@ window.close();
 
   }
 
-    .name span {
+  .name span {
     font-size: 1.5em;
     font-weight: 600;
     color: white;
-    word-break:normal; width:auto; display:block; white-space:pre-wrap;word-wrap : break-word ;overflow: hidden ;
+    word-break: normal;
+    width: auto;
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 
   .number {
- 
-   margin-bottom: 20px;
+
+    margin-bottom: 20px;
     height: 38%;
     width: 12%;
     margin-left: 5%;
@@ -482,17 +488,18 @@ window.close();
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-        position: relative;
+    position: relative;
   }
 
   .time {
     font-size: 1.5em;
     color: white;
     font-weight: 600;
-     margin-right: 6rem;
+    margin-right: 6rem;
   }
+
   .shutdown {
-      position: absolute;
+    position: absolute;
     /* top: 0rem; */
     right: 1rem;
     width: 3rem;
@@ -524,7 +531,7 @@ window.close();
   }
 
   .aside span {
-  width: 20%;
+    width: 20%;
     padding-right: 21%;
     border-right: 1.6px solid white;
     font-size: 3em;

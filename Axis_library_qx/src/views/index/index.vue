@@ -829,9 +829,7 @@ this.getInAndOutRecord()
               arr.push(res.data.result[i])
             }
            arr=that.sortByKey(arr, "library_name")
-          for(let i=arr.length-1;i>0;i--){
-            that.dataList.push(arr[i])
-          }
+           that.dataList=arr.reverse()
            
           }
 

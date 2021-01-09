@@ -1247,7 +1247,7 @@ for(let i=0;i<that.dataList.length;i++){
         this.companyID = this.$route.params.companyId;
         this.library_num = this.$route.params.library_num
       }
-      console.log(this.$route)
+
       this.$store.commit('setCompanyID', {
         companyID: this.companyID,
         library_num: this.library_num

@@ -231,6 +231,8 @@ export default {
         // selectFields: ["staff_code", "staff_name"],
         query: {
           staff_code: this.staff_code,
+        },
+        selectLikeFields: {
           workshop_id: this.workshopId,
         },
       };

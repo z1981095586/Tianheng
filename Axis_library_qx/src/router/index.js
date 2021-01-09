@@ -5,7 +5,7 @@ import stockIn from '@/views/stockIn/stockIn'
 import stockOut from '@/views/stockOut/stockOut'
 import peopleIn from '@/views/peopleIn/peopleIn'
 import people from '@/views/people/people'
-import VueTouchKeyboard from "vue-touch-keyboard";
+import VueTouchKeyboard from "vue-touch-keyboard";//底部键盘
 import style from "vue-touch-keyboard/dist/vue-touch-keyboard.css";
  Vue.use(VueTouchKeyboard);
 

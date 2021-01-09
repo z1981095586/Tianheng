@@ -24,7 +24,7 @@
     <div class="contain">
       <div class="aside">
         <span v-show="!isxuni">入库操作</span>
-         <span v-show="isxuni">虚拟入库操作</span>
+        <span v-show="isxuni">虚拟入库操作</span>
       </div>
       <div class="main">
         <div class="stockIn_info">
@@ -32,27 +32,30 @@
             <el-input v-model="print_code" autocomplete="on" v-focus></el-input>
           </div>
           <div class="stockIn_span">
-            <div class="span_con"><div class="span_con_span"><span>入库批号：</span>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库批号：</span>
                 <!-- <el-input v-model="product_name" style="width:33.4%;"></el-input> -->
-                <el-autocomplete
-  v-model="product_name" style="width:33.4%;"
-  :fetch-suggestions="querySearchAsync"
-  @select="handleSelect"
-></el-autocomplete>
-              </div></div>
+                <el-autocomplete v-model="product_name" style="width:33.4%;" :fetch-suggestions="querySearchAsync"
+                  @select="handleSelect"></el-autocomplete>
+              </div>
+            </div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con">     <div class="span_con_span"><span>入库库位：</span>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库库位：</span>
                 <el-input disabled v-model="library_name" style="width:33.4%;"></el-input><span
                   style="margin-left:1em;">入库轴号：</span>
                 <el-input style="width:33.4%;" v-model="axis_no"></el-input>
-              </div></div>
+              </div>
+            </div>
           </div>
           <div class="stockIn_span">
-            <div class="span_con">    <div class="span_con_span"><span>入库米数：</span>
+            <div class="span_con">
+              <div class="span_con_span"><span>入库米数：</span>
                 <el-input v-model="meter" style="width:33.4%;"></el-input><span style="margin-left:1em;">入库人员：</span>
                 <el-input disabled style="width:33.4%;" v-model="staff_name"></el-input>
-              </div></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="bottom_btn">
@@ -103,8 +106,8 @@
       dialogVisibleClose: false,
       showclose: false,
       autofocus: true,
-      product_nameList:[],
-      isxuni:null
+      product_nameList: [],
+      isxuni: null
     }),
 
     methods: {
@@ -116,165 +119,165 @@
           params: {
             lastPath: "stockIn",
             library_name: this.library_name,
-            isxuni:this.isxuni
+            isxuni: this.isxuni
           }
 
         })
 
       },
       warehousing() { //确认提交
-console.log(this.isxuni)
-        if(this.isxuni==false){
+        console.log(this.isxuni)
+        if (this.isxuni == false) {
           if (this.axis_no == undefined) {
-          this.axis_no = ""
-        }
-        if (this.product_name == undefined) {
-          this.product_name = ""
-        }
-        if (this.meter == undefined) {
-          this.meter = ""
-        }
-        if (this.staff_id == "") {
-          this.$message({
-            type: 'error',
-            message: '操作人员为空！'
-          });
-        } else if (this.library_name === "") {
-          this.$message({
-            type: 'error',
-            message: '库位号为空！'
-          });
-        } else if (this.axis_no === "") {
-          this.$message({
-            type: 'error',
-            message: '轴号为空！'
-          });
-        } else if (this.product_name === "") {
-          this.$message({
-            type: 'error',
-            message: '入库批号为空！'
-          });
-        } else if (this.meter === "") {
-          this.$message({
-            type: 'error',
-            message: '入库米数为空！'
-          });
-        } else {
-          let url = "http://120.55.124.53:8206/api/axis/warehousing"
-          let that = this
-          axios({
-            method: "post",
-            url: url,
-            data: {
-              selectInfo: {
-                company_id: Number(that.$store.state.companyID)
+            this.axis_no = ""
+          }
+          if (this.product_name == undefined) {
+            this.product_name = ""
+          }
+          if (this.meter == undefined) {
+            this.meter = ""
+          }
+          if (this.staff_id == "") {
+            this.$message({
+              type: 'error',
+              message: '操作人员为空！'
+            });
+          } else if (this.library_name === "") {
+            this.$message({
+              type: 'error',
+              message: '库位号为空！'
+            });
+          } else if (this.axis_no === "") {
+            this.$message({
+              type: 'error',
+              message: '轴号为空！'
+            });
+          } else if (this.product_name === "") {
+            this.$message({
+              type: 'error',
+              message: '入库批号为空！'
+            });
+          } else if (this.meter === "") {
+            this.$message({
+              type: 'error',
+              message: '入库米数为空！'
+            });
+          } else {
+            let url = "http://120.55.124.53:8206/api/axis/warehousing"
+            let that = this
+            axios({
+              method: "post",
+              url: url,
+              data: {
+                selectInfo: {
+                  company_id: Number(that.$store.state.companyID)
+                },
+                library_num: that.library_num,
+                library_name: String(that.library_name),
+                axis: {
+
+                  axis_no: that.axis_no,
+                  product_name: that.product_name,
+                  total_work_qty: that.meter,
+                  user_id: that.staff_name,
+                  print_code: that.print_code
+                }
               },
-              library_num: that.library_num,
-              library_name: that.library_name,
-              axis: {
+              headers: {
 
-                axis_no: that.axis_no,
-                product_name: that.product_name,
-                total_work_qty: that.meter,
-                user_id: that.staff_name,
-                print_code: that.print_code
               }
-            },
-            headers: {
+            }).then((res) => {
+              //console.log(res);
+              if (res.data.message == "成功") {
+                that.$message({
+                  type: 'success',
+                  message: '操作成功！'
+                });
+                that.back()
+              } else {
+                that.$message({
+                  type: 'error',
+                  message: res.data.message + '！'
+                });
+              }
 
-            }
-          }).then((res) => {
-            //console.log(res);
-            if (res.data.message == "成功") {
-              that.$message({
-                type: 'success',
-                message: '操作成功！'
-              });
-              that.back()
-            } else {
-              that.$message({
-                type: 'error',
-                message: res.data.message + '！'
-              });
-            }
-
-          })
-        }
-        }else{
+            })
+          }
+        } else {
           if (this.axis_no == undefined) {
-          this.axis_no = ""
-        }
-        if (this.product_name == undefined) {
-          this.product_name = ""
-        }
-        if (this.meter == undefined) {
-          this.meter = ""
-        }
-        if (this.staff_id == "") {
-          this.$message({
-            type: 'error',
-            message: '操作人员为空！'
-          });
-        } else if (this.library_name === "") {
-          this.$message({
-            type: 'error',
-            message: '库位号为空！'
-          });
-        } else if (this.axis_no === "") {
-          this.$message({
-            type: 'error',
-            message: '轴号为空！'
-          });
-        } else if (this.product_name === "") {
-          this.$message({
-            type: 'error',
-            message: '入库批号为空！'
-          });
-        } else if (this.meter === "") {
-          this.$message({
-            type: 'error',
-            message: '入库米数为空！'
-          });
-        } else {
-          let url = "http://120.55.124.53:8206/api/axis/virtualWarehousing"
-          let that = this
-          axios({
-            method: "post",
-            url: url,
-            data: {
-              selectInfo: {
-                company_id: Number(that.$store.state.companyID)
+            this.axis_no = ""
+          }
+          if (this.product_name == undefined) {
+            this.product_name = ""
+          }
+          if (this.meter == undefined) {
+            this.meter = ""
+          }
+          if (this.staff_id == "") {
+            this.$message({
+              type: 'error',
+              message: '操作人员为空！'
+            });
+          } else if (this.library_name === "") {
+            this.$message({
+              type: 'error',
+              message: '库位号为空！'
+            });
+          } else if (this.axis_no === "") {
+            this.$message({
+              type: 'error',
+              message: '轴号为空！'
+            });
+          } else if (this.product_name === "") {
+            this.$message({
+              type: 'error',
+              message: '入库批号为空！'
+            });
+          } else if (this.meter === "") {
+            this.$message({
+              type: 'error',
+              message: '入库米数为空！'
+            });
+          } else {
+            let url = "http://120.55.124.53:8206/api/axis/virtualWarehousing"
+            let that = this
+            axios({
+              method: "post",
+              url: url,
+              data: {
+                selectInfo: {
+                  company_id: Number(that.$store.state.companyID)
+                },
+
+                axis: {
+
+                  axis_no: that.axis_no,
+                  product_name: that.product_name,
+                  total_work_qty: that.meter,
+                  user_id: that.staff_name,
+                  print_code: that.print_code
+                }
               },
-            
-              axis: {
+              headers: {
 
-                axis_no: that.axis_no,
-                product_name: that.product_name,
-                total_work_qty: that.meter,
-                user_id: that.staff_name,
-                print_code: that.print_code
               }
-            },
-            headers: {
+            }).then((res) => {
+              //console.log(res);
+              if (res.data.message == "成功") {
+                that.$message({
+                  type: 'success',
+                  message: '操作成功！'
+                });
+                that.back()
+              } else {
+                that.$message({
+                  type: 'error',
+                  message: res.data.message + '！'
+                });
+              }
 
-            }
-          }).then((res) => {
-            //console.log(res);
-            if (res.data.message == "成功") {
-              that.$message({
-                type: 'success',
-                message: '操作成功！'
-              });
-              that.back()
-            } else {
-              that.$message({
-                type: 'error',
-                message: res.data.message + '！'
-              });
-            }
-
-          })
-        }
+            })
+          }
         }
 
       },
@@ -283,7 +286,7 @@ console.log(this.isxuni)
       
        */
       //品名下拉带输入建议事件
-       querySearchAsync(queryString, cb) {
+      querySearchAsync(queryString, cb) {
         var restaurants = this.product_nameList;
         var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
         // 调用 callback 返回建议列表的数据
@@ -294,14 +297,14 @@ console.log(this.isxuni)
           return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         };
       },
-         handleSelect(item) {
-       
-        this.product_name=item.name
+      handleSelect(item) {
+
+        this.product_name = item.name
       },
-        //品名下拉带输入建议事件
-      getPinMinPiHao(){ //获取品名列表
-let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
-      let that = this
+      //品名下拉带输入建议事件
+      getPinMinPiHao() { //获取品名列表
+        let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
+        let that = this
         axios({
           method: "post",
           url: url,
@@ -310,20 +313,23 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
             selectInfo: {
               company_id: Number(that.$store.state.companyID)
             },
-    
+
           },
           headers: {
 
           }
         }).then((res) => {
           console.log(res)
-          for(let i=0;i<res.data.result.length;i++){
-            that.product_nameList.push({value:res.data.result[i].product_name,name:res.data.result[i].product_name})
+          for (let i = 0; i < res.data.result.length; i++) {
+            that.product_nameList.push({
+              value: res.data.result[i].product_name,
+              name: res.data.result[i].product_name
+            })
           }
         })
 
       },
-     
+
       getAxisInfo() { //扫码获取轴信息
         let url = "http://120.55.124.53:8206/api/axis/getAxisInfo"
         let that = this
@@ -342,7 +348,7 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
           }
         }).then((res) => {
           //console.log(res);
-
+     
           res.data.result.work_qty1 = that.toZero(res.data.result.work_qty1)
           res.data.result.work_qty2 = that.toZero(res.data.result.work_qty2)
           res.data.result.work_qty3 = that.toZero(res.data.result.work_qty3)
@@ -383,9 +389,9 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
           return value
         }
       },
+    
       getTime() { //获取时间
         //定义一个日期对象;
-      
         var dateTime = new Date();
         //获得系统年份;
         var year = dateTime.getFullYear();
@@ -404,10 +410,8 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
         hours < 10 ? hours = '0' + hours : hours;
         minutes < 10 ? minutes = '0' + minutes : minutes;
         second < 10 ? second = '0' + second : second;
-
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
-   
       },
       back() { //返回主页
 
@@ -430,22 +434,23 @@ let url = "http://120.55.124.53:8206/api/axis/getPinMinPiHao"
         this.staff_name = this.$store.state.peopleData.staff_name
         this.staff_id = this.$store.state.peopleData.staff_id
       }
-console.log(this.$route.params.isxuni)
-this.isxuni=this.$route.params.isxuni
+
+      this.isxuni = this.$route.params.isxuni
 
       this.library_num = this.$route.params.library_num
       this.library_name = this.$route.params.library_name
-      if(this.isxuni==true){
-  this.library_name="虚拟库位"
-}
+
+      if (this.isxuni == true) { //虚拟入库按钮进来的
+        this.library_name = "虚拟库位"
+      }
       this.getAxisInfo()
       this.getPinMinPiHao()
 
     },
-      beforeDestroy() {
-       if (this.timer) {
-          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
-        }
+    beforeDestroy() {
+      if (this.timer) {
+        clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+      }
     },
     watch: {
       print_code: function (val) {
@@ -774,6 +779,7 @@ this.isxuni=this.$route.params.isxuni
     justify-content: space-between;
     align-items: center;
   }
+
   .span_con_span {
     width: 100%;
     height: 100%;
@@ -783,6 +789,7 @@ this.isxuni=this.$route.params.isxuni
     justify-content: flex-start;
     align-items: center;
   }
+
   /* .span_con span {
     width: 100%;
     height: 100%;

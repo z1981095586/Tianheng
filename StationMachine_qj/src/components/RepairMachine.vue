@@ -793,7 +793,7 @@ export default {
       that.machineList = [];
       that.machineListCon = [];
       let url2 = "http://47.110.95.57:8091/APP/getMachine";
-
+      console.log(that.staff_id);
       axios({
         url: url2,
         method: "post",
@@ -803,13 +803,7 @@ export default {
         },
       }).then(function (response) {
         console.log(response.data.data.length);
-        if (response.data.data.length == 0) {
-          that.$message({
-            message: "没有机台获取到！",
-            type: "warning",
-          });
-          return;
-        }
+
         let datalist = response.data.data;
         axios
           .get(
@@ -824,6 +818,7 @@ export default {
           .then(function (res) {
             console.log(res);
             let arr = JSON.parse(res.data.repair_history);
+            console.log(arr);
             arr.forEach((element) => {
               if (
                 !element.repair_typename ||
@@ -833,7 +828,11 @@ export default {
                 element.repair_typename = "未填写";
               }
               if (that.workshopId.indexOf(element.workshop_id) != -1) {
-                if (datalist.indexOf(element.machine_id) != -1) {
+                if (datalist.length != 0) {
+                  if (datalist.indexOf(element.machine_id) != -1) {
+                    that.machineListCon.push(element);
+                  }
+                } else {
                   that.machineListCon.push(element);
                 }
               }

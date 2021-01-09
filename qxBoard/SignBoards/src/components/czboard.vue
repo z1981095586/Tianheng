@@ -14,35 +14,39 @@
 
           </div>
           <div style="display:flex;flex-direction:column;overflow:auto;height: 18rem;" id="s1">
-            <div class="board_con_top_con" v-for="(item,index) in tableData" :key="index">
-              <div class="board_con_top_con_one">
-                {{index+1}}
+            <vue-seamless-scroll :data="tableData" class="seamless-warp" :class-option="classOption"
+              @ScrollEnd="getdata()">
+              <div class="board_con_top_con" v-for="(item,index) in tableData" :key="index" :style="item.row">
+                <div class="board_con_top_con_one">
+                  {{index+1}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.workshop}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.product_name}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.machine_id}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.beam_num}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.mac_type_name}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.status}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.reed_no}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.reed_width}}
+                </div>
               </div>
-              <div class="board_con_top_con_one">
-                {{item.workshop}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.product_name}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.machine_id}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.beam_num}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.mac_type_name}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.status}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.reed_no}}
-              </div>
-              <div class="board_con_top_con_one">
-                {{item.reed_width}}
-              </div>
-            </div>
+
+            </vue-seamless-scroll>
           </div>
 
         </div>
@@ -65,17 +69,21 @@
                   </div>
                 </div>
                 <div style="display:flex;flex-direction:column;overflow:auto;height: 13rem;" id="s2">
-                  <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index">
-                    <div class="board_con_bottom_left_left_tablehead_one">
-                      {{item.product_name}}
+                  <vue-seamless-scroll :data="tableData2" class="seamless-warp" :class-option="classOption"
+                    @ScrollEnd="getdata2()">
+                    <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index"
+                      :style="item.row">
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.product_name}}
+                      </div>
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.finish_beam_num}}
+                      </div>
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.beam_num-item.finish_beam_num}}
+                      </div>
                     </div>
-                    <div class="board_con_bottom_left_left_tablehead_one">
-                      {{item.finish_beam_num}}
-                    </div>
-                    <div class="board_con_bottom_left_left_tablehead_one">
-                      {{item.beam_num-item.finish_beam_num}}
-                    </div>
-                  </div>
+                  </vue-seamless-scroll>
                 </div>
               </div>
             </div>
@@ -117,6 +125,7 @@
   // 2: {name: "兰棉", id: 4}
   // 3: {name: "佳而美", id: 5}
   import axios from 'axios';
+  import vueSeamlessScroll from 'vue-seamless-scroll'
   let host1 = "http://106.12.219.66:8227";
   import {
     getUrl,
@@ -124,10 +133,15 @@
   } from "../api/api"; //引入时间格式化js
   export default {
     name: "czboard",
+    components: {
+      vueSeamlessScroll
+    },
     data() {
       return {
         lang: 'zh',
         workshopId: '3',
+
+
         companyId: "", //公司库表Id
         tableTitle: [
           "序号", "分厂", "品种", "穿棕机型", "穿棕轴数", "织机机型", "完成情况", "筘号", "筘幅",
@@ -151,6 +165,22 @@
         // sList: []
       }
     },
+    computed: {
+
+      classOption() {
+        return {
+          step: 0.4, // 数值越大速度滚动越快
+          limitMoveNum: 2, // 开始无缝滚动的数据量 this.dataList.length
+          hoverStop: true, // 是否开启鼠标悬停stop
+          direction: 1, // 0向下 1向上 2向左 3向右
+          openWatch: true, // 开启数据实时监控刷新dom
+          singleHeight: 0, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+          singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+          waitTime: 1000 // 单步运动停止的时间(默认值1000ms)
+        }
+      }
+    },
+
     methods: {
       getWearAnalysis() {
         let url = "http://120.55.124.53:7070/wear-weaving/getWearAnalysis"
@@ -346,6 +376,7 @@
       // 对象排序
       getsum() {
         let that = this
+        let date = that.getNowFormatDate()
         //console.log(this. getNowFormatDate())
         axios({
             url: host1 + '/report/getSimpleReport',
@@ -359,13 +390,16 @@
               tableName: "wear_weaving",
               pageNum: 1,
               pageSize: 3,
-           
+
 
               selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
               groupByColumn: ['machine_id'],
-              query:{
-                machine_id:"S40"
-              }
+              query: {
+                machine_id: "S40"
+              },
+              selectLikeFields: {
+                create_date: date
+              },
 
             }
 
@@ -378,11 +412,11 @@
             //     arr.push(element)
             //   }
             // });
-             that.sum1 =response.data.data[0].sum
+            that.sum1 = response.data.data[0].sum
             // that.sum2 = arr[1].sum
-      
+
           })
-            axios({
+        axios({
             url: host1 + '/report/getSimpleReport',
             method: 'post',
             headers: {
@@ -394,12 +428,12 @@
               tableName: "wear_weaving",
               pageNum: 1,
               pageSize: 3,
-           
+
 
               selectFields: ["sum(root_number) as sum", "machine_id", "create_date"],
               groupByColumn: ['machine_id'],
-              query:{
-                machine_id:"S60"
+              query: {
+                machine_id: "S60"
               }
 
             }
@@ -413,14 +447,14 @@
             //     arr.push(element)
             //   }
             // });
-            if(response.data.data.length>0){
-that.sum2 =response.data.data[0].sum
-            }else{
-              that.sum2 =0
+            if (response.data.data.length > 0) {
+              that.sum2 = response.data.data[0].sum
+            } else {
+              that.sum2 = 0
             }
-             
+
             // that.sum2 = arr[1].sum
-      
+
           })
       },
       sortByKey(array, key) {
@@ -582,7 +616,7 @@ that.sum2 =response.data.data[0].sum
         let date = this.getNowFormatDate()
         let that = this
 
-        that.tableData2 = []
+
         //////////console.log(date)
         axios({
             url: host1 + '/report/getSimpleReport',
@@ -597,7 +631,7 @@ that.sum2 =response.data.data[0].sum
               sort: "ASC",
               sortColumn: "status",
               selectLikeFields: {
-                 update_time:date
+                update_time: date
               },
               // query: {
               //   status: 2
@@ -610,10 +644,17 @@ that.sum2 =response.data.data[0].sum
           })
           .then(response => {
             console.log(response)
+            let arr = []
             for (let i = 0; i < response.data.data.length; i++) {
-                that.tableData2.push(response.data.data[i])
+              if (i == (response.data.data.length - 1)) {
+                response.data.data[i].row = "border-bottom:0.01px solid black;"
+              } else {
+                response.data.data[i].row = ""
+              }
+              arr.push(response.data.data[i])
               //今日已完成列表
             }
+            that.tableData2 = arr
             //console.log(that.tableData2)
 
           })
@@ -621,7 +662,7 @@ that.sum2 =response.data.data[0].sum
       getdata() { //今日待穿综记录
         let date = this.getNowFormatDate()
         let that = this
-        that.tableData = []
+        // that.tableData = []
 
         //////////console.log(date)
         axios({
@@ -649,9 +690,14 @@ that.sum2 =response.data.data[0].sum
 
           })
           .then(response => {
-            //console.log(response)
-            for (let i = 0; i < response.data.data.length; i++) {
 
+            let arr = []
+            for (let i = 0; i < response.data.data.length; i++) {
+              if (i == (response.data.data.length - 1)) {
+                response.data.data[i].row = "border-bottom:0.01px solid black;"
+              } else {
+                response.data.data[i].row = ""
+              }
               if (response.data.data[i].workshop_id == 1) {
                 response.data.data[i].workshop = "一分厂"
               } else if (response.data.data[i].workshop_id == 2) {
@@ -663,34 +709,36 @@ that.sum2 =response.data.data[0].sum
                 response.data.data[i].status = "未开始"
               } else if (response.data.data[i].status == 1) {
                 // let num= that.GetPercent(response.data.data[i].finish_beam_num,response.data.data[i].beam_num) 
-                response.data.data[i].status = "进行中("+response.data.data[i].finish_beam_num+"/"+response.data.data[i].beam_num+")"
-               
+                response.data.data[i].status = "进行中(" + response.data.data[i].finish_beam_num + "/" + response.data
+                  .data[i].beam_num + ")"
+
               } else if (response.data.data[i].status == 2) {
                 response.data.data[i].status = "已完成"
               }
-              if( response.data.data[i].status!="已完成"){
-that.tableData.push(response.data.data[i])
+              if (response.data.data[i].status != "已完成") {
+                arr.push(response.data.data[i])
               }
-              
+
 
             }
+            that.tableData = arr
 
 
           })
       },
-       GetPercent(num, total) {
-    /// <summary>
-    /// 求百分比
-    /// </summary>
-    /// <param name="num">当前数</param>
-    /// <param name="total">总数</param>
-    num = parseFloat(num);
-    total = parseFloat(total);
-    if (isNaN(num) || isNaN(total)) {
-        return "-";
-    }
-    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
-},
+      GetPercent(num, total) {
+        /// <summary>
+        /// 求百分比
+        /// </summary>
+        /// <param name="num">当前数</param>
+        /// <param name="total">总数</param>
+        num = parseFloat(num);
+        total = parseFloat(total);
+        if (isNaN(num) || isNaN(total)) {
+          return "-";
+        }
+        return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
+      },
       startmarquee(lh, speed, delay) {
         let that = this
 
@@ -786,8 +834,8 @@ that.tableData.push(response.data.data[i])
       this.getdata2()
       this.getdata4()
       //  this. changeWorkshopTiming()
-      this.startmarquee2(30, 50, 80)
-      this.startmarquee(30, 50, 80)
+      // this.startmarquee2(30, 50, 80)
+      // this.startmarquee(30, 50, 80)
       this.rotate()
 
 
