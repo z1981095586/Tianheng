@@ -1821,6 +1821,7 @@ companyId:"10000005"
                  }
                }
                if(result.samsung[i].workshop==3){
+                  result.samsung[i].name = "寿力" + result.samsung[i].machine_id //设备名字拼接
                  result.samsung[i].workshop="万舟纺纱事业部"
                }
                 that.samsung_tdata.push(result.samsung[i])
