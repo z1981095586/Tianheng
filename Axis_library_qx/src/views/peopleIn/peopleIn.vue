@@ -90,6 +90,7 @@
   export default {
     name: "peopleIn",
     data: () => ({
+        return:{
       time: "", //当前时间
       staff_name: "", //操作人姓名
       staff_id: "", //操作人id
@@ -118,6 +119,7 @@
         preventClickEvent: false,
            dialogVisibleClose:false,
       showclose:false,
+      }
       },
     }),
 

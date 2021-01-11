@@ -64,6 +64,7 @@
   export default {
     name: "stockOut",
     data: () => ({
+        return:{
       network: true,
       time: "", //当前时间
       staff_name: "", //操作人姓名
@@ -77,6 +78,7 @@
       showclose: false,
       isxuni: null,
       print_code: ""
+        }
     }),
 
     methods: {
@@ -290,7 +292,7 @@
 
     },
     mounted() {
-
+console.log(this.$route.params)
       let timer = setInterval(this.getTime, 1000);
       if (this.$store.state.peopleData.staff_name) {
         this.staff_name = this.$store.state.peopleData.staff_name

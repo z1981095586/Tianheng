@@ -77,7 +77,8 @@
     name: "people",
 
     data: () => ({
-      number:"",
+      return:{
+number:"",
 
    
     visible: false,
@@ -105,6 +106,8 @@
 
       ],
       isxuni:null
+      }
+      
     }),
 
     methods: {
@@ -205,7 +208,8 @@ window.close();
           params:{
        companyId:this.$store.state.companyID,
        library_num:this.$store.state.library_num,
-           library_name:this.library_name
+           library_name:this.library_name,
+            isxuni:this.isxuni
           }
         })
       }else{
@@ -228,7 +232,8 @@ window.close();
           params:{
        companyId:this.$store.state.companyID,
        library_num:this.$store.state.library_num,
-           library_name:this.library_name
+           library_name:this.library_name,
+            isxuni:this.isxuni
           }
         })
       }else{
@@ -307,7 +312,8 @@ window.close();
           params:{
        companyId:that.$store.state.companyID,
        library_num:that.$store.state.library_num,
-           library_name:that.library_name
+           library_name:that.library_name,
+           isxuni:that.isxuni
           }
         })
             // this.$router.push("/stockIn/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
@@ -318,7 +324,8 @@ window.close();
           params:{
        companyId:that.$store.state.companyID,
        library_num:that.$store.state.library_num,
-           library_name:that.library_name
+           library_name:that.library_name,
+               isxuni:that.isxuni
           }
         })
             // this.$router.push("/stockOut/:"+this.$store.state.companyID+"/:"+this.$store.state.library_num)
@@ -329,7 +336,8 @@ window.close();
           name: 'peopleIn',
           params:{
        companyId:that.$store.state.companyID,
-       library_num:that.$store.state.library_num
+       library_num:that.$store.state.library_num,
+           isxuni:that.isxuni
           }
         })
         }
@@ -482,7 +490,7 @@ window.close();
     //   },
     },
     mounted() {
-
+console.log(this.$route.params)
      if (this.$store.state.companyID != "") { //判断store是否有companyid
         this.companyID = this.$store.state.companyID
         this.library_num = this.$store.state.library_num

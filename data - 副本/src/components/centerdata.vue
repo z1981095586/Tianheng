@@ -1125,7 +1125,7 @@
         this.nowDate = yy + '年' + mm + '月' + dd + '日'
         this.nowTime = hou + ':' + min + ':' + sec
             if(this.nowTime=="01:00:00"){
-        this.regionaloutputvalueChart()
+      
           this.userregistrationChart();
              this.poweronefficiencyChart();
           }
@@ -2339,12 +2339,14 @@
       getDataTiming: function () {
         const timer = setInterval(() => {
         
-       
+         this.regionaloutputvalueChart()
           this.educationbackgroundChart();
           this.governmentinformation();
           this.onlineinformation();
           this.repairstatistics();
           this.userDetails();
+   
+         
           // this.getDataTiming();
       
 

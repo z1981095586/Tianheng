@@ -238,7 +238,7 @@
     name: "index",
     data: () => ({
 
-
+  return:{
   
       companyID: "", //公司ID
       library_num: "", //几号库
@@ -354,6 +354,7 @@
       },
       end_date: 3,
       crmxFlag:false
+  }
     }),
 
 
