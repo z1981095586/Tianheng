@@ -1801,7 +1801,7 @@ companyId:"10000005"
 
           })
           .then(response => {
-            //////console.log(response)
+           console.log(response)
             let result = response.data.data
             let flag = null
             //三星数据处理
@@ -1814,11 +1814,14 @@ companyId:"10000005"
                 result.samsung[i].machineId = result.samsung[i].machine_id
                 result.samsung[i].showInput = false
                    
-             
+               console.log(that.workshopList)
                for(let j=0;j<that.workshopList.length;j++){
                  if(that.workshopList[j].value==result.samsung[i].workshop){
                    result.samsung[i].workshop=that.workshopList[j].label
                  }
+               }
+               if(result.samsung[i].workshop==3){
+                 result.samsung[i].workshop="万舟纺纱事业部"
                }
                 that.samsung_tdata.push(result.samsung[i])
               }
@@ -1949,6 +1952,7 @@ companyId:"10000005"
             let lm=[]
             let wzzz_one=[]
             let wzzz_two=[]
+               console.log(listCon)
             for(let i=0;i<that.samsung_tdata.length;i++){
               that.samsung_tdata[i].cardClass="card_four"
                   that.samsung_tdata[i].tname="samsung"
@@ -1979,14 +1983,18 @@ companyId:"10000005"
               }
              if(listCon[i].workshop=="佳而美"){
                jem.push(listCon[i])
+             }else if(listCon[i].workshop=="万舟纺纱事业部"){
+   jem.push(listCon[i])
              }else if(listCon[i].workshop=="兰棉"){
    lm.push(listCon[i])
              }else if(listCon[i].workshop=="万舟织造一部"){
    wzzz_one.push(listCon[i])
              }
            }
+           
         
-            that.jem=jem
+            that.jem=jem.reverse()
+         
             that.lm=lm
             that.wzzz_one=wzzz_one
             console.log(wzzz_two)

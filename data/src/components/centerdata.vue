@@ -1694,7 +1694,7 @@
         })
 
       },
-      //开机效率推移图表
+        //开机效率推移图表
       poweronefficiencyChart: function () {
         let myChart = this.$echarts.init(document.getElementById('poweronefficiencyChart'));
         axios({
@@ -1734,7 +1734,7 @@
             let arr2 = Response.data.data.this_year
             let arr1 = res.data.data.this_year
 
-            const combined = arr2.reduce((acc, cur) => {
+           let combined = arr2.reduce((acc, cur) => {
               const target = acc.find(e => e.date === cur.date);
 
               if (target) {
@@ -1748,7 +1748,7 @@
             let arr3 = Response.data.data.last_year
             let arr4 = res.data.data.last_year
 
-            const combined2 = arr4.reduce((acc, cur) => {
+            let combined2 = arr4.reduce((acc, cur) => {
               const target2 = acc.find(e => e.date === cur.date);
 
               if (target2) {
@@ -1758,14 +1758,14 @@
               }
               return acc;
             }, arr3);
-            //console.log(combined2)
+            console.log(combined2)
 
 
             let xlist = []
             let ylist = []
             let ylist2 = []
             if (document.getElementById("select2").value == "last_year") {
-
+combined2=this.sortByKey(combined2,"date")
               combined2.forEach(element => {
                 xlist.push(element.date)
                 ylist.push(element.efficiency * 100)
@@ -1779,7 +1779,7 @@
 
 
             } else {
-
+combined=this.sortByKey(combined,"date")
               combined.forEach(element => {
                 xlist.push(element.date)
                 ylist.push(element.efficiency * 100)
@@ -1794,9 +1794,9 @@
 
 
             }
-            //console.log(xlist)
-            //console.log(ylist)
-            //console.log(ylist2)
+            console.log(xlist)
+            console.log(ylist)
+            console.log(ylist2)
 
             //console.log(Math.min(...ylist2))
             //console.log(Math.max(...ylist2))
@@ -1808,10 +1808,16 @@
                   triggerTooltip: true,
                   type: 'shadow',
                 },
-                formatter: function (params) {
-                  return xlist[params[0].dataIndex] + "<br>" + '效率：' + params[0].data.toFixed(2) + '%' +
-                    "<br>" + '能源：' + params[1].data.toFixed(2) + '';
-                },
+//                 formatter: function (params) {
+//                   console.log(params)
+//                   let data1;
+//                   let data2;
+//                   if(typeof params[1].data=="undefined"){
+// data1=0
+//                   }
+//                   return xlist[params[0].dataIndex] + "<br>" + '效率：' + params[0].data.toFixed(2) + '%' +
+//                     "<br>" + '能源：' + params[1].data.toFixed(2) + '';
+//                 },
               },
               legend: {
 
@@ -1943,8 +1949,8 @@
                 xAxisIndex: 0,
                 start: 1,
                 end: 35,
-                startValue: '2020-01-01',
-                endValue: '2020-08-06',
+                 startValue: '2021-01-01',
+              endValue: '2021-12-31',
                 type: 'slider',
                 height: 25,
                 borderColor: "#fff",
@@ -2014,6 +2020,14 @@
         })
 
 
+      },
+            // 对象排序
+      sortByKey(array, key) {
+        return array.sort(function (a, b) {
+          let x = a[key];
+          let y = b[key];
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
       },
 
       //各年龄学历分布图
