@@ -412,7 +412,12 @@
             //     arr.push(element)
             //   }
             // });
-            that.sum1 = response.data.data[0].sum
+            if(response.data.data[0]){
+             that.sum1 = response.data.data[0].sum
+            }else{
+  that.sum1 = 0 
+            }
+          
             // that.sum2 = arr[1].sum
 
           })
@@ -517,101 +522,50 @@
 
 
 
-      startmarquee2(lh, speed, delay) {
-        let that = this
+      // getdata2() { //产量排行
+      //   let that = this
+      //   axios({
+      //       url: host1 + '/report/getSimpleReport',
+      //       method: 'post',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         'companyId': that.companyId
+      //       },
+      //       data: {
 
-        let o = document.getElementById("s2")
-        var t;
-        var oHeight = o.offsetHeight; /**/ /** div的高度 **/
-        var p = false;
+      //         tableName: "wear_weaving",
+      //         //   sort: "DESC",
+      //         //   sortColumn: "aef",
+      //         // query:{
+      //         //   wear_plan_id:response.data.data[i].id
+      //         // }
 
-        var preTop = 0;
-        o.scrollTop = 0;
+      //       }
 
-        function start() {
-          t = setInterval(scrolling, speed);
-          o.scrollTop += 1;
-        }
+      //     })
+      //     .then(res => {
+      //       //////////console.log(res)
+      //       let list = res.data.data
+      //       list = list.reduce((obj, item) => {
+      //         let find = obj.find(i => i.product_name === item.product_name)
+      //         let _d = {
+      //           ...item,
+      //           frequency: 1
+      //         }
+      //         find ? (find.root_number += item.root_number, find.frequency++) : obj.push(_d)
+      //         return obj
+      //       }, [])
+      //       //////////console.log(list)
+      //       list = that.sortByKey(list, "root_number")
+      //       let list2 = []
+      //       for (let i = list.length - 1; i >= 0; i--) {
+      //         list[i].create_time = list[i].create_time.substr(0, 10)
+      //         list2.push(list[i])
+      //       }
+      //       that.clpmList = list2
 
-        function scrolling() {
-          if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
-            preTop = o.scrollTop;
-            o.scrollTop += 1;
-            //////console.log(preTop)
-            //////console.log(o.scrollHeight)
-            //////console.log(o.scrollTop)
-            if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
-
-
-              //////console.log("asd")
-              // that.getData2()
-              that.getdata2()
-              //  that.echart2() //机台产量对比统计图
-              //                 that.echart1() //验布疵点排序统计图
-
-              //               for(var i = 1; i < 1000; i++) {
-              // t=clearInterval(i);
-              // }
-              t = clearInterval(t)
-              t = null
-              //  that.timer=clearInterval(that.timer)
-              //                  that.changeWorkshopTiming()
-
-
-              that.startmarquee2(30, 50, 80)
-
-            }
-          } else {
-            t = clearInterval(t);
-            setTimeout(start, delay);
-          }
-        }
-        setTimeout(start, delay);
-      },
-      getdata2() { //产量排行
-        let that = this
-        axios({
-            url: host1 + '/report/getSimpleReport',
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              'companyId': that.companyId
-            },
-            data: {
-
-              tableName: "wear_weaving",
-              //   sort: "DESC",
-              //   sortColumn: "aef",
-              // query:{
-              //   wear_plan_id:response.data.data[i].id
-              // }
-
-            }
-
-          })
-          .then(res => {
-            //////////console.log(res)
-            let list = res.data.data
-            list = list.reduce((obj, item) => {
-              let find = obj.find(i => i.product_name === item.product_name)
-              let _d = {
-                ...item,
-                frequency: 1
-              }
-              find ? (find.root_number += item.root_number, find.frequency++) : obj.push(_d)
-              return obj
-            }, [])
-            //////////console.log(list)
-            list = that.sortByKey(list, "root_number")
-            let list2 = []
-            for (let i = list.length - 1; i >= 0; i--) {
-              list[i].create_time = list[i].create_time.substr(0, 10)
-              list2.push(list[i])
-            }
-            that.clpmList = list2
-
-          })
-      },
+      //     })
+      // },
       getdata2() { //今日待穿综记录
         let date = this.getNowFormatDate()
         let that = this
@@ -739,76 +693,7 @@
         }
         return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
       },
-      startmarquee(lh, speed, delay) {
-        let that = this
-
-        let o = document.getElementById("s1")
-        var t;
-        var oHeight = o.offsetHeight; /**/ /** div的高度 **/
-        var p = false;
-
-        var preTop = 0;
-        o.scrollTop = 0;
-
-        function start() {
-          t = setInterval(scrolling, speed);
-          o.scrollTop += 1;
-        }
-
-        function scrolling() {
-          if (o.scrollTop % lh != 0 && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
-            preTop = o.scrollTop;
-            o.scrollTop += 1;
-            //////console.log(preTop)
-            //////console.log(o.scrollHeight)
-            //////console.log(o.scrollTop)
-            if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
-
-
-
-              // that.getData2()
-              that.getdata()
-              //  that.echart2() //机台产量对比统计图
-              //                 that.echart1() //验布疵点排序统计图
-
-              //               for(var i = 1; i < 1000; i++) {
-              // t=clearInterval(i);
-              // }
-              t = clearInterval(t)
-              t = null
-              //  that.timer=clearInterval(that.timer)
-              //                  that.changeWorkshopTiming()
-
-
-              that.startmarquee(30, 50, 80)
-
-            }
-          } else {
-            t = clearInterval(t);
-            setTimeout(start, delay);
-          }
-        }
-        setTimeout(start, delay);
-      },
-
-      changeWorkshopTiming: function () {
-        const timer = setInterval(() => {
-
-
-          this.getsum()
-
-
-          this.getWearAnalysis()
-          this.getdata()
-          this.getdata2()
-          this.getdata4()
-          //  this.getdata()
-        }, 15000);
-        // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
-        this.$once('hook:beforeDestroy', () => {
-          clearInterval(timer);
-        })
-      },
+  
     },
 
 
@@ -833,18 +718,10 @@
       this.getdata()
       this.getdata2()
       this.getdata4()
-      //  this. changeWorkshopTiming()
-      // this.startmarquee2(30, 50, 80)
-      // this.startmarquee(30, 50, 80)
-      this.rotate()
+      
+      // this.rotate()
 
 
-      //      const timer = setTimeout(() => {
-
-      //  this.startmarquee(30, 30, 80)
-
-
-      //       }, 1000);
     },
     beforeDestroy() {
       if (this.timer) {
