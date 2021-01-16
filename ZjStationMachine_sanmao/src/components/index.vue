@@ -36,11 +36,13 @@
         <div class="con1_left">
           <div class="con1_left_con">
             <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">整经工号1</span>
-            <input :disabled="enabled" v-model="ss_zjgh1" :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
+            <input :disabled="enabled" v-model="ss_zjgh1" @blur="selectStaffCode('1')"
+              :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
           </div>
           <div class="con1_left_con">
             <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">整经工号2</span>
-            <input :disabled="enabled" v-model="ss_zjgh2" :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
+            <input :disabled="enabled" v-model="ss_zjgh2" @blur="selectStaffCode('2')"
+              :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
           </div>
           <div class="con1_left_con">
             <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">筒子纱数</span>
@@ -50,63 +52,83 @@
         <div class="con1_right">
           <div class="con1_right_con">
             <div class="ph">
-              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">品号：8943-2349-2</span>
+              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">品号：{{pinh}}</span>
             </div>
+            <!-- <div class="pm">
+              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">品名：{{productName}}</span>
+            </div> -->
             <div class="pm">
-              <span
-                :style="enabled ? 'color:rgba(0,0,0,0.6)':''">品名：我是品名，我是品名品名名我是品名我是品名，我是品名品名名我是品名我是品名，我是品名品名名我是品名我是品名，我是品名品名名我是品名</span>
+              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''"></span>
             </div>
             <div class="gg">
-              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''"> 规格：我是规格规格硅谷贵已个IGUI个贵</span>
+              <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''"> 色号：{{seHao}}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="head"><span style=" justify-content: flex-start;">品号：239-2394-2备份</span><span style="font-size:2rem" 
-        v-show="isZJ1==0"  >整经记录{{isZJ1+1}}</span><span style="font-size:2rem" 
-        v-show="isZJ1==1"  >整经记录{{isZJ1+1}}</span><span style="font-size:2rem" 
-        v-show="isZJ1==2"  >整经记录{{isZJ1+1}}</span><span style="    justify-content: flex-end;">机台：701</span></div>
-        
-        
+      <div class="head"><span style=" justify-content: flex-start;">品号：{{pinh}}</span><span style="font-size:2rem"
+          v-show="isZJ1==0">整经记录{{isZJ1+1}}</span><span style="font-size:2rem"
+          v-show="isZJ1==1">整经记录{{isZJ1+1}}</span><span style="font-size:2rem"
+          v-show="isZJ1==2">整经记录{{isZJ1+1}}</span><span style="    justify-content: flex-end;">机台：{{zenJinJiHao}}</span>
+      </div>
+
+
       <div class="con2">
         <div class="con2_left" v-show="isZJ1==0">
           <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj_zjgh2" /> <span>整经长度</span><input
               v-model="form.zj_zjcd" /> </div>
-          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
-              v-model="form.zj_swbs" /> </div>
-                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw6" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
-              v-model="form.zj_dzgh" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj_bz" style="width:35rem" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj_bs" /> <span
+              style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj_swbs" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
+              v-model="form.zj_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw2" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj_sw3" /><input style="width:6rem;margin-right:1rem;"
+              v-model="form.zj_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw5" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj_sw6" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj_zh" /> <span
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj_dzgh" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj_bz"
+              style="width:35rem" /> </div>
         </div>
-           <div class="con2_left" v-show="isZJ1==1">
+        <div class="con2_left" v-show="isZJ1==1">
           <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj2_zjgh2" /> <span>整经长度</span><input
               v-model="form.zj2_zjcd" /> </div>
-          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj2_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
-              v-model="form.zj2_swbs" /> </div>
-                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj2_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw6" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj2_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
-              v-model="form.zj2_dzgh" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj2_bz" style="width:35rem" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj2_bs" /> <span
+              style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj2_swbs" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
+              v-model="form.zj2_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw2" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw3" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw4" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw5" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw6" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj2_zh" /> <span
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj2_dzgh" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj2_bz"
+              style="width:35rem" /> </div>
         </div>
-             <div class="con2_left" v-show="isZJ1==2">
+        <div class="con2_left" v-show="isZJ1==2">
           <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj3_zjgh2" /> <span>整经长度</span><input
               v-model="form.zj3_zjcd" /> </div>
-          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj3_bs" /> <span style="    margin-left: 5rem;">扫尾把数</span><input
-              v-model="form.zj3_swbs" /> </div>
-                 <div class="con2_left_con"><span  style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"  v-model="form.zj3_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw2" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw3" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw5" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw6" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">轴号</span><input v-model="form.zj3_zh" /> <span style="    margin-left: 5rem;">倒轴工号</span><input
-              v-model="form.zj3_dzgh" /> </div>
-          <div class="con2_left_con"><span  style="width:4rem">备注</span><input v-model="form.zj3_bz" style="width:35rem" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj3_bs" /> <span
+              style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj3_swbs" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
+              v-model="form.zj3_sw1" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw2" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw3" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw4" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw5" /><input
+              style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw6" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj3_zh" /> <span
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj3_dzgh" /> </div>
+          <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj3_bz"
+              style="width:35rem" /> </div>
         </div>
-   
+
         <div class="con2_right">
-          <span class="con2_right_con">匹长：999</span>
-          <span class="con2_right_con">匹数：999</span>
+          <span class="con2_right_con">匹长：{{piCang}}</span>
+          <span class="con2_right_con">匹数：{{piSu}}</span>
           <div class="con2_right_con"> <span>倒轴时间</span>
-            <span>2020/11/20 19:23</span></div>
-          <div class="con2_right_con"> <span>其他停车时间</span>
-            <span> 2020/11/20 19:23</span></div>
+            <span>{{workQty1Time}}</span></div>
+          <!-- <div class="con2_right_con"> <span>其他停车时间</span>
+            <span> 2020/11/20 19:23</span></div> -->
         </div>
 
 
@@ -124,7 +146,8 @@
     <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
-        <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem; border: 1px solid black;" />
+        <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem; border: 1px solid black;"
+          ref="inputs" />
         <img src="../../static/img/saomiao.gif" style="width:10rem;" />
 
         <div class="stopBtn" @click="dialogVisible = false">停止扫码</div>
@@ -170,15 +193,9 @@
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
 
-
         <span style="font-size:1.6rem">两个班的整经工号，整经长度，把数都填写完整，才可提交！</span>
         <div class="stopBtn" @click="dialogVisible4=false">确认</div>
       </div>
-
-
-
-
-
     </el-dialog>
   </div>
 </template>
@@ -203,10 +220,20 @@
         mainShow: true,
         queryShow: false,
 
-
+        productName: "",
+        pinh: "",
+        specification: "",
+        piCang: "",
+        piSu: "",
+        seHao: "",
+        workQty1Time: "",
+        zenJinJiHao: "",
         companyId: "10000025",
         ss_zjgh1: "",
         ss_zjgh2: "",
+        ss_zjgh1_code: "",
+        ss_zjgh2_code: "",
+
         ss_tzss: "",
         form: {
 
@@ -214,36 +241,36 @@
           zj_zjgh2: "",
           zj_zjcd: "",
           zj_bs: "",
-          zj_sw1:"",
-            zj_sw2:"",
-              zj_sw3:"",
-                zj_sw4:"",
-                  zj_sw5:"",
-                    zj_sw6:"",
+          zj_sw1: "",
+          zj_sw2: "",
+          zj_sw3: "",
+          zj_sw4: "",
+          zj_sw5: "",
+          zj_sw6: "",
           zj_swbs: "",
           zj_zh: "",
           zj_dzgh: "",
           zj_bz: "",
           zj2_zjgh2: "",
-              zj2_sw1:"",
-            zj2_sw2:"",
-              zj2_sw3:"",
-                zj2_sw4:"",
-                  zj2_sw5:"",
-                    zj2_sw6:"",
+          zj2_sw1: "",
+          zj2_sw2: "",
+          zj2_sw3: "",
+          zj2_sw4: "",
+          zj2_sw5: "",
+          zj2_sw6: "",
           zj2_zjcd: "",
           zj2_bs: "",
           zj2_swbs: "",
           zj2_zh: "",
           zj2_dzgh: "",
           zj2_bz: "",
-                zj3_zjgh2: "",
-              zj3_sw1:"",
-            zj3_sw2:"",
-              zj3_sw3:"",
-                zj3_sw4:"",
-                  zj3_sw5:"",
-                    zj3_sw6:"",
+          zj3_zjgh2: "",
+          zj3_sw1: "",
+          zj3_sw2: "",
+          zj3_sw3: "",
+          zj3_sw4: "",
+          zj3_sw5: "",
+          zj3_sw6: "",
           zj3_zjcd: "",
           zj3_bs: "",
           zj3_swbs: "",
@@ -255,6 +282,75 @@
       }
     },
     methods: {
+      isChinese(temp) {
+        let re = /[^\u4E00-\u9FA5]/;
+        if (re.test(temp)) return false;
+        return true;
+      },
+      selectStaffCode(flag) {
+        let url = "http://106.12.219.66:8227/report/getSimpleReport";
+        let data = {}
+        let header = {
+          companyId: this.companyId
+        }
+        if (flag == "1") {
+
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.ss_zjgh1
+            }
+          };
+        } else {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.ss_zjgh2
+            }
+          };
+        }
+
+        let that = this;
+        if (this.isChinese(data.query.staff_code) == false) {
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+
+            // headers: headers
+          }).then((res) => {
+            console.log(res.data.data.length);
+            if (res.data.data.length == 1) {
+              if (flag == "1") {
+                this.ss_zjgh1_code = this.ss_zjgh1
+                this.ss_zjgh1 = res.data.data[0].staff_name
+
+              } else {
+                this.ss_zjgh2_code = this.ss_zjgh2
+                this.ss_zjgh2 = res.data.data[0].staff_name
+              }
+
+            } else {
+              this.$message({
+                message: "工号不正确！",
+                type: "warning",
+              });
+              if (flag == "1") {
+                this.ss_zjgh1_code = ""
+                this.ss_zjgh1 = ""
+
+              } else {
+                this.ss_zjgh2_code = ""
+                this.ss_zjgh2 = ""
+              }
+            }
+          });
+        }
+
+      },
       ssFinish() {
         if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
           console.log("不能为空！")
@@ -266,12 +362,12 @@
 
       },
       jjFinish() {
-        if(this.isZJ1==0){
-          this.isZJ1=1
-        }else if(this.isZJ1==1){
-          this.isZJ1=2
-        }else if(this.isZJ1==2){
-          this.isZJ1=0
+        if (this.isZJ1 == 0) {
+          this.isZJ1 = 1
+        } else if (this.isZJ1 == 1) {
+          this.isZJ1 = 2
+        } else if (this.isZJ1 == 2) {
+          this.isZJ1 = 0
         }
       },
       Finish() {
@@ -341,8 +437,8 @@
     },
     mounted() {
       this.timer = setInterval(this.getTime, 1000);
-      
-    
+
+
 
 
 
@@ -353,10 +449,55 @@
 
       printCode(val) {
         if (val.length == 9) {
-          this.dialogVisible = false
-          this.mainShow = false
-          this.queryShow = true
-          this.printCode = ""
+
+
+
+          let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
+          let data = {
+
+            "barCode": val
+
+          };
+          let header = {
+            companyId: this.companyId
+          }
+
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+
+            // headers: headers
+          }).then((res) => {
+            console.log(res);
+            this.dialogVisible = false
+            this.mainShow = false
+            this.queryShow = true
+            this.productName = res.data.data.productName //品名
+            this.pinh = res.data.data.pinh
+            this.specification = res.data.data.specification
+            this.piCang = res.data.data.piCang
+            this.piSu = res.data.data.piSu
+            this.zenJinJiHao = res.data.data.zenJinJiHao
+            this.seHao = res.data.data.huaXinDans[0].cpscsh
+            if (res.data.data.workQty1Time != null) {
+              this.workQty1Time = res.data.data.workQty1Time
+            }
+            if (res.data.data.workQty2Time != null) {
+              this.workQty1Time = res.data.data.workQty2Time
+            }
+            if (res.data.data.workQty3Time != null) {
+              this.workQty1Time = res.data.data.workQty3Time
+            }
+
+            this.form.zj_zjcd = res.data.data.planYield
+            this.form.zj2_zjcd = res.data.data.planYield
+            this.form.zj3_zjcd = res.data.data.planYield
+            this.printCode = ""
+          });
+
         }
       },
       queryShow(val) {
@@ -364,6 +505,17 @@
           this.ss_zjgh1 = ""
           this.ss_zjgh2 = ""
           this.ss_tzss = ""
+        }
+      },
+      dialogVisible(val) {
+        if (val == true) {
+          this.$nextTick((x) => {
+            this.$refs.inputs.focus();
+          })
+        } else {
+          this.$nextTick((x) => {
+            this.$refs.inputs.blur();
+          })
         }
       },
       dialogVisible4(val) {
@@ -379,14 +531,6 @@
 </script>
 
 <style scoped>
-  body {
-    padding-right: 0 !important;
-  }
-
-  body {
-    padding: 0;
-  }
-
   .header {
     background: #317CCD;
     color: white;
@@ -600,8 +744,6 @@
     height: 40%;
     display: flex;
     align-items: center;
-
-
   }
 
   .con2 {
@@ -610,7 +752,6 @@
     background: white;
     padding-bottom: 0.5rem;
     display: flex;
-
   }
 
   .con2_left {
@@ -619,7 +760,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
   }
 
   .con2_left_con {
@@ -663,6 +803,7 @@
     align-items: flex-end;
     font-size: 1rem;
     color: #808080;
+    text-align: right;
   }
 
   .bottom_btn {
