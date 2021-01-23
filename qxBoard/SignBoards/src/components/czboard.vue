@@ -260,7 +260,7 @@
         myChart1.clear();
         let that = this
         let option = {
-
+animation:false,
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -300,6 +300,7 @@
         // 绘制图表
         myChart1.clear();
         let option = {
+          animation:false,
           title: {
             text: "穿棕产量日对比",
             textStyle: {
@@ -735,6 +736,7 @@
       this.getWarningPushDataTiming()
       
       // this.rotate()
+    
 
 
     },

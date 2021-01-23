@@ -240,7 +240,7 @@
         ss_zjgh2_code: "",
 
         ss_tzss: "",
-        form: {
+        form: {  //整经记录表单数据
 
           zj_zjgh_name: "",
           zj_zjgh2: "",
@@ -289,7 +289,7 @@
           zj3_bz: ""
         },
         warpPlanId: "",
-        Id: "",
+        Id: "", 
         shiftManageList: [],
         shiftStartTime: "",
         shiftEndTime: "",
@@ -317,13 +317,16 @@
           data: data,
           // headers: headers
         }).then((res) => {
-          console.log(res);
+          console.log(res.data.data);
           if (res.data.data) {
             this.dialogVisible = false
             this.mainShow = false
             this.queryShow = true
             this.warpPlanId = res.data.data.lzdid
             this.Id = res.data.data.id
+              this.form.zj_zjcd = res.data.data.planYield
+            this.form.zj2_zjcd = res.data.data.planYield
+            this.form.zj3_zjcd = res.data.data.planYield
             this.productName = res.data.data.productName //品名
             this.pinh = res.data.data.pinh
             this.specification = res.data.data.specification
@@ -341,13 +344,19 @@
               this.workQty1Time = res.data.data.workQty3Time
             }
 
-            this.form.zj_zjcd = res.data.data.planYield
-            this.form.zj2_zjcd = res.data.data.planYield
-            this.form.zj3_zjcd = res.data.data.planYield
+          
 
           } else {
-            this.$message.error('数据查询失败！');
+           
+            this.$message({
+   
+          message: '数据查询失败！',
+          type: 'error',
+   
+        
+        });
           }
+          console.log( this.form.zj_zjcd)
           //  this.printCode = ""
 
         });
@@ -667,9 +676,9 @@
             "shiftStartDatetime": this.shiftStartTime,
             "shiftEndDatetime": this.shiftEndTime,
             "status": 6, //673
-            "axisNo": this.form.zj_zh,
-            "reAxisStaffId": this.form.zj_dzgh,
-            "remark": this.form.zj_bz,
+            "axisNo":  this.isEmpty(this.form.zj_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj_dzgh),
+            "remark":  this.isEmpty(this.form.zj_bz),
             "id": this.warpPlanId,
             workQty1Time: "2021-09-10 18:00:00"
           }
@@ -688,9 +697,9 @@
             "shiftStartDatetime2": this.shiftStartTime,
             "shiftEndDatetime2": this.shiftEndTime,
             "status": 7, //673
-            "axisNo": this.form.zj2_zh,
-            "reAxisStaffId": this.form.zj2_dzgh,
-            "remark": this.form.zj2_bz,
+            "axisNo":  this.isEmpty(this.form.zj2_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj2_dzgh),
+            "remark":  this.isEmpty(this.form.zj2_bz),
             "id": this.warpPlanId,
             workQty2Time: "2021-09-10 18:00:00"
           }
@@ -706,9 +715,9 @@
             "shiftStartDatetime3": this.shiftStartTime,
             "shiftEndDatetime3": this.shiftEndTime,
             "status": 3, //673
-            "axisNo": this.form.zj3_zh,
-            "reAxisStaffId": this.form.zj3_dzgh,
-            "remark": this.form.zj3_bz,
+            "axisNo":  this.isEmpty(this.form.zj3_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
+            "remark":  this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
             workQty3Time: "2021-09-10 18:00:00"
           }
@@ -740,6 +749,13 @@
           }
         })
       },
+      isEmpty(val){
+       if(val==""){
+         return null
+       }else{
+         return val
+       }
+      },
       Finish() {
 
         if (this.form.zj2_zjgh2 == "" || this.form.zj_zjgh2 == "" || this.form.zj_zjcd == "" || this.form.zj2_zjcd ==
@@ -760,9 +776,9 @@
             "shiftStartDatetime3": this.shiftStartTime,
             "shiftEndDatetime3": this.shiftEndTime,
             "status": 3, //673
-            "axisNo": this.form.zj3_zh,
-            "reAxisStaffId": this.form.zj3_dzgh,
-            "remark": this.form.zj3_bz,
+            "axisNo": this.isEmpty(this.form.zj3_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
+            "remark":  this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
             workQty3Time: "2021-09-10 18:00:00"
           }
@@ -780,7 +796,7 @@
             // headers: headers
           }).then((res) => {
             console.log(res)
-            if (res.data.successMessage == "报工") {
+            if (res.data.successMessage == "ok") {
               this.$message({
                 message: '操作成功!',
                 type: 'success'
@@ -902,6 +918,7 @@
 </script>
 
 <style scoped>
+
   .header {
     background: #317CCD;
     color: white;
@@ -1217,5 +1234,11 @@
     justify-content: center;
 
   }
+/deep/ .el-message.is-closable .el-message__content{
+    font-size: 3rem;
+}
 
+/deep/ .el-message--error{
+  font-size: 3rem;
+}
 </style>
