@@ -1001,7 +1001,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: black;
-  font-size: 4rem;
+  font-size: 3rem;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
   border-bottom: 3px solid #717171;

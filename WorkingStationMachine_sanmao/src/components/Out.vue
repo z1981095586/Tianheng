@@ -250,10 +250,10 @@
             background
             small
             :pager-count="3"
-            @current-change="CurrentChange"
+            @current-change="CurrentChange2"
             layout="prev, pager, next"
-            :page-size="page_size"
-            :total="total_num"
+            :page-size="page_size2"
+            :total="total_num2"
           >
           </el-pagination>
         </div>
@@ -425,7 +425,7 @@ export default {
         },
       ],
       StaffNameList: [],
-      page_size2: 21,
+      page_size2: 15,
       page_num2: 1,
       total_num2: null,
       page_size: 21,
@@ -725,6 +725,11 @@ export default {
         ];
       }
       //console.log(this.staffList);
+    },
+    CurrentChange2(e) {
+      //console.log(e);
+      this.page_num2 = e;
+      this.getStaffList();
     },
     CurrentChange(e) {
       //console.log(e);
@@ -1172,13 +1177,13 @@ export default {
 
         // headers: headers
       }).then((res) => {
-        //console.log(res);
+        console.log(res);
         let arr = res.data.data;
         for (let i = 0; i < arr.length; i++) {
           that.StaffNameList.push(arr[i]);
         }
         that.total_num2 = res.data.total;
-        //   //console.log(that.total_num2)
+        console.log(that.total_num2);
       });
     },
   },

@@ -75,8 +75,8 @@
 
       <div class="con2">
         <div class="con2_left" v-show="isZJ1==0">
-          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj_zjgh2" /> <span>整经长度</span><input
-              v-model="form.zj_zjcd" /> </div>
+          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj_zjgh2_name"
+              @blur="selectStaffCode('3')" /> <span>整经长度</span><input v-model="form.zj_zjcd" /> </div>
           <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj_bs" /> <span
               style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj_swbs" /> </div>
           <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
@@ -85,13 +85,14 @@
               v-model="form.zj_sw4" /><input style="width:6rem;margin-right:1rem;" v-model="form.zj_sw5" /><input
               style="width:6rem;margin-right:1rem;" v-model="form.zj_sw6" /> </div>
           <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj_zh" /> <span
-              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj_dzgh" /> </div>
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj_dzgh_name"
+              @blur="selectStaffCode('4')" /> </div>
           <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj_bz"
               style="width:35rem" /> </div>
         </div>
         <div class="con2_left" v-show="isZJ1==1">
-          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj2_zjgh2" /> <span>整经长度</span><input
-              v-model="form.zj2_zjcd" /> </div>
+          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj2_zjgh2_name"
+              @blur="selectStaffCode('5')" /> <span>整经长度</span><input v-model="form.zj2_zjcd" /> </div>
           <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj2_bs" /> <span
               style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj2_swbs" /> </div>
           <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
@@ -101,13 +102,14 @@
               style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw5" /><input
               style="width:6rem;margin-right:1rem;" v-model="form.zj2_sw6" /> </div>
           <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj2_zh" /> <span
-              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj2_dzgh" /> </div>
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj2_dzgh_name"
+              @blur="selectStaffCode('6')" /> </div>
           <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj2_bz"
               style="width:35rem" /> </div>
         </div>
         <div class="con2_left" v-show="isZJ1==2">
-          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj3_zjgh2" /> <span>整经长度</span><input
-              v-model="form.zj3_zjcd" /> </div>
+          <div class="con2_left_con"><span>整经工号</span><input v-model="form.zj3_zjgh2_name"
+              @blur="selectStaffCode('7')" /> <span>整经长度</span><input v-model="form.zj3_zjcd" /> </div>
           <div class="con2_left_con"><span style="width:4rem">把数</span><input v-model="form.zj3_bs" /> <span
               style="    margin-left: 5rem;">扫尾把数</span><input v-model="form.zj3_swbs" /> </div>
           <div class="con2_left_con"><span style="width:4rem">扫尾</span><input style="width:6rem;margin-right:1rem;"
@@ -117,7 +119,8 @@
               style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw5" /><input
               style="width:6rem;margin-right:1rem;" v-model="form.zj3_sw6" /> </div>
           <div class="con2_left_con"><span style="width:4rem">轴号</span><input v-model="form.zj3_zh" /> <span
-              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj3_dzgh" /> </div>
+              style="    margin-left: 5rem;">倒轴工号</span><input v-model="form.zj3_dzgh_name"
+              @blur="selectStaffCode('8')" /> </div>
           <div class="con2_left_con"><span style="width:4rem">备注</span><input v-model="form.zj3_bz"
               style="width:35rem" /> </div>
         </div>
@@ -136,13 +139,14 @@
       <div class="bottom_btn">
         <div class="btns" :style=" enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''"
           @click="ssFinish()">上纱完成</div>
-        <div class="btns" :style=" enabled ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+        <div class="btns" :style=" (enabled&&isZJ1!=2)  ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click="jjFinish()">交接班</div>
-        <div class="btns" :style=" enabled ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+        <div class="btns" :style="isZJ1==2 ?'' :'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click="dialogVisible2=true">完成</div>
         <div class="btns" style="margin-left:15rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
     </div>
+
     <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
@@ -211,14 +215,15 @@
         timer: "",
         time: "",
         enabled: false,
+        mainShow: true,
+        queryShow: false,
         isZJ1: 0,
         printCode: "",
         dialogVisible3: false,
         dialogVisible4: false,
         dialogVisible: false,
         dialogVisible2: false,
-        mainShow: true,
-        queryShow: false,
+
 
         productName: "",
         pinh: "",
@@ -237,7 +242,7 @@
         ss_tzss: "",
         form: {
 
-
+          zj_zjgh_name: "",
           zj_zjgh2: "",
           zj_zjcd: "",
           zj_bs: "",
@@ -250,7 +255,9 @@
           zj_swbs: "",
           zj_zh: "",
           zj_dzgh: "",
+          zj_dzgh_name: "",
           zj_bz: "",
+          zj2_zjgh_name: "",
           zj2_zjgh2: "",
           zj2_sw1: "",
           zj2_sw2: "",
@@ -263,7 +270,9 @@
           zj2_swbs: "",
           zj2_zh: "",
           zj2_dzgh: "",
+          zj2_dzgh_name: "",
           zj2_bz: "",
+          zj3_zjgh_name: "",
           zj3_zjgh2: "",
           zj3_sw1: "",
           zj3_sw2: "",
@@ -276,18 +285,81 @@
           zj3_swbs: "",
           zj3_zh: "",
           zj3_dzgh: "",
+          zj3_dzgh_name: "",
           zj3_bz: ""
         },
+        warpPlanId: "",
+        Id: "",
+        shiftManageList: [],
+        shiftStartTime: "",
+        shiftEndTime: "",
+        shiftWork: ""
 
       }
     },
     methods: {
+      getInfo(val) {
+        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
+        let data = {
+
+          "barCode": val
+
+        };
+        let header = {
+          companyId: this.companyId
+        }
+
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          headers: header,
+          data: data,
+          // headers: headers
+        }).then((res) => {
+          console.log(res);
+          if (res.data.data) {
+            this.dialogVisible = false
+            this.mainShow = false
+            this.queryShow = true
+            this.warpPlanId = res.data.data.lzdid
+            this.Id = res.data.data.id
+            this.productName = res.data.data.productName //品名
+            this.pinh = res.data.data.pinh
+            this.specification = res.data.data.specification
+            this.piCang = res.data.data.piCang
+            this.piSu = res.data.data.piSu
+            this.zenJinJiHao = res.data.data.zenJinJiHao
+            this.seHao = res.data.data.huaXinDans[0].cpscsh
+            if (res.data.data.workQty1Time != null) {
+              this.workQty1Time = res.data.data.workQty1Time
+            }
+            if (res.data.data.workQty2Time != null) {
+              this.workQty1Time = res.data.data.workQty2Time
+            }
+            if (res.data.data.workQty3Time != null) {
+              this.workQty1Time = res.data.data.workQty3Time
+            }
+
+            this.form.zj_zjcd = res.data.data.planYield
+            this.form.zj2_zjcd = res.data.data.planYield
+            this.form.zj3_zjcd = res.data.data.planYield
+
+          } else {
+            this.$message.error('数据查询失败！');
+          }
+          //  this.printCode = ""
+
+        });
+
+      },
       isChinese(temp) {
         let re = /[^\u4E00-\u9FA5]/;
         if (re.test(temp)) return false;
         return true;
       },
       selectStaffCode(flag) {
+        console.log(flag)
         let url = "http://106.12.219.66:8227/report/getSimpleReport";
         let data = {}
         let header = {
@@ -302,7 +374,7 @@
               staff_code: this.ss_zjgh1
             }
           };
-        } else {
+        } else if (flag == "2") {
           data = {
 
             tableName: "s_staff",
@@ -310,10 +382,59 @@
               staff_code: this.ss_zjgh2
             }
           };
+        } else if (flag == "3") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj_zjgh2_name
+            }
+          };
+        } else if (flag == "4") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj_dzgh_name
+            }
+          };
+        } else if (flag == "5") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj2_zjgh2_name
+            }
+          };
+        } else if (flag == "6") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj2_dzgh_name
+            }
+          };
+        } else if (flag == "7") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj3_zjgh2_name
+            }
+          };
+        } else if (flag == "8") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.form.zj3_dzgh_name
+            }
+          };
         }
 
+
         let that = this;
-        if (this.isChinese(data.query.staff_code) == false) {
+        if (this.isChinese(data.query.staff_code) == false || parseInt(flag) > 2) {
           axios({
             url: url,
             method: "post",
@@ -328,9 +449,30 @@
                 this.ss_zjgh1_code = this.ss_zjgh1
                 this.ss_zjgh1 = res.data.data[0].staff_name
 
-              } else {
+              } else if (flag == "2") {
                 this.ss_zjgh2_code = this.ss_zjgh2
                 this.ss_zjgh2 = res.data.data[0].staff_name
+              } else if (flag == "3") {
+                this.form.zj_zjgh2 = res.data.data[0].staff_code
+                this.form.zj_zjgh2_name = res.data.data[0].staff_name
+              } else if (flag == "4") {
+                this.form.zj_dzgh = res.data.data[0].staff_code
+                this.form.zj_dzgh_name = res.data.data[0].staff_name
+              } else if (flag == "5") {
+                this.form.zj2_zjgh2 = res.data.data[0].staff_code
+                this.form.zj2_zjgh2_name = res.data.data[0].staff_name
+              } else if (flag == "6") {
+                this.form.zj2_dzgh = res.data.data[0].staff_code
+                // this.ss_zjgh2_code = this.ss_zjgh2
+                this.form.zj2_dzgh_name = res.data.data[0].staff_name
+              } else if (flag == "7") {
+                this.form.zj3_zjgh2 = res.data.data[0].staff_code
+                // this.ss_zjgh2_code = this.ss_zjgh2
+                this.form.zj3_zjgh2_name = res.data.data[0].staff_name
+              } else if (flag == "8") {
+                this.form.zj3_dzgh = res.data.data[0].staff_code
+                // this.ss_zjgh2_code = this.ss_zjgh2
+                this.form.zj3_dzgh_name = res.data.data[0].staff_name
               }
 
             } else {
@@ -342,14 +484,123 @@
                 this.ss_zjgh1_code = ""
                 this.ss_zjgh1 = ""
 
-              } else {
+              } else if (flag == "2") {
                 this.ss_zjgh2_code = ""
                 this.ss_zjgh2 = ""
+              } else if (flag == "3") {
+                this.form.zj_zjgh2 = ""
+                this.form.zj_zjgh2_name = ""
+              } else if (flag == "4") {
+                this.form.zj_dzgh = ""
+                this.form.zj_dzgh_name = ""
+              } else if (flag == "5") {
+                this.form.zj2_zjgh2 = ""
+                this.form.zj2_zjgh2_name = ""
+              } else if (flag == "6") {
+                this.form.zj2_dzgh = ""
+                this.form.zj2_dzgh_name = ""
+              } else if (flag == "7") {
+                this.form.zj3_zjgh2 = ""
+                this.form.zj3_zjgh2_name = ""
+              } else if (flag == "8") {
+                this.form.zj3_dzgh = ""
+                this.form.zj3_dzgh_name = ""
               }
             }
           });
         }
 
+      },
+      getDate() {
+        var nowDate = new Date();
+
+        var year = nowDate.getFullYear();
+
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1)
+
+          :
+          nowDate.getMonth() + 1;
+
+        var day = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate
+
+          .getDate();
+
+        return (year + "-" + month + "-" + day);
+      },
+      getShift() {
+        console.log(this.getDate())
+        let url = "http://106.12.219.66:8763/shift-rule/selectShift";
+        let data = {};
+        data.workshopId = "1";
+        data.macTypeId = "040000";
+        let header = {
+          companyId: this.companyId
+        }
+        axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+            // headers: headers
+          }).then((response) => {
+            // warp_api("/shift-rule/selectShift",data,this.companyId)
+            // .then(response => {
+            console.log(response);
+            this.shiftManageList = response.data.data;
+            for (let i = 0; i < this.shiftManageList.length; i++) {
+              this.shiftManageList[i].shiftStartTimeH = this.shiftManageList[i].startTime.slice(0, 2);
+              this.shiftManageList[i].shiftStartTimeI = this.shiftManageList[i].startTime.slice(3, 5);
+              this.shiftManageList[i].shiftStartTimeS = this.shiftManageList[i].startTime.slice(6, 8);
+              this.shiftManageList[i].shiftEndTimeH = this.shiftManageList[i].endTime.slice(0, 2);
+              this.shiftManageList[i].shiftEndTimeI = this.shiftManageList[i].endTime.slice(3, 5);
+              this.shiftManageList[i].shiftEndTimeS = this.shiftManageList[i].endTime.slice(6, 8);
+            }
+
+            console.log(this.getShiftName())
+            let json = this.getShiftName()
+            this.shiftStartTime = this.getDate() + " " + json.startTime
+            this.shiftEndTime = this.getDate() + " " + json.endTime
+            this.shiftWork = String(json.shiftQueue)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      getShiftName() {
+        let date = new Date();
+        let hour = date.getHours();
+        hour = add_0(hour);
+        let minute = date.getMinutes();
+        minute = add_0(minute);
+        let seconds = date.getSeconds();
+        seconds = add_0(seconds);
+
+        function add_0(param) {
+          if (param < 10) {
+            param = "0" + param
+          }
+          return param
+        }
+        let time = hour + ":" + minute + ":" + seconds;
+        // console.log(this.shiftManageList);
+        for (let i = 0; i < this.shiftManageList.length; i++) {
+          this.shiftManageList[i].id = i + 1;
+          if (this.shiftManageList[i].endTime > this.shiftManageList[i].startTime) {
+            if (time < this.shiftManageList[i].endTime && time > this.shiftManageList[i].startTime) {
+              // this.name = this.shiftManageList[i].name;
+              // this.$store.state.shiftName = this.shiftManageList[i].name;
+              // console.log(this.$store.state.shiftName);
+              return this.shiftManageList[i]
+            }
+          } else {
+            if (time < this.shiftManageList[i].endTime || time > this.shiftManageList[i].startTime) {
+              // this.name = this.shiftManageList[i].name;
+              // this.$store.state.shiftName = this.shiftManageList[i].name;
+              // console.log(this.$store.state.shiftName);
+              return this.shiftManageList[i]
+            }
+          }
+        }
       },
       ssFinish() {
         if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
@@ -357,18 +608,137 @@
           this.dialogVisible3 = true
 
         } else {
-          this.enabled = true
+          let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/zjYarnSpindle";
+          let data = {
+
+            staffId1Yarn: this.ss_zjgh1_code,
+            staffId2Yarn: this.ss_zjgh2_code,
+            yarnCount: this.ss_tzss,
+            warpPlanId: this.Id
+            // warpPlanId:1
+          };
+          let header = {
+            companyId: this.companyId
+          }
+
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+            // headers: headers
+          }).then((res) => {
+            console.log(res)
+            if (res.data.result == "ok") {
+              this.$message({
+                message: '上纱成功!',
+                type: 'success'
+              });
+              this.getInfo(this.printCode)
+              this.enabled = true
+            } else {
+              this.$message.error('上纱失败！');
+            }
+          })
+
         }
 
       },
       jjFinish() {
-        if (this.isZJ1 == 0) {
-          this.isZJ1 = 1
-        } else if (this.isZJ1 == 1) {
-          this.isZJ1 = 2
-        } else if (this.isZJ1 == 2) {
-          this.isZJ1 = 0
+        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
+        let data = {
+
+
+        };
+        let header = {
+          companyId: this.companyId
         }
+        if (this.isZJ1 == 0) {
+
+          data = {
+            "empId1": this.form.zj_zjgh2,
+            "workQty1": this.form.zj_zjcd,
+            "baCount1": this.form.zj_bs,
+            "weiBaCount1": this.form.zj_swbs,
+            "saoWei1": this.form.zj_sw1 + "," + this.form.zj_sw2 + "," + this.form.zj_sw3 + "," + this.form.zj_sw4 +
+              "," + this.form.zj_sw5 + "," + this.form.zj_sw6,
+            "shiftWork": this.shiftWork,
+            "shiftStartDatetime": this.shiftStartTime,
+            "shiftEndDatetime": this.shiftEndTime,
+            "status": 6, //673
+            "axisNo": this.form.zj_zh,
+            "reAxisStaffId": this.form.zj_dzgh,
+            "remark": this.form.zj_bz,
+            "id": this.warpPlanId,
+            workQty1Time: "2021-09-10 18:00:00"
+          }
+
+
+        } else if (this.isZJ1 == 1) {
+
+          data = {
+            "empId2": this.form.zj2_zjgh2,
+            "workQty2": this.form.zj2_zjcd,
+            "baCount2": this.form.zj2_bs,
+            "weiBaCount2": this.form.zj2_swbs,
+            "saoWei2": this.form.zj2_sw1 + "," + this.form.zj2_sw2 + "," + this.form.zj2_sw3 + "," + this.form
+              .zj2_sw4 + "," + this.form.zj2_sw5 + "," + this.form.zj2_sw6,
+            "shiftWork2": this.shiftWork,
+            "shiftStartDatetime2": this.shiftStartTime,
+            "shiftEndDatetime2": this.shiftEndTime,
+            "status": 7, //673
+            "axisNo": this.form.zj2_zh,
+            "reAxisStaffId": this.form.zj2_dzgh,
+            "remark": this.form.zj2_bz,
+            "id": this.warpPlanId,
+            workQty2Time: "2021-09-10 18:00:00"
+          }
+        } else if (this.isZJ1 == 2) {
+          data = {
+            "empId3": this.form.zj3_zjgh2,
+            "workQty3": this.form.zj3_zjcd,
+            "baCount3": this.form.zj3_bs,
+            "weiBaCount3": this.form.zj3_swbs,
+            "saoWei3": this.form.zj3_sw1 + "," + this.form.zj3_sw2 + "," + this.form.zj3_sw3 + "," + this.form
+              .zj3_sw4 + "," + this.form.zj3_sw5 + "," + this.form.zj3_sw6,
+            "shiftWork3": this.shiftWork,
+            "shiftStartDatetime3": this.shiftStartTime,
+            "shiftEndDatetime3": this.shiftEndTime,
+            "status": 3, //673
+            "axisNo": this.form.zj3_zh,
+            "reAxisStaffId": this.form.zj3_dzgh,
+            "remark": this.form.zj3_bz,
+            "id": this.warpPlanId,
+            workQty3Time: "2021-09-10 18:00:00"
+          }
+
+        }
+        console.log(this.form)
+        console.log(this.isZJ1)
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          headers: header,
+          data: data,
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+          if (res.data.result == "ok") {
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            });
+            if (this.isZJ1 == 2) {
+              this.isZJ1 = 0
+            } else {
+              this.isZJ1 = this.isZJ1 + 1
+            }
+          } else {
+            this.$message.error(res.data.successMessage + '！');
+          }
+        })
       },
       Finish() {
 
@@ -378,20 +748,72 @@
           this.dialogVisible4 = true
 
         } else {
-          this.enabled = false
-          this.dialogVisible2 = false
-          this.showQuery = false
-          this.mainShow = true
-          for (var item in this.form) {
-            this.form[item] = ""
+          let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
+          let data = {
+            "empId3": this.form.zj3_zjgh2,
+            "workQty3": this.form.zj3_zjcd,
+            "baCount3": this.form.zj3_bs,
+            "weiBaCount3": this.form.zj3_swbs,
+            "saoWei3": this.form.zj3_sw1 + "," + this.form.zj3_sw2 + "," + this.form.zj3_sw3 + "," + this.form
+              .zj3_sw4 + "," + this.form.zj3_sw5 + "," + this.form.zj3_sw6,
+            "shiftWork3": this.shiftWork,
+            "shiftStartDatetime3": this.shiftStartTime,
+            "shiftEndDatetime3": this.shiftEndTime,
+            "status": 3, //673
+            "axisNo": this.form.zj3_zh,
+            "reAxisStaffId": this.form.zj3_dzgh,
+            "remark": this.form.zj3_bz,
+            "id": this.warpPlanId,
+            workQty3Time: "2021-09-10 18:00:00"
           }
-          this.ss_tzss = ""
-          this.ss_zjgh1 = ""
-          this.ss_zjgh2 = ""
+
+
+          let header = {
+            companyId: this.companyId
+          }
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+            // headers: headers
+          }).then((res) => {
+            console.log(res)
+            if (res.data.successMessage == "报工") {
+              this.$message({
+                message: '操作成功!',
+                type: 'success'
+              });
+              this.printCode = ""
+              this.enabled = false
+              this.dialogVisible2 = false
+              this.showQuery = false
+              this.mainShow = true
+              for (var item in this.form) {
+                this.form[item] = ""
+              }
+              this.ss_tzss = ""
+              this.ss_zjgh1 = ""
+              this.ss_zjgh2 = ""
+              if (this.isZJ1 == 2) {
+                this.isZJ1 = 0
+              } else {
+                this.isZJ1 = this.isZJ1 + 1
+              }
+            } else {
+              this.$message.error(res.data.successMessage + '！');
+            }
+          })
+
+
         }
 
 
+
+
       },
+
 
 
       showQuery() {
@@ -437,71 +859,20 @@
     },
     mounted() {
       this.timer = setInterval(this.getTime, 1000);
-
-
-
-
-
-
-
+      this.getShift()
     },
     watch: {
 
       printCode(val) {
         if (val.length == 9) {
-
-
-
-          let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
-          let data = {
-
-            "barCode": val
-
-          };
-          let header = {
-            companyId: this.companyId
-          }
-
-          let that = this;
-          axios({
-            url: url,
-            method: "post",
-            headers: header,
-            data: data,
-
-            // headers: headers
-          }).then((res) => {
-            console.log(res);
-            this.dialogVisible = false
-            this.mainShow = false
-            this.queryShow = true
-            this.productName = res.data.data.productName //品名
-            this.pinh = res.data.data.pinh
-            this.specification = res.data.data.specification
-            this.piCang = res.data.data.piCang
-            this.piSu = res.data.data.piSu
-            this.zenJinJiHao = res.data.data.zenJinJiHao
-            this.seHao = res.data.data.huaXinDans[0].cpscsh
-            if (res.data.data.workQty1Time != null) {
-              this.workQty1Time = res.data.data.workQty1Time
-            }
-            if (res.data.data.workQty2Time != null) {
-              this.workQty1Time = res.data.data.workQty2Time
-            }
-            if (res.data.data.workQty3Time != null) {
-              this.workQty1Time = res.data.data.workQty3Time
-            }
-
-            this.form.zj_zjcd = res.data.data.planYield
-            this.form.zj2_zjcd = res.data.data.planYield
-            this.form.zj3_zjcd = res.data.data.planYield
-            this.printCode = ""
-          });
+          this.getInfo(val)
 
         }
       },
+
       queryShow(val) {
         if (val == true) {
+          this.getShift()
           this.ss_zjgh1 = ""
           this.ss_zjgh2 = ""
           this.ss_tzss = ""
@@ -782,6 +1153,7 @@
   .con2_left_con input {
     width: 11rem;
     height: 2.5rem;
+    font-size: 1.5rem;
     border: 1px solid black;
   }
 
@@ -801,15 +1173,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: #808080;
     text-align: right;
   }
 
   .bottom_btn {
     width: 100%;
-    height: 9rem;
-
+    height: 8rem;
     display: flex;
     align-items: center;
     margin-bottom: 1rem;

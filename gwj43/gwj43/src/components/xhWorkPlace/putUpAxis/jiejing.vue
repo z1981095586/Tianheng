@@ -121,6 +121,7 @@
             <i class="el-icon-arrow-down" style="
       font-size: 2rem;position:absolute;right:2rem;" v-show="item.isEdit"></i> -->
           </div>
+     
           <div
             style="width:12%;margin-left:2%;    height: 93%;display:flex;align-items:center;justify-content: space-around;flex-direction:column;"
             @click="NameTable2(item.id,item.isEdit,item.staff_name)"
@@ -576,6 +577,7 @@ selectLikeFields:{
         var offset = (pageNo - 1) * pageSize;
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
           pageSize);
+        
       },
 
 

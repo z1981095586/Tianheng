@@ -86,10 +86,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             确认
           </div>
           <div
@@ -117,11 +114,7 @@
       <div class="search" style="left: 4rem; width: 95%; top: 18px">
         <span style="font-size: 1.7rem">搜索：</span
         ><input placeholder="输入机台号" v-model="search_machine" />
-        <div
-          class="checked_machine_btn_one"
-          style="height: 3rem"
-          @click="search()"
-        >
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
           确认
         </div>
         <span style="color: red; margin-left: 1rem"
@@ -151,11 +144,7 @@
               <option value="8">C班</option>
             </select>
           </div>
-          <div
-            class="shift_con"
-            v-for="(item, index) in staffList"
-            :key="index"
-          >
+          <div class="shift_con" v-for="(item, index) in staffList" :key="index">
             <span>{{ item.label }}：</span>
             <div
               :class="item.isSelected ? 'staffCheck2' : 'staffCheck'"
@@ -195,9 +184,7 @@
           </div>
           <div
             class="operationPane_con_machineList_btn_leftBtn"
-            :style="
-              isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'
-            "
+            :style="isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'"
             @click="save()"
           >
             保存
@@ -275,7 +262,7 @@ export default {
       page_size: 21,
       page_num: 1,
       total_num2: null,
-      page_size2: 21,
+      page_size2: 12,
       page_num2: 1,
       mac_type_id: "030100",
       className: "6",
@@ -318,10 +305,7 @@ export default {
         if (className == "A班") {
           res.data.result.forEach((element) => {
             if (element.group_name == "插片班A组") {
-              element.staffList = that.sortByKey(
-                element.staffList,
-                "order_num"
-              );
+              element.staffList = that.sortByKey(element.staffList, "order_num");
               element.staffList.forEach((elements) => {
                 if (elements.order_num == "1") {
                   that.staffList.push({
@@ -358,10 +342,7 @@ export default {
         } else if (className == "B班") {
           res.data.result.forEach((element) => {
             if (element.group_name == "插片班B组") {
-              element.staffList = that.sortByKey(
-                element.staffList,
-                "order_num"
-              );
+              element.staffList = that.sortByKey(element.staffList, "order_num");
               element.staffList.forEach((elements) => {
                 if (elements.order_num == "1") {
                   that.staffList.push({
@@ -399,10 +380,7 @@ export default {
         if (className == "C班") {
           res.data.result.forEach((element) => {
             if (element.group_name == "插片班C组") {
-              element.staffList = that.sortByKey(
-                element.staffList,
-                "order_num"
-              );
+              element.staffList = that.sortByKey(element.staffList, "order_num");
               element.staffList.forEach((elements) => {
                 if (elements.order_num == "1") {
                   that.staffList.push({
@@ -1045,11 +1023,7 @@ export default {
   float: left;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-prev
-  .el-icon {
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }
 
@@ -1112,11 +1086,7 @@ export default {
   box-sizing: border-box;
 }
 
-.operationPane_con_machineList_btn_right
-  /deep/
-  .el-pagination
-  .btn-next
-  .el-icon,
+.operationPane_con_machineList_btn_right /deep/ .el-pagination .btn-next .el-icon,
 .el-pagination .btn-prev .el-icon {
   font-size: 2rem;
 }

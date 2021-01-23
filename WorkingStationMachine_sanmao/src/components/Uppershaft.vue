@@ -578,7 +578,7 @@ export default {
           isSelected: false,
         },
       ],
-      page_size2: 21,
+      page_size2: 12,
       page_num2: 1,
       total_num2: null,
       StaffNameList: [],
@@ -1045,49 +1045,49 @@ export default {
       this.staffList2.forEach((element) => {
         nameList.push(element.staffName);
       });
-      //console.log(String(nameList));
-      if (this.issaoma == true) {
-        if (this.print_code != "" && this.machine_id != "") {
-          let url = host + "/api/stationMachine/onAxis";
-          let data = {
-            selectInfo: {
-              company_id: this.company_id,
-            },
-            machine_id: this.machine_id,
-            print_code: this.pch,
-            shang_zhou_ren: String(nameList),
-            kai_ce_gong_id: this.kcgId,
-            gu_hao: this.gh,
-          };
-          let that = this;
-          axios({
-            url: url,
-            method: "post",
-            data: data,
-          }).then((response) => {
-            if (response.data.message == "成功") {
-              this.$message({
-                message: "上轴成功！",
-                type: "success",
-              });
-            } else {
-              this.$message.error(response.data.message);
-            }
-            this.se_hao = "";
-            this.pch = "";
-            this.product_name = "";
-            this.pin_hao = "";
-            this.machine_id = "";
-            that.closeCurrentPage();
-          });
-        } else {
-          this.$message({
-            message: "码没有读取到！",
-            type: "warning",
-          });
-        }
-      }
-      this.issaoma = false;
+      console.log(this.staffList2);
+      // if (this.issaoma == true) {
+      //   if (this.print_code != "" && this.machine_id != "") {
+      //     let url = host + "/api/stationMachine/onAxis";
+      //     let data = {
+      //       selectInfo: {
+      //         company_id: this.company_id,
+      //       },
+      //       machine_id: this.machine_id,
+      //       print_code: this.pch,
+      //       shang_zhou_ren: String(nameList),
+      //       kai_ce_gong_id: this.kcgId,
+      //       gu_hao: this.gh,
+      //     };
+      //     let that = this;
+      //     axios({
+      //       url: url,
+      //       method: "post",
+      //       data: data,
+      //     }).then((response) => {
+      //       if (response.data.message == "成功") {
+      //         this.$message({
+      //           message: "上轴成功！",
+      //           type: "success",
+      //         });
+      //       } else {
+      //         this.$message.error(response.data.message);
+      //       }
+      //       this.se_hao = "";
+      //       this.pch = "";
+      //       this.product_name = "";
+      //       this.pin_hao = "";
+      //       this.machine_id = "";
+      //       that.closeCurrentPage();
+      //     });
+      //   } else {
+      //     this.$message({
+      //       message: "码没有读取到！",
+      //       type: "warning",
+      //     });
+      //   }
+      // }
+      // this.issaoma = false;
     },
     toChooseMachine() {
       this.szMainShow = false;
@@ -1582,7 +1582,7 @@ export default {
     },
     pch(val) {
       //批轴号事件
-      let url = host + "/api/stationMachine/getAxisInfo";
+      let url = host + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({
@@ -1592,14 +1592,14 @@ export default {
             selectInfo: {
               company_id: that.company_id,
             },
-            print_code: val,
+            bar_code: val,
           },
           // headers: headers
         }).then((res) => {
-          //console.log(res);
+          console.log(res);
           that.se_hao = res.data.result.se_hao;
-          that.pin_hao = res.data.result.pin_hao;
-          that.product_name = res.data.result.product_name;
+          that.pin_hao = res.data.result.pinh;
+          that.product_name = res.data.result.mc;
           that.machine_id = res.data.result.machine_id;
         });
       }
@@ -1842,7 +1842,7 @@ export default {
   position: absolute;
   top: -20%;
   left: 0%;
-  width: 60%;
+  width: 100%;
   height: 20%;
   display: flex;
   flex-direction: column;

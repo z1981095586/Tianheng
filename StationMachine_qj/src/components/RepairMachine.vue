@@ -735,6 +735,7 @@ export default {
                           type: "success",
                         });
                         that.checkedMachineNum = "";
+                        that.checkMachine = [];
                         that.checkedRepairName = "";
                         that.repairReason = "";
                         that.checkedMaterialsList = [];

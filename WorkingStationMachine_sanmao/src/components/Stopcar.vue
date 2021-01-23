@@ -35,10 +35,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             保存
           </div>
           <div
@@ -70,11 +67,7 @@
           v-model="search_machine"
           placeholder="输入机台号"
         />
-        <div
-          class="checked_machine_btn_one"
-          style="height: 3rem"
-          @click="search()"
-        >
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
           确认
         </div>
         <span style="color: red; margin-left: 1rem"
@@ -107,24 +100,15 @@
           :key="index"
         >
           <span>{{ item.label }}</span
-          ><span style="font-size: 1rem" v-show="!item.isShutDown"
-            >（状态:开机）</span
-          ><span v-show="item.isShutDown" style="font-size: 1rem"
-            >（状态:关机）</span
-          >
+          ><span style="font-size: 1rem" v-show="!item.isShutDown">（状态:开机）</span
+          ><span v-show="item.isShutDown" style="font-size: 1rem">（状态:关机）</span>
         </div>
       </div>
       <div class="checked_machine_btn">
         <div class="checked_machine_btn_one" @click="openMachine()">开机</div>
-        <div class="checked_machine_btn_one" @click="shutdownMachine()">
-          关机
-        </div>
-        <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">
-          落布
-        </div>
-        <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">
-          改品种
-        </div>
+        <div class="checked_machine_btn_one" @click="shutdownMachine()">关机</div>
+        <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">落布</div>
+        <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">改品种</div>
         <div
           class="checked_machine_btn_one"
           style="background: #808080"
@@ -174,10 +158,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureShift()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureShift()">
             保存
           </div>
           <div
@@ -229,13 +210,7 @@
     >
       <input
         v-model="pzPrintCode"
-        style="
-          position: absolute;
-          left: 1rem;
-          top: 1rem;
-          font-size: 1.5rem;
-          border: none;
-        "
+        style="position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem; border: none"
         v-show="showPrintCode"
       />
       <div class="pz_left">
@@ -260,8 +235,7 @@
             <span>品号：</span><span style="color: #8c8c8c">{{ pin_hao }}</span>
           </div>
           <div class="pz_left_top_title2">
-            <span>品名：</span
-            ><span style="color: #8c8c8c">{{ product_name }}</span>
+            <span>品名：</span><span style="color: #8c8c8c">{{ product_name }}</span>
           </div>
           <div class="pz_left_top_title2" style="height: 3rem">
             <span>规格：</span><span style="color: #8c8c8c">{{ se_hao }}</span>
@@ -273,9 +247,7 @@
             @click="showPcode"
             v-text="showPrintCode ? '改品种' : '扫码'"
           ></div>
-          <div class="pz_left_bottom_btn_unactive" @click="cancelPz()">
-            取消
-          </div>
+          <div class="pz_left_bottom_btn_unactive" @click="cancelPz()">取消</div>
         </div>
       </div>
       <div class="pz_right">
@@ -284,9 +256,7 @@
             <span>当前织布长度：</span>
             <div
               :class="
-                zbFocus
-                  ? 'pz_right_top_input_active'
-                  : 'pz_right_top_input_unactive'
+                zbFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'
               "
               @click="iszb"
             >
@@ -297,9 +267,7 @@
             <span>当前剩余经轴长度：</span>
             <div
               :class="
-                jzFocus
-                  ? 'pz_right_top_input_active'
-                  : 'pz_right_top_input_unactive'
+                jzFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'
               "
               @click="isjz"
             >
@@ -309,11 +277,7 @@
         </div>
         <div class="pz_right_bottom">
           <div class="pz_right_bottom_con">
-            <keyboard
-              ref="board1"
-              @sure="getNumber"
-              @change="NumberChange"
-            ></keyboard>
+            <keyboard ref="board1" @sure="getNumber" @change="NumberChange"></keyboard>
           </div>
         </div>
       </div>
@@ -331,9 +295,7 @@
             <span>落布米长：</span>
             <div
               :class="
-                lbFocus
-                  ? 'pz_right_top_input_active'
-                  : 'pz_right_top_input_unactive'
+                lbFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'
               "
               @click="islb"
             >
@@ -343,11 +305,7 @@
         </div>
         <div class="pz_right_bottom">
           <div class="pz_right_bottom_con">
-            <keyboard
-              ref="board2"
-              @sure="getNumber2"
-              @change="NumberChange2"
-            ></keyboard>
+            <keyboard ref="board2" @sure="getNumber2" @change="NumberChange2"></keyboard>
           </div>
         </div>
       </div>
@@ -364,9 +322,7 @@
           </div>
         </div>
         <div class="pz_left_bottom">
-          <div class="pz_left_bottom_btn_unactive" @click="cancelLb()">
-            取消
-          </div>
+          <div class="pz_left_bottom_btn_unactive" @click="cancelLb()">取消</div>
         </div>
       </div>
 
@@ -409,7 +365,7 @@ export default {
       enabled: false,
       page_size: 21,
       page_num: 1,
-      page_size2: 21,
+      page_size2: 15,
       page_num2: 1,
       total_num2: null,
       total_num: null,
@@ -886,8 +842,7 @@ export default {
 
       for (let i = 0; i < this.checkMachineColor.length; i++) {
         if (this.checkMachineColor[i].label == label) {
-          this.checkMachineColor[i].isChecked = !this.checkMachineColor[i]
-            .isChecked;
+          this.checkMachineColor[i].isChecked = !this.checkMachineColor[i].isChecked;
         }
       }
       //防止数据更新视图不更新

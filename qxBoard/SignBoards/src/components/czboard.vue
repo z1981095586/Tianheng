@@ -15,7 +15,7 @@
           </div>
           <div style="display:flex;flex-direction:column;overflow:auto;height: 18rem;" id="s1">
             <vue-seamless-scroll :data="tableData" class="seamless-warp" :class-option="classOption"
-              @ScrollEnd="getdata()">
+              >
               <div class="board_con_top_con" v-for="(item,index) in tableData" :key="index" :style="item.row">
                 <div class="board_con_top_con_one">
                   {{index+1}}
@@ -70,7 +70,7 @@
                 </div>
                 <div style="display:flex;flex-direction:column;overflow:auto;height: 13rem;" id="s2">
                   <vue-seamless-scroll :data="tableData2" class="seamless-warp" :class-option="classOption"
-                    @ScrollEnd="getdata2()">
+                    >
                     <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index"
                       :style="item.row">
                       <div class="board_con_bottom_left_left_tablehead_one">
@@ -507,7 +507,7 @@
 
           })
           .then(res => {
-            //////console.log(res)
+           console.log(res)
             for (let i = 0; i < res.data.data.length; i++) {
               that.product_nameList.push(res.data.data[i].product_name)
               that.root_numberList.push({
@@ -693,6 +693,20 @@
         }
         return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
       },
+          getWarningPushDataTiming: function () {
+        const timer = setInterval(() => {
+      this.getsum()
+      this.getWearAnalysis()
+      this.getdata()
+      this.getdata2()
+      this.getdata4()
+          // this.getStartRatesYMD(this.workshopId);
+        }, 5000);
+        // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
+        this.$once('hook:beforeDestroy', () => {
+          clearInterval(timer);
+        })
+      },
   
     },
 
@@ -718,6 +732,7 @@
       this.getdata()
       this.getdata2()
       this.getdata4()
+      this.getWarningPushDataTiming()
       
       // this.rotate()
 

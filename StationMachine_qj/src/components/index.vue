@@ -350,6 +350,9 @@ export default {
   height: 5rem;
   line-height: 3rem;
 }
+/deep/ .el-dialog__headerbtn {
+  font-size: 3.5rem;
+}
 body /deep/ .el-message .el-icon-success {
   font-size: 3rem;
 }
@@ -360,7 +363,7 @@ body /deep/ .el-message--success .el-message__content {
 
 .allPage {
   width: 100%;
-  height: 768px;
+  height: 740px;
 }
 
 .header {
@@ -413,7 +416,6 @@ body /deep/ .el-message--success .el-message__content {
 
 .header_right_con span {
   margin-left: 1rem;
-
   height: 40px;
   display: flex;
   align-items: center;

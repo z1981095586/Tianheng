@@ -67,10 +67,10 @@
       <div class="con1">
         <div class="con1_top">
           <div class="con1_top_con"><span
-              style="margin-right:9rem;margin-left:3rem">品号：扫码后显示</span><span>色号</span><span>轴号</span><span>整经长度</span>
+           >品号</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
           </div>
           <div class="con1_top_con"><span
-              style="margin-right:9rem;margin-left:3rem">品号：扫码后显示</span><span>色号</span><span>轴号</span><span>整经长度</span>
+              >123123</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
           </div>
         </div>
         <div class="con1_bottom" style="    display: flex;
@@ -128,14 +128,24 @@
             <input v-model="fcr" />
           </div>
         </div>
-        <div class="con2_con" style="width:40%;">
+        <div class="con2_con" style="width:30%;">
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
-            <span style="margin-right:2rem;margin-top:3rem">难度系数</span>
+            <span style="margin-right:1rem;margin-top:3rem">难度系数</span>
             <input v-model="ndxs" style="margin-top:3rem" />
           </div>
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
-            <span style="margin-right:2rem;margin-top:3rem">加班系数</span>
+            <span style="margin-right:1rem;margin-top:3rem">加班系数</span>
             <input v-model="jbxs" style="margin-top:3rem" />
+          </div>
+        </div>
+               <div class="con2_con" style="width:30%;">
+          <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
+            <span style="margin-right:1rem;margin-top:3rem">补综丝人</span>
+            <input v-model="bzsr" style="margin-top:3rem" />
+          </div>
+          <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
+            <!-- <span style="margin-right:1rem;margin-top:3rem">加班系数</span>
+            <input v-model="jbxs" style="margin-top:3rem" /> -->
           </div>
         </div>
         <div class="con2_con">
@@ -270,7 +280,8 @@
         fcr: "",
         ndxs: "",
         jbxs: "",
-        bz: ""
+        bz: "",
+        bzsr:""
       }
     },
     methods: {
@@ -568,7 +579,7 @@ body{
   }
 
   .con1_bottom_con input {
-    width: 11rem;
+    width: 10rem;
     height: 3.5rem;
     border: 1px solid black;
     font-size: 1.6rem;
@@ -640,7 +651,7 @@ body{
   }
 
   .con2_con {
-    width: 30%;
+    width: 20%;
     height: 100%;
     display: flex;
     flex-direction: column;
