@@ -4,16 +4,7 @@
     
        <el-table
     :data="dataList"
-    height="500"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
-         <el-table-column
-      type="index"
-      label="序号"
-       width="80" >
-  
-          
-    </el-table-column>
+   height="481" border style="width: 100%;font-size:1.5rem;margin-bottom:1rem;">
     <el-table-column
       prop="type"
       label="类型"
@@ -32,7 +23,7 @@
     <el-table-column
      prop="num"
       label="数量"
-      width="180" >
+      width="100" >
          <template slot-scope="scope"  >
       
             <!-- <span >{{scope.num}}</span> -->
@@ -59,7 +50,7 @@
     <template slot-scope="scope">
         <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
       <span
-              style="font-size:1.8rem;width:80%;height:5rem;line-height:5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 1;-webkit-box-orient: vertical;"
+              style="font-size:1.3rem;width:80%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
               v-text="(String(scope.row.nameList))"></span>
             <div class="add" style="width:20%" ><i class="el-icon-circle-plus-outline" @click="addName(scope.row.id)"></i><i
                 class="el-icon-remove-outline" @click="deleteName(scope.row.id)"></i></div>
@@ -73,58 +64,53 @@
         <div class="bottom_btn_left" @click="add()"><i style="font-size:2rem;color:#409EFF" class="el-icon-plus"></i>
         </div>
         <div class="bottom_btn_right">
-            <button class="sub "   style="background:rgb(202,249,130);border:none" @click="submit()" v-preventReClick><span>提交</span></button>
+          <button class="sub "   style="background:rgb(202,249,130);border:none" @click="submit()" v-preventReClick><span>提交</span></button>
           <button class="sub" style="margin-left:1rem;border:none"><span @click="$emit('cancel','cancel')">取消</span></button>
           <button class="sub" style="background:#409EFF;margin-left:1rem;border:none"><span @click="isSelect=!isSelect">切换</span></button>
         </div>
       </div>
-      <el-dialog id="num" :visible.sync="showNumTable" width="1200px" append-to-body :close-on-click-modal="false">
-        <p style="display: inline-block;font-size: 2rem">输入数量</p>
-        <el-input size="medium" id="num" ref="num" v-model="num"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus('num')"></el-input>
-        <table width="620px" cellspacing='0' cellpadding='0' height="400px"
-          style="margin-top: 20px;display: inline-block">
-          <tr v-for="indexTr in 2">
-            <td v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
-                size="medium" @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-                <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-              </el-button>
-            </td>
-            <td v-if="indexTr===1">
-              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="getPermission">确定</el-button>
-            </td>
-            <td v-if="indexTr===2">
-              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="selectTableButton('退格')">退格</el-button>
-            </td>
-          </tr>
-        </table>
+      <el-dialog id="num" :visible.sync="showNumTable" width="800px" append-to-body :close-on-click-modal="false">
+     
+
+                    <p style="display: inline-block;font-size: 3rem">输入数量</p>
+                    <el-input   size="medium" id="num" ref="num" v-model="num" @focus="changeFocus('num')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
+      <br> <br>
+      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+        <tr v-for="indexTr in 2" >
+          <td  v-for="indexTd in 5" style="text-align: center;">
+            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+            </el-button>
+          </td>
+          <td v-if="indexTr===1">
+            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission">确定</el-button>
+          </td>
+          <td v-if="indexTr===2">
+            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
+          </td>
+        </tr>
+      </table>
       </el-dialog>
-      <el-dialog id="num" :visible.sync="showNameTable" width="1200px" append-to-body :close-on-click-modal="false">
-        <p style="display: inline-block;font-size: 2rem">输入员工号</p>
-        <el-input size="medium" id="staff_code" ref="staff_code" v-model="staff_code"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus('staff_code')"></el-input>
-        <table width="620px" cellspacing='0' cellpadding='0' height="400px"
-          style="margin-top: 20px;display: inline-block">
-          <tr v-for="indexTr in 2">
-            <td v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
-                size="medium" @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
-                <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-              </el-button>
-            </td>
-            <td v-if="indexTr===1">
-              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="getPermission2">确定</el-button>
-            </td>
-            <td v-if="indexTr===2">
-              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="selectTableButton('退格')">退格</el-button>
-            </td>
-          </tr>
-        </table>
+      <el-dialog id="num" :visible.sync="showNameTable" width="800px" append-to-body :close-on-click-modal="false">
+     
+
+              <p style="display: inline-block;font-size: 3rem">输入员工号</p><el-input  size="medium" id="staff_code" ref="staff_code" v-model="staff_code" @focus="changeFocus('staff_code')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
+      <br> <br>
+      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+        <tr v-for="indexTr in 2" >
+          <td  v-for="indexTd in 5" style="text-align: center;">
+            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton(buttonList[(indexTr-1)*5+indexTd-1])">
+              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+            </el-button>
+          </td>
+          <td v-if="indexTr===1">
+            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission2">确定</el-button>
+          </td>
+          <td v-if="indexTr===2">
+            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton('退格')">退格</el-button>
+          </td>
+        </tr>
+      </table>
       </el-dialog>
     </div>
 
@@ -132,62 +118,17 @@
 
     <div class="other_wrap" v-show="!isSelect">
     
-      <!-- <div class="other_content">
-        <div class="otherProductTable_table_con"
-          :style="items.isSelected ?'border:1px solid red':'   border-left: 1px solid black;'"
-          v-for="(items,indexs) in selectData" :key="'cons'+ indexs">
-          <div class="otherProductTable_table_head_con" style="width:15%">
-            <select v-model="items.type" v-show="items.isSelected">
-              <option v-for="(item,index) in typeList" :key="index" :value="item.type">{{item.type}}</option>
-            </select>
-            <span v-show="!items.isSelected">{{items.type}}</span>
-            <i class="el-icon-arrow-down" v-show="items.isSelected" style="   position: absolute;
-      right: 3rem;
-      top: 2rem;
-      font-size: 2rem;"></i>
-
-          </div>
-          <div class="otherProductTable_table_head_con" style="width:15%" @click="showNum2(items.id)"
-            v-show="items.isSelected">
-            <span>{{items.number}}</span>
-          </div>
-          <div class="otherProductTable_table_head_con" style="width:15%" v-show="!items.isSelected">
-            <span>{{items.number}}</span>
-          </div>
-          <div class="otherProductTable_table_head_con" style="width:15%">
-            <select v-model="items.units" style="width:10rem" v-show="items.isSelected">
-              <option v-for="(item,index) in unitList" :key="index" :value="item.units">{{item.units}}</option>
-            </select>
-            <span v-show="!items.isSelected">{{items.units}}</span>
-            <i class="el-icon-arrow-down" v-show="items.isSelected" style="   position: absolute;
-      right: 3rem;
-      top: 2rem;
-      font-size: 2rem;"></i>
-          </div>
-          <div class="otherProductTable_table_head_con"
-            style="width:60%;position:relative;justify-content:flex-start;align-items:center;">
-            <span
-              style="font-size:2rem;margin:0.5rem;line-height:5rem;width:65%;height:80%; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 1;-webkit-box-orient: vertical;"
-              v-text="(String(items.person))"></span>
-            <div class="add"><i class="el-icon-circle-plus-outline" @click="addName2(items.id)"
-                v-show="items.isSelected"></i><i class="el-icon-remove-outline" @click="deleteName2(items.id)"
-                v-show="items.isSelected"></i></div>
-          </div>
-          <div class="otherProductTable_table_head_con" style="width:20%">
-            <div class="sub" @click="editItem(items.id)"
-              style="background:#409EFF;width:45%;height:60%;margin-left:1rem"><span
-                v-text="items.isSelected?'完成':'编辑'"></span></div>
-            <div class="sub" @click="deleteItem(items.id)"
-              style="background:#409EFF;width:45%;height:60%;margin-left:1rem"><span>删除</span></div>
-          </div>
-
-        </div>
-      </div> -->
+    
           <el-table
     :data="showData"
-    height="500"
-    border
-    style="width: 100%;font-size:1.5rem;margin-bottom:3rem;">
+   height="481" border style="width: 100%;font-size:1.5rem;margin-bottom:1rem;">
+       <el-table-column
+      type="index"
+      label="序号"
+       width="80" >
+  
+          
+    </el-table-column>
     <el-table-column
       prop="type"
       label="类型"
@@ -207,7 +148,7 @@
     <el-table-column
      prop="number"
       label="数量"
-      width="130" >
+      width="100" >
          <template slot-scope="scope"  >
       
             <span v-show="!scope.row.isSelected">{{scope.row.number}}</span>
@@ -236,10 +177,13 @@
       label="人员">
     <template slot-scope="scope">
         <div style="width:100%;height:5rem;display:flex;align-items:center;justify-content: space-between;">
-      <span 
-              style="font-size:1.8rem;width:70%;height:5rem;line-height:5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 1;-webkit-box-orient: vertical;"
-              v-text="(String(scope.row.person))"></span>
-            <div class="add" ><i v-show="scope.row.isSelected" class="el-icon-circle-plus-outline" @click="addName2(scope.row.id)"></i><i v-show="scope.row.isSelected"
+      <span  
+              style="font-size:1.3rem;width:70%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
+              v-text="(String(scope.row.person))" v-show="scope.row.isSelected"></span>
+                 <span  
+              style="font-size:1.3rem;width:100%;height:5rem;line-height:2.5rem; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;"
+              v-text="(String(scope.row.person))" v-show="!scope.row.isSelected"></span>
+            <div class="add" v-show="scope.row.isSelected" ><i  class="el-icon-circle-plus-outline" @click="addName2(scope.row.id)"></i><i 
                 class="el-icon-remove-outline" @click="deleteName2(scope.row.id)"></i></div>
         </div>
       
@@ -254,8 +198,8 @@
          <button class="sub" @click="editItem(scope.row.id)" v-preventReClick
               style="background:#409EFF;width:45%;height:60%;color:white;margin-left:1rem;border:none"><span
                 v-text="scope.row.isSelected?'完成':'编辑'"></span></button>
-            <button class="sub" @click="deleteItem(scope.row.id)" v-preventReClick
-              style="background:#red;width:45%;height:60%;margin-left:1rem;color:white;border:none"><span>删除</span></button>
+            <button class="sub" @click="deleteItem(scope.row.id)"
+              style="background:#red;width:45%;height:60%;margin-left:1rem;color:white;border:none" v-preventReClick><span>删除</span></button>
        </div>
          
       </template>
@@ -269,54 +213,50 @@
         <div class="sub" style="background:#409EFF;margin-left:1rem"><span
             @click="isSelect=!isSelect">切换</span></div>
       </div>
-      <el-dialog id='num2' :visible.sync="showNumTable2" width="1200px" append-to-body :close-on-click-modal="false">
-        <p style="display: inline-block;font-size: 2rem">输入数量</p>
-        <el-input size="medium" id="num2" ref="num2" v-model="num2"
-          style="display: inline-block;width: 500px;font-size:2rem" @focus="changeFocus2('num')"></el-input>
-        <table width="620px" cellspacing='0' cellpadding='0' height="400px"
-          style="margin-top: 20px;display: inline-block">
-          <tr v-for="indexTr in 2">
-            <td v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
-                size="medium" @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
-                <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-              </el-button>
-            </td>
-            <td v-if="indexTr===1">
-              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="getPermission3">确定</el-button>
-            </td>
-            <td v-if="indexTr===2">
-              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="selectTableButton2('退格')">退格</el-button>
-            </td>
-          </tr>
-        </table>
+      <el-dialog id='num2' :visible.sync="showNumTable2" width="800px" append-to-body :close-on-click-modal="false">
+   
+
+        
+                    <p style="display: inline-block;font-size: 3rem">输入数量</p>
+                    <el-input  size="medium" id="num2" ref="num2" v-model="num2" @focus="changeFocus2('num')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
+      <br> <br>
+      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+        <tr v-for="indexTr in 2" >
+          <td  v-for="indexTd in 5" style="text-align: center;">
+            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
+              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+            </el-button>
+          </td>
+          <td v-if="indexTr===1">
+            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission3">确定</el-button>
+          </td>
+          <td v-if="indexTr===2">
+            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton2('退格')">退格</el-button>
+          </td>
+        </tr>
+      </table>
       </el-dialog>
-      <el-dialog :visible.sync="showNameTable2" width="1200px" append-to-body :close-on-click-modal="false">
-        <p style="display: inline-block;font-size: 2rem">输入员工号</p>
-        <el-input size="medium" id="staffcode" ref="staff_code2" v-model="staff_code2"
-          style="display: inline-block;width: 500px;font-size:2rem" class="staffcode"
-          @focus="changeFocus2('staff_code')"></el-input>
-        <table width="620px" cellspacing='0' cellpadding='0' height="400px"
-          style="margin-top: 20px;display: inline-block">
-          <tr v-for="indexTr in 2">
-            <td v-for="indexTd in 5" style="text-align: center;">
-              <el-button type="primary" plain style="width: 180px;height: 180px;margin-right:5px;margin-bottom: 5px"
-                size="medium" @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
-                <p style="font-weight: bolder;font-size: 80px;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
-              </el-button>
-            </td>
-            <td v-if="indexTr===1">
-              <el-button type="primary" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="getPermission4">确定</el-button>
-            </td>
-            <td v-if="indexTr===2">
-              <el-button type="info" style="width:180px;height:180px;font-size: 65px;margin-bottom: 5px"
-                @click="selectTableButton2('退格')">退格</el-button>
-            </td>
-          </tr>
-        </table>
+      <el-dialog :visible.sync="showNameTable2" width="800px" append-to-body :close-on-click-modal="false">
+      
+
+              <p style="display: inline-block;font-size: 3rem">输入员工号</p>
+                    <el-input  size="medium" id="staffcode" ref="staff_code2" v-model="staff_code2" @focus="changeFocus2('staff_code')" style="font-size: 3rem;width: 400px" class="standard_input" ></el-input>
+      <br> <br>
+      <table width="620px"  cellspacing='0' cellpadding='0' height="300px" style="display: inline-block">
+        <tr v-for="indexTr in 2" >
+          <td  v-for="indexTd in 5" style="text-align: center;">
+            <el-button type="primary" plain style="width: 7rem;height: 7rem;margin-right:5px;margin-bottom: 5px" size="medium"  @click="selectTableButton2(buttonList[(indexTr-1)*5+indexTd-1])">
+              <p  style="font-weight: bolder;font-size: 3rem;width: 100%">{{buttonList[(indexTr-1)*5+indexTd-1]}}</p>
+            </el-button>
+          </td>
+          <td v-if="indexTr===1">
+            <el-button type="primary" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px;font-weight: bolder" @click="getPermission4">确定</el-button>
+          </td>
+          <td v-if="indexTr===2">
+            <el-button type="info" style="width: 10rem;height: 7rem;font-size: 3rem;margin-bottom: 5px" @click="selectTableButton2('退格')">退格</el-button>
+          </td>
+        </tr>
+      </table>
       </el-dialog>
     </div>
   </div>
@@ -359,7 +299,7 @@
 
       }
     },
-    methods: {
+   methods: {
         editItem(id) {
 
         // this.selectData.forEach(element => {
@@ -827,9 +767,9 @@ this.pageNum=this.pageNum+1
                 console.log(response.data.data)
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
-                              if(element.person.indexOf(response.data.data[0].staff_name)!=-1){
-                   this.$message.warning("人员已存在！");
-                }else{
+                //               if(element.person.indexOf(response.data.data[0].staff_name)!=-1){
+                //    this.$message.warning("人员已存在！");
+                // }else{
                   if (that.isadd2 == true) {
                     console.log(element.person)
                     if(element.person==""){
@@ -858,7 +798,7 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
                   //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
                   // }
                   }
-                }
+                // }
 
                 } else {
                   this.$message.warning("员工号不正确!");
@@ -939,6 +879,7 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
       this.getOpiton()
       let params = this.$route.params.params.split(",");
 
+       console.log(params)
       this.companyId = params[1];
       this.getData()
       console.log(document.getElementById("num2"))
@@ -956,7 +897,7 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
           this.dataList=[]
         }
       },
-               otherProduceDialogShow(val){
+          otherProduceDialogShow(val){
    
        if(val==true){
           this.isSelect=true
@@ -968,10 +909,10 @@ return (offset + pageSize >= array.length) ? array.slice(offset, array.length) :
 </script>
 
 <style  scoped>
-/deep/ .el-input--medium .el-input__inner{
+ /deep/  .el-input__inner{
     height: 5rem;
     line-height: 3rem;
-}
+ }
 .bigSquareButton{
   width: 10rem;
   height: 10rem;
@@ -990,7 +931,7 @@ margin-right: 1rem;
   }
 
   .add i {
-    font-size: 5rem;
+    font-size: 3rem;
   }
 
   #num {
@@ -1014,7 +955,7 @@ margin-right: 1rem;
     }
   }
 
-  .staffcode {
+  .standard_input {
     .el-input__inner {
       height: 5rem;
       line-height: 3rem;
@@ -1064,7 +1005,7 @@ margin-right: 1rem;
 
   .other_wrap {
     width: 100%;
-    height: 40rem;
+    height: 36rem;
 
   }
 

@@ -619,7 +619,8 @@ export default {
       let that = this;
       that.machineList = [];
       let maintainMainRecord = {
-        workshop_id: that.workshopId,
+        // workshop_id: that.workshopId,
+        workshop_id_list: that.workshopId.split(""),
       };
 
       axios

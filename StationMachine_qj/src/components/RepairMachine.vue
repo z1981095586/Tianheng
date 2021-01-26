@@ -804,7 +804,13 @@ export default {
         },
       }).then(function (response) {
         console.log(response.data.data.length);
-
+        // if (response.data.data.length == 0) {
+        //   that.$message({
+        //     message: "没有机台获取到！",
+        //     type: "warning",
+        //   });
+        //   return;
+        // }
         let datalist = response.data.data;
         axios
           .get(
@@ -929,7 +935,7 @@ export default {
     },
     subNum() {
       //减物料数量
-      if (this.materialNum > 1) {
+      if (this.materialNum > 0) {
         this.materialNum = this.materialNum - 1;
       }
       for (let i = 0; i < this.materialsList.length; i++) {
@@ -1070,7 +1076,7 @@ export default {
       this.total_num2 = this.materialsList2.length;
       let flag; //是否有选中的
       for (let i = 0; i < this.materialsList.length; i++) {
-        if (this.materialsList[i].ischecked == true && this.materialsList[i].num > 0) {
+        if (this.materialsList[i].ischecked == true && this.materialsList[i].num >= 0) {
           flag = true;
           break;
         } else {
@@ -1332,6 +1338,7 @@ export default {
     MachineShow(val) {
       if (val == true) {
         this.page_num = 1;
+        // this.checkMachine = [];
         this.machineList = [];
         this.getMachineList();
       }

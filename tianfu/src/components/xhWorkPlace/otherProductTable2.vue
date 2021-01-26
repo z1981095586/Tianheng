@@ -827,9 +827,9 @@ this.pageNum=this.pageNum+1
                 console.log(response.data.data)
                 console.log(element.person)
                 if (response.data.data.length >= 1) {
-                              if(element.person.indexOf(response.data.data[0].staff_name)!=-1){
-                   this.$message.warning("人员已存在！");
-                }else{
+                //               if(element.person.indexOf(response.data.data[0].staff_name)!=-1){
+                //    this.$message.warning("人员已存在！");
+                // }else{
                   if (that.isadd2 == true) {
                     console.log(element.person)
                     if(element.person==""){
@@ -858,7 +858,7 @@ element.person= element.person.replace('、'+response.data.data[0].staff_name,""
                   //     element.person= element.person.replace(response.data.data[0].staff_name,""); 
                   // }
                   }
-                }
+                // }
 
                 } else {
                   this.$message.warning("员工号不正确!");
