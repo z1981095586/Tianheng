@@ -39,12 +39,12 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             确认
-          </div>
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">
+          </div> -->
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">
             取消
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -91,7 +91,9 @@
       "
       v-show="MaintanceShow"
     >
-      <div class="Maintance_machine">保养机台:{{ checkedMachineNum }}</div>
+      <div class="Maintance_machine">
+        保养机台:{{ checkedMachineNum }} &nbsp;&nbsp; 保养类型：{{ maintain_type_name }}
+      </div>
       <div class="Maintance_object">
         <span style="font-size: 1.5rem; float: left; margin-right: 1rem">项次:</span>
         <div
@@ -179,12 +181,12 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
             确认
-          </div>
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
+          </div> -->
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
             取消
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -229,13 +231,17 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="btns" style="margin: 0" @click="sureMaterial">确认</div>
-        <div class="btns" @click="use()">使用</div>
-        <div class="btns" style="background: #808080; color: white" @click="cancel3">
-          取消
-        </div>
         <div
           class="btns"
-          style="margin-left: 16rem"
+          style="background: #808080; color: white; margin-left: 2rem"
+          @click="cancel3"
+        >
+          取消
+        </div>
+
+        <div
+          class="btns"
+          style="margin-left: 24rem"
           @click="
             drawer = true;
             drawerFlag = true;
@@ -312,7 +318,7 @@
           <el-input
             type="textarea"
             :rows="3"
-            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem"
+            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem;right:1rem"
             placeholder="请输入内容"
             v-model="repairReason"
           >
@@ -476,8 +482,10 @@
             class="select_material"
             v-for="(item, index) in materialsList2"
             :key="index"
+            @click="deletecheckedMaterials(item.id)"
           >
             <span>{{ item.product_name }}</span>
+            <span>{{ item.num }}{{ item.unit_name }}</span>
           </div>
         </div>
 
@@ -540,7 +548,7 @@ export default {
       materialId: null,
       materialNum: null,
       materialNumDialog: false,
-
+      maintain_type_name: "",
       company_id: 10000015,
       isWaitMaintance: null, //是否待保养，0带保养，1保养预期，2待维修
       reasonlist: [],
@@ -561,6 +569,19 @@ export default {
     };
   },
   methods: {
+    deletecheckedMaterials(id) {
+      console.log(id);
+      for (let i = 0; i < this.checkedMaterialsList.length; i++) {
+        if (this.checkedMaterialsList[i].id == id) {
+          this.checkedMaterialsList.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < this.materialsList2.length; i++) {
+        if (this.materialsList2[i].id == id) {
+          this.materialsList2.splice(i, 1);
+        }
+      }
+    },
     sureMaitance() {
       //确认保养
       console.log(this.checkedMachineNum);
@@ -887,35 +908,45 @@ export default {
       this.materialNumDialog = false;
     },
 
-    use() {
-      //显示加减数量的窗口
-      console.log(this.materialId);
-      if (this.materialId != null) {
-        this.materialNumDialog = true;
-      } else {
-        this.$message({
-          message: "请先选一个配件！",
-          type: "warning",
-        });
-      }
-    },
+    // use() {
+    //   //显示加减数量的窗口
+    //   console.log(this.materialId);
+    //   if (this.materialId != null) {
+    //     this.materialNumDialog = true;
+    //   } else {
+    //     this.$message({
+    //       message: "请先选一个配件！",
+    //       type: "warning",
+    //     });
+    //   }
+    // },
     addNum() {
       //加物料数量
       this.materialNum = this.materialNum + 1;
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
     subNum() {
       //减物料数量
-      if (this.materialNum > 1) {
+      if (this.materialNum > 0) {
         this.materialNum = this.materialNum - 1;
       }
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
@@ -923,18 +954,40 @@ export default {
       //选中物料，切换状态
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == id) {
-          if (this.materialsList[i].ischecked == false) {
-            this.materialId = id;
-            this.materialNum = this.materialsList[i].num;
-          } else {
-            this.materialId = null;
-            this.materialNum = null;
-          }
-          this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          this.materialId = id;
+          this.materialNum = this.materialsList[i].num;
+          this.materialNumDialog = true;
+          // this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          // if (this.materialNum > 0) {
+          //   this.materialsList[i].ischecked = true;
+          // } else {
+          //   this.materialsList[i].ischecked = false;
+          // }
         }
       }
       console.log(this.materialId);
     },
+    //     checkMaterial(id) {
+    //   //选中物料，切换状态
+    //   for (let i = 0; i < this.materialsList.length; i++) {
+    //     if (this.materialsList[i].id == id) {
+    //       if (this.materialsList[i].ischecked == false) {
+    //         this.materialId = id;
+    //         this.materialNum = this.materialsList[i].num;
+    //       } else {
+    //         this.materialId = null;
+    //         this.materialNum = null;
+    //       }
+    //       this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+    //       // if (this.materialNum > 0) {
+    //       //   this.materialsList[i].ischecked = true;
+    //       // } else {
+    //       //   this.materialsList[i].ischecked = false;
+    //       // }
+    //     }
+    //   }
+    //   console.log(this.materialId);
+    // },
     handleCheckAllChange(val) {
       //全选保养项次
       this.checkedCities = val ? this.cities : [];
@@ -993,7 +1046,10 @@ export default {
 
     checkedMachine(e) {
       //选择机台事件
+      console.log(e[0]);
       this.checkedMachineNum = e[0];
+
+      console.log(this.checkMachine);
     },
     checkRepair(e) {
       //选择机台事件
@@ -1030,10 +1086,10 @@ export default {
           this.reportTime = element.submit_date;
         }
       });
+
       if (this.checkedMachineNum != "") {
         if (this.isWaitMaintance == 2) {
           //待维修界面显示
-
           this.MachineShow = false;
           this.repairShow = true;
         } else {
@@ -1052,6 +1108,7 @@ export default {
             }
           });
           console.log(json);
+          this.maintain_type_name = json.maintain_type_name;
           this.jsonData = json;
           let url = "http://120.55.124.53:8206/api/maintain/getMaintain";
           let that = this;
@@ -1117,7 +1174,7 @@ export default {
     sureMaterial() {
       //确定物料
       console.log(this.materialsList);
-      this.checkedMaterialsList = [];
+      // this.checkedMaterialsList = [];
       this.materialsList.forEach((element) => {
         if (element.ischecked == true) {
           this.checkedMaterialsList.push(element);
@@ -1297,6 +1354,9 @@ export default {
     //监听页面显示执行相应的获取数据函数
     MaterialsTypeShow(val) {
       if (val == true) {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+        this.checkType = [];
         this.getRootCategories();
       }
     },
@@ -1310,6 +1370,8 @@ export default {
       //查看零配件
       console.log(this.drawerFlag);
       console.log(val);
+      console.log(this.materialsList);
+      console.log(this.materialsList2);
       if (val == true && this.drawerFlag == true) {
         this.page_num2 = 1;
         this.getInventory2();
@@ -1326,6 +1388,18 @@ export default {
       if (val == true) {
         this.page_num = 1;
         this.getMachineList();
+        this.checkedMachineNum = "";
+        this.checkMachine = [];
+      }
+    },
+    checkedMachineNum(val) {
+      if (val != "") {
+        this.sureMachine();
+      }
+    },
+    checkedTypeName(val) {
+      if (val != "") {
+        this.sureType();
       }
     },
   },
@@ -1582,7 +1656,6 @@ export default {
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .operationPane_con_machineList_btn_left {

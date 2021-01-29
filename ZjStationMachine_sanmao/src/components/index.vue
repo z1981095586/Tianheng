@@ -141,8 +141,8 @@
           @click="ssFinish()">上纱完成</div>
         <div class="btns" :style=" (enabled&&isZJ1!=2)  ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click="jjFinish()">交接班</div>
-        <div class="btns" :style="isZJ1==2 ?'' :'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="dialogVisible2=true">完成</div>
+        <div class="btns" 
+          @click="isFinish()" :style=" !enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''">完成</div>
         <div class="btns" style="margin-left:15rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
     </div>
@@ -756,14 +756,20 @@
          return val
        }
       },
+      isFinish(){
+      if(this.enabled==false){
+        this.$message.warning('请先上纱！');
+      }else{
+        this.dialogVisible2=true
+      }
+      },
       Finish() {
 
-        if (this.form.zj2_zjgh2 == "" || this.form.zj_zjgh2 == "" || this.form.zj_zjcd == "" || this.form.zj2_zjcd ==
-          "" || this.form.zj_bs == "" || this.form.zj2_bs == "") {
+        // if (this.enabled==false) {
 
-          this.dialogVisible4 = true
+        //  this.$message.warning('请先上纱！');
 
-        } else {
+        // } else {
           let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
           let data = {
             "empId3": this.form.zj3_zjgh2,
@@ -796,7 +802,7 @@
             // headers: headers
           }).then((res) => {
             console.log(res)
-            if (res.data.successMessage == "ok") {
+            if (res.data.result== "ok") {
               this.$message({
                 message: '操作成功!',
                 type: 'success'
@@ -823,7 +829,7 @@
           })
 
 
-        }
+        // }
 
 
 

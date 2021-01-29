@@ -299,7 +299,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="showOne()">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="showOne()">
             查看
           </div>
           <div
@@ -311,7 +311,7 @@
             "
           >
             返回
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -668,6 +668,12 @@ export default {
         }
       }
     },
+    checkMachine(val) {
+      if (val.length > 0) {
+        console.log("11");
+        this.showOne();
+      }
+    },
   },
 };
 </script>
@@ -756,7 +762,7 @@ export default {
   /* display: flex;
   align-items: center;
   justify-content: center; */
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .Maintance_btn {

@@ -27,9 +27,9 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             进入维修
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -207,12 +207,12 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
             确认
           </div>
           <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
             取消
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -257,13 +257,17 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="btns" style="margin: 0" @click="sureMaterial">确认</div>
-        <div class="btns" @click="use()">使用</div>
-        <div class="btns" style="background: #808080; color: white" @click="cancel3">
-          取消
-        </div>
         <div
           class="btns"
-          style="margin-left: 16rem"
+          style="background: #808080; color: white; margin-left: 2rem"
+          @click="cancel3"
+        >
+          取消
+        </div>
+
+        <div
+          class="btns"
+          style="margin-left: 24rem"
           @click="
             drawer = true;
             drawerFlag = true;
@@ -340,7 +344,7 @@
           <el-input
             type="textarea"
             :rows="3"
-            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem"
+            style="width: 80%；position: absolute; top: 20px;font-size: 1.5rem;right:1rem"
             placeholder="请输入内容"
             v-model="repairReason"
           >
@@ -504,6 +508,7 @@
             v-show="!drawerFlag"
             v-for="(item, index) in materialsList2"
             :key="index"
+            @click="deletecheckedMaterials(item.id)"
           >
             <span>{{ item.product_name }}</span>
             <span>{{ item.num }}{{ item.unit_name }}</span>
@@ -643,6 +648,19 @@ export default {
     };
   },
   methods: {
+    deletecheckedMaterials(id) {
+      console.log(id);
+      for (let i = 0; i < this.checkedMaterialsList.length; i++) {
+        if (this.checkedMaterialsList[i].id == id) {
+          this.checkedMaterialsList.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < this.materialsList2.length; i++) {
+        if (this.materialsList2[i].id == id) {
+          this.materialsList2.splice(i, 1);
+        }
+      }
+    },
     sureRepair() {
       console.log(this.checkedMachineNum);
       console.log(this.checkedRepairName);
@@ -930,6 +948,11 @@ export default {
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
@@ -941,6 +964,11 @@ export default {
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
@@ -948,14 +976,15 @@ export default {
       //选中物料，切换状态
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == id) {
-          if (this.materialsList[i].ischecked == false) {
-            this.materialId = id;
-            this.materialNum = this.materialsList[i].num;
-          } else {
-            this.materialId = null;
-            this.materialNum = null;
-          }
-          this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          this.materialId = id;
+          this.materialNum = this.materialsList[i].num;
+          this.materialNumDialog = true;
+          // this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          // if (this.materialNum > 0) {
+          //   this.materialsList[i].ischecked = true;
+          // } else {
+          //   this.materialsList[i].ischecked = false;
+          // }
         }
       }
       console.log(this.materialId);
@@ -1062,7 +1091,7 @@ export default {
     sureMaterial() {
       //确定物料
       console.log(this.materialsList);
-      this.checkedMaterialsList = [];
+      // this.checkedMaterialsList = [];
       this.materialsList.forEach((element) => {
         if (element.ischecked == true) {
           this.checkedMaterialsList.push(element);
@@ -1318,6 +1347,9 @@ export default {
     //监听页面显示执行相应的获取数据函数
     MaterialsTypeShow(val) {
       if (val == true) {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+        this.checkType = [];
         this.getRootCategories();
       }
     },
@@ -1341,6 +1373,18 @@ export default {
         // this.checkMachine = [];
         this.machineList = [];
         this.getMachineList();
+        this.checkedMachineNum = "";
+        this.checkMachine = [];
+      }
+    },
+    checkedMachineNum(val) {
+      if (val != "") {
+        this.sureMachine();
+      }
+    },
+    checkedTypeName(val) {
+      if (val != "") {
+        this.sureType();
       }
     },
   },
@@ -1601,7 +1645,6 @@ export default {
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .operationPane_con_machineList_btn_left {

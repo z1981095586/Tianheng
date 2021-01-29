@@ -263,8 +263,6 @@
         typeList: [],
         unitList: [],
         dataList: [
-
-
         ],
         selectData: [],
         showData: [],
@@ -825,7 +823,6 @@ query:{
               "selectFields": ["staff_code", "staff_name"],
               'query': {
                 staff_code: this.staff_code,
-           
               },
              selectLikeFields:{
   workshop_id:this.workShopId
@@ -852,7 +849,6 @@ query:{
 
                 } else {
                   this.$message.warning("员工号不正确!");
-
                 }
                 this.staff_code = ""
               })
@@ -871,7 +867,7 @@ query:{
 
       this.getOpiton()
       let params = this.$route.params.params.split(",");
-        console.log(params)
+      console.log(params)
       this.companyId = params[1];
       this.getData()
    

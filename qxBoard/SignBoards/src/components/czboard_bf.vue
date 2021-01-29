@@ -6,68 +6,111 @@
     </header>
     <div class="board">
       <div class="board_con">
-        <div class="board_con_left">
-          <div class="board_con_title">S40</div>
-          <div class="thead">
-            <div class="thead_con">
-              <div class="thead_con_one" style="width:8.5%">序号</div>
-               <div class="thead_con_one" style="width:11.5%">分厂</div>
-                <div class="thead_con_one" style="width:13.5%">品种</div>
-                 <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
-                  <div class="thead_con_one" style="    width: 15.5%;">织机机型</div>
-                   <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
-                    <div class="thead_con_one" style="width:11%">筘号</div>
-                     <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
+        <div class="board_con_top">
+          <div class="board_con_top_con">
+            <div class="board_con_top_con_one" v-for="(item,index) in tableTitle" :key="index">
+              {{item}}
             </div>
+
           </div>
-          <div class="tbody">
-            <div class="tbody_con">
-               <vue-seamless-scroll :data="S40List"  :class-option="classOption"
+          <div style="display:flex;flex-direction:column;overflow:auto;height: 18rem;" id="s1">
+            <vue-seamless-scroll :data="tableData" class="seamless-warp" :class-option="classOption"
               >
- <div class="tbody_row" v-for="(item,index) in S40List" :key="index" >
-         <div class="tbody_row_one" style="width:8.5%">    {{index+1}}</div>
-               <div class="tbody_row_one" style="width:11.5%">      {{item.workshop}}</div>
-                <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
-                 <div class="tbody_row_one" style="    width: 11.5%;">  {{item.beam_num}}</div>
-                  <div class="tbody_row_one" style="    width: 15.5%;">   {{item.machine_id}}</div>
-                   <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color">  {{item.status}}</span></div>
-                    <div class="tbody_row_one" style="width:11%">   {{item.reed_no}}</div>
-                     <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
-            </div>
-                  </vue-seamless-scroll>
-            </div>
+              <div class="board_con_top_con" v-for="(item,index) in tableData" :key="index" :style="item.row">
+                <div class="board_con_top_con_one">
+                  {{index+1}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.workshop}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.product_name}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.machine_id}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.beam_num}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.mac_type_name}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.status}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.reed_no}}
+                </div>
+                <div class="board_con_top_con_one">
+                  {{item.reed_width}}
+                </div>
+              </div>
+
+            </vue-seamless-scroll>
           </div>
+
         </div>
-        <div class="board_con_right">
-    <div class="board_con_title">S60</div>
-          <div class="thead">
-            <div class="thead_con">
-              <div class="thead_con_one" style="width:8.5%">序号</div>
-               <div class="thead_con_one" style="width:11.5%">分厂</div>
-                <div class="thead_con_one" style="width:13.5%">品种</div>
-                 <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
-                  <div class="thead_con_one" style="    width: 15.5%;">织机机型</div>
-                   <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
-                    <div class="thead_con_one" style="width:11%">筘号</div>
-                     <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
+        <div class="board_con_bottom">
+          <div class="board_con_bottom_left">
+            <div class="board_con_bottom_left_left">
+              <div class="board_con_bottom_left_left_title">
+                今日已完成
+              </div>
+              <div>
+                <div class="board_con_bottom_left_left_tablehead">
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    品种
+                  </div>
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    数量
+                  </div>
+                  <div class="board_con_bottom_left_left_tablehead_one">
+                    剩余
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;overflow:auto;height: 13rem;" id="s2">
+                  <vue-seamless-scroll :data="tableData2" class="seamless-warp" :class-option="classOption"
+                    >
+                    <div class="board_con_bottom_left_left_tablehead" v-for="(item,index) in    tableData2" :key="index"
+                      :style="item.row">
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.product_name}}
+                      </div>
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.finish_beam_num}}
+                      </div>
+                      <div class="board_con_bottom_left_left_tablehead_one">
+                        {{item.beam_num-item.finish_beam_num}}
+                      </div>
+                    </div>
+                  </vue-seamless-scroll>
+                </div>
+              </div>
+            </div>
+            <div class="board_con_bottom_left_right" id="dailyEchart">
+
             </div>
           </div>
-          <div class="tbody">
-            <div class="tbody_con">
-               <vue-seamless-scroll :data="S60List"  :class-option="classOption"
-              >
- <div class="tbody_row" v-for="(item,index) in S60List" :key="index" >
-         <div class="tbody_row_one" style="width:8.5%">    {{index+1}}</div>
-               <div class="tbody_row_one" style="width:11.5%">      {{item.workshop}}</div>
-                <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
-                 <div class="tbody_row_one" style="    width: 11.5%;">  {{item.beam_num}}</div>
-                  <div class="tbody_row_one" style="    width: 15.5%;">   {{item.machine_id}}</div>
-                   <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color">  {{item.status}}</span></div>
-                    <div class="tbody_row_one" style="width:11%">   {{item.reed_no}}</div>
-                     <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
+          <div class="board_con_bottom_right">
+            <div class="board_con_bottom_right_img">
+              <div class="img1">
+                <img src="../../static/img/circle2.png" id="img1" />
+                <div class="img_span">
+                  <span>S40今日穿综根数</span>
+                  <span>{{sum1}}</span>
+                </div>
+              </div>
+              <div class="img2">
+                <img src="../../static/img/circle2.png" id="img2" />
+                <div class="img_span2">
+                  <span>S60今日穿综根数</span>
+                  <span>{{sum2}}</span>
+                </div>
+              </div>
+
+
             </div>
-                  </vue-seamless-scroll>
-            </div>
+            <div class="board_con_bottom_right_echart" id="pzEchart"></div>
           </div>
         </div>
       </div>
@@ -116,9 +159,7 @@
         tableData2: [],
         companyname: "",
         root_numberList: [],
-        tableData: [],
-         S40List:[],
-         S60List:[]
+        tableData: []
         // legendList: [],
         // xList: [],
         // sList: []
@@ -219,7 +260,7 @@
         myChart1.clear();
         let that = this
         let option = {
-          animation: false,
+animation:false,
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -259,7 +300,7 @@
         // 绘制图表
         myChart1.clear();
         let option = {
-          animation: false,
+          animation:false,
           title: {
             text: "穿棕产量日对比",
             textStyle: {
@@ -372,12 +413,12 @@
             //     arr.push(element)
             //   }
             // });
-            if (response.data.data[0]) {
-              that.sum1 = response.data.data[0].sum
-            } else {
-              that.sum1 = 0
+            if(response.data.data[0]){
+             that.sum1 = response.data.data[0].sum
+            }else{
+  that.sum1 = 0 
             }
-
+          
             // that.sum2 = arr[1].sum
 
           })
@@ -467,7 +508,7 @@
 
           })
           .then(res => {
-            console.log(res)
+           console.log(res)
             for (let i = 0; i < res.data.data.length; i++) {
               that.product_nameList.push(res.data.data[i].product_name)
               that.root_numberList.push({
@@ -619,12 +660,9 @@
               } else if (response.data.data[i].workshop_id == 3) {
                 response.data.data[i].workshop = "三分厂"
               }
-              response.data.data[i].update_time=response.data.data[i].update_time.substring(0,11);
               if (response.data.data[i].status == 0) {
                 response.data.data[i].status = "未开始"
-                 response.data.data[i].color="red"
               } else if (response.data.data[i].status == 1) {
-                response.data.data[i].color="green"
                 // let num= that.GetPercent(response.data.data[i].finish_beam_num,response.data.data[i].beam_num) 
                 response.data.data[i].status = "进行中(" + response.data.data[i].finish_beam_num + "/" + response.data
                   .data[i].beam_num + ")"
@@ -639,18 +677,6 @@
 
             }
             that.tableData = arr
-            console.log(that.tableData)
-          let arr2=[]
-          let arr3=[]
-            arr.forEach(element => {
-              if(element.machine_id=="S40"){
-                arr2.push(element)
-              }else if(element.machine_id=="S60"){
-                arr3.push(element)
-              }
-            });
-            that.S40List=arr2
-            that.S60List=arr3
 
 
           })
@@ -668,13 +694,13 @@
         }
         return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
       },
-      getWarningPushDataTiming: function () {
+          getWarningPushDataTiming: function () {
         const timer = setInterval(() => {
-          // this.getsum()
-          // this.getWearAnalysis()
-          this.getdata()
-          // this.getdata2()
-          // this.getdata4()
+      this.getsum()
+      this.getWearAnalysis()
+      this.getdata()
+      this.getdata2()
+      this.getdata4()
           // this.getStartRatesYMD(this.workshopId);
         }, 5000);
         // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
@@ -682,7 +708,7 @@
           clearInterval(timer);
         })
       },
-
+  
     },
 
 
@@ -700,17 +726,17 @@
         this.companyname = "七星"
 
       }
-      // this.getsum()
+      this.getsum()
 
 
-      // this.getWearAnalysis()
-       this.getdata()
-      // this.getdata2()
-      // this.getdata4()
+      this.getWearAnalysis()
+      this.getdata()
+      this.getdata2()
+      this.getdata4()
       this.getWarningPushDataTiming()
-
+      
       // this.rotate()
-
+    
 
 
     },
@@ -767,112 +793,187 @@
     width: 98%;
     height: 92%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
   }
 
-  .board_con_title {
+  .board_con_top {
     width: 100%;
-    height: 9%;
-    font-size: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid rgba(5, 178, 255, 0.45);
-  }
-
-  .board_con_left {
-    width: 49%;
-    height: 100%;
+    height: 47%;
+    margin-bottom: 2%;
     display: flex;
     flex-direction: column;
-    background: rgba(5, 178, 255, 0.2);
-    border: 1px solid rgba(5, 178, 255, 0.45);
-
+    overflow: auto;
+    background: rgb(15, 49, 83);
   }
 
-  .board_con_right {
-       width: 49%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: rgba(5, 178, 255, 0.2);
-    border: 1px solid rgba(5, 178, 255, 0.45);
-
-  }
-
-  .thead {
+  .board_con_top_con {
     width: 100%;
-    height: 5%;
+    height: 2.6rem;
+
+    display: flex;
+
+  }
+
+  .board_con_top_con_one {
+    width: 11.1%;
+    height: 100%;
+    color: white;
+    font-size: 1.5rem;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
     display: flex;
     align-items: center;
-    margin-top: 1%;
     justify-content: center;
 
   }
 
-  .thead_con {
-    width: 96%;
-    border-radius: 2px;
-    height: 2.2rem;
+  .board_con_bottom {
+    width: 100%;
+    height: 47%;
+
     display: flex;
     align-items: center;
-    background: rgb(1, 85, 115);
-
   }
-.thead_con_one{
-  width: 12.5%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: white;
-}
-.tbody{
-  width: 100%;
-  height: 85%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.tbody_con{
-   width: 96%;
 
+  .board_con_bottom_left {
+    width: 60%;
     height: 100%;
 
-   overflow: hidden;
-  
-}
-.tbody_row{
-  width: 100%;
-  height: 3rem;
-  border-bottom:1px dashed rgba(0,251,255,0.9);
-  color: white;
-  display: flex;
-  align-items: center;
-}
-.tbody_row_one{
-  width: 12.5%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: white;
-}
-.green{
-width: 100%;
-    height: 60%;
-  background: rgba(0,255,7,0.25);
-  border: 1px solid  rgb(0,255,7);
-  border-radius: 10px;
-}
-.red{
- width: 100%;
-    height: 60%;
-  background: rgba(254,56,56,0.25);
-  border: 1px solid  rgb(254,56,56);
-  border-radius: 10px;
-}
+    display: flex;
+
+  }
+
+  .board_con_bottom_left_left {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .board_con_bottom_left_left_title {
+    width: 99%;
+    height: 4rem;
+    font-size: 1.7rem;
+    color: white;
+    border: 1px solid #87D3F7;
+    background: black;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    justify-content: center;
+  }
+
+  .board_con_bottom_left_left_tablehead {
+    width: 100%;
+    height: 2.85rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: white;
+    background: rgb(15, 49, 83);
+
+    display: flex;
+
+  }
+
+  .board_con_bottom_left_left_tablehead_one {
+    width: 33.3%;
+    height: 2.8rem;
+
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .board_con_bottom_left_right {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+
+  }
+
+  .board_con_bottom_right {
+    width: 40%;
+    height: 100%;
+
+    display: flex;
+
+
+  }
+
+  .board_con_bottom_right_img {
+    width: 40%;
+    height: 100%;
+    position: relative;
+
+
+  }
+
+  .img1 {
+    width: 11rem;
+    height: 11rem;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+  }
+
+  .img_span {
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: white;
+    left: 33px;
+    top: 35px;
+  }
+
+  .img_span2 {
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: white;
+    left: 35px;
+    top: 37px;
+  }
+
+  .img1 img {
+    width: 11rem;
+    height: 11rem;
+
+  }
+
+  .img2 {
+    width: 11rem;
+    height: 11rem;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+
+  }
+
+  .img2 img {
+    width: 11rem;
+    height: 11rem;
+
+  }
+
+  .board_con_bottom_right_echart {
+    width: 60%;
+    height: 100%;
+
+
+
+  }
+
 </style>

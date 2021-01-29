@@ -161,7 +161,7 @@
           @click="save()">保存</div>
         <div class="btns" :style=" !enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click="update()">修改</div>
-        <div class="btns" @click="dialogVisible2=true"
+        <div class="btns" @click="!enabled2?dialogVisible2=true:dialogVisible2=false"
           :style=" enabled3 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'">完成</div>
         <div class="btns" style="margin-left:5rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
@@ -286,19 +286,19 @@
     },
     methods: {
      
-      Finish() {
+      Finish() {  //完成事件
         this.dialogVisible2 = false
         this.baogongShow = false
         this.mainShow = true
        
       },
  
-      save() {
+      save() { //保存事件
         this.enabled2 = !this.enabled2
         this.enabled3 = true
       },
-      update() {
-        this.enabled2 = !this.enabled2
+      update() {  //修改事件
+        this.enabled2  = !this.enabled2
         this.enabled3 = false
       },
       getData() {

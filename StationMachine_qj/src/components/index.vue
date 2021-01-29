@@ -52,7 +52,12 @@
       v-show="isRepair"
       :isUpdate="isRepair"
     ></RepairMachine>
-    <Maitance :staff_id="staffId" :staff_name="staff_name" v-show="isMaitance"></Maitance>
+    <Maitance
+      :isUpdate="isPiLiang"
+      :staff_id="staffId"
+      :staff_name="staff_name"
+      v-show="isMaitance"
+    ></Maitance>
     <el-dialog
       :visible.sync="showNameTable"
       width="800px"
@@ -177,6 +182,7 @@ export default {
       isMaitance: false,
       isHistory: false,
       isRepair: false,
+      isPiLiang: false,
     };
   },
   methods: {
@@ -289,6 +295,7 @@ export default {
             this.isRepair = false;
             this.isHistory = false;
             this.isChaPian = false;
+            this.isPiLiang = false;
             this.isMaitance = false;
             this.isMyMachine = true;
             return;
@@ -302,6 +309,7 @@ export default {
             this.isMaitance = false;
             this.isRepair = false;
             this.isHistory = true;
+            this.isPiLiang = false;
             return;
           }
 
@@ -312,6 +320,7 @@ export default {
             this.isHistory = false;
             this.isLower = false;
             this.isMaitance = false;
+            this.isPiLiang = false;
             this.isRepair = true;
             return;
           }
@@ -322,6 +331,7 @@ export default {
             this.isHistory = false;
             this.isLower = false;
             this.isRepair = false;
+            this.isPiLiang = true;
             this.isMaitance = true;
             return;
           }

@@ -7,10 +7,46 @@
       style="display: flex; justify-content: space-around; align-items: center"
       v-show="IndexShow"
     >
-      <div class="main_btn" @click="toMaintance(0)">每日保养</div>
+      <div class="operationPane_con_machineList" style="margin-top: -24px; height: 70%">
+        <el-checkbox-group
+          :max="1"
+          @change="checkedMaintainType"
+          v-model="checkMaintainType"
+          style="width: 100%; height: 100%"
+        >
+          <el-checkbox-button
+            size="medium"
+            v-for="(item, index) in maintainTypeList"
+            style="magin: 1rem; font-size: 1rem"
+            :label="item.name"
+            :key="index"
+            ><span>{{ item.name }}</span></el-checkbox-button
+          >
+        </el-checkbox-group>
+      </div>
+      <div class="operationPane_con_machineList_btn">
+        <div class="operationPane_con_machineList_btn_left">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
+            进入维修
+          </div> -->
+        </div>
+        <div class="operationPane_con_machineList_btn_right">
+          <el-pagination
+            background
+            small
+            :current-page="page_num3"
+            :pager-count="4"
+            @current-change="CurrentChange2"
+            layout="prev, pager, next"
+            :total="total_num3"
+          >
+          </el-pagination>
+        </div>
+      </div>
+      <!-- <div class="main_btn" @click="toMaintance(0)">每日保养</div>
       <div class="main_btn" @click="toMaintance(1)">每周保养</div>
       <div class="main_btn" @click="toMaintance(2)">每月保养</div>
-      <div class="main_btn" @click="toMaintance(3)">每年保养</div>
+      <div class="main_btn" @click="toMaintance(3)">每年保养</div> -->
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 首页-->
@@ -90,7 +126,11 @@
       "
       v-show="MaintanceShow"
     >
-      <div class="Maintance_machine">保养机台:{{ String(checkMachine) }}</div>
+      <div class="Maintance_machine">
+        保养机台:{{ String(checkMachine) }} &nbsp;&nbsp; 保养类型：{{
+          maintain_type_name
+        }}
+      </div>
       <div class="Maintance_object">
         <span style="font-size: 1.5rem; float: left; margin-right: 1rem">项次:</span>
         <div
@@ -188,12 +228,12 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
+          <!-- <div class="operationPane_con_machineList_btn_leftBtn" @click="sureType">
             确认
           </div>
           <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2">
             取消
-          </div>
+          </div> -->
         </div>
         <div class="operationPane_con_machineList_btn_right">
           <el-pagination
@@ -238,13 +278,17 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="btns" style="margin: 0" @click="sureMaterial">确认</div>
-        <div class="btns" @click="use()">使用</div>
-        <div class="btns" style="background: #808080; color: white" @click="cancel3">
-          取消
-        </div>
         <div
           class="btns"
-          style="margin-left: 16rem"
+          style="background: #808080; color: white; margin-left: 2rem"
+          @click="cancel3"
+        >
+          取消
+        </div>
+
+        <div
+          class="btns"
+          style="margin-left: 24rem"
           @click="
             drawer = true;
             drawerFlag = true;
@@ -465,6 +509,7 @@
             class="select_material"
             v-for="(item, index) in materialsList2"
             :key="index"
+            @click="deletecheckedMaterials(item.id)"
           >
             <span>{{ item.product_name }}</span>
           </div>
@@ -492,7 +537,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "Maitance",
-  props: ["staff_name", "staff_id"],
+  props: ["staff_name", "staff_id", "isUpdate"],
   data() {
     return {
       IndexShow: true,
@@ -568,9 +613,77 @@ export default {
       mac_type_id: "030100",
       workshop_id: "",
       maintain_type_id: "",
+      maintain_type_name: "",
+      maintainTypeListCon: [],
+      maintainTypeList: [],
+      checkMaintainType: [],
+      checkedMaintainTypeName: "",
+      total_num3: null,
+      page_num3: 1,
+      page_size3: 8,
     };
   },
   methods: {
+    deletecheckedMaterials(id) {
+      console.log(id);
+      for (let i = 0; i < this.checkedMaterialsList.length; i++) {
+        if (this.checkedMaterialsList[i].id == id) {
+          this.checkedMaterialsList.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < this.materialsList2.length; i++) {
+        if (this.materialsList2[i].id == id) {
+          this.materialsList2.splice(i, 1);
+        }
+      }
+    },
+    checkedMaintainType(e) {
+      console.log(e);
+      this.checkedMaintainTypeName = e[0];
+    },
+    getMaintainType() {
+      let url = "http://120.55.124.53:8206/api/maintain/getMaintainType";
+      let that = this;
+      that.maintainTypeListCon = [];
+      that.maintainTypeList = [];
+      axios
+        .post(
+          url,
+          {
+            maintainType: {
+              mac_type_id: "030100",
+            },
+            selectInfo: {
+              company_id: that.company_id,
+            },
+          },
+          {
+            // headers: {
+            //   companyId: that.company_id,
+            // },
+          }
+        )
+        .then(function (res) {
+          for (let i = 0; i < res.data.result.length; i++) {
+            that.maintainTypeListCon.push(res.data.result[i]);
+          }
+          that.total_num3 = res.data.result.length;
+          that.maintainTypeList = that.pagination(
+            that.page_num3,
+            that.page_size3,
+            that.maintainTypeListCon
+          );
+          console.log(that.maintainTypeList);
+        });
+    },
+    CurrentChange2(e) {
+      this.page_num3 = e;
+      this.maintainTypeList = this.pagination(
+        this.page_num3,
+        this.page_size3,
+        this.maintainTypeListCon
+      );
+    },
     sureMaitance() {
       //确认保养
       console.log(this.checkMachine);
@@ -744,6 +857,7 @@ export default {
       this.IndexShow = false;
       this.MachineShow = true;
       this.isWaitMaintance = isWaitMaintance;
+
       console.log(this.isWaitMaintance);
     },
 
@@ -771,17 +885,27 @@ export default {
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
     subNum() {
       //减物料数量
-      if (this.materialNum > 1) {
+      if (this.materialNum > 0) {
         this.materialNum = this.materialNum - 1;
       }
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == this.materialId) {
           this.materialsList[i].num = this.materialNum;
+          if (this.materialsList[i].num > 0) {
+            this.materialsList[i].ischecked = true;
+          } else {
+            this.materialsList[i].ischecked = false;
+          }
         }
       }
     },
@@ -789,14 +913,15 @@ export default {
       //选中物料，切换状态
       for (let i = 0; i < this.materialsList.length; i++) {
         if (this.materialsList[i].id == id) {
-          if (this.materialsList[i].ischecked == false) {
-            this.materialId = id;
-            this.materialNum = this.materialsList[i].num;
-          } else {
-            this.materialId = null;
-            this.materialNum = null;
-          }
-          this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          this.materialId = id;
+          this.materialNum = this.materialsList[i].num;
+          this.materialNumDialog = true;
+          // this.materialsList[i].ischecked = !this.materialsList[i].ischecked;
+          // if (this.materialNum > 0) {
+          //   this.materialsList[i].ischecked = true;
+          // } else {
+          //   this.materialsList[i].ischecked = false;
+          // }
         }
       }
       console.log(this.materialId);
@@ -933,7 +1058,7 @@ export default {
     sureMaterial() {
       //确定物料
       console.log(this.materialsList);
-      this.checkedMaterialsList = [];
+      // this.checkedMaterialsList = [];
       this.materialsList.forEach((element) => {
         if (element.ischecked == true) {
           this.checkedMaterialsList.push(element);
@@ -1097,49 +1222,56 @@ export default {
       this.noSaveDialog = true;
     },
   },
-  mounted() {},
+  mounted() {
+    this.getMaintainType();
+  },
   watch: {
-    //监听页面显示执行相应的获取数据函数
-    isWaitMaintance(val) {
-      let maintain_type_id;
-      if (val == 0) {
-        maintain_type_id = 39;
-      } else if (val == 1) {
-        maintain_type_id = 40;
-      } else if (val == 2) {
-        maintain_type_id = 41;
-      } else if (val == 3) {
-        maintain_type_id = 42;
-      }
-      this.maintain_type_id = maintain_type_id;
-      let url = "http://120.55.124.53:8206/api/maintain/getMaintain";
-      let that = this;
-      that.objList = [];
-      axios
-        .post(
-          url,
-          {
-            mac_type_id: that.mac_type_id,
-            maintain_type_id: maintain_type_id,
-          },
-          {
-            headers: {
-              companyID: that.company_id,
+    checkedMaintainTypeName(val) {
+      let id = "";
+      if (val != "") {
+        this.IndexShow = false;
+        this.MachineShow = true;
+        for (let i = 0; i < this.maintainTypeList.length; i++) {
+          if (this.maintainTypeList[i].name == val) {
+            id = this.maintainTypeList[i].id;
+          }
+        }
+        let url = "http://120.55.124.53:8206/api/maintain/getMaintain";
+        let that = this;
+        that.objList = [];
+        axios
+          .post(
+            url,
+            {
+              mac_type_id: that.mac_type_id,
+              maintain_type_id: id,
             },
-          }
-        )
-        .then(function (res) {
-          console.log(res);
-          for (let i = 0; i < res.data.data[0].maintainItemList.length; i++) {
-            if (res.data.data[0].maintainItemList[i].confirm == 1) {
-              res.data.data[0].maintainItemList[i].isChecked = true;
-              that.objList.push(res.data.data[0].maintainItemList[i]);
+            {
+              headers: {
+                companyID: that.company_id,
+              },
             }
-          }
-        });
+          )
+          .then(function (res) {
+            console.log(res);
+            for (let i = 0; i < res.data.data[0].maintainItemList.length; i++) {
+              if (res.data.data[0].maintainItemList[i].confirm == 1) {
+                res.data.data[0].maintainItemList[i].isChecked = true;
+                that.objList.push(res.data.data[0].maintainItemList[i]);
+              }
+            }
+          });
+      }
     },
+    //监听页面显示执行相应的获取数据函数
+    // isWaitMaintance(val) {
+
+    // },
     MaterialsTypeShow(val) {
       if (val == true) {
+        this.checkedTypeName = "";
+        this.checkedTypeId = "";
+        this.checkType = [];
         this.getRootCategories();
       }
     },
@@ -1161,15 +1293,77 @@ export default {
         this.getMachineList();
       }
     },
+    checkedTypeName(val) {
+      if (val != "") {
+        this.sureType();
+      }
+    },
+    IndexShow(val) {
+      if (val == true) {
+        this.page_num3 = 1;
+        this.checkMaintainType = [];
+        this.checkedMaintainTypeName = "";
+        this.getMaintainType();
+      }
+    },
+    isUpdate(val) {
+      if (val == true) {
+        this.getMaintainType();
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-
+.operationPane_con_maintainList .el-checkbox-button__inner {
+  font-size: 1rem;
+  padding: 10px 27px;
+  margin: 1rem;
+  margin-left: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  margin-right: 0.5rem;
+}
+.operationPane_con_maintainList {
+  width: 93%;
+  height: 80%;
+  margin-top: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: relative;
+}
+.operationPane_con_maintainList_btn {
+  width: 93%;
+  height: 20%;
+  position: absolute;
+  bottom: -7px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
 .el-checkbox-button__inner {
   border: 1px solid #dcdfe6;
   border-left: 1px solid #dcdfe6;
+}
+.operationPane_con_machineList /deep/ .el-checkbox-button__inner {
+  font-size: 2rem;
+  padding: 20px 27px;
+  margin: 1rem 0.5rem;
 }
 .operationPane_con_machineList /deep/ .el-checkbox-button__inner {
   font-size: 2rem;
@@ -1417,7 +1611,6 @@ export default {
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .operationPane_con_machineList_btn_left {
@@ -1741,7 +1934,7 @@ textarea[class="textarea"]::-moz-placeholder {
 .Maintance_materials_con span {
   width: 100%;
   height: 40%;
-    white-space: nowrap;
+  white-space: nowrap;
 
   overflow: hidden;
 
