@@ -650,14 +650,18 @@ export default {
   methods: {
     deletecheckedMaterials(id) {
       console.log(id);
-      for (let i = 0; i < this.checkedMaterialsList.length; i++) {
-        if (this.checkedMaterialsList[i].id == id) {
-          this.checkedMaterialsList.splice(i, 1);
+      console.log(this.drawerFlag);
+      if (this.drawerFlag == false) {
+        //新增的配件才可以删除
+        for (let i = 0; i < this.checkedMaterialsList.length; i++) {
+          if (this.checkedMaterialsList[i].id == id) {
+            this.checkedMaterialsList.splice(i, 1);
+          }
         }
-      }
-      for (let i = 0; i < this.materialsList2.length; i++) {
-        if (this.materialsList2[i].id == id) {
-          this.materialsList2.splice(i, 1);
+        for (let i = 0; i < this.materialsList2.length; i++) {
+          if (this.materialsList2[i].id == id) {
+            this.materialsList2.splice(i, 1);
+          }
         }
       }
     },
@@ -1194,7 +1198,7 @@ export default {
       var datas; //存放json数据
 
       if (searchinfo) {
-        let datas = {
+        datas = {
           page: 1,
           pageNum: 20,
 
@@ -1209,7 +1213,7 @@ export default {
           categories_id: this.checkedTypeId,
         };
       }
-
+      console.log(datas);
       axios
         .post(url, datas, {
           //开始查询

@@ -317,6 +317,8 @@
           <el-pagination
             background
             small
+            :page-size="page_size"
+            :current-page="page_num"
             :pager-count="3"
             @current-change="CurrentChange"
             layout="prev, pager, next"
@@ -658,7 +660,7 @@ export default {
         this.repairPartsCon = [];
         this.repairReason = "";
         this.repairSolve = "";
-        this.total_num = null;
+        // this.total_num = null;
         this.page_num = 1;
         this.page_size = 9;
         if (this.isRepair == true) {
