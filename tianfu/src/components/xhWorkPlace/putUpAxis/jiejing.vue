@@ -8,6 +8,7 @@
       <div class="radio5Table">
         <div class="radio5Table_head">
           <div class="radio5Table_head_con" style="width:25%"><span>机台号</span></div>
+                 <div class="radio5Table_head_con"><span>品种</span></div>
           <div class="radio5Table_head_con"><span>是否分绞</span></div>
           <div class="radio5Table_head_con"><span>结经次数</span></div>
                <div class="radio5Table_head_con"><span>删除</span></div>
@@ -16,6 +17,8 @@
           <div class="radio5Table_con_row" v-for="(item,index) in dataList" :key="index">
             <div class="radio5Table_con_row_con" style="width:25%"><input v-model="item.machineId"
                 @focus="machineFocus(item.id)" /></div>
+                   <div class="radio5Table_con_row_con" ><input v-model="item.styleName"
+                 /></div>
             <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
               <div class="table_btn" @click="changefenjiao(item.id)"
                 :style=" item.isFenJiao? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
@@ -63,17 +66,21 @@
       </div>
     </div>
     <div class="radio5_con" v-show="!isTable">
-      <div class="staff"><span style="width: 25%;
+      <div class="staff"><span style="width: 20%;
     display: flex;
     align-items: center;
-    justify-content: center;">机台号</span><span style="width: 18%;
+    justify-content: center;">机台号</span>
+    <span style="width: 17%;
     display: flex;
     align-items: center;
-    justify-content: center;">是否分绞</span><span style="width: 20%;    
+    justify-content: center;">品种</span><span style="width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;">是否分绞</span><span style="width: 18%;    
     display: flex;
     align-items: center;
     justify-content: center;">结经次数</span>
-        <span style="width: 10%;    
+        <span style="width: 8%;    
     display: flex;
     align-items: center;
     justify-content: center;">人员</span>
@@ -83,7 +90,8 @@
         <div class="radio5Table2_row" v-for="(item,index) in SelectDataList" :key="index">
           <input class="inputs" v-model="item.machineId" :disabled="!item.isEdit"  @focus="machineFocus2(item.id)"
             :style="item.isEdit?'border:1px solid black;':'border:none'" />
-
+    <input class="inputs" v-model="item.style_name" :disabled="!item.isEdit" 
+            :style="item.isEdit?'border:1px solid black;':'border:none'" />
           <div
             style="width:16%;margin-left:3%;height:80%;display:flex;align-items:center;justify-content: space-around;position:relative">
             <!-- <select v-model="item.Fenjiao" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
@@ -294,14 +302,14 @@ var test="http://47.110.242.174:10086"
           machineId: "",
           isFenJiao: true,
           isJieJing: true, //代表0.5
-
+ styleName:""
         }],
         dataListCon: [{
           id: 1,
           machineId: "",
           isFenJiao: true,
            isJieJing: true, //代表0.5
-
+ styleName:""
         }],
         SelectDataList: [{
           id: 1,
@@ -311,7 +319,7 @@ var test="http://47.110.242.174:10086"
           staff_name: "周品道",
 
           JieJing: "", //代表0.5
-
+ styleName:""
         }],
         showNameTable: false,
         showMachineTable: false,
@@ -333,6 +341,57 @@ showMachineTable2:false,
       }
     },
     methods: {
+         selectStyleName(machineId,index,flag){
+       console.log(machineId)
+       console.log(index)
+   let url = test+'/report/getSimpleReport';
+        let headers = {
+          'Content-Type': 'application/json',
+          'companyID': this.companyId
+        };
+        let method = "post";
+        let data = {
+          "tableName": "lm_run",
+      
+          "selectFields": ["Style_name", "MachineID"],
+          'query': {
+            MachineID: machineId,
+           
+          },
+  //         selectLikeFields:{
+  // workshop_id:this.workShopId
+  //         }
+          
+        };
+
+        let that = this
+
+        axios({
+            url: url,
+            method: method,
+            data: data,
+            headers: headers
+          })
+          .then(response => {
+
+if(flag==true){ //新增页面的查询修改数据
+  if(response.data.data.length>0){
+this.dataList[index].styleName=response.data.data[0].Style_name
+}else{
+this.dataList[index].styleName= ''
+       this.$message.error('机台号没有对应品名！');
+}
+}else{
+    if(response.data.data.length>0){
+this.SelectDataList[index].style_name=response.data.data[0].Style_name
+}else{
+this.SelectDataList[index].style_name= ''
+       this.$message.error('机台号没有对应品名！');
+}
+}
+console.log(this.dataList)
+          })
+      },
       deleteInfo(id){
   let url = test+'/report/deleteSimpleReport';
         let headers = {
@@ -382,7 +441,8 @@ this.SelectDataList.forEach(element => {
    fenJiao:element.fen_jiao,
    stopWarping:element.stop_warping,
    staffId:element.staff_id,
-   staffName:element.staff_name
+   staffName:element.staff_name,
+      styleName:element.style_name
   };
   if(this.staffId2!=""){
     data.staffId=this.staffId2
@@ -442,6 +502,7 @@ this.SelectDataList.forEach(element => {
            }else{
              json.stopWarping="0.5"
            }
+                json.styleName=element.styleName
            json.machineId=element.machineId
            json.printCode=this.barCode
            json.staffId=this.staffId
@@ -489,7 +550,7 @@ this.SelectDataList.forEach(element => {
           machineId: "",
           isFenJiao: true,
           isJieJing: true, //代表0.5
-
+   styleName:""
         }]
         this.dataListCon=this.dataList
           })
@@ -606,12 +667,14 @@ selectLikeFields:{
           machineId: "",
           isFenJiao: true,
           isJieJing: true, //代表0.5
+              styleName:""
         }];
         this.dataListCon=[{
           id: 1,
           machineId: "",
           isFenJiao: true,
            isJieJing: true, //代表0.5
+               styleName:""
 
         }]
         }else{
@@ -620,6 +683,7 @@ selectLikeFields:{
           machineId: "",
           isFenJiao: true,
           isJieJing: true, //代表0.5
+              styleName:""
         })
         if (this.dataListCon.length % 3 == 1) {
           this.pageNum = this.pageNum + 1
@@ -801,6 +865,7 @@ selectLikeFields:{
         for (let i = 0; i < this.dataList.length; i++) {
           if (this.dataList[i].id == this.id) {
             this.dataList[i].machineId = this.machine_code
+                 this.selectStyleName(this.machine_code,i,true)
           }
         }
         this.machine_code = ""
@@ -833,6 +898,7 @@ selectLikeFields:{
         for (let i = 0; i < this.SelectDataList.length; i++) {
           if (this.SelectDataList[i].id == this.focusId) {
             this.SelectDataList[i].machineId = this.machine_code2
+               this.selectStyleName(this.machine_code2,i,false)
           }
         }
         this.machine_code2 = ""
@@ -957,14 +1023,14 @@ console.log(val)
             machineId: "",
             isFenJiao: true,
             isJieJing: false, //代表0.5
-
+  styleName:""
           }]
           this.dataListCon = [{
             id: 1,
             machineId: "",
             isFenJiao: true,
             isJieJing: false, //代表0.5
-
+  styleName:""
           }]
           this.pageNum = 1
 

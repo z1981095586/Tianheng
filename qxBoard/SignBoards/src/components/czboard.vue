@@ -11,62 +11,84 @@
           <div class="thead">
             <div class="thead_con">
               <div class="thead_con_one" style="width:8.5%">序号</div>
-               <div class="thead_con_one" style="width:11.5%">分厂</div>
-                <div class="thead_con_one" style="width:13.5%">品种</div>
-                 <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
-                  <div class="thead_con_one" style="    width: 15.5%;">织机机型</div>
-                   <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
-                    <div class="thead_con_one" style="width:11%">筘号</div>
-                     <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
+              <div class="thead_con_one" style="width:12.5%">分厂</div>
+              <div class="thead_con_one" style="width:13.5%">品种</div>
+              <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
+              <div class="thead_con_one" style="    width: 13.5%;">织机机型</div>
+              <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
+              <div class="thead_con_one" style="width:11%">筘号</div>
+              <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
             </div>
           </div>
           <div class="tbody">
             <div class="tbody_con">
-               <vue-seamless-scroll :data="S40List"  :class-option="classOption"
-              >
- <div class="tbody_row" v-for="(item,index) in S40List" :key="index" >
-         <div class="tbody_row_one" style="width:8.5%">    {{index+1}}</div>
-               <div class="tbody_row_one" style="width:11.5%">      {{item.workshop}}</div>
+              <vue-seamless-scroll :data="S40List" v-show="S40List.length>12" :class-option="classOption">
+                <div class="tbody_row" v-for="(item,index) in S40List" :key="index">
+                  <div class="tbody_row_one" style="width:8.5%"> {{index+1}}</div>
+                  <div class="tbody_row_one" style="width:12.5%"> {{item.workshop_type}}</div>
+                  <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
+                  <div class="tbody_row_one" style="    width: 11.5%;"> {{item.beam_num}}</div>
+                  <div class="tbody_row_one" style="    width: 13.5%;"> {{item.mac_type_name}}</div>
+                  <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color"> {{item.status}}</span>
+                  </div>
+                  <div class="tbody_row_one" style="width:11%"> {{item.reed_no}}</div>
+                  <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
+                </div>
+              </vue-seamless-scroll>
+              <div class="tbody_row" v-for="(item,index) in S40List" v-show="!(S40List.length>12)" :key="index">
+                <div class="tbody_row_one" style="width:8.5%"> {{index+1}}</div>
+                <div class="tbody_row_one" style="width:12.5%"> {{item.workshop_type}}</div>
                 <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
-                 <div class="tbody_row_one" style="    width: 11.5%;">  {{item.beam_num}}</div>
-                  <div class="tbody_row_one" style="    width: 15.5%;">   {{item.machine_id}}</div>
-                   <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color">  {{item.status}}</span></div>
-                    <div class="tbody_row_one" style="width:11%">   {{item.reed_no}}</div>
-                     <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
-            </div>
-                  </vue-seamless-scroll>
+                <div class="tbody_row_one" style="    width: 11.5%;"> {{item.beam_num}}</div>
+                <div class="tbody_row_one" style="    width: 13.5%;"> {{item.mac_type_name}}</div>
+                <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color"> {{item.status}}</span>
+                </div>
+                <div class="tbody_row_one" style="width:11%"> {{item.reed_no}}</div>
+                <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="board_con_right">
-    <div class="board_con_title">S60</div>
+          <div class="board_con_title">S60</div>
           <div class="thead">
             <div class="thead_con">
               <div class="thead_con_one" style="width:8.5%">序号</div>
-               <div class="thead_con_one" style="width:11.5%">分厂</div>
-                <div class="thead_con_one" style="width:13.5%">品种</div>
-                 <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
-                  <div class="thead_con_one" style="    width: 15.5%;">织机机型</div>
-                   <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
-                    <div class="thead_con_one" style="width:11%">筘号</div>
-                     <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
+              <div class="thead_con_one" style="width:12.5%">分厂</div>
+              <div class="thead_con_one" style="width:13.5%">品种</div>
+              <div class="thead_con_one" style="    width: 11.5%;">穿棕轴数</div>
+              <div class="thead_con_one" style="    width: 13.5%;">织机机型</div>
+              <div class="thead_con_one" style="    width: 13.5%;">完成情况</div>
+              <div class="thead_con_one" style="width:11%">筘号</div>
+              <div class="thead_con_one" style="    width: 15.5%;">排产日期</div>
             </div>
           </div>
           <div class="tbody">
             <div class="tbody_con">
-               <vue-seamless-scroll :data="S60List"  :class-option="classOption"
-              >
- <div class="tbody_row" v-for="(item,index) in S60List" :key="index" >
-         <div class="tbody_row_one" style="width:8.5%">    {{index+1}}</div>
-               <div class="tbody_row_one" style="width:11.5%">      {{item.workshop}}</div>
+              <vue-seamless-scroll :data="S60List" v-show="S60List.length>12" :class-option="classOption">
+                <div class="tbody_row" v-for="(item,index) in S60List" :key="index">
+                  <div class="tbody_row_one" style="width:8.5%"> {{index+1}}</div>
+                  <div class="tbody_row_one" style="width:12.5%"> {{item.workshop_type}}</div>
+                  <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
+                  <div class="tbody_row_one" style="    width: 11.5%;"> {{item.beam_num}}</div>
+                  <div class="tbody_row_one" style="    width: 13.5%;"> {{item.mac_type_name}}</div>
+                  <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color"> {{item.status}}</span>
+                  </div>
+                  <div class="tbody_row_one" style="width:11%"> {{item.reed_no}}</div>
+                  <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
+                </div>
+              </vue-seamless-scroll>
+              <div class="tbody_row" v-for="(item,index) in S60List" v-show="!(S60List.length>12)" :key="index">
+                <div class="tbody_row_one" style="width:8.5%"> {{index+1}}</div>
+                <div class="tbody_row_one" style="width:12.5%"> {{item.workshop_type}}</div>
                 <div class="tbody_row_one" style="width:13.5%"> {{item.product_name}}</div>
-                 <div class="tbody_row_one" style="    width: 11.5%;">  {{item.beam_num}}</div>
-                  <div class="tbody_row_one" style="    width: 15.5%;">   {{item.machine_id}}</div>
-                   <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color">  {{item.status}}</span></div>
-                    <div class="tbody_row_one" style="width:11%">   {{item.reed_no}}</div>
-                     <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
-            </div>
-                  </vue-seamless-scroll>
+                <div class="tbody_row_one" style="width: 11.5%;"> {{item.beam_num}}</div>
+                <div class="tbody_row_one" style="    width: 13.5%;"> {{item.mac_type_name}}</div>
+                <div class="tbody_row_one" style="    width: 13.5%;"><span :class="item.color"> {{item.status}}</span>
+                </div>
+                <div class="tbody_row_one" style="width:11%"> {{item.reed_no}}</div>
+                <div class="tbody_row_one" style="    width: 15.5%;">{{item.update_time}}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -117,8 +139,8 @@
         companyname: "",
         root_numberList: [],
         tableData: [],
-         S40List:[],
-         S60List:[]
+        S40List: [],
+        S60List: []
         // legendList: [],
         // xList: [],
         // sList: []
@@ -142,6 +164,7 @@
 
     methods: {
       getWearAnalysis() {
+     
         let url = "http://120.55.124.53:7070/wear-weaving/getWearAnalysis"
         axios({
             url: url,
@@ -619,12 +642,12 @@
               } else if (response.data.data[i].workshop_id == 3) {
                 response.data.data[i].workshop = "三分厂"
               }
-              response.data.data[i].update_time=response.data.data[i].update_time.substring(0,11);
+              response.data.data[i].update_time = response.data.data[i].update_time.substring(0, 11);
               if (response.data.data[i].status == 0) {
                 response.data.data[i].status = "未开始"
-                 response.data.data[i].color="red"
+                response.data.data[i].color = "red"
               } else if (response.data.data[i].status == 1) {
-                response.data.data[i].color="green"
+                response.data.data[i].color = "green"
                 // let num= that.GetPercent(response.data.data[i].finish_beam_num,response.data.data[i].beam_num) 
                 response.data.data[i].status = "进行中(" + response.data.data[i].finish_beam_num + "/" + response.data
                   .data[i].beam_num + ")"
@@ -640,17 +663,17 @@
             }
             that.tableData = arr
             console.log(that.tableData)
-          let arr2=[]
-          let arr3=[]
+            let arr2 = []
+            let arr3 = []
             arr.forEach(element => {
-              if(element.machine_id=="S40"){
+              if (element.machine_id == "S40") {
                 arr2.push(element)
-              }else if(element.machine_id=="S60"){
+              } else if (element.machine_id == "S60") {
                 arr3.push(element)
               }
             });
-            that.S40List=arr2
-            that.S60List=arr3
+            that.S40List = arr2
+            that.S60List = arr3
 
 
           })
@@ -669,7 +692,7 @@
         return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
       },
       getWarningPushDataTiming: function () {
-        const timer = setInterval(() => {
+       this.timer = setInterval(() => {
           // this.getsum()
           // this.getWearAnalysis()
           this.getdata()
@@ -679,7 +702,9 @@
         }, 5000);
         // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
         this.$once('hook:beforeDestroy', () => {
-          clearInterval(timer);
+          clearInterval(this.timer);
+          this.timer=null
+  
         })
       },
 
@@ -698,13 +723,13 @@
         host1 = "http://47.99.156.243:8227"
       } else if (this.companyId == "10000012") {
         this.companyname = "七星"
-
       }
+
       // this.getsum()
 
 
       // this.getWearAnalysis()
-       this.getdata()
+      this.getdata()
       // this.getdata2()
       // this.getdata4()
       this.getWarningPushDataTiming()
@@ -717,6 +742,7 @@
     beforeDestroy() {
       if (this.timer) {
         clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        this.timer=null
       }
     }
   }
@@ -792,7 +818,7 @@
   }
 
   .board_con_right {
-       width: 49%;
+    width: 49%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -820,59 +846,68 @@
     background: rgb(1, 85, 115);
 
   }
-.thead_con_one{
-  width: 12.5%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: white;
-}
-.tbody{
-  width: 100%;
-  height: 85%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.tbody_con{
-   width: 96%;
+
+  .thead_con_one {
+    width: 12.5%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  .tbody {
+    width: 100%;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tbody_con {
+    width: 96%;
 
     height: 100%;
 
-   overflow: hidden;
-  
-}
-.tbody_row{
-  width: 100%;
-  height: 3rem;
-  border-bottom:1px dashed rgba(0,251,255,0.9);
-  color: white;
-  display: flex;
-  align-items: center;
-}
-.tbody_row_one{
-  width: 12.5%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: white;
-}
-.green{
-width: 100%;
+    overflow: hidden;
+
+  }
+
+  .tbody_row {
+    width: 100%;
+    height: 3rem;
+    border-bottom: 1px dashed rgba(0, 251, 255, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+
+  .tbody_row_one {
+    width: 12.5%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    color: white;
+  }
+
+  .green {
+    width: 100%;
     height: 60%;
-  background: rgba(0,255,7,0.25);
-  border: 1px solid  rgb(0,255,7);
-  border-radius: 10px;
-}
-.red{
- width: 100%;
+    background: rgba(0, 255, 7, 0.25);
+    border: 1px solid rgb(0, 255, 7);
+    border-radius: 10px;
+  }
+
+  .red {
+    width: 100%;
     height: 60%;
-  background: rgba(254,56,56,0.25);
-  border: 1px solid  rgb(254,56,56);
-  border-radius: 10px;
-}
+    background: rgba(254, 56, 56, 0.25);
+    border: 1px solid rgb(254, 56, 56);
+    border-radius: 10px;
+  }
+
 </style>

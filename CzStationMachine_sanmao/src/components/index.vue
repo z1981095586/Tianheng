@@ -70,27 +70,28 @@
            >品号</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
           </div>
           <div class="con1_top_con"><span
-              >123123</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
+              >{{pinh}}</span><span>{{seHao}}</span><span>{{canPinPiHao}}</span><span>{{axisNo}}</span><span>{{planYield}}</span>
           </div>
         </div>
+        
         <div class="con1_bottom" style="    display: flex;
     flex-direction: column;">
 <div style="display:flex;justify-content: space-around;width:100%;">
           <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号1</span>
-            <input v-model="cz1" style="width:7rem;" />
+            <input v-model="cz1" @blur="selectStaffCode('1')" style="width:7rem;" />
           </div>
           <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号2</span>
-            <input v-model="cz2" style="width:7rem;" />
+            <input v-model="cz2" @blur="selectStaffCode('2')" style="width:7rem;" />
           </div>
           <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号3</span>
-            <input v-model="cz3" style="width:7rem;" />
+            <input v-model="cz3" @blur="selectStaffCode('3')" style="width:7rem;" />
           </div>
           <div class="con1_bottom_con" style="flex-direction: row;">
             <span>穿综工号4</span>
-            <input v-model="cz4"  style="width:7rem;" />
+            <input v-model="cz4" @blur="selectStaffCode('4')"  style="width:7rem;" />
           </div>
 </div>
 <div style="display:flex;justify-content: space-around;width:100%;">
@@ -125,7 +126,7 @@
           </div>
           <div class="con1_bottom_con" style="height:50%">
             <span style="width:10rem">复查人(工长)</span>
-            <input v-model="fcr" />
+            <input v-model="fcr" @blur="selectStaffCode('5')" />
           </div>
         </div>
         <div class="con2_con" style="width:30%;">
@@ -141,7 +142,7 @@
                <div class="con2_con" style="width:30%;">
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
             <span style="margin-right:1rem;margin-top:3rem">补综丝人</span>
-            <input v-model="bzsr" style="margin-top:3rem" />
+            <input v-model="bzsr" @blur="selectStaffCode('6')" style="margin-top:3rem" />
           </div>
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
             <!-- <span style="margin-right:1rem;margin-top:3rem">加班系数</span>
@@ -156,11 +157,11 @@
       </div>
       <div class="bottom_btn">
         <div class="btns" :style=" enabled ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="dialogVisible=true">扫码穿综</div>
+          @click="enabled?dialogVisible=true:dialogVisible=false;">扫码穿综</div>
         <div class="btns" :style=" enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="save()">保存</div>
+          @click=" enabled2?save():''">保存</div>
         <div class="btns" :style=" !enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="update()">修改</div>
+          @click="!enabled2 ?update():''">修改</div>
         <div class="btns" @click="!enabled2?dialogVisible2=true:dialogVisible2=false"
           :style=" enabled3 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'">完成</div>
         <div class="btns" style="margin-left:5rem;background:#808080;color:white" @click=" back">返回</div>
@@ -206,6 +207,7 @@
       return {
         timer:"",
         time:"",
+        Id:"",
         printCode: "",
         border: false,
         mainShow: true,
@@ -268,6 +270,10 @@
         cz2: "",
         cz3: "",
         cz4: "",
+         cz1_code: "",
+        cz2_code: "",
+        cz3_code: "",
+        cz4_code: "",
         xs1:"",
         xs2:"",
         xs3:"",
@@ -278,28 +284,185 @@
         xsFlag4:false,
         gs: "",
         fcr: "",
+            fcr_code: "",
         ndxs: "",
         jbxs: "",
         bz: "",
-        bzsr:""
+        bzsr:"",
+              bzsr_code:"",
+            planYield:"",
+            productName:"", //品名
+            pinh:"",
+             axisNo:"",
+         seHao:"",
+     
+         canPinPiHao:""
       }
     },
     methods: {
      
       Finish() {  //完成事件
-        this.dialogVisible2 = false
+            let header = {
+          'Content-Type': 'application/json',
+          'companyID': this.companyId
+        };
+      let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
+          url: url2,
+          method: "post",
+          headers: header,
+          data: {
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:2
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+if(res.data.result=="ok"){
+
+            that.$message({
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+         this.dialogVisible2 = false
         this.baogongShow = false
         this.mainShow = true
-       
+        Object.assign(this.$data, this.$options.data());
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
+        })
       },
  
       save() { //保存事件
-        this.enabled2 = !this.enabled2
+      console.log("af")
+           let header = {
+          'Content-Type': 'application/json',
+          'companyID': this.companyId
+        };
+           let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
+          url: url2,
+          method: "post",
+          headers: header,
+          data: {
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:-1
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+if(res.data.result=="ok"){
+
+            that.$message({
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+          this.enabled2 = !this.enabled2
         this.enabled3 = true
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
+        })
       },
       update() {  //修改事件
-        this.enabled2  = !this.enabled2
+           let header = {
+          'Content-Type': 'application/json',
+          'companyID': this.companyId
+        };
+       let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
+          url: url2,
+          method: "post",
+          headers: header,
+          data: {
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:-1
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+if(res.data.result=="ok"){
+
+            that.$message({
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+          this.enabled2  = !this.enabled2
         this.enabled3 = false
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
+        })
       },
       getData() {
         let url = 'http://106.12.219.66:8227/report/getSimpleReport';
@@ -385,6 +548,252 @@
       
 
       },
+    
+       selectStaffCode(flag) {
+       
+        let url = "http://106.12.219.66:8227/report/getSimpleReport";
+        let data = {}
+        let header = {
+          companyId: this.companyId
+        }
+        if (flag == "1") {
+
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.cz1
+            }
+          };
+        } else if (flag == "2") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.cz2
+            }
+          };
+        } else if (flag == "3") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.cz3
+            }
+          };
+        } else if (flag == "4") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.cz4
+            }
+          };
+        } 
+        else if (flag == "5") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.fcr
+            }
+          };
+        } else if (flag == "6") {
+          data = {
+
+            tableName: "s_staff",
+            query: {
+              staff_code: this.bzsr
+            }
+          };
+        } 
+
+
+
+        let that = this;
+        if (this.isChinese(data.query.staff_code) == false || parseInt(flag) > 2) {
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+
+            // headers: headers
+          }).then((res) => {
+            console.log(res.data.data.length);
+            if (res.data.data.length == 1) {
+              if (flag == "1") {
+                this.cz1_code = this.cz1
+                this.cz1 = res.data.data[0].staff_name
+
+              } else if (flag == "2") {
+                this.cz2_code = this.cz2
+                this.cz2 = res.data.data[0].staff_name
+              } else if (flag == "3") {
+             this.cz3_code = this.cz3
+                this.cz3 = res.data.data[0].staff_name
+              } else if (flag == "4") {
+             this.cz4_code = this.cz4
+                this.cz4 = res.data.data[0].staff_name
+              } 
+              else if (flag == "5") {
+                this.fcr_code = this.fcr
+                this.fcr= res.data.data[0].staff_name
+              } else if (flag == "6") {
+                 this.bzsr_code = this.bzsr
+                this.bzsr= res.data.data[0].staff_name
+              }
+
+            } else {
+              this.$message({
+                message: "工号不正确！",
+                type: "warning",
+              });
+              if (flag == "1") {
+              this.cz1_code=""
+              this.cz1=""
+
+              } else if (flag == "2") {
+              this.cz2_code=""
+              this.cz2=""
+              } else if (flag == "3") {
+                    this.cz3_code=""
+              this.cz3=""
+              } else if (flag == "4") {
+                   this.cz4_code=""
+              this.cz4=""
+              } 
+              else if (flag == "5") {
+                this.fcr = ""
+                this.fcr_code = ""
+              } else if (flag == "6") {
+                this.bzsr = ""
+                this.bzsr_code = ""
+              } 
+            }
+          });
+        }
+
+      },
+            isChinese(temp) {
+        let re = /[^\u4E00-\u9FA5]/;
+        if (re.test(temp)) return false;
+        return true;
+      },
+        getInfo(val) {
+        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
+            let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+        let data = {
+
+          "barCode": val
+
+        };
+        let header = {
+          companyId: this.companyId
+        }
+
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          headers: header,
+          data: data,
+          // headers: headers
+        }).then((res) => {
+          console.log(res.data.data);
+          if (res.data.data) {
+              this.dialogVisible = false
+          this.enabled = false
+          this.enabled2 = true
+          this.enabled3 = false
+          this.printCode = ""
+           
+        
+            this.Id = res.data.data.id
+         
+            this.planYield = res.data.data.planYield
+             this.productName = res.data.data.productName //品名
+             this.pinh = res.data.data.pinh
+             this.axisNo=res.data.data.axisNo
+             this.gs=res.data.data.zbZjgs
+             this.seHao=res.data.data.seHao
+             this.canPinPiHao=res.data.data.canPinPiHao
+                   axios({
+          url: url2,
+          method: "post",
+          headers: header,
+          data: {
+            zenJinId:this.Id,
+        //     staffCode1:this.cz1_code,
+        //      staffCode2:this.cz2_code,
+        //        staffCode3:this.cz3_code,
+        //      staffCode4:this.cz4_code,
+        //      staffXs1:this.xs1,
+        //      staffXs2:this.xs2,
+        //      staffXs3:this.xs3,
+        //      staffXs4:this.xs4,
+        //      rootNumber:this.gs,
+        //      checkStaff:this.fcr_code,
+        //      dcDegreeB:this.ndxs,
+        //      workDegree:this.jbxs,
+        //  feedWearStaffBODY:this.bzsr_code,
+         status:1
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+if(res.data.result=="ok"){
+
+            this.$message({
+   
+          message: '扫码数据已提交！',
+          type: 'success',
+   
+        
+        });
+}else{
+              this.$message({
+   
+          message: '扫码数据提交失败！',
+          type: 'error',
+   
+        
+        });
+}
+        })
+            // this.specification = res.data.data.specification
+            // this.piCang = res.data.data.piCang
+            // this.piSu = res.data.data.piSu
+            // this.zenJinJiHao = res.data.data.zenJinJiHao
+            // this.seHao = res.data.data.huaXinDans[0].cpscsh
+            // if (res.data.data.workQty1Time != null) {
+            //   this.workQty1Time = res.data.data.workQty1Time
+            // }
+            // if (res.data.data.workQty2Time != null) {
+            //   this.workQty1Time = res.data.data.workQty2Time
+            // }
+            // if (res.data.data.workQty3Time != null) {
+            //   this.workQty1Time = res.data.data.workQty3Time
+            // }
+
+          
+
+          } else {
+           
+            this.$message({
+   
+          message: '数据查询失败！',
+          type: 'error',
+   
+        
+        });
+          }
+        
+          //  this.printCode = ""
+
+        });
+
+      },
     },
     mounted() {
      this.timer = setInterval(this.getTime, 1000);
@@ -393,11 +802,8 @@
     watch: {
       printCode(val) {
         if (val.length == 9) {
-          this.dialogVisible = false
-          this.enabled = false
-          this.enabled2 = true
-          this.enabled3 = false
-          this.printCode = ""
+            this.getInfo(val)
+     
         }
       },
       cz1(val){
@@ -665,6 +1071,7 @@ body{
   .con2_con textarea {
     width: 90%;
     height: 10rem;
+    font-size: 2rem;
     border: 1px solid black;
   }
 
