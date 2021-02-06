@@ -113,31 +113,14 @@
 console.log(val)
       },
       handleSizeChange(val) { //页面条数改变
-
       },
       toAdd() {
         this.$router.push('/index/addItem')
       },
-      // rowstyle({
-      //   row,
-      //   rowIndex
-      // }) {
-      //   let styleJson = {
-      //     "background": 'rgb(250,250,250)',
-      //     "border": "none",
-      //   };
-      //   let styleJson2 = {
+      total(){
+        this.tableData=['as']
+      }
 
-      //     "border": "none",
-      //   };
-
-      //   if ((row.index) % 2 == 0) {
-      //     return styleJson
-      //   } else {
-      //     return styleJson2
-      //   }
-
-      // },
 
     },
     mounted() {
