@@ -21,7 +21,7 @@
 
     },
     mounted() {
-console.log(this.$route.params)
+
     },
     watch: {
    

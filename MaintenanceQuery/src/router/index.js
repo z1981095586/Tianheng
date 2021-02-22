@@ -19,8 +19,6 @@ import check from '@/components/check' //检查
 import checkHistory from '@/components/checkHistory' //检查历史
 import checkHistoryDetail from '@/components/checkHistoryDetail' //检查历史详情
 import selectStaff from '@/components/selectStaff'
-import rxjDetail from '@/components/rxjDetail'
-import rxj from '@/components/rxj'
 Vue.use(Router)
 
 export default new Router({
@@ -120,16 +118,6 @@ export default new Router({
       path: '/checkHistoryDetail/:company_id/:operator/:staff_id/:data',
       name: 'checkHistoryDetail',
       component: checkHistoryDetail
-    },
-    {
-      path: '/rxjDetail',
-      name: 'rxjDetail',
-      component: rxjDetail
-    },
-    {
-      path: '/rxj/:company_id',
-      name: 'rxj',
-      component: rxj
     },
   ]
 })

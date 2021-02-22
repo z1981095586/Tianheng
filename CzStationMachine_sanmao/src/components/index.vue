@@ -66,55 +66,56 @@
           style="    justify-content: flex-end;">{{time}}</span></div>
       <div class="con1">
         <div class="con1_top">
-          <div class="con1_top_con"><span>品号</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
+          <div class="con1_top_con"><span
+           >品号</span><span>色号</span><span>批次</span><span>轴号</span><span>整经长度</span>
           </div>
-          <div class="con1_top_con">
-            <span>{{pinh}}</span><span>{{seHao}}</span><span>{{canPinPiHao}}</span><span>{{axisNo}}</span><span>{{planYield}}</span>
+          <div class="con1_top_con"><span
+              >{{pinh}}</span><span>{{seHao}}</span><span>{{canPinPiHao}}</span><span>{{axisNo}}</span><span>{{planYield}}</span>
           </div>
         </div>
-
+        
         <div class="con1_bottom" style="    display: flex;
     flex-direction: column;">
-          <div style="display:flex;justify-content: space-around;width:100%;">
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>穿综工号1</span>
-              <input v-model="cz1" @blur="selectStaffCode('1')" style="width:7rem;" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>穿综工号2</span>
-              <input v-model="cz2" @blur="selectStaffCode('2')" style="width:7rem;" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>穿综工号3</span>
-              <input v-model="cz3" @blur="selectStaffCode('3')" style="width:7rem;" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>穿综工号4</span>
-              <input v-model="cz4" @blur="selectStaffCode('4')" style="width:7rem;" />
-            </div>
+<div style="display:flex;justify-content: space-around;width:100%;">
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>穿综工号1</span>
+            <input v-model="cz1" @blur="selectStaffCode('1')" style="width:7rem;" />
           </div>
-          <div style="display:flex;justify-content: space-around;width:100%;">
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>工号1系数</span>
-              <input v-model="xs1" style="width:7rem;" v-show="xsFlag1" />
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>穿综工号2</span>
+            <input v-model="cz2" @blur="selectStaffCode('2')" style="width:7rem;" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>穿综工号3</span>
+            <input v-model="cz3" @blur="selectStaffCode('3')" style="width:7rem;" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>穿综工号4</span>
+            <input v-model="cz4" @blur="selectStaffCode('4')"  style="width:7rem;" />
+          </div>
+</div>
+<div style="display:flex;justify-content: space-around;width:100%;">
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号1系数</span>
+            <input v-model="xs1" style="width:7rem;" v-show="xsFlag1" />
               <input v-model="xs1" style="width:7rem;" disabled v-show="!xsFlag1" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>工号2系数</span>
-              <input v-model="xs2" style="width:7rem;" v-show="xsFlag2" />
-              <input v-model="xs2" style="width:7rem;" disabled v-show="!xsFlag2" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>工号3系数</span>
-              <input v-model="xs3" style="width:7rem;" v-show="xsFlag3" />
-              <input v-model="xs3" style="width:7rem;" disabled v-show="!xsFlag3" />
-            </div>
-            <div class="con1_bottom_con" style="flex-direction: row;">
-              <span>工号4系数</span>
-              <input v-model="xs4" style="width:7rem;" v-show="xsFlag4" />
-              <input v-model="xs4" style="width:7rem;" disabled v-show="!xsFlag4" />
-            </div>
           </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号2系数</span>
+         <input v-model="xs2" style="width:7rem;" v-show="xsFlag2" />
+              <input v-model="xs2" style="width:7rem;" disabled v-show="!xsFlag2" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号3系数</span>
+       <input v-model="xs3" style="width:7rem;" v-show="xsFlag3" />
+              <input v-model="xs3" style="width:7rem;" disabled v-show="!xsFlag3" />
+          </div>
+          <div class="con1_bottom_con" style="flex-direction: row;">
+            <span>工号4系数</span>
+            <input v-model="xs4" style="width:7rem;" v-show="xsFlag4" />
+              <input v-model="xs4" style="width:7rem;" disabled v-show="!xsFlag4" />
+          </div>
+</div>
         </div>
       </div>
       <div class="con2">
@@ -138,7 +139,7 @@
             <input v-model="jbxs" style="margin-top:3rem" />
           </div>
         </div>
-        <div class="con2_con" style="width:30%;">
+               <div class="con2_con" style="width:30%;">
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
             <span style="margin-right:1rem;margin-top:3rem">补综丝人</span>
             <input v-model="bzsr" @blur="selectStaffCode('6')" style="margin-top:3rem" />
@@ -190,7 +191,7 @@
             <div class="stopBtn" style="background:#808080;color:white;" @click="dialogVisible2 = false">取消</div>
           </div>
         </div>
-
+        
 
       </el-dialog>
     </div>
@@ -204,9 +205,9 @@
     name: 'index',
     data() {
       return {
-        timer: "",
-        time: "",
-        Id: "",
+        timer:"",
+        time:"",
+        Id:"",
         printCode: "",
         border: false,
         mainShow: true,
@@ -269,198 +270,198 @@
         cz2: "",
         cz3: "",
         cz4: "",
-        cz1_code: "",
+         cz1_code: "",
         cz2_code: "",
         cz3_code: "",
         cz4_code: "",
-        xs1: "",
-        xs2: "",
-        xs3: "",
-        xs4: "",
-        xsFlag1: false,
-        xsFlag2: false,
-        xsFlag3: false,
-        xsFlag4: false,
+        xs1:"",
+        xs2:"",
+        xs3:"",
+        xs4:"",
+        xsFlag1:false,
+        xsFlag2:false,
+        xsFlag3:false,
+        xsFlag4:false,
         gs: "",
         fcr: "",
-        fcr_code: "",
+            fcr_code: "",
         ndxs: "",
         jbxs: "",
         bz: "",
-        bzsr: "",
-        bzsr_code: "",
-        planYield: "",
-        productName: "", //品名
-        pinh: "",
-        axisNo: "",
-        seHao: "",
-
-        canPinPiHao: ""
+        bzsr:"",
+              bzsr_code:"",
+            planYield:"",
+            productName:"", //品名
+            pinh:"",
+             axisNo:"",
+         seHao:"",
+     
+         canPinPiHao:""
       }
     },
     methods: {
-
-      Finish() { //完成事件
-        let header = {
+     
+      Finish() {  //完成事件
+            let header = {
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
-        let that = this
-        axios({
+      let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
           url: url2,
           method: "post",
           headers: header,
           data: {
-            zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
-            staffXs1: this.xs1,
-            staffXs2: this.xs2,
-            staffXs3: this.xs3,
-            staffXs4: this.xs4,
-            rootNumber: this.gs,
-            checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
-            workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
-            status: 2
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:2
           },
           // headers: headers
         }).then((res) => {
           console.log(res)
-          if (res.data.result == "ok") {
+if(res.data.result=="ok"){
 
             that.$message({
-
-              message: '保存更新成功！',
-              type: 'success',
-
-
-            });
-            this.dialogVisible2 = false
-            this.baogongShow = false
-            this.mainShow = true
-            Object.assign(this.$data, this.$options.data());
-          } else {
-            that.$message({
-
-              message: '保存更新失败！',
-              type: 'error',
-
-
-            });
-          }
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+         this.dialogVisible2 = false
+        this.baogongShow = false
+        this.mainShow = true
+        Object.assign(this.$data, this.$options.data());
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
         })
       },
-
+ 
       save() { //保存事件
-        console.log("af")
-        let header = {
+      console.log("af")
+           let header = {
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
-        let that = this
-        axios({
+           let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
           url: url2,
           method: "post",
           headers: header,
           data: {
-            zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
-            staffXs1: this.xs1,
-            staffXs2: this.xs2,
-            staffXs3: this.xs3,
-            staffXs4: this.xs4,
-            rootNumber: this.gs,
-            checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
-            workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
-            status: -1
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:-1
           },
           // headers: headers
         }).then((res) => {
           console.log(res)
-          if (res.data.result == "ok") {
+if(res.data.result=="ok"){
 
             that.$message({
-
-              message: '保存更新成功！',
-              type: 'success',
-
-
-            });
-            this.enabled2 = !this.enabled2
-            this.enabled3 = true
-          } else {
-            that.$message({
-
-              message: '保存更新失败！',
-              type: 'error',
-
-
-            });
-          }
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+          this.enabled2 = !this.enabled2
+        this.enabled3 = true
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
         })
       },
-      update() { //修改事件
-        let header = {
+      update() {  //修改事件
+           let header = {
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
-        let that = this
-        axios({
+       let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+     let that=this
+                   axios({
           url: url2,
           method: "post",
           headers: header,
           data: {
-            zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
-            staffXs1: this.xs1,
-            staffXs2: this.xs2,
-            staffXs3: this.xs3,
-            staffXs4: this.xs4,
-            rootNumber: this.gs,
-            checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
-            workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
-            status: -1
+            zenJinId:this.Id,
+            staffCode1:this.cz1_code,
+             staffCode2:this.cz2_code,
+               staffCode3:this.cz3_code,
+             staffCode4:this.cz4_code,
+             staffXs1:this.xs1,
+             staffXs2:this.xs2,
+             staffXs3:this.xs3,
+             staffXs4:this.xs4,
+             rootNumber:this.gs,
+             checkStaff:this.fcr_code,
+             dcDegreeB:this.ndxs,
+             workDegree:this.jbxs,
+         feedWearStaffBODY:this.bzsr_code,
+         status:-1
           },
           // headers: headers
         }).then((res) => {
           console.log(res)
-          if (res.data.result == "ok") {
+if(res.data.result=="ok"){
 
             that.$message({
-
-              message: '保存更新成功！',
-              type: 'success',
-
-
-            });
-            this.enabled2 = !this.enabled2
-            this.enabled3 = false
-          } else {
-            that.$message({
-
-              message: '保存更新失败！',
-              type: 'error',
-
-
-            });
-          }
+   
+          message: '保存更新成功！',
+          type: 'success',
+   
+        
+        });
+          this.enabled2  = !this.enabled2
+        this.enabled3 = false
+}else{
+              that.$message({
+   
+          message: '保存更新失败！',
+          type: 'error',
+   
+        
+        });
+}
         })
       },
       getData() {
@@ -503,7 +504,7 @@
       showQuery() {
         this.mainShow = false
         this.baogongShow = false
-
+      
         this.queryShow = true
       },
       showBaogong() {
@@ -518,7 +519,7 @@
         this.baogongShow = false
         this.mainShow = true
       },
-      getTime() { //获取时间
+       getTime() { //获取时间
         //定义一个日期对象;
         var dateTime = new Date();
         //获得系统年份;
@@ -529,13 +530,13 @@
         var day = dateTime.getDate();
         //获得系统小时;
 
-
+ 
         var hours = dateTime.getHours();
         //获得系统分钟;
         var minutes = dateTime.getMinutes();
         //获得系统秒数;
         var second = dateTime.getSeconds();
-
+    
         day < 10 ? day = '0' + day : day;
         month < 10 ? month = '0' + month : month;
         hours < 10 ? hours = '0' + hours : hours;
@@ -544,12 +545,12 @@
 
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
-
+      
 
       },
-
-      selectStaffCode(flag) {
-
+    
+       selectStaffCode(flag) {
+       
         let url = "http://106.12.219.66:8227/report/getSimpleReport";
         let data = {}
         let header = {
@@ -588,7 +589,8 @@
               staff_code: this.cz4
             }
           };
-        } else if (flag == "5") {
+        } 
+        else if (flag == "5") {
           data = {
 
             tableName: "s_staff",
@@ -604,7 +606,7 @@
               staff_code: this.bzsr
             }
           };
-        }
+        } 
 
 
 
@@ -628,17 +630,18 @@
                 this.cz2_code = this.cz2
                 this.cz2 = res.data.data[0].staff_name
               } else if (flag == "3") {
-                this.cz3_code = this.cz3
+             this.cz3_code = this.cz3
                 this.cz3 = res.data.data[0].staff_name
               } else if (flag == "4") {
-                this.cz4_code = this.cz4
+             this.cz4_code = this.cz4
                 this.cz4 = res.data.data[0].staff_name
-              } else if (flag == "5") {
+              } 
+              else if (flag == "5") {
                 this.fcr_code = this.fcr
-                this.fcr = res.data.data[0].staff_name
+                this.fcr= res.data.data[0].staff_name
               } else if (flag == "6") {
-                this.bzsr_code = this.bzsr
-                this.bzsr = res.data.data[0].staff_name
+                 this.bzsr_code = this.bzsr
+                this.bzsr= res.data.data[0].staff_name
               }
 
             } else {
@@ -647,38 +650,39 @@
                 type: "warning",
               });
               if (flag == "1") {
-                this.cz1_code = ""
-                this.cz1 = ""
+              this.cz1_code=""
+              this.cz1=""
 
               } else if (flag == "2") {
-                this.cz2_code = ""
-                this.cz2 = ""
+              this.cz2_code=""
+              this.cz2=""
               } else if (flag == "3") {
-                this.cz3_code = ""
-                this.cz3 = ""
+                    this.cz3_code=""
+              this.cz3=""
               } else if (flag == "4") {
-                this.cz4_code = ""
-                this.cz4 = ""
-              } else if (flag == "5") {
+                   this.cz4_code=""
+              this.cz4=""
+              } 
+              else if (flag == "5") {
                 this.fcr = ""
                 this.fcr_code = ""
               } else if (flag == "6") {
                 this.bzsr = ""
                 this.bzsr_code = ""
-              }
+              } 
             }
           });
         }
 
       },
-      isChinese(temp) {
+            isChinese(temp) {
         let re = /[^\u4E00-\u9FA5]/;
         if (re.test(temp)) return false;
         return true;
       },
-      getInfo(val) {
+        getInfo(val) {
         let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+            let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
         let data = {
 
           "barCode": val
@@ -698,66 +702,65 @@
         }).then((res) => {
           console.log(res.data.data);
           if (res.data.data) {
-            this.dialogVisible = false
-            this.enabled = false
-            this.enabled2 = true
-            this.enabled3 = false
-            this.printCode = ""
-
-
+              this.dialogVisible = false
+          this.enabled = false
+          this.enabled2 = true
+          this.enabled3 = false
+          this.printCode = ""
+           
+        
             this.Id = res.data.data.id
-
+         
             this.planYield = res.data.data.planYield
-            this.productName = res.data.data.productName //品名
-            this.pinh = res.data.data.pinh
-            this.axisNo = res.data.data.axisNo
-            this.gs = res.data.data.zbZjgs
-            this.seHao = res.data.data.seHao
-            this.canPinPiHao = res.data.data.canPinPiHao
-            axios({
-              url: url2,
-              method: "post",
-              headers: header,
-              data: {
-                zenJinId: this.Id,
-                //     staffCode1:this.cz1_code,
-                //      staffCode2:this.cz2_code,
-                //        staffCode3:this.cz3_code,
-                //      staffCode4:this.cz4_code,
-                //      staffXs1:this.xs1,
-                //      staffXs2:this.xs2,
-                //      staffXs3:this.xs3,
-                //      staffXs4:this.xs4,
-                //      rootNumber:this.gs,
-                //      checkStaff:this.fcr_code,
-                //      dcDegreeB:this.ndxs,
-                //      workDegree:this.jbxs,
-                //  feedWearStaffBODY:this.bzsr_code,
-                status: 1
-              },
-              // headers: headers
-            }).then((res) => {
-              console.log(res)
-            
-              if (res.data.result == "ok") {
+             this.productName = res.data.data.productName //品名
+             this.pinh = res.data.data.pinh
+             this.axisNo=res.data.data.axisNo
+             this.gs=res.data.data.zbZjgs
+             this.seHao=res.data.data.seHao
+             this.canPinPiHao=res.data.data.canPinPiHao
+                   axios({
+          url: url2,
+          method: "post",
+          headers: header,
+          data: {
+            zenJinId:this.Id,
+        //     staffCode1:this.cz1_code,
+        //      staffCode2:this.cz2_code,
+        //        staffCode3:this.cz3_code,
+        //      staffCode4:this.cz4_code,
+        //      staffXs1:this.xs1,
+        //      staffXs2:this.xs2,
+        //      staffXs3:this.xs3,
+        //      staffXs4:this.xs4,
+        //      rootNumber:this.gs,
+        //      checkStaff:this.fcr_code,
+        //      dcDegreeB:this.ndxs,
+        //      workDegree:this.jbxs,
+        //  feedWearStaffBODY:this.bzsr_code,
+         status:1
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+if(res.data.result=="ok"){
 
-                this.$message({
-
-                  message: '扫码数据已提交！',
-                  type: 'success',
-
-
-                });
-              } else {
-                this.$message({
-
-                  message: '扫码数据提交失败！',
-                  type: 'error',
-
-
-                });
-              }
-            })
+            this.$message({
+   
+          message: '扫码数据已提交！',
+          type: 'success',
+   
+        
+        });
+}else{
+              this.$message({
+   
+          message: '扫码数据提交失败！',
+          type: 'error',
+   
+        
+        });
+}
+        })
             // this.specification = res.data.data.specification
             // this.piCang = res.data.data.piCang
             // this.piSu = res.data.data.piSu
@@ -767,25 +770,25 @@
             //   this.workQty1Time = res.data.data.workQty1Time
             // }
             // if (res.data.data.workQty2Time != null) {
-            //   this.workQty1Time = res.data.data.w orkQty2Time
+            //   this.workQty1Time = res.data.data.workQty2Time
             // }
             // if (res.data.data.workQty3Time != null) {
             //   this.workQty1Time = res.data.data.workQty3Time
             // }
 
-
+          
 
           } else {
-
+           
             this.$message({
-
-              message: '数据查询失败！',
-              type: 'error',
-
-
-            });
+   
+          message: '数据查询失败！',
+          type: 'error',
+   
+        
+        });
           }
-
+        
           //  this.printCode = ""
 
         });
@@ -793,49 +796,50 @@
       },
     },
     mounted() {
-      this.timer = setInterval(this.getTime, 1000);
+     this.timer = setInterval(this.getTime, 1000);
+  
     },
     watch: {
       printCode(val) {
-        if (val.length == 9) { //扫码码长度到9执行
-          this.getInfo(val)
-
+        if (val.length == 9) {
+            this.getInfo(val)
+     
         }
       },
-      cz1(val) {
+      cz1(val){
         console.log(val)
-        if (val == "") {
-          this.xsFlag1 = false
-        } else {
-          this.xsFlag1 = true
-        }
-
+           if(val==""){
+             this.xsFlag1=false
+           }else{
+             this.xsFlag1=true
+           }
+          
       },
-      cz2(val) {
-        if (val == "") {
-          this.xsFlag2 = false
-        } else {
-          this.xsFlag2 = true
-        }
+           cz2(val){
+           if(val==""){
+             this.xsFlag2=false
+           }else{
+             this.xsFlag2=true
+           }
       },
-      cz3(val) {
-        if (val == "") {
-          this.xsFlag3 = false
-        } else {
-          this.xsFlag3 = true
-        }
+           cz3(val){
+           if(val==""){
+             this.xsFlag3=false
+           }else{
+             this.xsFlag3=true
+           }
       },
-      cz4(val) { //穿棕工号为空，工号系数输入框禁用
-        if (val == "") {
-          this.xsFlag4 = false
-        } else {
-          this.xsFlag4 = true
-        }
+           cz4(val){
+           if(val==""){
+             this.xsFlag4=false
+           }else{
+             this.xsFlag4=true
+           }
       },
       queryShow(val) { //当选择上轴组页面显示时加载数据
         if (val == true) {
           this.getData()
-
+   
           // })
         }
       },
@@ -847,14 +851,12 @@
 </script>
 
 <style scoped>
-  body {
-    padding-right: 0 !important;
+body{
+padding-right:0 !important ; 
   }
-
-  body {
-    padding: 0;
-  }
-
+body{
+   padding: 0;
+}
   .header {
     background: #317CCD;
     color: white;
@@ -863,7 +865,9 @@
   .allPage {
     width: 100%;
     height: 768px;
+
   }
+
   .header {
     width: 100%;
     height: 80px;
@@ -913,7 +917,6 @@
     width: 40px;
     height: 40px;
   }
-
   .main {
     width: 100%;
     height: 92%;

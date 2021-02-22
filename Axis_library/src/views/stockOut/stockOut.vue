@@ -234,6 +234,8 @@
         this.time = dateStr
       },
       back() { //返回主页
+
+
         // this.$router.push("/index/:" + this.$store.state.companyID + "/:" + this.$store.state.library_num)
         this.$router.push({
           path: '/index',
@@ -243,6 +245,7 @@
             library_num: this.$store.state.library_num
           }
         })
+
       }
 
 

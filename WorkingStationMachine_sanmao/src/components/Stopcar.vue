@@ -363,7 +363,7 @@ export default {
       lbFocus: false,
       lbLength: "",
       enabled: false,
-      page_size: 16,
+      page_size: 21,
       page_num: 1,
       page_size2: 15,
       page_num2: 1,
