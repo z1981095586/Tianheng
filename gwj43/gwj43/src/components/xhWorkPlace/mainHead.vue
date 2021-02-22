@@ -290,6 +290,7 @@
   import { warp_api,warp_api_get,shift_api,workShop_api,common_api,repair_api,repair_api_15 } from "../../../static/api/api.js";
   import screenfull from "screenfull"
   import Viewer from './pdfViewer.vue';
+import { FormItem } from 'element-ui';
   export default {
     components: {
       Viewer
@@ -755,6 +756,7 @@
             });
         }else{
           let url = "/APP/repair_history";
+
           repair_api(url, data)
             .then(response => {
               //console.log(JSON.parse(response.data.repair_history));
@@ -781,6 +783,7 @@
         }
       },
       confirmRepair(){
+     
         if(this.machineId.length>0){
           let data = {};
           data.company_id = this.companyId;

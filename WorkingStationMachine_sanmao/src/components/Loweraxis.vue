@@ -5,16 +5,10 @@
       style="display: flex; justify-content: space-around; align-items: center"
       v-show="isIndexShow"
     >
-      <div
-        class="main_btn"
-        style="width: 40%; height: 60%"
-        @click="toLoweraxis"
-      >
+      <div class="main_btn" style="width: 40%; height: 60%" @click="toLoweraxis">
         了机
       </div>
-      <div class="main_btn" style="width: 40%; height: 60%" @click="toOutaxis">
-        换轴
-      </div>
+      <div class="main_btn" style="width: 40%; height: 60%" @click="toOutaxis">换轴</div>
       <img src="../../static/img/close.png" @click="closeCurrentPage()" />
     </div>
     <!-- 下轴主界面-->
@@ -70,18 +64,10 @@
             ></textarea>
           </div>
           <div class="pane_btn">
-            <div
-              class="pane_btn_one"
-              @click="xiazhou()"
-              style="background: #a3d897"
-            >
+            <div class="pane_btn_one" @click="xiazhou()" style="background: #a3d897">
               <span>下轴</span>
             </div>
-            <div
-              class="pane_btn_one"
-              @click="toMain()"
-              style="background: #808080"
-            >
+            <div class="pane_btn_one" @click="toMain()" style="background: #808080">
               <span>取消</span>
             </div>
           </div>
@@ -115,16 +101,10 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine()">
             确认
           </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="cancel()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel()">
             取消
           </div>
         </div>
@@ -149,11 +129,7 @@
           v-model="search_machine"
           placeholder="输入机台号"
         />
-        <div
-          class="checked_machine_btn_one"
-          style="height: 3rem"
-          @click="search()"
-        >
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search()">
           确认
         </div>
         <span style="color: red; margin-left: 1rem"
@@ -248,10 +224,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass()">
             确认
           </div>
           <div
@@ -279,10 +252,7 @@
         <div class="tz_main_left">
           <div class="tz_main_left_left">
             <div class="tz_main_left_left_top">
-              <div
-                class="chooseBtn_con"
-                style="height: 90%; margin-top: 0.3rem"
-              >
+              <div class="chooseBtn_con" style="height: 90%; margin-top: 0.3rem">
                 <div class="chooseBtn_con_label" style="width: 85%">
                   <span style="font-size: 1.2rem">机台</span>
                 </div>
@@ -292,15 +262,10 @@
                   style="font-size: 1.3rem; width: 85%"
                 >
                   <span v-show="!isCheckedMachine2">请选择</span
-                  ><span v-show="isCheckedMachine2">{{
-                    checkedMachineNum2
-                  }}</span>
+                  ><span v-show="isCheckedMachine2">{{ checkedMachineNum2 }}</span>
                 </div>
               </div>
-              <div
-                class="chooseBtn_con"
-                style="height: 90%; margin-top: 0.3rem"
-              >
+              <div class="chooseBtn_con" style="height: 90%; margin-top: 0.3rem">
                 <div class="chooseBtn_con_label" style="width: 85%">
                   <span style="font-size: 1.2rem">班组</span>
                 </div>
@@ -328,14 +293,11 @@
             </div>
             <div class="tz_main_left_left_bottom">
               <div class="tz_main_left_left_bottom_span" style="height: 15%">
-                <span style="width: 3rem">品种:</span
-                ><span>我是品种我是品种</span>
+                <span style="width: 3rem">品种:</span><span>我是品种我是品种</span>
               </div>
               <div class="tz_main_left_left_bottom_span" style="height: 35%">
                 <span style="width: 7rem">品种:</span
-                ><span
-                  >我是品种我是品种我是品种我是品种我是品种我是品种我是品种</span
-                >
+                ><span>我是品种我是品种我是品种我是品种我是品种我是品种我是品种</span>
               </div>
               <div class="tz_main_left_left_bottom_span" style="height: 50%">
                 <span style="width: 9rem"> 规格:</span
@@ -350,9 +312,7 @@
               <span>当前布长：</span>
               <div
                 :class="
-                  zbFocus
-                    ? 'pz_right_top_input_active'
-                    : 'pz_right_top_input_unactive'
+                  zbFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'
                 "
                 @click="iszb"
               >
@@ -363,9 +323,7 @@
               <span>当前剩余经轴长度：</span>
               <div
                 :class="
-                  jzFocus
-                    ? 'pz_right_top_input_active'
-                    : 'pz_right_top_input_unactive'
+                  jzFocus ? 'pz_right_top_input_active' : 'pz_right_top_input_unactive'
                 "
                 @click="isjz"
               >
@@ -390,11 +348,7 @@
         </div>
         <div class="tz_main_right">
           <div class="tz_main_right_con">
-            <keyboard
-              ref="board3"
-              @sure="getNumber2"
-              @change="NumberChange2"
-            ></keyboard>
+            <keyboard ref="board3" @sure="getNumber2" @change="NumberChange2"></keyboard>
           </div>
         </div>
       </div>
@@ -427,16 +381,10 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureMachine2()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureMachine2()">
             确认
           </div>
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="cancel2()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="cancel2()">
             取消
           </div>
         </div>
@@ -462,11 +410,7 @@
           v-model="search_machine2"
           placeholder="输入机台号"
         />
-        <div
-          class="checked_machine_btn_one"
-          style="height: 3rem"
-          @click="search2()"
-        >
+        <div class="checked_machine_btn_one" style="height: 3rem" @click="search2()">
           确认
         </div>
         <span style="color: red; margin-left: 1rem"
@@ -561,10 +505,7 @@
       </div>
       <div class="operationPane_con_machineList_btn">
         <div class="operationPane_con_machineList_btn_left">
-          <div
-            class="operationPane_con_machineList_btn_leftBtn"
-            @click="sureClass2()"
-          >
+          <div class="operationPane_con_machineList_btn_leftBtn" @click="sureClass2()">
             确认
           </div>
           <div
@@ -679,7 +620,7 @@ export default {
       checkedMachineNum: "",
       checkMachine: [], //下轴选中机台列表
       machineList: [],
-      page_size: 21,
+      page_size: 16,
       page_num: 1,
       total_num: null,
       /**下轴数据 */
@@ -692,7 +633,7 @@ export default {
       checkedMachineNum2: "",
       checkMachine2: [], //下轴选中机台列表
       machineList2: [],
-      page_size2: 21,
+      page_size2: 16,
       page_num2: 1,
       total_num2: null,
       search_machine: "",

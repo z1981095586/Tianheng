@@ -259,7 +259,7 @@ export default {
       machineList: [], //插片机台列表
       pch: "SZ2020010240001-1",
       total_num: null,
-      page_size: 21,
+      page_size: 16,
       page_num: 1,
       total_num2: null,
       page_size2: 12,

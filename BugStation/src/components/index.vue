@@ -1,5 +1,5 @@
 <template>
-  <div class="allPage" >
+  <div class="allPage">
 
     <div class="header">
       <div class="header_con">
@@ -8,7 +8,7 @@
         </div>
         <div class="header_right">
           <div class="header_right_icon">
-            <el-popover placement="top-end" width="290"    trigger="hover">
+            <el-popover placement="top-end" width="290" trigger="hover">
               <el-tabs v-model="tab">
                 <el-tab-pane label="消息(3)" name="message">
                   <div class="message">
@@ -26,8 +26,8 @@
               <img src="../common/icon/message.png" slot="reference" style="height: 30px;
     width: 30px;" />
             </el-popover>
-           <el-divider direction="vertical"></el-divider>
-            <el-popover placement="top-start" width="30"    trigger="hover">
+            <el-divider direction="vertical"></el-divider>
+            <el-popover placement="top-start" width="30" trigger="hover">
               <el-button type="primary" style="width:150px" @click="loginOut()">退出系统</el-button>
               <img slot="reference" src="../common/icon/avator.png" style="height: 35px;
     width: 35px;" />
@@ -50,7 +50,7 @@
           <el-menu-item index="">
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
-          </el-menu-item>         
+          </el-menu-item>
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -75,7 +75,13 @@
         </el-menu>
       </div>
       <div class="content">
-        <router-view />  
+        <router-view />
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+          <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+          <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
     </div>
   </div>
@@ -111,9 +117,9 @@
       }
     },
     mounted() {
-if(this.$store.state.passwordFlag==false){
-    this.$router.push('/login')
-}
+      if (this.$store.state.passwordFlag == false) {
+        this.$router.push('/login')
+      }
 
     },
     watch: {
@@ -198,7 +204,7 @@ if(this.$store.state.passwordFlag==false){
     color: white;
     font-size: 1.1rem;
     font-weight: 600;
-  
+
   }
 
   .icon_info {
@@ -327,12 +333,12 @@ if(this.$store.state.passwordFlag==false){
     white-space: nowrap;
   }
 
- /deep/ .el-tabs__item.is-active {
+  /deep/ .el-tabs__item.is-active {
     font-size: 1.1rem;
   }
 
   /deep/ .el-tabs__item {
     font-size: 1.1rem;
   }
- 
+
 </style>
