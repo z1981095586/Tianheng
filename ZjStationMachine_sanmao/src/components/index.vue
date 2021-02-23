@@ -46,7 +46,7 @@
           </div>
           <div class="con1_left_con">
             <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">筒子纱数</span>
-            <input :disabled="enabled" v-model="ss_tzss"  :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
+            <input :disabled="enabled" v-model="ss_tzss" :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
           </div>
         </div>
         <div class="con1_right">
@@ -141,8 +141,8 @@
           @click="ssFinish()">上纱完成</div>
         <div class="btns" :style=" (enabled&&isZJ1!=2)  ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click="jjFinish()">交接班</div>
-        <div class="btns" 
-          @click="isFinish()" :style=" !enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''">完成</div>
+        <div class="btns" @click="isFinish()"
+          :style=" !enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''">完成</div>
         <div class="btns" style="margin-left:15rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
     </div>
@@ -240,7 +240,7 @@
         ss_zjgh2_code: "",
 
         ss_tzss: "",
-        form: {  //整经记录表单数据
+        form: { //整经记录表单数据
 
           zj_zjgh_name: "",
           zj_zjgh2: "",
@@ -289,7 +289,7 @@
           zj3_bz: ""
         },
         warpPlanId: "",
-        Id: "", 
+        Id: "",
         shiftManageList: [],
         shiftStartTime: "",
         shiftEndTime: "",
@@ -319,42 +319,43 @@
         }).then((res) => {
           console.log("WO");
           if (res.data.data) {
-         this.ss_zjgh1=res.data.data.staffName1Yarn
-      this.ss_zjgh2=res.data.data.staffName2Yarn
-            this.ss_tzss=res.data.data.yarnCount
-              if(res.data.data.status==0){ //上砂完成状态
- 
-       this.enabled=true
-       this.isZJ1=0
-         
- 
-            }else if(res.data.data.status==6){
-                     this.enabled=true
-       this.isZJ1=1
-       
-            }else if(res.data.data.status==7){
-                     this.enabled=true
-       this.isZJ1=2
-  
-            } else if(res.data.data.status==3){ //状态已完成就不进去了
-            this.$message({
-   
-          message: '已完成！',
-          type: 'warning',
-   
-        
-        });
-            this.enabled=true
-  
-          this.dialogVisible = false
-     return;
+            this.ss_zjgh1 = res.data.data.staffName1Yarn
+            this.ss_zjgh2 = res.data.data.staffName2Yarn
+            this.ss_tzss = res.data.data.yarnCount
+            if (res.data.data.status == 5) { //上砂完成状态
+
+              this.enabled = true
+              this.isZJ1 = 0
+
+
+            } else if (res.data.data.status == 6) {
+              this.enabled = true
+              this.isZJ1 = 1
+
+            } else if (res.data.data.status == 7) {
+              this.enabled = true
+              this.isZJ1 = 2
+
+            } else if (res.data.data.status == 3) { //状态已完成就不进去了
+              this.$message({
+
+                message: '已完成！',
+                type: 'warning',
+
+
+              });
+              this.printCode = ""
+
+
+              this.dialogVisible = false
+              return;
             }
             this.dialogVisible = false
             this.mainShow = false
             this.queryShow = true
             this.warpPlanId = res.data.data.lzdid
             this.Id = res.data.data.id
-              this.form.zj_zjcd = res.data.data.planYield
+            this.form.zj_zjcd = res.data.data.planYield
             this.form.zj2_zjcd = res.data.data.planYield
             this.form.zj3_zjcd = res.data.data.planYield
             this.productName = res.data.data.productName //品名
@@ -374,19 +375,19 @@
               this.workQty1Time = res.data.data.workQty3Time
             }
 
-       
+
 
           } else {
-           
+
             this.$message({
-   
-          message: '数据查询失败！',
-          type: 'error',
-   
-        
-        });
+
+              message: '数据查询失败！',
+              type: 'error',
+
+
+            });
           }
-          console.log( this.form.zj_zjcd)
+          console.log(this.form.zj_zjcd)
 
         });
 
@@ -705,9 +706,9 @@
             "shiftStartDatetime": this.shiftStartTime,
             "shiftEndDatetime": this.shiftEndTime,
             "status": 6, //673
-            "axisNo":  this.isEmpty(this.form.zj_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj_dzgh),
-            "remark":  this.isEmpty(this.form.zj_bz),
+            "axisNo": this.isEmpty(this.form.zj_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj_dzgh),
+            "remark": this.isEmpty(this.form.zj_bz),
             "id": this.warpPlanId,
             workQty1Time: "2021-09-10 18:00:00"
           }
@@ -726,9 +727,9 @@
             "shiftStartDatetime2": this.shiftStartTime,
             "shiftEndDatetime2": this.shiftEndTime,
             "status": 7, //673
-            "axisNo":  this.isEmpty(this.form.zj2_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj2_dzgh),
-            "remark":  this.isEmpty(this.form.zj2_bz),
+            "axisNo": this.isEmpty(this.form.zj2_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj2_dzgh),
+            "remark": this.isEmpty(this.form.zj2_bz),
             "id": this.warpPlanId,
             workQty2Time: "2021-09-10 18:00:00"
           }
@@ -744,53 +745,56 @@
             "shiftStartDatetime3": this.shiftStartTime,
             "shiftEndDatetime3": this.shiftEndTime,
             "status": 3, //673
-            "axisNo":  this.isEmpty(this.form.zj3_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
-            "remark":  this.isEmpty(this.form.zj3_bz),
+            "axisNo": this.isEmpty(this.form.zj3_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj3_dzgh),
+            "remark": this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
             workQty3Time: "2021-09-10 18:00:00"
           }
 
         }
-        console.log(this.form)
-        console.log(this.isZJ1)
+
         let that = this;
-        axios({
-          url: url,
-          method: "post",
-          headers: header,
-          data: data,
-          // headers: headers
-        }).then((res) => {
-          console.log(res)
-          if (res.data.result == "ok") {
-            this.$message({
-              message: '操作成功!',
-              type: 'success'
-            });
-            if (this.isZJ1 == 2) {
-              this.isZJ1 = 0
+        if ((this.enabled == false) && (this.isZJ1 == 2)) {
+          axios({
+            url: url,
+            method: "post",
+            headers: header,
+            data: data,
+            // headers: headers
+          }).then((res) => {
+            console.log(res)
+            if (res.data.result == "ok") {
+              this.$message({
+                message: '操作成功!',
+                type: 'success'
+              });
+              if (this.isZJ1 == 2) {
+                this.isZJ1 = 0
+              } else {
+                this.isZJ1 = this.isZJ1 + 1
+              }
             } else {
-              this.isZJ1 = this.isZJ1 + 1
+              this.$message.error(res.data.successMessage + '！');
             }
-          } else {
-            this.$message.error(res.data.successMessage + '！');
-          }
-        })
+          })
+        } else {
+          this.$message.error('请先上纱！');
+        }
       },
-      isEmpty(val){
-       if(val==""){
-         return null
-       }else{
-         return val
-       }
+      isEmpty(val) {
+        if (val == "") {
+          return null
+        } else {
+          return val
+        }
       },
-      isFinish(){
-      if(this.enabled==false){
-        this.$message.warning('请先上纱！');
-      }else{
-        this.dialogVisible2=true
-      }
+      isFinish() {
+        if (this.enabled == false) {
+          this.$message.warning('请先上纱！');
+        } else {
+          this.dialogVisible2 = true
+        }
       },
       Finish() {
 
@@ -799,26 +803,26 @@
         //  this.$message.warning('请先上纱！');
 
         // } else {
-          let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
-          let data={}
-          // let data = {
-          //   "empId3": this.form.zj3_zjgh2,
-          //   "workQty3": this.form.zj3_zjcd,
-          //   "baCount3": this.form.zj3_bs,
-          //   "weiBaCount3": this.form.zj3_swbs,
-          //   "saoWei3": this.form.zj3_sw1 + "," + this.form.zj3_sw2 + "," + this.form.zj3_sw3 + "," + this.form
-          //     .zj3_sw4 + "," + this.form.zj3_sw5 + "," + this.form.zj3_sw6,
-          //   "shiftWork3": this.shiftWork,
-          //   "shiftStartDatetime3": this.shiftStartTime,
-          //   "shiftEndDatetime3": this.shiftEndTime,
-          //   "status": 3, //673
-          //   "axisNo": this.isEmpty(this.form.zj3_zh),
-          //   "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
-          //   "remark":  this.isEmpty(this.form.zj3_bz),
-          //   "id": this.warpPlanId,
-          //   workQty3Time: "2021-09-10 18:00:00"
-          // }
-     if (this.isZJ1 == 0) {
+        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
+        let data = {}
+        // let data = {
+        //   "empId3": this.form.zj3_zjgh2,
+        //   "workQty3": this.form.zj3_zjcd,
+        //   "baCount3": this.form.zj3_bs,
+        //   "weiBaCount3": this.form.zj3_swbs,
+        //   "saoWei3": this.form.zj3_sw1 + "," + this.form.zj3_sw2 + "," + this.form.zj3_sw3 + "," + this.form
+        //     .zj3_sw4 + "," + this.form.zj3_sw5 + "," + this.form.zj3_sw6,
+        //   "shiftWork3": this.shiftWork,
+        //   "shiftStartDatetime3": this.shiftStartTime,
+        //   "shiftEndDatetime3": this.shiftEndTime,
+        //   "status": 3, //673
+        //   "axisNo": this.isEmpty(this.form.zj3_zh),
+        //   "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
+        //   "remark":  this.isEmpty(this.form.zj3_bz),
+        //   "id": this.warpPlanId,
+        //   workQty3Time: "2021-09-10 18:00:00"
+        // }
+        if (this.isZJ1 == 0) {
 
           data = {
             "empId1": this.form.zj_zjgh2,
@@ -831,9 +835,9 @@
             "shiftStartDatetime": this.shiftStartTime,
             "shiftEndDatetime": this.shiftEndTime,
             "status": 3, //673
-            "axisNo":  this.isEmpty(this.form.zj_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj_dzgh),
-            "remark":  this.isEmpty(this.form.zj_bz),
+            "axisNo": this.isEmpty(this.form.zj_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj_dzgh),
+            "remark": this.isEmpty(this.form.zj_bz),
             "id": this.warpPlanId,
             workQty1Time: "2021-09-10 18:00:00"
           }
@@ -852,9 +856,9 @@
             "shiftStartDatetime2": this.shiftStartTime,
             "shiftEndDatetime2": this.shiftEndTime,
             "status": 3, //673
-            "axisNo":  this.isEmpty(this.form.zj2_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj2_dzgh),
-            "remark":  this.isEmpty(this.form.zj2_bz),
+            "axisNo": this.isEmpty(this.form.zj2_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj2_dzgh),
+            "remark": this.isEmpty(this.form.zj2_bz),
             "id": this.warpPlanId,
             workQty2Time: "2021-09-10 18:00:00"
           }
@@ -870,52 +874,52 @@
             "shiftStartDatetime3": this.shiftStartTime,
             "shiftEndDatetime3": this.shiftEndTime,
             "status": 3, //673
-            "axisNo":  this.isEmpty(this.form.zj3_zh),
-            "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
-            "remark":  this.isEmpty(this.form.zj3_bz),
+            "axisNo": this.isEmpty(this.form.zj3_zh),
+            "reAxisStaffId": this.isEmpty(this.form.zj3_dzgh),
+            "remark": this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
             workQty3Time: "2021-09-10 18:00:00"
           }
 
         }
 
-          let header = {
-            companyId: this.companyId
-          }
-          let that = this;
-          axios({
-            url: url,
-            method: "post",
-            headers: header,
-            data: data,
-            // headers: headers
-          }).then((res) => {
-            console.log(res)
-            if (res.data.result== "ok") {
-              this.$message({
-                message: '操作成功!',
-                type: 'success'
-              });
-              this.printCode = ""
-              this.enabled = false
-              this.dialogVisible2 = false
-              this.showQuery = false
-              this.mainShow = true
-              for (var item in this.form) {
-                this.form[item] = ""
-              }
-              this.ss_tzss = ""
-              this.ss_zjgh1 = ""
-              this.ss_zjgh2 = ""
-              if (this.isZJ1 == 2) {
-                this.isZJ1 = 0
-              } else {
-                this.isZJ1 = this.isZJ1 + 1
-              }
-            } else {
-              this.$message.error(res.data.successMessage + '！');
+        let header = {
+          companyId: this.companyId
+        }
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          headers: header,
+          data: data,
+          // headers: headers
+        }).then((res) => {
+          console.log(res)
+          if (res.data.result == "ok") {
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            });
+            this.printCode = ""
+            this.enabled = false
+            this.dialogVisible2 = false
+            this.showQuery = false
+            this.mainShow = true
+            for (var item in this.form) {
+              this.form[item] = ""
             }
-          })
+            this.ss_tzss = ""
+            this.ss_zjgh1 = ""
+            this.ss_zjgh2 = ""
+            if (this.isZJ1 == 2) {
+              this.isZJ1 = 0
+            } else {
+              this.isZJ1 = this.isZJ1 + 1
+            }
+          } else {
+            this.$message.error(res.data.successMessage + '！');
+          }
+        })
 
 
         // }
@@ -938,7 +942,7 @@
 
         this.queryShow = false
         this.mainShow = true
-Object.assign(this.$data, this.$options.data()) //data数据初始化
+        Object.assign(this.$data, this.$options.data()) //data数据初始化
 
 
       },
@@ -1013,7 +1017,6 @@ Object.assign(this.$data, this.$options.data()) //data数据初始化
 </script>
 
 <style scoped>
-
   .header {
     background: #317CCD;
     color: white;
@@ -1329,11 +1332,13 @@ Object.assign(this.$data, this.$options.data()) //data数据初始化
     justify-content: center;
 
   }
-/deep/ .el-message.is-closable .el-message__content{
-    font-size: 3rem;
-}
 
-/deep/ .el-message--error{
-  font-size: 3rem;
-}
+  /deep/ .el-message.is-closable .el-message__content {
+    font-size: 3rem;
+  }
+
+  /deep/ .el-message--error {
+    font-size: 3rem;
+  }
+
 </style>
