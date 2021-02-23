@@ -46,7 +46,7 @@
           </div>
           <div class="con1_left_con">
             <span :style="enabled ? 'color:rgba(0,0,0,0.6)':''">筒子纱数</span>
-            <input :disabled="enabled" v-model="ss_tzss" :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
+            <input :disabled="enabled" v-model="ss_tzss"  :style="enabled ? 'border:1px solid rgba(0,0,0,0.6)':''" />
           </div>
         </div>
         <div class="con1_right">
@@ -317,9 +317,26 @@
           data: data,
           // headers: headers
         }).then((res) => {
-          console.log(res.data.data);
+          console.log("WO");
           if (res.data.data) {
-            if(res.data.data.status==3){ //状态已完成就不进去了
+         this.ss_zjgh1=res.data.data.staffName1Yarn
+      this.ss_zjgh2=res.data.data.staffName2Yarn
+            this.ss_tzss=res.data.data.yarnCount
+              if(res.data.data.status==0){ //上砂完成状态
+ 
+       this.enabled=true
+       this.isZJ1=0
+         
+ 
+            }else if(res.data.data.status==6){
+                     this.enabled=true
+       this.isZJ1=1
+       
+            }else if(res.data.data.status==7){
+                     this.enabled=true
+       this.isZJ1=2
+  
+            } else if(res.data.data.status==3){ //状态已完成就不进去了
             this.$message({
    
           message: '已完成！',
@@ -327,9 +344,10 @@
    
         
         });
-        this.printCode=""
+            this.enabled=true
+  
           this.dialogVisible = false
-        return;
+     return;
             }
             this.dialogVisible = false
             this.mainShow = false
@@ -356,7 +374,7 @@
               this.workQty1Time = res.data.data.workQty3Time
             }
 
-          
+       
 
           } else {
            
@@ -369,7 +387,6 @@
         });
           }
           console.log( this.form.zj_zjcd)
-          //  this.printCode = ""
 
         });
 
@@ -783,7 +800,66 @@
 
         // } else {
           let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
-          let data = {
+          let data={}
+          // let data = {
+          //   "empId3": this.form.zj3_zjgh2,
+          //   "workQty3": this.form.zj3_zjcd,
+          //   "baCount3": this.form.zj3_bs,
+          //   "weiBaCount3": this.form.zj3_swbs,
+          //   "saoWei3": this.form.zj3_sw1 + "," + this.form.zj3_sw2 + "," + this.form.zj3_sw3 + "," + this.form
+          //     .zj3_sw4 + "," + this.form.zj3_sw5 + "," + this.form.zj3_sw6,
+          //   "shiftWork3": this.shiftWork,
+          //   "shiftStartDatetime3": this.shiftStartTime,
+          //   "shiftEndDatetime3": this.shiftEndTime,
+          //   "status": 3, //673
+          //   "axisNo": this.isEmpty(this.form.zj3_zh),
+          //   "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
+          //   "remark":  this.isEmpty(this.form.zj3_bz),
+          //   "id": this.warpPlanId,
+          //   workQty3Time: "2021-09-10 18:00:00"
+          // }
+     if (this.isZJ1 == 0) {
+
+          data = {
+            "empId1": this.form.zj_zjgh2,
+            "workQty1": this.form.zj_zjcd,
+            "baCount1": this.form.zj_bs,
+            "weiBaCount1": this.form.zj_swbs,
+            "saoWei1": this.form.zj_sw1 + "," + this.form.zj_sw2 + "," + this.form.zj_sw3 + "," + this.form.zj_sw4 +
+              "," + this.form.zj_sw5 + "," + this.form.zj_sw6,
+            "shiftWork": this.shiftWork,
+            "shiftStartDatetime": this.shiftStartTime,
+            "shiftEndDatetime": this.shiftEndTime,
+            "status": 3, //673
+            "axisNo":  this.isEmpty(this.form.zj_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj_dzgh),
+            "remark":  this.isEmpty(this.form.zj_bz),
+            "id": this.warpPlanId,
+            workQty1Time: "2021-09-10 18:00:00"
+          }
+
+
+        } else if (this.isZJ1 == 1) {
+
+          data = {
+            "empId2": this.form.zj2_zjgh2,
+            "workQty2": this.form.zj2_zjcd,
+            "baCount2": this.form.zj2_bs,
+            "weiBaCount2": this.form.zj2_swbs,
+            "saoWei2": this.form.zj2_sw1 + "," + this.form.zj2_sw2 + "," + this.form.zj2_sw3 + "," + this.form
+              .zj2_sw4 + "," + this.form.zj2_sw5 + "," + this.form.zj2_sw6,
+            "shiftWork2": this.shiftWork,
+            "shiftStartDatetime2": this.shiftStartTime,
+            "shiftEndDatetime2": this.shiftEndTime,
+            "status": 3, //673
+            "axisNo":  this.isEmpty(this.form.zj2_zh),
+            "reAxisStaffId":  this.isEmpty(this.form.zj2_dzgh),
+            "remark":  this.isEmpty(this.form.zj2_bz),
+            "id": this.warpPlanId,
+            workQty2Time: "2021-09-10 18:00:00"
+          }
+        } else if (this.isZJ1 == 2) {
+          data = {
             "empId3": this.form.zj3_zjgh2,
             "workQty3": this.form.zj3_zjcd,
             "baCount3": this.form.zj3_bs,
@@ -794,13 +870,14 @@
             "shiftStartDatetime3": this.shiftStartTime,
             "shiftEndDatetime3": this.shiftEndTime,
             "status": 3, //673
-            "axisNo": this.isEmpty(this.form.zj3_zh),
+            "axisNo":  this.isEmpty(this.form.zj3_zh),
             "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
             "remark":  this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
             workQty3Time: "2021-09-10 18:00:00"
           }
 
+        }
 
           let header = {
             companyId: this.companyId
@@ -861,7 +938,7 @@
 
         this.queryShow = false
         this.mainShow = true
-
+Object.assign(this.$data, this.$options.data()) //data数据初始化
 
 
       },
@@ -907,9 +984,9 @@
       queryShow(val) {
         if (val == true) {
           this.getShift()
-          this.ss_zjgh1 = ""
-          this.ss_zjgh2 = ""
-          this.ss_tzss = ""
+          // this.ss_zjgh1 = ""
+          // this.ss_zjgh2 = ""
+          // this.ss_tzss = ""
         }
       },
       dialogVisible(val) {
