@@ -319,6 +319,18 @@
         }).then((res) => {
           console.log(res.data.data);
           if (res.data.data) {
+            if(res.data.data.status==3){ //状态已完成就不进去了
+            this.$message({
+   
+          message: '已完成！',
+          type: 'warning',
+   
+        
+        });
+        this.printCode=""
+          this.dialogVisible = false
+        return;
+            }
             this.dialogVisible = false
             this.mainShow = false
             this.queryShow = true

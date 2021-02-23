@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import "./apiConfig.js"
   export default {
     name: 'App',
     provide() {
@@ -40,6 +41,10 @@
           }, 1000);
         })
       }
+    },
+    mounted(){
+  
+   
     }
   }
 

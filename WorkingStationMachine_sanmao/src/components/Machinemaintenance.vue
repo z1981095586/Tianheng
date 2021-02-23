@@ -195,7 +195,7 @@ export default {
       total_num: null,
       machineList: [], //上轴机台列表
       page_num2: 1,
-      page_size2: 6,
+      page_size2: 16,
       total_num2: null,
     };
   },
