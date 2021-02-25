@@ -168,7 +168,7 @@
       <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
         <div
           style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
-          <input v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem;    border: 1px solid black;" />
+          <input id="code" v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem;    border: 1px solid black;" />
           <img src="../../static/img/saomiao.gif" style="width:10rem;" />
 
           <div class="stopBtn" @click="dialogVisible = false">停止扫码</div>
@@ -517,6 +517,8 @@
         this.queryShow = false
         this.baogongShow = false
         this.mainShow = true
+          Object.assign(this.$data, this.$options.data()) //data数据初始化
+
       },
       getTime() { //获取时间
         //定义一个日期对象;
@@ -796,6 +798,15 @@
       this.timer = setInterval(this.getTime, 1000);
     },
     watch: {
+      dialogVisible(val){
+      if(val==true){
+
+         this.$nextTick(() => {
+           document.getElementById("code").focus()
+           
+      })
+      }
+      },
       printCode(val) {
         if (val.length == 9) { //扫码码长度到9执行
           this.getInfo(val)

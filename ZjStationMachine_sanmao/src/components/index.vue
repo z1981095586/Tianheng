@@ -710,7 +710,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj_dzgh),
             "remark": this.isEmpty(this.form.zj_bz),
             "id": this.warpPlanId,
-            workQty1Time: "2021-09-10 18:00:00"
+            workQty1Time: this.getTime()
           }
 
 
@@ -731,7 +731,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj2_dzgh),
             "remark": this.isEmpty(this.form.zj2_bz),
             "id": this.warpPlanId,
-            workQty2Time: "2021-09-10 18:00:00"
+            workQty2Time: this.getTime()
           }
         } else if (this.isZJ1 == 2) {
           data = {
@@ -749,7 +749,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj3_dzgh),
             "remark": this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
-            workQty3Time: "2021-09-10 18:00:00"
+            workQty3Time: this.getTime()
           }
 
         }
@@ -820,7 +820,7 @@
         //   "reAxisStaffId":  this.isEmpty(this.form.zj3_dzgh),
         //   "remark":  this.isEmpty(this.form.zj3_bz),
         //   "id": this.warpPlanId,
-        //   workQty3Time: "2021-09-10 18:00:00"
+        //   workQty3Time: this.getTime()
         // }
         if (this.isZJ1 == 0) {
 
@@ -839,7 +839,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj_dzgh),
             "remark": this.isEmpty(this.form.zj_bz),
             "id": this.warpPlanId,
-            workQty1Time: "2021-09-10 18:00:00"
+            workQty1Time: this.getTime()
           }
 
 
@@ -860,7 +860,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj2_dzgh),
             "remark": this.isEmpty(this.form.zj2_bz),
             "id": this.warpPlanId,
-            workQty2Time: "2021-09-10 18:00:00"
+            workQty2Time: this.getTime()
           }
         } else if (this.isZJ1 == 2) {
           data = {
@@ -878,7 +878,7 @@
             "reAxisStaffId": this.isEmpty(this.form.zj3_dzgh),
             "remark": this.isEmpty(this.form.zj3_bz),
             "id": this.warpPlanId,
-            workQty3Time: "2021-09-10 18:00:00"
+            workQty3Time: this.getTime()
           }
 
         }

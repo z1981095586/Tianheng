@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
 
     name: 'login',
@@ -54,30 +55,69 @@
         } else {
           this.error1 = false
           this.error2 = false
-          if (user == "admin" && pass == "admin") {
-
-
+          let that=this
+           axios({
+          url: window.apiRoot.testApi + "judgeUser",
+          method: "post",
+          // headers: header,
+          data: {
+            user:user,
+            password:pass
+          },
+          // headers: headers
+        }).then((res) => {
+console.log(res)
+if(res.data.result=="ok"){
             if (this.autoLogin == true) {
               this.btnTxt = "登录中..."
               this.$store.commit('setPasswordFlag', true)
               this.$store.commit('setPeopleData', {
-                user: "admin",
-                pass: "admin"
+                user: user,
+                pass: pass
               })
               this.isLoading = true
               setTimeout(() => {
-                this.$router.push({
+                that.$router.push({
 
                   name: "addItem",
                   path: "/index/addItem"
                 })
-              }, 2000);
+              }, 1000);
 
-            }
+            
 
           } else {
             this.$message.error('账号或密码错误！');
           }
+}else{
+     this.$message.error('账号或密码错误！');
+
+}
+        })
+         
+
+
+          //   if (this.autoLogin == true) {
+          //     this.btnTxt = "登录中..."
+          //     this.$store.commit('setPasswordFlag', true)
+          //     this.$store.commit('setPeopleData', {
+          //       user: user,
+          //       pass: pass
+          //     })
+          //     this.isLoading = true
+          //     setTimeout(() => {
+          //       this.$router.push({
+
+          //         name: "addItem",
+          //         path: "/index/addItem"
+          //       })
+          //     }, 1000);
+
+            
+
+          // } else {
+          //   this.$message.error('账号或密码错误！');
+          // }
         }
       }
     },

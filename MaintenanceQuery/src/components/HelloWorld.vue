@@ -8,7 +8,7 @@
           href="http://106.12.219.66:81/MaintenanceQuery/#/select/018040/1/10000018"
           target="_blank"
         >
-       to select
+          to select
         </a>
       </li>
       <li>
@@ -16,33 +16,31 @@
           href="http://106.12.219.66:81/MaintenanceQuery/#/ToMaintenance_list/10000015/admin/1"
           target="_blank"
         >
-       to 保养
+          to 保养
         </a>
       </li>
-     
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  data () {
+  name: "HelloWorld",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
-}
+      msg: "Welcome to Your Vue.js App",
+    };
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.hello{
+.hello {
   background: aquamarine;
-
 }
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {
