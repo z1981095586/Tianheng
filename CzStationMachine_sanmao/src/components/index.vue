@@ -18,7 +18,7 @@
 
           <img src="../../static/img/unremind.png" />
 
-          <img src="../../static/img/refresh.png" @click="reload()" />
+          <img src="../../static/img/refresh.png" @click="pageNum=1;getData();" />
 
           <img src="../../static/img/question.png" />
         </div>
@@ -32,28 +32,28 @@
       <div class="table">
         <el-table :data="tableData" size="medium" :border="border" style="width: 100%;height:100%;font-size:1.3rem"
           :header-cell-style="headerClass">
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="date" label="穿综优先等级" width="180">
+          <el-table-column align="center" prop="priority" label="优先级">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="name" label="产品品号" width="180">
+          <el-table-column align="center" prop="material_code" label="产品品号">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="色号">
+          <el-table-column align="center" prop="gui_ge" label="色号">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="批次">
+          <el-table-column align="center" prop="pi_ci" label="批次">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="轴号">
+          <el-table-column align="center" prop="beam_name" label="轴号">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="整经长度">
+          <el-table-column align="center" prop="product_name" label="品名" width="200">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="匹数">
+          <el-table-column align="center" prop="bar_code" label="整经单号" width="200">
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" align="center" prop="address" label="状态">
+          <el-table-column align="center" prop="remark" label="备注">
           </el-table-column>
         </el-table>
       </div>
       <div class="bottom">
         <div class="left_bottom">
-          <div class="btn" style="font-size:2rem">上一页</div>
-          <div class="btn" style="font-size:2rem">下一页</div>
+          <div class="btn" style="font-size:2rem" @click="lastPage()">上一页</div>
+          <div class="btn" style="font-size:2rem" @click="nextPage()">下一页</div>
         </div>
         <div class="right_bottom">
           <div class="btn" style="font-size:2rem;background:#808080;color:white" @click="back">返回</div>
@@ -159,16 +159,17 @@
           @click="enabled?dialogVisible=true:dialogVisible=false;">扫码穿综</div>
         <div class="btns" :style=" enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
           @click=" enabled2?save():''">保存</div>
-        <div class="btns" :style=" !enabled2 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="!enabled2 ?update():''">修改</div>
-        <div class="btns" @click="!enabled2?dialogVisible2=true:dialogVisible2=false"
+        <div class="btns" :style=" !enabled2 && !enabled ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
+          @click="!enabled2 && !enabled ?update():''">修改</div>
+        <div class="btns" @click="enabled3 ?dialogVisible2=true:dialogVisible2=false"
           :style=" enabled3 ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'">完成</div>
         <div class="btns" style="margin-left:5rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
       <el-dialog title="扫码" :visible.sync="dialogVisible" width="45%">
         <div
           style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
-          <input id="code" v-model="printCode" style="width:10rem;font-size:1.6rem;height:2rem;    border: 1px solid black;" />
+          <input id="code" v-model="printCode"
+            style="width:10rem;font-size:1.6rem;height:2rem;    border: 1px solid black;" />
           <img src="../../static/img/saomiao.gif" style="width:10rem;" />
 
           <div class="stopBtn" @click="dialogVisible = false">停止扫码</div>
@@ -218,53 +219,10 @@
         dialogVisible: false,
         dialogVisible2: false,
         pageNum: 1,
-        pageSize: 8,
+        pageSize: 12,
         companyId: "10000025",
-        tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '30070',
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '30070'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '3007021312312312',
-          },
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '30070',
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '30070'
-          },
-          {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '3007021312312312',
-          },
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '30070',
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '30070'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '3007021312312312',
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '30070'
-          }
-        ],
+        tableData: [],
+        tableDataCon: [],
         cz1: "",
         cz2: "",
         cz3: "",
@@ -295,7 +253,8 @@
         axisNo: "",
         seHao: "",
 
-        canPinPiHao: ""
+        canPinPiHao: "",
+
       }
     },
     methods: {
@@ -337,7 +296,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-
+   duration:1000
 
             });
             this.dialogVisible2 = false
@@ -349,7 +308,7 @@
 
               message: '保存更新失败！',
               type: 'error',
-
+   duration:1000
 
             });
           }
@@ -394,7 +353,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-
+   duration:1000
 
             });
             this.enabled2 = !this.enabled2
@@ -404,7 +363,7 @@
 
               message: '保存更新失败！',
               type: 'error',
-
+   duration:1000
 
             });
           }
@@ -447,7 +406,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-
+   duration:1000
 
             });
             this.enabled2 = !this.enabled2
@@ -457,23 +416,61 @@
 
               message: '保存更新失败！',
               type: 'error',
-
+   duration:1000
 
             });
           }
         })
       },
+      lastPage() {
+
+        if (this.pageNum == 1) {
+          this.$message({
+
+            message: '没有上一页了！',
+            type: 'error',
+   duration:1000
+
+          });
+        } else {
+          this.pageNum = this.pageNum - 1;
+          this.tableData = this.pagination(this.pageNum, this.pageSize, this.tableDataCon)
+        }
+        console.log(this.pageNum)
+
+      },
+      nextPage() {
+
+        if (this.pageNum * this.pageSize >= this.tableDataCon.length) {
+          this.$message({
+
+            message: '最后一页了！',
+            type: 'error',
+   duration:1000
+
+          });
+        } else {
+          this.pageNum = this.pageNum + 1;
+          this.tableData = this.pagination(this.pageNum, this.pageSize, this.tableDataCon)
+        }
+        console.log(this.pageNum)
+      },
+      pagination(pageNo, pageSize, array) { //数组分页函数
+        var offset = (pageNo - 1) * pageSize;
+        return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
+          pageSize);
+      },
       getData() {
-        let url = 'http://106.12.219.66:8227/report/getSimpleReport';
-        let headers = {
-          'Content-Type': 'application/json',
-          'companyID': this.companyId
-        };
+        let url = 'http://120.55.124.53:12140/api/zj/getCuanZongPlan';
+
         let method = "post";
         let data = {
-          "tableName": "sizing_produce_info",
-          "pageNum": this.pageNum,
-          "pageSize": this.pageSize,
+          selectInfo: {
+            company_id: this.companyId
+          },
+          cuan_zhong_ji_hua: {
+            status: "0"
+          }
 
         };
 
@@ -482,10 +479,39 @@
             url: url,
             method: method,
             data: data,
-            headers: headers
+
           })
           .then(response => {
             console.log(response)
+            let arr = []
+           if(response.data.result.length>0){
+                 for (let i = 0; i < response.data.result.length; i++) {
+              if(response.data.result[i].priority!=null&&response.data.result[i].priority!=""){
+    arr.push(response.data.result[i])
+              }
+          
+            }
+          
+            that.tableDataCon = arr
+            that.tableData = that.pagination(this.pageNum, this.pageSize, that.tableDataCon)
+                        this.$message({
+
+            message: '数据已刷新！',
+            type: 'success',
+         duration:1000
+
+
+          });
+           }else{
+              this.$message({
+
+            message: '没有计划单！',
+            type: 'error',
+   duration:1000
+
+          });
+           }
+
           })
       },
       headerClass({
@@ -517,7 +543,7 @@
         this.queryShow = false
         this.baogongShow = false
         this.mainShow = true
-          Object.assign(this.$data, this.$options.data()) //data数据初始化
+        Object.assign(this.$data, this.$options.data()) //data数据初始化
 
       },
       getTime() { //获取时间
@@ -546,7 +572,7 @@
 
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
-
+        return dateStr
 
       },
 
@@ -647,6 +673,7 @@
               this.$message({
                 message: "工号不正确！",
                 type: "warning",
+                   duration:1000
               });
               if (flag == "1") {
                 this.cz1_code = ""
@@ -716,50 +743,72 @@
             this.gs = res.data.data.zbZjgs
             this.seHao = res.data.data.seHao
             this.canPinPiHao = res.data.data.canPinPiHao
-            axios({
-              url: url2,
-              method: "post",
-              headers: header,
-              data: {
-                zenJinId: this.Id,
-                //     staffCode1:this.cz1_code,
-                //      staffCode2:this.cz2_code,
-                //        staffCode3:this.cz3_code,
-                //      staffCode4:this.cz4_code,
-                //      staffXs1:this.xs1,
-                //      staffXs2:this.xs2,
-                //      staffXs3:this.xs3,
-                //      staffXs4:this.xs4,
-                //      rootNumber:this.gs,
-                //      checkStaff:this.fcr_code,
-                //      dcDegreeB:this.ndxs,
-                //      workDegree:this.jbxs,
-                //  feedWearStaffBODY:this.bzsr_code,
-                status: 1
-              },
-              // headers: headers
-            }).then((res) => {
-              console.log(res)
-            
-              if (res.data.result == "ok") {
+            if (res.data.data.wwStatus == 0) { //未完成才扫码穿综
+              axios({
+                url: url2,
+                method: "post",
+                headers: header,
+                data: {
+                  zenJinId: this.Id,
+                  //     staffCode1:this.cz1_code,
+                  //      staffCode2:this.cz2_code,
+                  //        staffCode3:this.cz3_code,
+                  //      staffCode4:this.cz4_code,
+                  //      staffXs1:this.xs1,
+                  //      staffXs2:this.xs2,
+                  //      staffXs3:this.xs3,
+                  //      staffXs4:this.xs4,
+                  //      rootNumber:this.gs,
+                  //      checkStaff:this.fcr_code,
+                  //      dcDegreeB:this.ndxs,
+                  //      workDegree:this.jbxs,
+                  //  feedWearStaffBODY:this.bzsr_code,
+                  status: 1
+                },
+                // headers: headers
+              }).then((res) => {
+                console.log(res)
 
-                this.$message({
+                if (res.data.result == "ok") {
 
-                  message: '扫码数据已提交！',
-                  type: 'success',
+                  this.$message({
 
+                    message: '扫码数据已提交！',
+                    type: 'success',
+   duration:1000
 
-                });
-              } else {
-                this.$message({
+                  });
+                } else {
+                  this.$message({
 
-                  message: '扫码数据提交失败！',
-                  type: 'error',
+                    message: '扫码数据提交失败！',
+                    type: 'error',
+   duration:1000
 
+                  });
+                }
+              })
+            } else if (res.data.data.wwStatus == 1) { //进行中
 
-                });
-              }
-            })
+              this.cz1 = res.data.data.staffName1
+              this.cz2 = res.data.data.staffName2
+              this.cz3 = res.data.data.staffName3
+              this.cz4 = res.data.data.staffName4
+              this.xs1 = res.data.data.staffXs1
+              this.xs2 = res.data.data.staffXs2
+              this.xs3 = res.data.data.staffXs3
+              this.xs4 = res.data.data.staffXs4
+            } else if (res.data.data.wwStatus == 2) { //已完成
+
+              Object.assign(this.$data, this.$options.data()) //data数据初始化
+              this.$message({
+
+                message: '已完成！',
+                type: 'warning',
+   duration:1000
+
+              });
+            }
             // this.specification = res.data.data.specification
             // this.piCang = res.data.data.piCang
             // this.piSu = res.data.data.piSu
@@ -783,7 +832,7 @@
 
               message: '数据查询失败！',
               type: 'error',
-
+   duration:1000
 
             });
           }
@@ -798,14 +847,14 @@
       this.timer = setInterval(this.getTime, 1000);
     },
     watch: {
-      dialogVisible(val){
-      if(val==true){
+      dialogVisible(val) {
+        if (val == true) {
 
-         this.$nextTick(() => {
-           document.getElementById("code").focus()
-           
-      })
-      }
+          this.$nextTick(() => {
+            document.getElementById("code").focus()
+
+          })
+        }
       },
       printCode(val) {
         if (val.length == 9) { //扫码码长度到9执行
@@ -875,6 +924,7 @@
     width: 100%;
     height: 768px;
   }
+
   .header {
     width: 100%;
     height: 80px;
@@ -969,7 +1019,7 @@
 
   .table {
     width: 101%;
-    height: 30rem;
+    height: 29.4rem;
   }
 
   .baogong {

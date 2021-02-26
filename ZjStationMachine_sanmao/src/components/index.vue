@@ -341,7 +341,7 @@
 
                 message: '已完成！',
                 type: 'warning',
-
+   duration:1000
 
               });
               this.printCode = ""
@@ -384,7 +384,7 @@
               message: '数据查询失败！',
               type: 'error',
 
-
+   duration:1000
             });
           }
           console.log(this.form.zj_zjcd)
@@ -518,6 +518,7 @@
               this.$message({
                 message: "工号不正确！",
                 type: "warning",
+                   duration:1000
               });
               if (flag == "1") {
                 this.ss_zjgh1_code = ""
@@ -672,12 +673,18 @@
             if (res.data.result == "ok") {
               this.$message({
                 message: '上纱成功!',
-                type: 'success'
+                type: 'success',
+                   duration:1000
               });
               this.getInfo(this.printCode)
               this.enabled = true
             } else {
-              this.$message.error('上纱失败！');
+                this.$message({
+                message: '上纱失败!',
+                type: 'error',
+                   duration:1000
+              });
+       
             }
           })
 
@@ -755,6 +762,7 @@
         }
 
         let that = this;
+   
         if ((this.enabled == false) && (this.isZJ1 == 2)) {
           axios({
             url: url,
@@ -767,7 +775,8 @@
             if (res.data.result == "ok") {
               this.$message({
                 message: '操作成功!',
-                type: 'success'
+                type: 'success',
+                duration:1000
               });
               if (this.isZJ1 == 2) {
                 this.isZJ1 = 0
@@ -775,11 +784,21 @@
                 this.isZJ1 = this.isZJ1 + 1
               }
             } else {
-              this.$message.error(res.data.successMessage + '！');
+                    this.$message({
+                message: res.data.successMessage + '！',
+                type: 'error',
+                duration:1000
+              });
+             
             }
           })
         } else {
-          this.$message.error('请先上纱！');
+                       this.$message({
+                message: '请先上纱！',
+                type: 'error',
+                duration:1000
+              });
+   
         }
       },
       isEmpty(val) {
@@ -791,7 +810,12 @@
       },
       isFinish() {
         if (this.enabled == false) {
-          this.$message.warning('请先上纱！');
+        
+                        this.$message({
+                message: '请先上纱！',
+                type: 'warning',
+                duration:1000
+              });
         } else {
           this.dialogVisible2 = true
         }
@@ -898,7 +922,8 @@
           if (res.data.result == "ok") {
             this.$message({
               message: '操作成功!',
-              type: 'success'
+              type: 'success',
+              duration:1000
             });
             this.printCode = ""
             this.enabled = false
@@ -917,7 +942,12 @@
               this.isZJ1 = this.isZJ1 + 1
             }
           } else {
-            this.$message.error(res.data.successMessage + '！');
+                          this.$message({
+                message: res.data.successMessage + '！',
+                type: 'error',
+                duration:1000
+              });
+           
           }
         })
 
@@ -970,6 +1000,7 @@
 
         let dateStr = year + '-' + month + '-' + day + ' ' + ' ' + hours + ':' + minutes + ':' + second;
         this.time = dateStr
+        return dateStr
       },
     },
     mounted() {
