@@ -177,18 +177,32 @@ export default {
       var datas; //存放json数据
       // setTimeout(() => { //过300毫秒执行，防止categories_id没有查到就执行报错
       //console.log(that.menu)
+      console.log(searchinfo);
+      console.log(that.menu);
+      console.log(that.categories_id);
       if (that.menu.length > 0) {
         //如果下拉菜单有数据
         if (searchinfo) {
           //如果搜素输入框有东西
-          datas = {
-            //查询当前选择的下拉选项下的搜索数据
-            page: that.pageNum,
-            pageNum: 10,
+          if ((that.company_id = "10000025")) {
+            datas = {
+              //查询当前选择的下拉选项下的搜索数据
+              page: that.pageNum,
+              pageNum: 10,
 
-            categories_id: 8,
-            product_name: searchinfo,
-          };
+              categories_id: that.categories_id,
+              product_name: searchinfo,
+            };
+          } else {
+            datas = {
+              //查询当前选择的下拉选项下的搜索数据
+              page: that.pageNum,
+              pageNum: 10,
+
+              categories_id: 8,
+              product_name: searchinfo,
+            };
+          }
         } else {
           //查询当前选择的下拉选项下的数据
           datas = {
