@@ -743,6 +743,8 @@
             this.gs = res.data.data.zbZjgs
             this.seHao = res.data.data.seHao
             this.canPinPiHao = res.data.data.canPinPiHao
+
+           
             if (res.data.data.wwStatus == 0) { //未完成才扫码穿综
               axios({
                 url: url2,
@@ -788,16 +790,13 @@
                   });
                 }
               })
-            } else if (res.data.data.wwStatus == 1) { //进行中
+            } else if (res.data.data.wwStatus == 1 ||res.data.data.wwStatus == -1) { //进行中
 
               this.cz1 = res.data.data.staffName1
               this.cz2 = res.data.data.staffName2
               this.cz3 = res.data.data.staffName3
               this.cz4 = res.data.data.staffName4
-              this.xs1 = res.data.data.staffXs1
-              this.xs2 = res.data.data.staffXs2
-              this.xs3 = res.data.data.staffXs3
-              this.xs4 = res.data.data.staffXs4
+            
             } else if (res.data.data.wwStatus == 2) { //已完成
 
               Object.assign(this.$data, this.$options.data()) //data数据初始化

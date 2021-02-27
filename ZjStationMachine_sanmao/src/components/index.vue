@@ -179,7 +179,7 @@
 
 
     </el-dialog>
-    <el-dialog title="警告" :visible.sync="dialogVisible3" width="45%">
+    <!-- <el-dialog title="警告" :visible.sync="dialogVisible3" width="45%">
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
 
@@ -192,7 +192,7 @@
 
 
 
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog title="警告" :visible.sync="dialogVisible4" width="45%">
       <div
         style="width:100%;height:20rem;    display: flex;flex-direction: column;align-items: center;justify-content: space-around;">
@@ -219,7 +219,7 @@
         queryShow: false,
         isZJ1: 0,
         printCode: "",
-        dialogVisible3: false,
+        // dialogVisible3: false,
         dialogVisible4: false,
         dialogVisible: false,
         dialogVisible2: false,
@@ -643,11 +643,11 @@
         }
       },
       ssFinish() {
-        if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
-          console.log("不能为空！")
-          this.dialogVisible3 = true
+        // if ((this.ss_zjgh1 == "" && this.ss_zjgh2 == "") || (this.ss_tzss == "" || this.ss_tzss <= 0)) {
+        //   console.log("不能为空！")
+        //   this.dialogVisible3 = true
 
-        } else {
+        // } else {
           let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/zjYarnSpindle";
           let data = {
 
@@ -688,7 +688,7 @@
             }
           })
 
-        }
+        // }
 
       },
       jjFinish() {
@@ -762,8 +762,9 @@
         }
 
         let that = this;
-   
-        if ((this.enabled == false) && (this.isZJ1 == 2)) {
+  //  console.log(this.enabled)
+  //  console.log(this.isZJ1)
+  //       if ((this.enabled == false) && (this.isZJ1 == 2)) {
           axios({
             url: url,
             method: "post",
@@ -792,14 +793,14 @@
              
             }
           })
-        } else {
-                       this.$message({
-                message: '请先上纱！',
-                type: 'error',
-                duration:1000
-              });
+        // } else {
+        //                this.$message({
+        //         message: '请先上纱！',
+        //         type: 'error',
+        //         duration:1000
+        //       });
    
-        }
+        // }
       },
       isEmpty(val) {
         if (val == "") {

@@ -184,6 +184,7 @@ export default {
   left: 0;
   line-height: 3rem;
   top: 0;
+  z-index: 999;
 }
 
 .all-page /deep/ ._v-container {

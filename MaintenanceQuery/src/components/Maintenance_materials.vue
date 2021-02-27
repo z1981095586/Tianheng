@@ -49,7 +49,12 @@
                 </div>
                 <div class="card-content">
                   <div class="content-one">
-                    <span>备品名称:{{ item.product_name }}</span>
+                    <span v-show="item.product_name != null && item.product_name != ''"
+                      >备品名称:{{ item.product_name }}</span
+                    >
+                    <span v-show="item.product_name == null || item.product_name == ''"
+                      >品号:{{ item.serial_number }}</span
+                    >
                   </div>
                 </div>
                 <div class="card-content">
@@ -208,7 +213,6 @@ export default {
           datas = {
             page: that.pageNum,
             pageNum: 10,
-
             categories_id: this.categories_id,
           };
         }
