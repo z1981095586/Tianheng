@@ -718,6 +718,7 @@ query:{
 
         this.showNameTable2 = false
         console.log(this.id2)
+        console.log(this.workShopId)
         // let key=0
         this.showData.forEach(element => {
           //  if(key==0){
@@ -807,7 +808,7 @@ query:{
       getPermission2() {
         console.log(this.staff_code)
         this.showNameTable = false
-
+  console.log(this.workShopId)
         this.dataList.forEach(element => {
           if (element.id == this.id) {
             let url = 'http://106.12.219.66:8227/report/getSimpleReport';
@@ -870,7 +871,8 @@ query:{
       console.log(params)
       this.companyId = params[1];
       this.getData()
-   
+   console.log(this.workShopId)
+   this.workShopId= params[2]
 
     },
     destroyed() {

@@ -20,7 +20,7 @@
 
           <img src="../../static/img/refresh.png" @click="pageNum=1;getData();" />
 
-          <img src="../../static/img/question.png" />
+          <img src="../../static/img/question.png" @click="help=true"  />
         </div>
       </div>
     </div>
@@ -194,17 +194,57 @@
 
 
       </el-dialog>
+      
     </div>
+      <div class="help">
+        <el-drawer
+ :show-close="false"
 
+  :visible.sync="help"
+  direction="ttb"
+  size="100%"
+  >
+   <div class="pdf" style="position:relative" v-show="fileType === 'pdf'"    >
+
+   
+    <pdf
+    
+      :src="src" 
+      :page="currentPage" 
+      @num-pages="pageCount=$event" 
+      @page-loaded="currentPage=$event" 
+      @loaded="loadPdfHandler"> 
+    </pdf>
+ <i class="el-icon-circle-close" @click="help=false" style="position:absolute;top:1rem;right:1rem;font-size:3rem;z-index:999;color:red;" ></i>
+ 
   </div>
+</el-drawer>
+   <div class="arrow" v-show="help" style="position:fixed;bottom:0;left:50%; transform:translate(-50%,0);display:flex;z-index:10000;font-size:2rem;align-items:center; ">
+ <div class="stopBtn"  @click="changePdfPage(0)" >上一页</div>
+    <!-- <span @click="changePdfPage(0)" class="turn" :class="{grey: currentPage==1}">Preview</span> -->
+   &nbsp; {{currentPage}} / {{pageCount}} &nbsp;
+  <div class="stopBtn" @click="changePdfPage(1)">下一页</div>
+    <!-- <span @click="changePdfPage(1)" class="turn" :class="{grey: currentPage==pageCount}">Next</span> -->
+    </div>
+  </div>
+   </div>
 </template>
 
 <script>
+ import pdf from 'vue-pdf'
   import axios from 'axios'
   export default {
+     components: {pdf},
     name: 'index',
     data() {
       return {
+
+         currentPage: 0, // pdf文件页码
+        pageCount: 0, // pdf文件总页数
+        fileType: 'pdf', // 文件类型
+　　　　　src: require('../pdf/help.pdf'), // pdf文件地址
+help:false,
+
         timer: "",
         time: "",
         Id: "",
@@ -284,7 +324,7 @@
             checkStaff: this.fcr_code,
             dcDegreeB: this.ndxs,
             workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
+            feedWearStaff: this.bzsr_code,
             status: 2
           },
           // headers: headers
@@ -296,7 +336,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-   duration:1000
+              duration: 1000
 
             });
             this.dialogVisible2 = false
@@ -308,7 +348,7 @@
 
               message: '保存更新失败！',
               type: 'error',
-   duration:1000
+              duration: 1000
 
             });
           }
@@ -341,7 +381,7 @@
             checkStaff: this.fcr_code,
             dcDegreeB: this.ndxs,
             workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
+            feedWearStaff: this.bzsr_code,
             status: -1
           },
           // headers: headers
@@ -353,7 +393,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-   duration:1000
+              duration: 1000
 
             });
             this.enabled2 = !this.enabled2
@@ -363,7 +403,7 @@
 
               message: '保存更新失败！',
               type: 'error',
-   duration:1000
+              duration: 1000
 
             });
           }
@@ -394,7 +434,7 @@
             checkStaff: this.fcr_code,
             dcDegreeB: this.ndxs,
             workDegree: this.jbxs,
-            feedWearStaffBODY: this.bzsr_code,
+            feedWearStaff: this.bzsr_code,
             status: -1
           },
           // headers: headers
@@ -406,7 +446,7 @@
 
               message: '保存更新成功！',
               type: 'success',
-   duration:1000
+              duration: 1000
 
             });
             this.enabled2 = !this.enabled2
@@ -416,20 +456,20 @@
 
               message: '保存更新失败！',
               type: 'error',
-   duration:1000
+              duration: 1000
 
             });
           }
         })
       },
-      lastPage() {
+      lastPage() { //上一页
 
         if (this.pageNum == 1) {
           this.$message({
 
             message: '没有上一页了！',
             type: 'error',
-   duration:1000
+            duration: 1000
 
           });
         } else {
@@ -439,14 +479,14 @@
         console.log(this.pageNum)
 
       },
-      nextPage() {
+      nextPage() {  //下一页
 
         if (this.pageNum * this.pageSize >= this.tableDataCon.length) {
           this.$message({
 
             message: '最后一页了！',
             type: 'error',
-   duration:1000
+            duration: 1000
 
           });
         } else {
@@ -484,33 +524,33 @@
           .then(response => {
             console.log(response)
             let arr = []
-           if(response.data.result.length>0){
-                 for (let i = 0; i < response.data.result.length; i++) {
-              if(response.data.result[i].priority!=null&&response.data.result[i].priority!=""){
-    arr.push(response.data.result[i])
+            if (response.data.result.length > 0) {
+              for (let i = 0; i < response.data.result.length; i++) {
+                if (response.data.result[i].priority != null && response.data.result[i].priority != "") {
+                  arr.push(response.data.result[i])
+                }
+
               }
-          
-            }
-          
-            that.tableDataCon = arr
-            that.tableData = that.pagination(this.pageNum, this.pageSize, that.tableDataCon)
-                        this.$message({
 
-            message: '数据已刷新！',
-            type: 'success',
-         duration:1000
-
-
-          });
-           }else{
+              that.tableDataCon = arr
+              that.tableData = that.pagination(this.pageNum, this.pageSize, that.tableDataCon)
               this.$message({
 
-            message: '没有计划单！',
-            type: 'error',
-   duration:1000
+                message: '数据已刷新！',
+                type: 'success',
+                duration: 1000
 
-          });
-           }
+
+              });
+            } else {
+              this.$message({
+
+                message: '没有计划单！',
+                type: 'error',
+                duration: 1000
+
+              });
+            }
 
           })
       },
@@ -673,7 +713,7 @@
               this.$message({
                 message: "工号不正确！",
                 type: "warning",
-                   duration:1000
+                duration: 1000
               });
               if (flag == "1") {
                 this.cz1_code = ""
@@ -744,7 +784,7 @@
             this.seHao = res.data.data.seHao
             this.canPinPiHao = res.data.data.canPinPiHao
 
-           
+
             if (res.data.data.wwStatus == 0) { //未完成才扫码穿综
               axios({
                 url: url2,
@@ -777,7 +817,7 @@
 
                     message: '扫码数据已提交！',
                     type: 'success',
-   duration:1000
+                    duration: 1000
 
                   });
                 } else {
@@ -785,18 +825,18 @@
 
                     message: '扫码数据提交失败！',
                     type: 'error',
-   duration:1000
+                    duration: 1000
 
                   });
                 }
               })
-            } else if (res.data.data.wwStatus == 1 ||res.data.data.wwStatus == -1) { //进行中
+            } else if (res.data.data.wwStatus == 1 || res.data.data.wwStatus == -1) { //进行中
 
               this.cz1 = res.data.data.staffName1
               this.cz2 = res.data.data.staffName2
               this.cz3 = res.data.data.staffName3
               this.cz4 = res.data.data.staffName4
-            
+
             } else if (res.data.data.wwStatus == 2) { //已完成
 
               Object.assign(this.$data, this.$options.data()) //data数据初始化
@@ -804,7 +844,7 @@
 
                 message: '已完成！',
                 type: 'warning',
-   duration:1000
+                duration: 1000
 
               });
             }
@@ -831,7 +871,7 @@
 
               message: '数据查询失败！',
               type: 'error',
-   duration:1000
+              duration: 1000
 
             });
           }
@@ -841,10 +881,37 @@
         });
 
       },
+            changePdfPage (val) {
+        //  console.log(val)
+        //  console.log(this.currentPage)
+        //  console.log(this.pageCount)
+        //     if(this.currentPage==this.pageCount){
+        //   this.currentPage=1
+        //   return
+        // }
+        if (val === 0 && this.currentPage > 1) {
+          this.currentPage--
+          // console.log(this.currentPage)
+        }
+        if (val === 1 && this.currentPage < this.pageCount) {
+          this.currentPage++
+          // console.log(this.currentPage)
+        }
+     
+      },
+
+      // pdf加载时
+      loadPdfHandler (e) {
+        this.currentPage = 1 // 加载的时候先加载第一页
+      }
     },
     mounted() {
       this.timer = setInterval(this.getTime, 1000);
     },
+    　created() {
+　　　　// 有时PDF文件地址会出现跨域的情况,这里最好处理一下
+　　　　this.src = pdf.createLoadingTask(this.src)
+　　},
     watch: {
       dialogVisible(val) {
         if (val == true) {
