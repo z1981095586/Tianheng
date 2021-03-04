@@ -20,10 +20,7 @@
             :key="'sz_' + index"
             >{{ item.label }}：{{ item.staffName }}</span
           >
-          <span
-            v-show="isChaPian"
-            v-for="(item, index) in nameList2"
-            :key="'cp_' + index"
+          <span v-show="isChaPian" v-for="(item, index) in nameList2" :key="'cp_' + index"
             >{{ item.label }}：{{ item.staffName }}</span
           ><span v-show="isMachine">机台：701@王某人</span>
           <span v-show="isStopCar || isMachine"
@@ -58,14 +55,12 @@
     <illustration
       v-show="isChaPian"
       @cpChange="getGroup(15, 'cp')"
+      :nameList3="nameList3"
     ></illustration>
     <stopcar v-show="isStopCar" @dcChange="dcChange"></stopcar>
     <loweraxis v-show="isLower"></loweraxis>
-    <machinemaintenance
-      v-show="isMachine"
-      :problem="problem"
-    ></machinemaintenance>
-    <out v-show="isKaiChu" @kcChange="getGroup(4, 'sz')"></out>
+    <machinemaintenance v-show="isMachine" :problem="problem"></machinemaintenance>
+    <out v-show="isKaiChu" @kcChange="getGroup(4, 'sz')" :nameList4="nameList4"></out>
   </div>
 </template>
 
@@ -135,6 +130,8 @@ export default {
       nameList: [], //上轴顶部栏名字列表
 
       nameList2: [], //插片顶部栏名字列表
+      nameList3: [], //当前插片员工数组
+      nameList4: [], //当前开出员工数组
       dcClass: "",
       dcName: "",
       problem: null,
@@ -161,15 +158,14 @@ export default {
           },
         },
       }).then((res) => {
-        //console.log(res);
+        console.log(res);
         let nameList = res.data.result.staffList;
         that.className = res.data.result.group_name;
         nameList.forEach((element) => {
-          element.label =
-            element.staff_organization_name + "0" + element.order_num;
+          element.label = element.staff_organization_name + "0" + element.order_num;
           element.staffName = element.staff_name;
         });
-
+        console.log(nameList);
         if (page == "sz") {
           this.szChange(nameList);
         } else if (page == "cp") {
@@ -184,16 +180,14 @@ export default {
       //上轴换班事件
       this.nameList = [];
       let str = "";
-      //console.log(nameList);
+      console.log(nameList);
+      this.nameList4 = nameList;
       for (let i = 0; i < nameList.length; i++) {
         if (nameList[i].label == "开出工01" && nameList[i].staffName != "") {
           this.kcgName = nameList[i].staffName;
           //console.log(this.kcgName);
         }
-        if (
-          nameList[i].label.indexOf("上轴工") != -1 &&
-          nameList[i].staffName != ""
-        ) {
+        if (nameList[i].label.indexOf("上轴工") != -1 && nameList[i].staffName != "") {
           str = str + nameList[i].staffName + "，";
         }
       }
@@ -219,11 +213,9 @@ export default {
       //插片换班事件
 
       let str = "";
+      this.nameList3 = nameList;
       for (let i = 0; i < nameList.length; i++) {
-        if (
-          nameList[i].label.indexOf("插片工") != -1 &&
-          nameList[i].staffName != ""
-        ) {
+        if (nameList[i].label.indexOf("插片工") != -1 && nameList[i].staffName != "") {
           str = str + nameList[i].staffName + "，";
         }
       }

@@ -25,11 +25,18 @@
           </div>
         </div>
         <div class="pane">
-          <div class="text">
+          <div
+            class="text"
+            style="position: absolute; top: -20%; left: 0%; width: 100%; height: 20%"
+          >
             <div class="text_con">
-              <span>品名：扫码号显示....</span><span>品名：扫码号显示....</span>
+              <span>品号：{{ pin_hao }}</span>
+              <span>色号：{{ se_hao }}</span>
+              <span>批次：{{ pi_ci }}</span>
             </div>
-            <div class="text_con"><span>品名：扫码号显示....</span></div>
+            <div class="text_con">
+              <span>轴号：{{ axis_no }}</span>
+            </div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
           <div class="pane_con">
@@ -217,6 +224,7 @@ let host = "http://120.55.124.53:12140";
 import axios from "axios";
 export default {
   name: "illustration",
+  props: ["nameList3"],
   data() {
     return {
       company_id: "10000025",
@@ -257,7 +265,7 @@ export default {
       ],
       StaffNameList: [],
       machineList: [], //插片机台列表
-      pch: "SZ2020010240001-1",
+      pch: "",
       total_num: null,
       page_size: 16,
       page_num: 1,
@@ -267,6 +275,10 @@ export default {
       mac_type_id: "030100",
       className: "6",
       search_machine: "",
+      se_hao: "",
+      pin_hao: "",
+      pi_ci: "",
+      axis_no: "",
     };
   },
   methods: {
@@ -560,48 +572,52 @@ export default {
       }
     },
     saoma() {
-      if (this.issaoma == false) {
-        if (this.checkedMachineNum == "") {
-          this.$message({
-            message: "请先选一台机器！",
-            type: "warning",
-          });
-        } else {
-          //console.log(this.staffList);
-          let staffList = [];
-          this.staffList.forEach((element) => {
-            staffList.push(element.staffName);
-          });
-          let url = host + "/api/stationMachine/caPian";
+      this.issaoma = true;
+      this.$nextTick((x) => {
+        this.$refs.inputs.focus();
+      });
+      // if (this.issaoma == false) {
+      //   if (this.checkedMachineNum == "") {
+      //     this.$message({
+      //       message: "请先选一台机器！",
+      //       type: "warning",
+      //     });
+      //   } else {
+      //     //console.log(this.staffList);
+      //     let staffList = [];
+      //     this.staffList.forEach((element) => {
+      //       staffList.push(element.staffName);
+      //     });
+      //     let url = host + "/api/stationMachine/caPian";
 
-          let method = "post";
-          let data = {
-            selectInfo: {
-              company_id: this.company_id,
-            },
-            machine_id: this.checkedMachineNum,
-            ca_pian_ren: String(staffList),
-          };
+      //     let method = "post";
+      //     let data = {
+      //       selectInfo: {
+      //         company_id: this.company_id,
+      //       },
+      //       machine_id: this.checkedMachineNum,
+      //       ca_pian_ren: String(staffList),
+      //     };
 
-          let that = this;
+      //     let that = this;
 
-          axios({
-            url: url,
-            method: method,
-            data: data,
-          }).then((response) => {
-            if (response.data.message == "成功") {
-              this.$message({
-                message: "操作成功！",
-                type: "success",
-              });
-              this.issaoma = true;
-            } else {
-              this.$message.error(response.data.message);
-            }
-          });
-        }
-      }
+      //     axios({
+      //       url: url,
+      //       method: method,
+      //       data: data,
+      //     }).then((response) => {
+      //       if (response.data.message == "成功") {
+      //         this.$message({
+      //           message: "操作成功！",
+      //           type: "success",
+      //         });
+      //         this.issaoma = true;
+      //       } else {
+      //         this.$message.error(response.data.message);
+      //       }
+      //     });
+      //   }
+      // }
     },
     wanchen() {
       if (this.issaoma == true) {
@@ -616,7 +632,7 @@ export default {
           this.staffList.forEach((element) => {
             staffList.push(element.staffName);
           });
-          let url = host + "/api/stationMachine/caPian";
+          let url = host + "/api/stationMachine/wanCencaPian";
 
           let method = "post";
           let data = {
@@ -624,11 +640,37 @@ export default {
               company_id: this.company_id,
             },
             machine_id: this.checkedMachineNum,
-            ca_pian_ren: String(staffList),
+            print_code: this.pch,
+            ca_pian_gon_dan: {
+              staffs: [
+                {
+                  ban_ci: this.nameList3[0].group_name,
+                  gon_hao: this.nameList3[0].id,
+                  xin_ming: this.nameList3[0].staffName,
+                },
+                {
+                  ban_ci: this.nameList3[1].group_name,
+                  gon_hao: this.nameList3[1].id,
+                  xin_ming: this.nameList3[1].staffName,
+                },
+                {
+                  ban_ci: this.nameList3[2].group_name,
+                  gon_hao: this.nameList3[2].id,
+                  xin_ming: this.nameList3[2].staffName,
+                },
+                {
+                  ban_ci: this.nameList3[3].group_name,
+                  gon_hao: this.nameList3[3].id,
+                  xin_ming: this.nameList3[3].staffName,
+                },
+              ],
+              zou_hao: this.axis_no,
+            },
           };
 
           let that = this;
 
+          console.log(data);
           axios({
             url: url,
             method: method,
@@ -789,6 +831,31 @@ export default {
   },
   mounted() {},
   watch: {
+    pch(val) {
+      //批轴号事件
+      let url = host + "/api/zj/getWarpWorkOrder";
+      let that = this;
+      if (val != "") {
+        axios({
+          url: url,
+          method: "post",
+          data: {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            bar_code: val,
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res);
+          that.se_hao = res.data.result.se_hao;
+          that.pin_hao = res.data.result.pinh;
+          that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
+          that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
+          // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+        });
+      }
+    },
     szShiftShow(val) {
       if (val == true) {
         this.page_num2 = 1;

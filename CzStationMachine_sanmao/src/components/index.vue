@@ -137,6 +137,7 @@
             <span style="margin-right:1rem;margin-top:3rem">加班系数</span>
             <input v-model="jbxs" style="margin-top:3rem" />
           </div>
+          
         </div>
         <div class="con2_con" style="width:30%;">
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
@@ -144,10 +145,11 @@
             <input v-model="bzsr" @blur="selectStaffCode('6')" style="margin-top:3rem" />
           </div>
           <div class="con1_bottom_con" style="height:50%;width:100%;flex-direction:row;justify-content:flex-start">
-            <!-- <span style="margin-right:1rem;margin-top:3rem">加班系数</span>
-            <input v-model="jbxs" style="margin-top:3rem" /> -->
+            <span style="margin-right:1rem;margin-top:3rem">补综丝数</span>
+            <input v-model="bzss" style="margin-top:3rem" />
           </div>
         </div>
+        
         <div class="con2_con">
           <span style="    margin-bottom: 1.5rem;
     margin-top: 1rem;">备注</span>
@@ -286,6 +288,7 @@ help:false,
         jbxs: "",
         bz: "",
         bzsr: "",
+        bzss:"",
         bzsr_code: "",
         planYield: "",
         productName: "", //品名
@@ -312,17 +315,19 @@ help:false,
           headers: header,
           data: {
             zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
+         staffCode1: this.cz1_code==""?null:this.cz1_code ,
+            staffCode2: this.cz2_code==""?null:this.cz2_code ,
+            staffCode3: this.cz3_code==""?null:this.cz3_code ,
+            staffCode4: this.cz4_code==""?null:this.cz4_code ,
             staffXs1: this.xs1,
             staffXs2: this.xs2,
             staffXs3: this.xs3,
             staffXs4: this.xs4,
+            wearCount:this.bzss,
             rootNumber: this.gs,
             checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
+            dcDegree: this.ndxs,
+            wearCount:this.bzss,
             workDegree: this.jbxs,
             feedWearStaff: this.bzsr_code,
             status: 2
@@ -369,17 +374,18 @@ help:false,
           headers: header,
           data: {
             zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
+            staffCode1: this.cz1_code==""?null:this.cz1_code ,
+            staffCode2: this.cz2_code==""?null:this.cz2_code ,
+            staffCode3: this.cz3_code==""?null:this.cz3_code ,
+            staffCode4: this.cz4_code==""?null:this.cz4_code ,
             staffXs1: this.xs1,
             staffXs2: this.xs2,
             staffXs3: this.xs3,
             staffXs4: this.xs4,
             rootNumber: this.gs,
             checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
+            dcDegree: this.ndxs,
+            wearCount:this.bzss,
             workDegree: this.jbxs,
             feedWearStaff: this.bzsr_code,
             status: -1
@@ -422,17 +428,18 @@ help:false,
           headers: header,
           data: {
             zenJinId: this.Id,
-            staffCode1: this.cz1_code,
-            staffCode2: this.cz2_code,
-            staffCode3: this.cz3_code,
-            staffCode4: this.cz4_code,
+           staffCode1: this.cz1_code==""?null:this.cz1_code ,
+            staffCode2: this.cz2_code==""?null:this.cz2_code ,
+            staffCode3: this.cz3_code==""?null:this.cz3_code ,
+            staffCode4: this.cz4_code==""?null:this.cz4_code ,
             staffXs1: this.xs1,
             staffXs2: this.xs2,
             staffXs3: this.xs3,
             staffXs4: this.xs4,
             rootNumber: this.gs,
             checkStaff: this.fcr_code,
-            dcDegreeB: this.ndxs,
+            dcDegree: this.ndxs,
+            wearCount:this.bzss,
             workDegree: this.jbxs,
             feedWearStaff: this.bzsr_code,
             status: -1
@@ -802,7 +809,7 @@ help:false,
                   //      staffXs4:this.xs4,
                   //      rootNumber:this.gs,
                   //      checkStaff:this.fcr_code,
-                  //      dcDegreeB:this.ndxs,
+                  //      dcDegree:this.ndxs,
                   //      workDegree:this.jbxs,
                   //  feedWearStaffBODY:this.bzsr_code,
                   status: 1

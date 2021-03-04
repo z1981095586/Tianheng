@@ -1173,7 +1173,7 @@ export default {
               company_id: that.company_id,
             },
             remain_length: "0",
-            print_code: that.pch, //批次号
+            // print_code: that.pch, //批次号
             machine_id: that.checkedMachineNum, //选中机台号
           },
           // headers: headers

@@ -316,7 +316,7 @@
       v-show="szMainShow"
     >
       <div class="operationPane_con_uppershaft">
-        <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
+        <div class="pch" v-show="issaoma"><input ref="inputs" v-model="pch" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
@@ -324,8 +324,8 @@
               class="chooseBtn_con_btn"
               style="background: white; border: 1px solid black"
             >
-              <span v-show="!isCheckedMachine">请扫码</span
-              ><span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
+              <span v-show="machine_id == ''">请扫码</span
+              ><span v-show="machine_id != ''">{{ machine_id }}</span>
             </div>
           </div>
           <div class="chooseBtn_con">
@@ -349,12 +349,18 @@
           </div>
         </div>
         <div class="pane">
-          <div class="text">
+          <div
+            class="text"
+            style="position: absolute; top: -20%; left: 0%; width: 100%; height: 20%"
+          >
             <div class="text_con">
-              <span>品名：{{ axis_no }}</span
-              ><span>品名：{{ product_name }}</span>
+              <span>品号：{{ pin_hao }}</span>
+              <span>色号：{{ se_hao }}</span>
+              <span>批次：{{ pi_ci }}</span>
             </div>
-            <div class="text_con"><span>品名：扫码号显示....</span></div>
+            <div class="text_con">
+              <span>轴号：{{ axis_no }}</span>
+            </div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
           <div class="pane_con">
@@ -396,6 +402,7 @@ import axios from "axios";
 var host = "http://120.55.124.53:12140";
 export default {
   name: "Out",
+  props: ["nameList4"],
   data() {
     return {
       szIndexShow: true,
@@ -495,6 +502,11 @@ export default {
       axis_no: "",
       isYunzhuan: "运转班", // 当前选择的班
       checkedName: "",
+      pi_ci: "",
+      pin_hao: "",
+      se_hao: "",
+      axis_no: "",
+      machine_id: "",
     };
   },
   methods: {
@@ -809,22 +821,55 @@ export default {
     },
     saoma() {
       this.issaoma = true;
+      this.$nextTick((x) => {
+        this.$refs.inputs.focus();
+      });
     },
     wanchen() {
+      console.log(this.issaoma);
       if (this.issaoma == true) {
-        if (this.pch != "") {
-          this.$message({
-            message: "开出成功！",
-            type: "success",
+        if (this.print_code != "" && this.machine_id != "") {
+          let url = host + "/api/stationMachine/kaiCu";
+          let data = {
+            selectInfo: {
+              company_id: this.company_id,
+            },
+            shang_zou_gon_dan: {
+              kai_cu_gong_hao: this.nameList4[0].id,
+              kai_cu_name: this.nameList4[0].staff_name,
+            },
+            print_code: this.pch,
+          };
+          console.log(data);
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            data: data,
+          }).then((response) => {
+            if (response.data.message == "成功") {
+              this.$message({
+                message: "开出成功！",
+                type: "success",
+              });
+            } else {
+              this.$message.error(response.data.message);
+            }
+            this.se_hao = "";
+            this.pch = "";
+            this.pi_ci = "";
+            this.pin_hao = "";
+            this.machine_id = "";
+            that.closeCurrentPage();
           });
-          this.issaoma = false;
         } else {
           this.$message({
-            message: "请重新扫码!",
+            message: "码没有读取到！",
             type: "warning",
           });
         }
       }
+      this.issaoma = false;
     },
     toChooseMachine() {
       this.szMainShow = false;
@@ -854,6 +899,8 @@ export default {
     },
     save() {
       //确认按钮事件
+      console.log(this.checkedName);
+      console.log(this.StaffNameList);
       if (this.checkedName != "") {
         //console.log(this.Aclass);
         //console.log(this.Bclass);
@@ -867,7 +914,13 @@ export default {
             order_num: null,
           },
         ];
-
+        for (let i = 0; i < this.StaffNameList.length; i++) {
+          {
+            if (this.StaffNameList[i].staff_name == this.checkedName) {
+              staffList[0].id = this.StaffNameList[i].id;
+            }
+          }
+        }
         if (this.isChooseAclass == 0) {
           id = this.Aclass.id;
         } else if (this.isChooseAclass == 1) {
@@ -876,7 +929,7 @@ export default {
           id = this.Cclass.id;
         }
 
-        staffList[0].id = this.staffList[0].id;
+        // staffList[0].id = this.staffList[0].id;
         staffList[0].order_num = 1;
 
         let url = host + "/api/group/shift";
@@ -1198,25 +1251,26 @@ export default {
     },
     pch(val) {
       //批轴号事件
-      let url = host + "/api/stationMachine/getAxisInfo";
+      let url = host + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({
           url: url,
           method: "post",
-
           data: {
             selectInfo: {
               company_id: that.company_id,
             },
-            print_code: val,
+            bar_code: val,
           },
-
           // headers: headers
         }).then((res) => {
-          //console.log(res);
-          that.axis_no = res.data.result.axis_no;
-          that.product_name = res.data.result.product_name;
+          console.log(res);
+          that.se_hao = res.data.result.se_hao;
+          that.pin_hao = res.data.result.pinh;
+          that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
+          that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
         });
       }
     },

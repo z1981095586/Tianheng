@@ -226,14 +226,14 @@
       v-show="szMainShow"
     >
       <div class="operationPane_con_uppershaft">
-        <div class="pch"><input v-model="pch" v-show="issaoma" /></div>
+        <div class="pch"><input v-model="pch" ref="inputs" v-show="issaoma" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label" style="background: none; width: 77%">
               <el-input
                 style="width: 100%; font-size: 1.5rem"
                 v-model="gh"
-                placeholder="请输入箍号"
+                placeholder="请输入筘号"
               ></el-input>
             </div>
             <div
@@ -289,13 +289,17 @@
           </div>
         </div>
         <div class="pane">
-          <div class="text">
-            <div class="text_con">
-              <span>色号：{{ se_hao }}</span
-              ><span>品名：{{ product_name }}</span>
-            </div>
+          <div
+            class="text"
+            style="position: absolute; top: -20%; left: 0%; width: 100%; height: 20%"
+          >
             <div class="text_con">
               <span>品号：{{ pin_hao }}</span>
+              <span>色号：{{ se_hao }}</span>
+              <span>批次：{{ pi_ci }}</span>
+            </div>
+            <div class="text_con">
+              <span>轴号：{{ axis_no }}</span>
             </div>
           </div>
           <div class="pane_title"><span>注意事项</span></div>
@@ -665,9 +669,10 @@ export default {
         id: null,
       },
       pch: "",
-      product_name: "",
+      pi_ci: "",
       pin_hao: "",
       se_hao: "",
+      axis_no: "",
       machine_id: "",
       isYunzhuan: null,
       className: "",
@@ -676,7 +681,7 @@ export default {
       kcgId: "",
       KaiCheName: [],
       KaiCheStaffNameList: [],
-      page_size3: 21,
+      page_size3: 12,
       page_num3: 1,
       total_num3: null,
       gh: "",
@@ -1037,6 +1042,9 @@ export default {
     },
     saoma() {
       this.issaoma = true;
+      this.$nextTick((x) => {
+        this.$refs.inputs.focus();
+      });
     },
     wanchen() {
       //console.log(this.issaoma);
@@ -1046,48 +1054,57 @@ export default {
         nameList.push(element.staffName);
       });
       console.log(this.staffList2);
-      // if (this.issaoma == true) {
-      //   if (this.print_code != "" && this.machine_id != "") {
-      //     let url = host + "/api/stationMachine/onAxis";
-      //     let data = {
-      //       selectInfo: {
-      //         company_id: this.company_id,
-      //       },
-      //       machine_id: this.machine_id,
-      //       print_code: this.pch,
-      //       shang_zhou_ren: String(nameList),
-      //       kai_ce_gong_id: this.kcgId,
-      //       gu_hao: this.gh,
-      //     };
-      //     let that = this;
-      //     axios({
-      //       url: url,
-      //       method: "post",
-      //       data: data,
-      //     }).then((response) => {
-      //       if (response.data.message == "成功") {
-      //         this.$message({
-      //           message: "上轴成功！",
-      //           type: "success",
-      //         });
-      //       } else {
-      //         this.$message.error(response.data.message);
-      //       }
-      //       this.se_hao = "";
-      //       this.pch = "";
-      //       this.product_name = "";
-      //       this.pin_hao = "";
-      //       this.machine_id = "";
-      //       that.closeCurrentPage();
-      //     });
-      //   } else {
-      //     this.$message({
-      //       message: "码没有读取到！",
-      //       type: "warning",
-      //     });
-      //   }
-      // }
-      // this.issaoma = false;
+      if (this.issaoma == true) {
+        if (this.print_code != "" && this.machine_id != "") {
+          let url = host + "/api/stationMachine/onAxis";
+          let data = {
+            selectInfo: {
+              company_id: this.company_id,
+            },
+            shang_zou_gon_dan: {
+              gong_hao_1: this.staffList2[0].id,
+              name1: this.staffList2[0].staffName,
+              gong_hao_2: this.staffList2[1].id,
+              name2: this.staffList2[1].staffName,
+              gong_hao_3: this.staffList2[2].id,
+              name3: this.staffList2[2].staffName,
+            },
+            print_code: this.pch,
+            // shang_zhou_ren: String(nameList),
+            kai_ce_ren_gong_hao: this.kcgId,
+            kai_ce_ren_name: this.kcgName,
+            // gu_hao: this.gh,
+          };
+          console.log(data);
+          let that = this;
+          axios({
+            url: url,
+            method: "post",
+            data: data,
+          }).then((response) => {
+            if (response.data.message == "成功") {
+              this.$message({
+                message: "上轴成功！",
+                type: "success",
+              });
+            } else {
+              this.$message.error(response.data.message);
+            }
+            this.se_hao = "";
+            this.pch = "";
+            this.pi_ci = "";
+            this.pin_hao = "";
+            this.machine_id = "";
+            that.closeCurrentPage();
+          });
+        } else {
+          this.$message({
+            message: "码没有读取到！",
+            type: "warning",
+          });
+        }
+      }
+      this.issaoma = false;
     },
     toChooseMachine() {
       this.szMainShow = false;
@@ -1159,7 +1176,7 @@ export default {
             order_num: null,
           },
         ];
-
+        console.log(this.Aclass);
         if (this.isChooseAclass == 0) {
           id = this.Aclass.id;
         } else if (this.isChooseAclass == 1) {
@@ -1599,8 +1616,9 @@ export default {
           console.log(res);
           that.se_hao = res.data.result.se_hao;
           that.pin_hao = res.data.result.pinh;
-          that.product_name = res.data.result.mc;
-          that.machine_id = res.data.result.machine_id;
+          that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
+          that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
         });
       }
     },
@@ -1638,6 +1656,11 @@ export default {
       //当选择上轴组页面显示时加载数据
       if (val == true) {
         this.getGroup();
+      }
+    },
+    szMainShow(val) {
+      if (val == false) {
+        Object.assign(this.$data, this.$options.data()); //data数据初始化
       }
     },
 
@@ -1840,7 +1863,7 @@ export default {
 
 .text {
   position: absolute;
-  top: -20%;
+  top: -15%;
   left: 0%;
   width: 100%;
   height: 20%;

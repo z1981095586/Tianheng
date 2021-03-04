@@ -857,6 +857,7 @@ export default {
           this.checkMachineColor[i].isShutDown = false;
         }
       }
+      console.log(this.checkMachineColor);
       //防止数据更新视图不更新
       this.checkMachineColor.push({});
       this.checkMachineColor.pop();
