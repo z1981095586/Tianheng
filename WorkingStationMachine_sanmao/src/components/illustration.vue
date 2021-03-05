@@ -181,7 +181,7 @@
         </el-checkbox-group>
       </div>
       <div class="operationPane_con_machineList_btn">
-        <div class="operationPane_con_machineList_btn_left">
+        <div class="operationPane_con_machineList_btn_left" style="width: 56%">
           <div
             class="operationPane_con_machineList_btn_leftBtn"
             @click="startChange()"
@@ -195,6 +195,13 @@
             @click="save()"
           >
             保存
+          </div>
+          <div
+            class="operationPane_con_machineList_btn_leftBtn"
+            @click="clear()"
+            :style="isStartChange ? 'background:#A3D897;' : 'background:#8C8C8C;'"
+          >
+            清空
           </div>
         </div>
         <div class="operationPane_con_machineList_btn_right">
@@ -825,6 +832,15 @@ export default {
           if (this.staffList[i].label == label) {
             this.staffList[i].isSelected = true;
           }
+        }
+      }
+    },
+    clear() {
+      console.log(this.staffList);
+      for (let i = 0; i < this.staffList.length; i++) {
+        if (this.staffList[i].isSelected == true) {
+          this.staffList[i].staffName = "";
+          this.staffList[i].id = "";
         }
       }
     },

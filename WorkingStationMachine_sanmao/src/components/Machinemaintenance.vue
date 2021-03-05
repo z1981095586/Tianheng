@@ -90,20 +90,20 @@
         <div class="allPage_con_left_middle">
           <div class="allPage_con_left_top_left">
             <div class="allPage_con_left_top_left_title">品号</div>
-            <textarea disabled placeholder="选择机台后获取..."></textarea>
+            <textarea disabled style="font-size: 1.5rem" v-model="pin_hao2"></textarea>
           </div>
           <div class="allPage_con_left_top_left" style="width: 50%">
-            <div class="allPage_con_left_top_left_title">品名</div>
-            <textarea disabled placeholder="选择机台后获取..."></textarea>
+            <div class="allPage_con_left_top_left_title">色号</div>
+            <textarea disabled style="font-size: 1.5rem" v-model="se_hao2"></textarea>
           </div>
         </div>
         <div class="allPage_con_left_bottom">
           <div class="allPage_con_left_top_left" style="width: 100%">
-            <div class="allPage_con_left_top_left_title" style="height: 30%">品名</div>
+            <div class="allPage_con_left_top_left_title" style="height: 30%">批次</div>
             <textarea
               disabled
-              placeholder="选择机台后获取..."
-              style="height: 70%; width: 98.3%"
+              v-model="pi_ci2"
+              style="height: 70%; width: 98.3%; font-size: 1.5rem"
             ></textarea>
           </div>
         </div>
@@ -197,6 +197,9 @@ export default {
       page_num2: 1,
       page_size2: 16,
       total_num2: null,
+      pi_ci2: "",
+      pin_hao2: "",
+      se_hao2: "",
     };
   },
   methods: {
@@ -414,6 +417,32 @@ export default {
   },
   mounted() {},
   watch: {
+    checkedMachineNum(val) {
+      console.log(val);
+      if (val != "") {
+        let url = host + "/api/zj/getInfoByMachineID";
+        let that = this;
+
+        axios({
+          url: url,
+          method: "post",
+          data: {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            machine_id: val,
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res);
+          that.se_hao2 = res.data.result.se_hao;
+          that.pin_hao2 = res.data.result.pin_hao;
+          that.pi_ci2 = res.data.result.pi_ci;
+          // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          // that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
+        });
+      }
+    },
     isMachine(val) {
       this.getMachineList();
     },

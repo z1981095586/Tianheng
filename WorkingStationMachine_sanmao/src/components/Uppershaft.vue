@@ -238,10 +238,7 @@
             </div>
             <div
               class="pane_btn_one"
-              @click="
-                szMainShow = false;
-                isKaiChe = true;
-              "
+              @click="toMain()"
               style="background: #a3d897; width: 77%; font-size: 1.5rem"
             >
               <span>更换开车工</span>
@@ -688,6 +685,11 @@ export default {
     };
   },
   methods: {
+    toMain() {
+      this.szIndexShow = false;
+      this.szMainShow = false;
+      this.isKaiChe = true;
+    },
     search() {
       this.getMachineList(this.search_machine);
     },
@@ -782,7 +784,7 @@ export default {
         this.kcgName = this.staffList2[0].staffName;
         this.kcgId = this.staffList2[0].id;
       }
-      //console.log(this.staffList2);
+      console.log(this.staffList2);
 
       // this.szMachineShow = true;
       // this.getMachineList()
@@ -798,24 +800,28 @@ export default {
     changeClass2(e) {
       if (e == "a") {
         this.isChooseAclass2 = 0;
+
         this.staffList2 = [
           {
             label: "上轴工01",
             staffName: this.Aclass2.szg1,
             isSelected: false,
             groupId: this.Aclass2.id,
+            id: this.Aclass2.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Aclass2.szg2,
             isSelected: false,
             groupId: this.Aclass2.id,
+            id: this.Aclass2.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Aclass2.szg3,
             isSelected: false,
             groupId: this.Aclass2.id,
+            id: this.Aclass2.szg3Id,
           },
         ];
       } else if (e == "b") {
@@ -826,18 +832,21 @@ export default {
             staffName: this.Bclass2.szg1,
             isSelected: false,
             groupId: this.Bclass2.id,
+            id: this.Bclass2.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Bclass2.szg2,
             isSelected: false,
             groupId: this.Bclass2.id,
+            id: this.Bclass2.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Bclass2.szg3,
             isSelected: false,
             groupId: this.Bclass2.id,
+            id: this.Bclass2.szg3Id,
           },
         ];
       } else if (e == "c") {
@@ -848,21 +857,25 @@ export default {
             staffName: this.Cclass2.szg1,
             isSelected: false,
             groupId: this.Cclass2.id,
+            id: this.Cclass2.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Cclass2.szg2,
             isSelected: false,
             groupId: this.Cclass2.id,
+            id: this.Cclass2.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Cclass2.szg3,
             isSelected: false,
             groupId: this.Cclass2.id,
+            id: this.Cclass2.szg3Id,
           },
         ];
       }
+      console.log(this.Aclass2);
     },
     sureClass() {
       // this.$emit('szChange', this.staffList)
@@ -890,18 +903,21 @@ export default {
             staffName: this.Aclass.szg1,
             isSelected: false,
             groupId: this.Aclass.id,
+            id: this.Aclass.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Aclass.szg2,
             isSelected: false,
             groupId: this.Aclass.id,
+            id: this.Aclass.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Aclass.szg3,
             isSelected: false,
             groupId: this.Aclass.id,
+            id: this.Aclass.szg3Id,
           },
         ];
       } else if (e == "b") {
@@ -912,18 +928,21 @@ export default {
             staffName: this.Bclass.szg1,
             isSelected: false,
             groupId: this.Bclass.id,
+            id: this.Bclass.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Bclass.szg2,
             isSelected: false,
             groupId: this.Bclass.id,
+            id: this.Bclass.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Bclass.szg3,
             isSelected: false,
             groupId: this.Bclass.id,
+            id: this.Bclass.szg3Id,
           },
         ];
       } else if (e == "c") {
@@ -934,18 +953,21 @@ export default {
             staffName: this.Cclass.szg1,
             isSelected: false,
             groupId: this.Cclass.id,
+            id: this.Cclass.szg1Id,
           },
           {
             label: "上轴工02",
             staffName: this.Cclass.szg2,
             isSelected: false,
             groupId: this.Cclass.id,
+            id: this.Cclass.szg2Id,
           },
           {
             label: "上轴工03",
             staffName: this.Cclass.szg3,
             isSelected: false,
             groupId: this.Cclass.id,
+            id: this.Cclass.szg3Id,
           },
         ];
       }
@@ -1583,14 +1605,15 @@ export default {
       console.log(this.kcgId);
       console.log(this.kcgName);
     },
-    gobackKaiChe() {
-      this.isKaiChe = false;
-      this.szMainShow = true;
-    },
+    // gobackKaiChe() {
+    //   this.isKaiChe = false;
+    //   this.szMainShow = true;
+    // },
   },
   mounted() {},
   watch: {
     isKaiChe(val) {
+      console.log(val);
       if (val == true) {
         this.KaiCheName = [];
         this.page_num3 = 1;
@@ -1659,9 +1682,9 @@ export default {
       }
     },
     szMainShow(val) {
-      if (val == false) {
-        Object.assign(this.$data, this.$options.data()); //data数据初始化
-      }
+      // if (val == false) {
+      //   Object.assign(this.$data, this.$options.data()); //data数据初始化
+      // }
     },
 
     // isYunzhuan(val){

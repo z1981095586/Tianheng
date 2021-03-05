@@ -221,9 +221,11 @@ export default {
       if (label == "上轴") {
         this.src = require("../pdf/sz.pdf");
         this.loadPdf();
+        this.help = true;
       } else if (label == "插片") {
         this.src = require("../pdf/cp.pdf");
         this.loadPdf();
+        this.help = true;
       }
       // else if (label == "开出") {
       //   this.src = require("../pdf/kc.pdf");
@@ -238,7 +240,7 @@ export default {
       //   this.src = require("../pdf/jx.pdf");
       //     this.loadPdf();
       // }
-      this.help = true;
+      // this.help = true;
     },
     loadPdf() {
       var loadingTask = pdf.createLoadingTask(this.src);
@@ -275,8 +277,11 @@ export default {
         } else if (page == "cp") {
           this.cpChange(nameList);
         } else if (page == "dc") {
-          this.dcClass = res.data.result.group_name;
-          this.dcName = res.data.result.staffList[0].staff_name;
+          // this.dcClass = res.data.result.group_name;
+          // this.dcName = res.data.result.staffList[0].staff_name;
+
+          this.dcClass = localStorage.getItem("dcClass");
+          this.dcName = localStorage.getItem("dcName");
         }
       });
     },

@@ -298,18 +298,14 @@
               </div>
             </div>
             <div class="tz_main_left_left_bottom">
-              <div class="tz_main_left_left_bottom_span" style="height: 15%">
-                <span style="width: 3rem">品种:</span><span>我是品种我是品种</span>
+              <div class="tz_main_left_left_bottom_span" style="height: 20%">
+                <span style="width: 3rem">品号:</span><span>{{ pin_hao2 }}</span>
               </div>
-              <div class="tz_main_left_left_bottom_span" style="height: 35%">
-                <span style="width: 7rem">品种:</span
-                ><span>我是品种我是品种我是品种我是品种我是品种我是品种我是品种</span>
+              <div class="tz_main_left_left_bottom_span" style="height: 20%">
+                <span style="width: 3rem">色号:</span><span>{{ se_hao2 }}</span>
               </div>
-              <div class="tz_main_left_left_bottom_span" style="height: 50%">
-                <span style="width: 9rem"> 规格:</span
-                ><span
-                  >我是规格我是规格我是规格我是规格我是规格我是规格我是规格我是规格我是规格我是规格我是规格我是规格</span
-                >
+              <div class="tz_main_left_left_bottom_span" style="height: 20%">
+                <span style="width: 3rem"> 批次:</span><span>{{ pi_ci2 }}</span>
               </div>
             </div>
           </div>
@@ -545,6 +541,10 @@ export default {
       se_hao: "",
       axis_no: "",
       machine_id: "",
+
+      pi_ci2: "",
+      pin_hao2: "",
+      se_hao2: "",
 
       tzMainShow: false,
       xzMainShow: false,
@@ -1259,6 +1259,32 @@ export default {
   },
   mounted() {},
   watch: {
+    checkedMachineNum2(val) {
+      console.log(val);
+      if (val != "") {
+        let url = host + "/api/zj/getInfoByMachineID";
+        let that = this;
+
+        axios({
+          url: url,
+          method: "post",
+          data: {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            machine_id: val,
+          },
+          // headers: headers
+        }).then((res) => {
+          console.log(res);
+          that.se_hao2 = res.data.result.se_hao;
+          that.pin_hao2 = res.data.result.pin_hao;
+          that.pi_ci2 = res.data.result.pi_ci;
+          // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          // that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
+        });
+      }
+    },
     pch(val) {
       //批轴号事件
       let url = host + "/api/zj/getWarpWorkOrder";
@@ -1410,6 +1436,8 @@ body /deep/ .el-message--success .el-message__content {
 .tz_main_left_left_bottom_span span {
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
 }
 
 .tz_main_right {

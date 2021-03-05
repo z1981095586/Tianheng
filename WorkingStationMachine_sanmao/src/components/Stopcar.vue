@@ -109,6 +109,7 @@
         <div class="checked_machine_btn_one" @click="shutdownMachine()">关机</div>
         <div class="checked_machine_btn_one" @click="toLuobu" v-show="enabled">落布</div>
         <div class="checked_machine_btn_one" @click="toPz" v-show="enabled">改品种</div>
+
         <div
           class="checked_machine_btn_one"
           style="background: #808080"
@@ -123,9 +124,11 @@
         >
           改品种
         </div>
+
+        <div class="checked_machine_btn_one" @click="chooseAll()">全选</div>
         <div
           class="checked_machine_btn_one"
-          style="margin-left: 12rem; background: #808080"
+          style="margin-left: 7rem; background: #808080"
           @click="goback2()"
         >
           返回
@@ -143,7 +146,7 @@
         <el-checkbox-group
           :max="1"
           @change="checkName"
-          v-model="checkMachine"
+          v-model="checkNames"
           style="width: 100%; height: 100%"
         >
           <el-checkbox-button
@@ -210,7 +213,8 @@
     >
       <input
         v-model="pzPrintCode"
-        style="position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem; border: none"
+        ref="inp"
+        style="position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem"
         v-show="showPrintCode"
       />
       <div class="pz_left">
@@ -221,12 +225,14 @@
               >选中机台：{{ checkedMachine }}</span
             >
           </div>
-          <div class="pz_left_top_title"><span>品号：843-349-3495</span></div>
           <div class="pz_left_top_title">
-            <span>品名：我是品名，我是品名，我是品名品名</span>
+            <span>品号：{{ pin_hao2 }}</span>
+          </div>
+          <div class="pz_left_top_title">
+            <span>色号：{{ se_hao2 }}</span>
           </div>
           <div class="pz_left_top_title" style="height: 3rem">
-            <span>规格：我是规格我是规格，我是规格，我是规格我是</span>
+            <span>批次：{{ pi_ci2 }}</span>
           </div>
           <div class="pz_left_top_title2" style="margin-top: 1rem">
             <span>品种信息</span>
@@ -235,10 +241,10 @@
             <span>品号：</span><span style="color: #8c8c8c">{{ pin_hao }}</span>
           </div>
           <div class="pz_left_top_title2">
-            <span>品名：</span><span style="color: #8c8c8c">{{ product_name }}</span>
+            <span>色号：</span><span style="color: #8c8c8c">{{ se_hao }}</span>
           </div>
           <div class="pz_left_top_title2" style="height: 3rem">
-            <span>规格：</span><span style="color: #8c8c8c">{{ se_hao }}</span>
+            <span>批次：</span><span style="color: #8c8c8c">{{ pi_ci }}</span>
           </div>
         </div>
         <div class="pz_left_bottom">
@@ -312,13 +318,13 @@
       <div class="pz_left">
         <div class="pz_left_top">
           <div class="pz_left_top_title" style="margin-top: 6rem">
-            <span>品号：843-349-3495</span>
+            <span>品号：{{ pin_hao2 }}</span>
           </div>
           <div class="pz_left_top_title">
-            <span>品名：我是品名，我是品名，我是品名品名</span>
+            <span>色号：{{ se_hao2 }}</span>
           </div>
           <div class="pz_left_top_title" style="height: 3rem">
-            <span>规格：我是规格我是规格，我是规格，我是规格我是</span>
+            <span>批次：{{ pi_ci2 }}</span>
           </div>
         </div>
         <div class="pz_left_bottom">
@@ -352,6 +358,7 @@ export default {
 
       checkedClass: "9",
       checkedName: "",
+      checkNames: [],
       checkMachine: [], //挡车选中机台列表
       checkMachineColor: [], //挡车选中机台列表颜色
       NameList: [],
@@ -378,6 +385,9 @@ export default {
       product_name: "",
       pin_hao: "",
       se_hao: "",
+      pin_hao2: "",
+      se_hao2: "",
+      pi_ci2: "",
     };
   },
   methods: {
@@ -407,7 +417,7 @@ export default {
           });
         } else {
           let url = host + "/api/stationMachine/luoBu";
-          let url2 = host + "/api/stationMachine/onAxis";
+          let url2 = host + "/api/stationMachine/downAxis";
           let that = this;
           axios({
             url: url,
@@ -428,30 +438,22 @@ export default {
             if (res.data.message == "成功") {
               //落布成功了再换品种
               axios({
-                url: url,
+                url: url2,
                 method: "post",
                 data: {
                   selectInfo: {
                     company_id: that.company_id,
                   },
                   machine_id: that.checkedMachine,
-                  print_code: that.pzPrintCode,
-                  change_variety: 1,
                   remain_length: that.jzLength,
                 },
 
                 // headers: headers
               }).then((response) => {
-                if (response.data.message == "成功") {
-                  this.$message({
-                    message: "改品种成功！",
-                    type: "success",
-                  });
+                if (res.data.message == "成功") {
+                  this.$message.success("改品种成功！");
                 } else {
-                  this.$message({
-                    message: res.data.message,
-                    type: "warning",
-                  });
+                  this.$message.error("改品种失败！");
                 }
               });
             } else {
@@ -464,6 +466,9 @@ export default {
         }
       } else {
         this.showPrintCode = true;
+        this.$nextTick((x) => {
+          this.$refs.inp.focus();
+        });
       }
     },
     CurrentNameChange(e) {
@@ -473,46 +478,46 @@ export default {
     },
     getGroup(classname) {
       //获取组员信息
+      this.checkedName = localStorage.getItem("dcName");
+      // let url2 = host + "/api/group/getGroupDetail";
+      // let that = this;
+      // axios({
+      //   url: url2,
+      //   method: "post",
+      //   data: {
+      //     selectInfo: {
+      //       company_id: that.company_id,
+      //     },
+      //     shiftGroup: {
+      //       id: 16,
+      //     },
+      //   },
 
-      let url2 = host + "/api/group/getGroupDetail";
-      let that = this;
-      axios({
-        url: url2,
-        method: "post",
-        data: {
-          selectInfo: {
-            company_id: that.company_id,
-          },
-          shiftGroup: {
-            id: 16,
-          },
-        },
-
-        // headers: headers
-      }).then((res) => {
-        //console.log(res);
-        if (classname == "A班") {
-          res.data.result.forEach((element) => {
-            if (element.group_name == "挡车班A组") {
-              //console.log(element);
-              that.checkedName = element.staffList[0].staff_name;
-            }
-          });
-        } else if (classname == "B班") {
-          res.data.result.forEach((element) => {
-            if (element.group_name == "挡车班B组") {
-              that.checkedName = element.staffList[0].staff_name;
-            }
-          });
-        } else if (classname == "C班") {
-          res.data.result.forEach((element) => {
-            if (element.group_name == "挡车班C组") {
-              that.checkedName = element.staffList[0].staff_name;
-            }
-          });
-        }
-        //console.log(that.checkedName);
-      });
+      //   // headers: headers
+      // }).then((res) => {
+      //   //console.log(res);
+      //   if (classname == "A班") {
+      //     res.data.result.forEach((element) => {
+      //       if (element.group_name == "挡车班A组") {
+      //         //console.log(element);
+      //         that.checkedName = element.staffList[0].staff_name;
+      //       }
+      //     });
+      //   } else if (classname == "B班") {
+      //     res.data.result.forEach((element) => {
+      //       if (element.group_name == "挡车班B组") {
+      //         that.checkedName = element.staffList[0].staff_name;
+      //       }
+      //     });
+      //   } else if (classname == "C班") {
+      //     res.data.result.forEach((element) => {
+      //       if (element.group_name == "挡车班C组") {
+      //         that.checkedName = element.staffList[0].staff_name;
+      //       }
+      //     });
+      //   }
+      //   //console.log(that.checkedName);
+      // });
     },
     getStaffList() {
       let url = "http://106.12.219.66:8227/report/getSimpleReport";
@@ -791,44 +796,69 @@ export default {
               order_num: 1,
             },
           ];
-          let url2 = host + "/api/group/shift";
-          let data2 = {
-            selectInfo: {
-              company_id: that.company_id,
-            },
-            shiftGroup: {
-              id: this.checkedClass,
-            },
-            staffList: staffList,
-          };
-          //console.log(data2);
-          axios({
-            url: url2,
-            method: "post",
-            data: data2,
-          }).then((res) => {
-            //console.log(res);
-            if (res.data.message == "成功") {
-              that.$message({
-                message: "换班成功！",
-                type: "success",
-              });
 
-              this.isCar = false;
-              this.isMachine = false;
-              this.shiftShow = false;
-              this.PzShow = false;
-              this.isMainShow = true;
-              this.checkMachine = [];
-              this.$emit("dcChange", this.checkedName);
-              //console.log(this.checkedName);
-            } else {
-              this.$message({
-                message: "发生错误！",
-                type: "warning",
-              });
-            }
-          });
+          let checkedClass = "";
+          if (this.checkedClass == "9") {
+            checkedClass = "挡车班A班";
+          } else if (this.checkedClass == "10") {
+            checkedClass = "挡车班B班";
+          } else if (this.checkedClass == "11") {
+            checkedClass = "挡车班C班";
+          }
+          staffList[0].class = checkedClass;
+          staffList[0].name = this.checkedName;
+          console.log(staffList);
+          console.log(checkedClass);
+
+          localStorage.setItem("dcName", staffList[0].name);
+          localStorage.setItem("dcClass", staffList[0].class);
+          localStorage.setItem("dcId", staffList[0].id);
+          this.$emit("dcChange", this.checkedName);
+          console.log(this.checkMachine);
+          this.checkMachine = [];
+          this.isCar = false;
+          this.isMachine = false;
+          this.shiftShow = false;
+          this.PzShow = false;
+          this.isMachine = true;
+          // let url2 = host + "/api/group/shift";
+          // let data2 = {
+          //   selectInfo: {
+          //     company_id: that.company_id,
+          //   },
+          //   shiftGroup: {
+          //     id: this.checkedClass,
+          //   },
+          //   staffList: staffList,
+          // };
+          // //console.log(data2);
+          // axios({
+          //   url: url2,
+          //   method: "post",
+          //   data: data2,
+          // }).then((res) => {
+          //   //console.log(res);
+          //   if (res.data.message == "成功") {
+          //     that.$message({
+          //       message: "换班成功！",
+          //       type: "success",
+          //     });
+
+          //     this.isCar = false;
+          //     this.isMachine = false;
+          //     this.shiftShow = false;
+          //     this.PzShow = false;
+          //     this.isMainShow = true;
+          //     this.checkMachine = [];
+          //     this.$emit("dcChange", this.checkedName);
+          //     //console.log(this.checkedName);
+          //   } else {
+          //     this.$message({
+          //       message: "发生错误！",
+          //       type: "warning",
+          //     });
+          //   }
+          // });
         });
       } else {
         this.$message({
@@ -852,16 +882,55 @@ export default {
     },
     openMachine() {
       //开机
-      for (let i = 0; i < this.checkMachineColor.length; i++) {
-        if (this.checkMachineColor[i].isChecked == true) {
-          this.checkMachineColor[i].isShutDown = false;
+
+      if (localStorage.getItem("dcId")) {
+        let arr = [];
+        for (let i = 0; i < this.checkMachineColor.length; i++) {
+          if (this.checkMachineColor[i].isChecked == true) {
+            arr.push(this.checkMachineColor[i].label);
+          }
         }
+        this.checkMachineColor;
+        let url = host + "/api/stationMachine/dangCe";
+
+        let method = "post";
+        let data = {
+          selectInfo: {
+            company_id: this.company_id,
+          },
+          machine_id_list: arr,
+          staff_code: localStorage.getItem("dcId"),
+          staff_name: localStorage.getItem("dcName"),
+        };
+
+        let that = this;
+        console.log(data);
+        axios({
+          url: url,
+          method: method,
+          data: data,
+        }).then((res) => {
+          if (res.data.message == "成功") {
+            this.$message({
+              message: "开机成功！",
+              type: "success",
+            });
+            for (let i = 0; i < this.checkMachineColor.length; i++) {
+              if (this.checkMachineColor[i].isChecked == true) {
+                this.checkMachineColor[i].isShutDown = false;
+              }
+            }
+
+            //防止数据更新视图不更新
+            this.checkMachineColor.push({});
+            this.checkMachineColor.pop();
+          } else {
+            this.$message.error(res.data.message);
+          }
+        });
+      } else {
+        this.$message.error("请先登录！");
       }
-      console.log(this.checkMachineColor);
-      //防止数据更新视图不更新
-      this.checkMachineColor.push({});
-      this.checkMachineColor.pop();
-      //防止数据更新视图不更新
     },
     // 对象排序
     sortByKey(array, key) {
@@ -873,15 +942,54 @@ export default {
     },
     shutdownMachine() {
       //关机
-      for (let i = 0; i < this.checkMachineColor.length; i++) {
-        if (this.checkMachineColor[i].isChecked == true) {
-          this.checkMachineColor[i].isShutDown = true;
+      if (localStorage.getItem("dcId")) {
+        let arr = [];
+        for (let i = 0; i < this.checkMachineColor.length; i++) {
+          if (this.checkMachineColor[i].isChecked == true) {
+            arr.push(this.checkMachineColor[i].label);
+          }
         }
+        this.checkMachineColor;
+        let url = host + "/api/stationMachine/guanJi";
+
+        let method = "post";
+        let data = {
+          selectInfo: {
+            company_id: this.company_id,
+          },
+          machine_id_list: arr,
+          // staff_code: localStorage.getItem("dcId"),
+          // staff_name: localStorage.getItem("dcName"),
+        };
+
+        let that = this;
+        console.log(data);
+        axios({
+          url: url,
+          method: method,
+          data: data,
+        }).then((res) => {
+          if (res.data.message == "成功") {
+            this.$message({
+              message: "关机成功！",
+              type: "success",
+            });
+            for (let i = 0; i < this.checkMachineColor.length; i++) {
+              if (this.checkMachineColor[i].isChecked == true) {
+                this.checkMachineColor[i].isShutDown = true;
+              }
+            }
+
+            //防止数据更新视图不更新
+            this.checkMachineColor.push({});
+            this.checkMachineColor.pop();
+          } else {
+            this.$message.error(res.data.message);
+          }
+        });
+      } else {
+        this.$message.error("请先登录！");
       }
-      //防止数据更新视图不更新
-      this.checkMachineColor.push({});
-      this.checkMachineColor.pop();
-      //防止数据更新视图不更新
     },
     cancelPz() {
       //品种取消返回
@@ -893,8 +1001,39 @@ export default {
       this.isMachine = false;
       this.isCar = true;
     },
+    select() {
+      let machine_id;
+      for (let i = 0; i < this.checkMachineColor.length; i++) {
+        if (this.checkMachineColor[i].isChecked == true) {
+          machine_id = this.checkMachineColor[i].label;
+        }
+      }
+      let url = host + "/api/zj/getInfoByMachineID";
+      let that = this;
+
+      axios({
+        url: url,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+          },
+          machine_id: machine_id,
+        },
+        // headers: headers
+      }).then((res) => {
+        console.log(res);
+        that.se_hao2 = res.data.result.se_hao;
+        that.pin_hao2 = res.data.result.pin_hao;
+        that.pi_ci2 = res.data.result.pi_ci;
+        // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+        // that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
+      });
+    },
     toLuobu() {
       //显示落布界面
+      console.log(this.checkMachineColor);
+
       this.shiftShow = false;
 
       this.PzShow = false;
@@ -903,6 +1042,7 @@ export default {
       this.isMachine = false;
       this.isCar = false;
       this.LbShow = true;
+      this.select();
       this.checkMachineColor.forEach((element) => {
         if (element.isChecked == true) {
           this.checkedMachine = element.label;
@@ -921,13 +1061,14 @@ export default {
     },
     toPz() {
       //显示品种界面
+
       this.isMainShow = false;
       this.isCar = false;
       this.LbShow = false;
       this.shiftShow = false;
       this.isMachine = false;
       this.PzShow = true;
-
+      this.select();
       this.checkMachineColor.forEach((element) => {
         if (element.isChecked == true) {
           this.checkedMachine = element.label;
@@ -936,12 +1077,43 @@ export default {
     },
     toCar() {
       //机台选择界面
-      this.isMainShow = false;
-      this.isCar = false;
-      this.LbShow = false;
       this.PzShow = false;
+      this.isMachine = false;
+      this.isMainShow = false;
+      this.LbShow = false;
       this.shiftShow = false;
-      this.isMachine = true;
+      this.isCar = true;
+      this.checkMachineColor = [];
+      let url2 = host + "/api/stationMachine/getBindMachines";
+      let that = this;
+      axios({
+        url: url2,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+          },
+          staff_id: localStorage.getItem("dcId"),
+        },
+      }).then((res) => {
+        console.log(res);
+        let arr = [];
+        if (res.data.result.length > 0) {
+          for (let i = 0; i < res.data.result.length; i++) {
+            arr.push({
+              label: res.data.result[i],
+              isChecked: false,
+              isShutDown: false,
+            });
+          }
+          this.checkMachineColor = arr;
+        }
+      });
+    },
+    chooseAll() {
+      for (let i = 0; i < this.checkMachineColor.length; i++) {
+        this.checkMachineColor[i].isChecked = true;
+      }
     },
     toShift() {
       //换班界面
@@ -956,36 +1128,72 @@ export default {
       //显示主菜单界面
       this.isCar = false;
       this.isMachine = false;
-      this.shiftShow = false;
+
       this.LbShow = false;
       this.PzShow = false;
-      this.isMainShow = true;
+      this.isMainShow = false;
+      this.shiftShow = true;
       this.checkMachine = [];
     },
     goback2() {
       this.isCar = false;
-      this.isMainShow = false;
+
       this.PzShow = false;
       this.LbShow = false;
       this.shiftShow = false;
-      this.isMachine = true;
+      this.isMachine = false;
+      this.isMainShow = true;
     },
     sureMachine() {
       //确认机台
 
-      //console.log(this.checkMachineColor);
+      console.log(this.checkMachine);
       if (this.checkMachineColor.length == 0) {
         this.$message({
           message: "请先选择至少一台！",
           type: "warning",
         });
       } else {
-        this.PzShow = false;
-        this.isMachine = false;
-        this.isMainShow = false;
-        this.LbShow = false;
-        this.shiftShow = false;
-        this.isCar = true;
+        // this.PzShow = false;
+        // this.isMachine = false;
+        // this.isMainShow = false;
+        // this.LbShow = false;
+        // this.shiftShow = false;
+        // this.isCar = true;
+        console.log(localStorage.getItem("dcId"));
+        console.log(this.checkMachine);
+
+        let url = host + "/api/stationMachine/bindMachines";
+        let that = this;
+        axios({
+          url: url,
+          method: "post",
+          data: {
+            selectInfo: {
+              company_id: that.company_id,
+            },
+            staff_id: localStorage.getItem("dcId"),
+            machine_id_list: this.checkMachine,
+          },
+        }).then((res) => {
+          if (res.data.message == "成功") {
+            this.$message({
+              message: "保存成功！",
+              type: "success",
+            });
+          } else {
+            this.$message.error(res.data.message);
+          }
+          this.checkMachine = [];
+          this.checkNames = [];
+          this.PzShow = false;
+          this.isMachine = false;
+
+          this.LbShow = false;
+          this.shiftShow = false;
+          this.isCar = false;
+          this.isMainShow = true;
+        });
       }
     },
     checkName(e) {
@@ -998,26 +1206,26 @@ export default {
   watch: {
     pzPrintCode(val) {
       //批轴号事件
-      let url = host + "/api/stationMachine/getAxisInfo";
+      let url = host + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({
           url: url,
           method: "post",
-
           data: {
             selectInfo: {
               company_id: that.company_id,
             },
-            print_code: val,
+            bar_code: val,
           },
-
           // headers: headers
         }).then((res) => {
-          //console.log(res);
+          console.log(res);
           that.se_hao = res.data.result.se_hao;
-          that.pin_hao = res.data.result.pin_hao;
-          that.product_name = res.data.result.product_name;
+          that.pin_hao = res.data.result.pinh;
+          that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
+          // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          // that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
         });
       }
     },
