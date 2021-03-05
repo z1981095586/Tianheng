@@ -18,7 +18,7 @@
       v-show="xzMainShow"
     >
       <div class="operationPane_con_uppershaft">
-        <div class="pch"><input style="width: 15rem" v-model="pch" /></div>
+        <div class="pch"><input style="width: 15rem" v-model="pch" ref="inputs" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label">
@@ -47,11 +47,17 @@
           </div>
         </div>
         <div class="pane">
-          <div class="text" style="width: 100%">
+          <div
+            class="text"
+            style="position: absolute; top: -20%; left: 0%; width: 100%; height: 20%"
+          >
             <div class="text_con">
-              <span>色号：{{ se_hao }}</span
-              ><span>品名：{{ product_name }}</span
-              ><span>品号：{{ pin_hao }}</span>
+              <span>品号：{{ pin_hao }}</span>
+              <span>色号：{{ se_hao }}</span>
+              <span>批次：{{ pi_ci }}</span>
+            </div>
+            <div class="text_con">
+              <span>轴号：{{ axis_no }}</span>
             </div>
           </div>
           <div class="pane_title"><span>规格</span></div>
@@ -330,11 +336,7 @@
                 <span>{{ jzLength }}</span>
               </div>
             </div>
-            <div
-              class="chooseBtn_con_btn"
-              @click="toChooseMachine()"
-              style="width: 98%; height: 4rem"
-            >
+            <div class="chooseBtn_con_btn" @click="hz()" style="width: 98%; height: 4rem">
               <span>换轴</span>
             </div>
             <div
@@ -538,9 +540,11 @@ export default {
   data() {
     return {
       pch: "",
-      product_name: "",
+      pi_ci: "",
       pin_hao: "",
       se_hao: "",
+      axis_no: "",
+      machine_id: "",
 
       tzMainShow: false,
       xzMainShow: false,
@@ -1097,6 +1101,51 @@ export default {
         ];
       }
     },
+    hz() {
+      console.log(this.checkedMachineNum2);
+      console.log(this.zbLength);
+      console.log(this.jzLength);
+      let url = host + "/api/stationMachine/luoBu";
+      let url2 = host + "/api/stationMachine/downAxis";
+      let that = this;
+      axios({
+        url: url,
+        method: "post",
+        data: {
+          selectInfo: {
+            company_id: that.company_id,
+          },
+          pce_cloth_each: {
+            machine_id: that.checkedMachine,
+            yield_meter: String(that.zbLength),
+          },
+        },
+
+        // headers: headers
+      }).then((res) => {
+        if (res.data.message == "成功") {
+          axios({
+            url: url2,
+            method: "post",
+            data: {
+              selectInfo: {
+                company_id: that.company_id,
+              },
+              machine_id: that.checkedMachineNum2,
+              remain_length: that.jzLength,
+            },
+
+            // headers: headers
+          }).then((response) => {
+            if (res.data.message == "成功") {
+              this.$message.success("换轴成功！");
+            } else {
+              this.$message.error("换轴失败！");
+            }
+          });
+        }
+      });
+    },
     checkedMachine(e) {
       //选择机台事件
 
@@ -1212,30 +1261,30 @@ export default {
   watch: {
     pch(val) {
       //批轴号事件
-      let url = host + "/api/stationMachine/getAxisInfo";
+      let url = host + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({
           url: url,
           method: "post",
-
           data: {
             selectInfo: {
               company_id: that.company_id,
             },
-            print_code: val,
+            bar_code: val,
           },
-
           // headers: headers
         }).then((res) => {
-          //console.log(res);
+          console.log(res);
           that.se_hao = res.data.result.se_hao;
-          that.pin_hao = res.data.result.pin_hao;
-          that.product_name = res.data.result.product_name;
-          that.machine_id = res.data.result.machine_id;
+          that.pin_hao = res.data.result.pinh;
+          that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
+          that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
         });
       }
     },
+
     xzShiftShow(val) {
       //当选择上轴组页面显示时加载数据
       if (val == true) {

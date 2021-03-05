@@ -238,7 +238,7 @@
     name: "index",
     data: () => ({
 
-  return:{
+
   
       companyID: "", //公司ID
       library_num: "", //几号库
@@ -354,7 +354,7 @@
       },
       end_date: 3,
       crmxFlag:false
-  }
+  
     }),
 
 
@@ -600,7 +600,7 @@ this.getInAndOutRecord()
               library_name: library_name,
               axis_name: axis_name,
               style_name: style_name,
-              library_num_list: [1, 2,100]
+              library_num_list: [1, 2,4,100]
             }
           },
           headers: {

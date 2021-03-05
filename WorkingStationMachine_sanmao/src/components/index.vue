@@ -34,7 +34,7 @@
 
           <img src="../../static/img/refresh.png" @click="reload()" />
 
-          <img src="../../static/img/question.png" />
+          <img src="../../static/img/question.png" @click="showhelp()" />
         </div>
       </div>
     </div>
@@ -61,11 +61,58 @@
     <loweraxis v-show="isLower"></loweraxis>
     <machinemaintenance v-show="isMachine" :problem="problem"></machinemaintenance>
     <out v-show="isKaiChu" @kcChange="getGroup(4, 'sz')" :nameList4="nameList4"></out>
+    <div class="help">
+      <el-drawer :show-close="false" :visible.sync="help" direction="ttb" size="100%">
+        <div class="pdf" style="position: relative" v-show="fileType === 'pdf'">
+          <pdf
+            :src="src"
+            :page="currentPage"
+            @num-pages="pageCount = $event"
+            @page-loaded="currentPage = $event"
+            @loaded="loadPdfHandler"
+          >
+          </pdf>
+          <i
+            class="el-icon-circle-close"
+            @click="help = false"
+            style="
+              position: absolute;
+              top: 1rem;
+              right: 1rem;
+              font-size: 3rem;
+              z-index: 999;
+              color: red;
+            "
+          ></i>
+        </div>
+      </el-drawer>
+    </div>
+    <div
+      class="arrow"
+      v-show="help"
+      style="
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        display: flex;
+        z-index: 10000;
+        font-size: 2rem;
+        align-items: center;
+      "
+    >
+      <div class="stopBtn" @click="changePdfPage(0)">上一页</div>
+      <!-- <span @click="changePdfPage(0)" class="turn" :class="{grey: currentPage==1}">Preview</span> -->
+      &nbsp; {{ currentPage }} / {{ pageCount }} &nbsp;
+      <div class="stopBtn" @click="changePdfPage(1)">下一页</div>
+      <!-- <span @click="changePdfPage(1)" class="turn" :class="{grey: currentPage==pageCount}">Next</span> -->
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import pdf from "vue-pdf";
 var host = "http://120.55.124.53:12140";
 import Uppershaft from "./Uppershaft"; //上轴操作面板
 import illustration from "./illustration"; //扫码插片操作面板
@@ -75,6 +122,7 @@ import Machinemaintenance from "./Machinemaintenance"; //机修操作面板
 import Out from "./Out"; //开出操作面板
 export default {
   components: {
+    pdf,
     illustration,
     Uppershaft,
     Stopcar,
@@ -86,6 +134,12 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      currentPage: 0, // pdf文件页码
+      pageCount: 0, // pdf文件总页数
+      fileType: "pdf", // 文件类型
+      src: null, // pdf文件地址
+      help: false,
+
       company_id: "10000025",
       tabList: [
         {
@@ -140,6 +194,56 @@ export default {
     };
   },
   methods: {
+    changePdfPage(val) {
+      if (val === 0 && this.currentPage > 1) {
+        this.currentPage--;
+        // console.log(this.currentPage)
+      }
+      if (val === 1 && this.currentPage < this.pageCount) {
+        this.currentPage++;
+        // console.log(this.currentPage)
+      }
+    },
+
+    // pdf加载时
+    loadPdfHandler(e) {
+      this.currentPage = 1; // 加载的时候先加载第一页
+    },
+    showhelp() {
+      let label = "";
+      for (let i = 0; i < this.tabList.length; i++) {
+        if (this.tabList[i].class == "oneTab_Choosed") {
+          label = this.tabList[i].label;
+        }
+      }
+      this.src = null;
+
+      if (label == "上轴") {
+        this.src = require("../pdf/sz.pdf");
+        this.loadPdf();
+      } else if (label == "插片") {
+        this.src = require("../pdf/cp.pdf");
+        this.loadPdf();
+      }
+      // else if (label == "开出") {
+      //   this.src = require("../pdf/kc.pdf");
+      //  this.loadPdf();
+      // }else if (label == "挡车") {
+      //   this.src = require("../pdf/dc.pdf");
+      //   this.loadPdf();
+      // }else if (label == "下轴") {
+      //   this.src = require("../pdf/xz.pdf");
+      //     this.loadPdf();
+      // }else if (label == "机修") {
+      //   this.src = require("../pdf/jx.pdf");
+      //     this.loadPdf();
+      // }
+      this.help = true;
+    },
+    loadPdf() {
+      var loadingTask = pdf.createLoadingTask(this.src);
+      this.src = loadingTask;
+    },
     getGroup(id, page) {
       //第一个参数groupId，第二个参数页面缩写
       //获取当前班次(当班分组)(倒数第二级分组)
@@ -356,6 +460,10 @@ export default {
   mounted() {
     this.getGroup(4, "sz"); //默认
   },
+  created() {
+    // 有时PDF文件地址会出现跨域的情况,这里最好处理一下
+    this.src = pdf.createLoadingTask(this.src);
+  },
   watch: {
     isShangZhou(val) {
       if (val == true) {
@@ -393,7 +501,20 @@ body /deep/ .el-message--success .el-message__content {
   width: 100%;
   height: 768px;
 }
+.stopBtn {
+  width: 10rem;
+  height: 3.5rem;
+  font-size: 1.6rem;
+  background: #a3d897;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #717171;
+  border-right: 3px solid #717171;
+  display: flex;
 
+  align-items: center;
+  justify-content: center;
+}
 .header {
   width: 100%;
   height: 80px;
