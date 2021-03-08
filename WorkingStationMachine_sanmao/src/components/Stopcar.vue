@@ -1111,8 +1111,15 @@ export default {
       });
     },
     chooseAll() {
+      let num = 0;
       for (let i = 0; i < this.checkMachineColor.length; i++) {
         this.checkMachineColor[i].isChecked = true;
+        num++;
+      }
+      if (num > 1 || num == 0) {
+        this.enabled = false;
+      } else {
+        this.enabled = true;
       }
     },
     toShift() {

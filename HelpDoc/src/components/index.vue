@@ -101,10 +101,30 @@ if(response.data.message=="response to success"){
    let that=this
    //console.log(that.other.name)
     if(this.other.dir&&this.other.name){
+
+    axios({
+          url: "http://106.12.219.66:14100/mes/file_download",
+          method: "post",
+          // headers: header,
+          data: {
+            dir:this.other.dir,
+            name:this.other.name,
+            file_type:0
+          },
+          // headers: headers
+        }).then((res) => {
+console.log(res)
+if(res.data.data=="文件不存在"){
+             this.$message({
+            message: '文件不存在！',
+            type: 'warning'
+          });
+}else{
       axios.post("http://106.12.219.66:14100/mes/file_download", {   dir:this.other.dir,
             name:this.other.name,file_type:0}, {
             responseType: 'blob'
           }).then(function(res){
+            console.log(res)
             var blob = res.data;
            // FileReader主要用于将文件内容读入内存
             var reader = new FileReader();
@@ -124,18 +144,8 @@ if(response.data.message=="response to success"){
               document.body.removeChild(a);
             }
           });
-//     axios({
-//           url: "http://106.12.219.66:14100/mes/file_download",
-//           method: "post",
-//           // headers: header,
-//           data: {
-//             dir:this.other.dir,
-//             name:this.other.name
-//           },
-//           // headers: headers
-//         }).then((res) => {
-// //console.log(res)
-//         })
+}
+        })
     }else{
                this.$message({
             message: '请先选择模块！',
