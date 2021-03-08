@@ -92,7 +92,7 @@
   export default {
     name: "stockIn",
     data: () => ({
-        return:{
+ 
       network: true,
       time: "", //当前时间
       staff_name: "", //操作人姓名
@@ -109,7 +109,7 @@
       autofocus: true,
       product_nameList: [],
       isxuni: null
-        }
+        
     }),
 
     methods: {

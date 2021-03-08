@@ -77,7 +77,7 @@
     name: "people",
 
     data: () => ({
-      return:{
+    
 number:"",
 
    
@@ -106,7 +106,7 @@ number:"",
 
       ],
       isxuni:null
-      }
+    
       
     }),
 
@@ -117,7 +117,8 @@ number:"",
         },
 
         show(e) {
-       
+       console.log(e)
+       console.log(this.visible)
           this.input = e.target;
           // this.layout = e.target.dataset.layout;
           document.getElementById("keyinput").blur();

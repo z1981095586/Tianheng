@@ -64,7 +64,7 @@
   export default {
     name: "stockOut",
     data: () => ({
-        return:{
+     
       network: true,
       time: "", //当前时间
       staff_name: "", //操作人姓名
@@ -78,7 +78,7 @@
       showclose: false,
       isxuni: null,
       print_code: ""
-        }
+        
     }),
 
     methods: {

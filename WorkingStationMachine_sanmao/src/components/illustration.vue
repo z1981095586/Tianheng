@@ -12,9 +12,15 @@
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>
-            <div class="chooseBtn_con_btn" @click="toChooseMachine()">
+            <!-- <div class="chooseBtn_con_btn" @click="toChooseMachine()">
               <span v-show="!isCheckedMachine">请选择</span
-              ><span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
+              >
+              <span v-show="isCheckedMachine">{{ checkedMachineNum }}</span>
+            </div> -->
+            <div class="chooseBtn_con_btn">
+              <!--扫码带出不选机台了-->
+              <span v-show="machine_id != ''">{{ machine_id }}</span>
+              <span v-show="machine_id == ''">请扫码</span>
             </div>
           </div>
           <div class="chooseBtn_con">
@@ -286,6 +292,7 @@ export default {
       pin_hao: "",
       pi_ci: "",
       axis_no: "",
+      machine_id: "",
     };
   },
   methods: {
@@ -628,9 +635,9 @@ export default {
     },
     wanchen() {
       if (this.issaoma == true) {
-        if (this.checkedMachineNum == "") {
+        if (this.machine_id == "") {
           this.$message({
-            message: "请先选择一台机器！",
+            message: "请先扫码！",
             type: "warning",
           });
         } else {
@@ -646,7 +653,7 @@ export default {
             selectInfo: {
               company_id: this.company_id,
             },
-            machine_id: this.checkedMachineNum,
+            machine_id: this.machine_id,
             print_code: this.pch,
             ca_pian_gon_dan: {
               staffs: [
@@ -868,7 +875,7 @@ export default {
           that.pin_hao = res.data.result.pinh;
           that.pi_ci = res.data.result.zen_jin_ji_hua.pi_ci;
           that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
-          // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
+          that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
         });
       }
     },
