@@ -554,7 +554,7 @@ body /deep/ .el-message--success .el-message__content {
   color: white;
   font-size: 1rem;
   font-weight: 600;
-
+  max-width: 70%;
   text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1277,9 +1277,11 @@ export default {
           // headers: headers
         }).then((res) => {
           console.log(res);
-          that.se_hao2 = res.data.result.se_hao;
-          that.pin_hao2 = res.data.result.pin_hao;
-          that.pi_ci2 = res.data.result.pi_ci;
+
+          that.se_hao2 = res.data.result.se_hao != null ? res.data.result.se_hao : "";
+          that.pin_hao2 = res.data.result.pin_hao != null ? res.data.result.pin_hao : "";
+          that.pi_ci2 = res.data.result.pi_ci != null ? res.data.result.pi_ci : "";
+
           // that.machine_id = res.data.result.zen_jin_ji_hua.machine_id;
           // that.axis_no = res.data.result.zen_jin_ji_hua.axis_no;
         });
