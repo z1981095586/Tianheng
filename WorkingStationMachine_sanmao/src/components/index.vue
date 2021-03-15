@@ -221,11 +221,9 @@ export default {
       if (label == "上轴") {
         this.src = require("../pdf/sz.pdf");
         this.loadPdf();
-        this.help = true;
       } else if (label == "插片") {
         this.src = require("../pdf/cp.pdf");
         this.loadPdf();
-        this.help = true;
       }
       // else if (label == "开出") {
       //   this.src = require("../pdf/kc.pdf");
@@ -245,6 +243,7 @@ export default {
     loadPdf() {
       var loadingTask = pdf.createLoadingTask(this.src);
       this.src = loadingTask;
+      this.help = true;
     },
     getGroup(id, page) {
       //第一个参数groupId，第二个参数页面缩写

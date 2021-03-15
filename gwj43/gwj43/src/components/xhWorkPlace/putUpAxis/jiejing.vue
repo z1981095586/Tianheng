@@ -521,11 +521,10 @@ this.SelectDataList.forEach(element => {
 if(json.printCode==null){
   json.printCode=""
 }
-json.shiftWork=this.shift.shiftQueue
            json.workshopId=this.workShopId
           json.shiftStartDatetime=this.getNowFormatDate()+" "+this.shift.startTime
            json.shiftEndDatetime=this.getNowFormatDate()+" "+this.shift.endTime
-
+json.shiftWork=this.shift.shiftQueue
            stopWarpingReports.push(json)
            json={}
          });

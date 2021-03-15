@@ -4,7 +4,7 @@
     <div class="header">
       <div class="header_con">
 
-        <h2>天衡MES操作手册上传中心</h2>
+        <h2>天衡&布威MES操作手册上传中心</h2>
 
 
       </div>
@@ -13,37 +13,56 @@
 
       <div class="content">
 
-        <div>
-          <el-cascader @change="changes" v-model="selectedMenu" :clearable="true" filterable placeholder="请选择上传手册的模块"
-            :options="data" :props="props"></el-cascader>
-          <el-upload style="margin:2rem" class="upload-demo" drag ref="upload" :limit="2"
-            action="http://106.12.219.66:14100/mes/file_upload" :file-list="fileList" :auto-upload="true"
-            :multiple="true" :on-change="handleChange" :http-request="allUpload">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip" style="color:red;">注意：同时上传pdf文件和doc(docx)文件</div>
-               <div class="el-upload__tip" slot="tip" style="color:red;">(选择完成后系统自动上传)</div>
-          </el-upload>
-          <!-- <el-button type="primary" @click="upload" :disabled="disabled">上传文件</el-button> -->
-          <el-button type="primary" @click="download()">下载Word</el-button>
-          <el-button type="warning" style="margin-bottom:1rem;" @click="tb()">同步节点</el-button>
+        <div style="height:70%;">
+          <div style="margin:1rem;">
+            <el-radio v-model="radio" label="1">天衡</el-radio>
+            <el-radio v-model="radio" label="2">布威</el-radio>
+          </div>
+          <div v-show="radio=='1'">
+            <el-cascader @change="changes" v-model="selectedMenu" :clearable="true" filterable placeholder="请选择上传手册的模块"
+              :options="data" :props="props"></el-cascader>
+            <el-upload style="margin:2rem" class="upload-demo" drag ref="upload" :limit="2"
+              action="http://106.12.219.66:14100/mes/file_upload" :file-list="fileList" :auto-upload="true"
+              :multiple="true" :on-change="handleChange" :http-request="allUpload">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">注意：同时上传pdf文件和doc(docx)文件</div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">(选择完成后系统自动上传)</div>
+            </el-upload>
+            <!-- <el-button type="primary" @click="upload" :disabled="disabled">上传文件</el-button> -->
+            <el-button type="primary" @click="download()">下载Word</el-button>
+            <el-button type="warning" style="margin-bottom:1rem;" @click="tb()">同步节点</el-button>
+          </div>
+          <div v-show="radio=='2'">
+            <el-select v-model="value" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+            <el-upload style="margin:2rem" class="upload-demo" drag ref="upload2" :limit="2"
+              action="http://106.12.219.66:14100/BWmes/file_upload" :file-list="fileList2" :auto-upload="true"
+              :multiple="true" :on-change="handleChange2" :http-request="allUpload2">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">注意：同时上传pdf文件和doc(docx)文件</div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">(选择完成后系统自动上传)</div>
+            </el-upload>
+            <!-- <el-button type="primary" @click="upload2" :disabled="disabled">上传文件</el-button> -->
+            <el-button type="primary" @click="download2()">下载Word</el-button>
+
+          </div>
         </div>
       </div>
     </div>
-    <!-- <el-dialog
-  title="上传中......."
-  :visible.sync="centerDialogVisible"
-  width="30%"
-  center>
+    <el-dialog title="上传中......." :visible.sync="centerDialogVisible" width="30%" center>
 
-<el-progress  :percentage="num"></el-progress>
-</el-dialog> -->
+      <el-progress :percentage="num"></el-progress>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-  var getUrl = 'http://106.12.219.66:8227/report/getSimpleReport'
+  var getUrl = window.apiRoot.getApi + '/report/getSimpleReport'
   import axios from 'axios'
   export default {
     name: 'index',
@@ -62,17 +81,195 @@
         other: {
 
         },
+        radio: "1",
         disabled: false,
+        disabled2: false,
         fileList: [],
-        // num:0,
-        // centerDialogVisible:false
+        fileList2: [],
+        options: [{
+            value: '第一天培训手册',
+            label: '第一天培训手册'
+          }, {
+            value: '第二天培训手册',
+            label: '第二天培训手册'
+          }, {
+            value: '第三天培训手册',
+            label: '第三天培训手册'
+          }, {
+            value: '第四天培训手册',
+            label: '第四天培训手册'
+          }, {
+            value: '第五天培训手册',
+            label: '第五天培训手册'
+          }, {
+            value: '第六天培训手册',
+            label: '第六天培训手册'
+          }, {
+            value: '第七天培训手册',
+            label: '第七天培训手册'
+          },
+
+        ],
+        value: '',
+        centerDialogVisible: false,
+        num: 0
+
 
       }
     },
     methods: {
+      handleChange2(file, fileList) { //文件改变事件
+
+        this.fileList2 = fileList;
+      },
+      allUpload2() { //上传事件
+        let formData = new FormData();
+
+
+        formData.append("file", this.fileList2[0].raw)
+
+        formData.append("file1", this.fileList2[1].raw)
+        formData.append("dir", this.value)
+
+
+        if (!this.value) {
+          this.$message({
+            message: '请先选择模块！',
+            type: 'warning'
+          });
+          this.fileList2 = []
+          this.$refs.upload2.clearFiles();
+          return
+        }
+
+        axios({
+          url: window.apiRoot.hostApi + "/BWmes/file_upload",
+          method: "post",
+          // headers: header,
+          data: formData,
+          // headers: headers
+          onUploadProgress: (progressEvent) => {
+            //console.log(progressEvent.total)
+            this.centerDialogVisible = true
+            let num = progressEvent.loaded / progressEvent.total * 100 | 0; //百分比
+            this.num = num
+          }
+
+        }).then((res) => {
+          console.log(res)
+          if (res.data.message == "response to success") {
+            this.$message({
+              message: '上传成功！',
+              type: 'success'
+            });
+
+            this.centerDialogVisible = false
+
+          } else {
+            this.$message({
+              message: '上传失败！' + res.data.data,
+              type: 'error'
+            });
+        this.centerDialogVisible = false
+          }
+          this.fileList2 = []
+          this.$refs.upload2.clearFiles();
+          this.disabled2 = true
+          setTimeout(() => {
+            this.disabled2 = false
+
+          }, 100);
+        })
+
+
+      },
+      download2(url) { //下载事件
+        let that = this
+        //console.log(that.other.name)
+        if (this.value) {
+
+          axios({
+            url: window.apiRoot.hostApi + "/BWmes/file_download",
+            method: "post",
+            // headers: header,
+            data: {
+              dir: this.value,
+
+              file_type: 0
+            },
+            // headers: headers
+          }).then((res) => {
+            console.log(res)
+            if (res.data.data == "文件不存在") {
+              this.$message({
+                message: res.data.data,
+                type: 'warning'
+              });
+            } else {
+              axios.post(window.apiRoot.hostApi + "/BWmes/file_download", {
+                dir: this.value,
+
+                file_type: 0
+              }, {
+                responseType: 'blob'
+              }).then(function (res) {
+                console.log(res)
+                var blob = res.data;
+                // FileReader主要用于将文件内容读入内存
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                // onload当读取操作成功完成时调用
+                reader.onload = function (e) {
+                  var a = document.createElement('a');
+                  // 获取文件名fileName
+                  //console.log(res)
+                  var fileName = that.value;
+                  // fileName = fileName[fileName.length - 1];
+                  // fileName = fileName.replace(/"/g, "");
+                  a.download = fileName;
+                  a.href = e.target.result;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }
+              });
+            }
+          })
+        } else {
+          this.$message({
+            message: '请先选择哪一天！',
+            type: 'warning'
+          });
+        }
+
+      },
+      upload2() { //按钮点击触发上传
+        if (this.value) {
+          if (this.fileList2.length == 0) {
+            this.$message({
+              message: '请先选择文件！',
+              type: 'warning'
+            });
+
+          } else if (this.fileList2.length == 1) {
+            this.$message({
+              message: '请先选择pdf文件和doc文件！',
+              type: 'warning'
+            });
+          } else {
+            this.$refs.upload2.submit();
+          }
+        } else {
+          this.$message({
+            message: '请先选择模块！',
+            type: 'warning'
+          });
+        }
+
+      },
       tb() {
 
-        let url = "http://106.12.219.66:14100/mes/synchronization"
+        let url = window.apiRoot.hostApi + "/mes/synchronization"
         axios({
           url: url,
           method: "get",
@@ -104,7 +301,7 @@
         if (this.other.dir && this.other.name) {
 
           axios({
-            url: "http://106.12.219.66:14100/mes/file_download",
+            url: window.apiRoot.hostApi + "/mes/file_download",
             method: "post",
             // headers: header,
             data: {
@@ -121,7 +318,7 @@
                 type: 'warning'
               });
             } else {
-              axios.post("http://106.12.219.66:14100/mes/file_download", {
+              axios.post(window.apiRoot.hostApi + "/mes/file_download", {
                 dir: this.other.dir,
                 name: this.other.name,
                 file_type: 0
@@ -188,7 +385,7 @@
       },
       allUpload() { //上传事件
         let formData = new FormData();
-      
+
 
         formData.append("file", this.fileList[0].raw)
 
@@ -196,22 +393,31 @@
         formData.append("dir", this.other.dir)
         formData.append("name", this.other.name)
 
+        if (!this.other.dir) {
+          this.$message({
+            message: '请先选择模块！',
+            type: 'warning'
+          });
+          this.fileList = []
+          this.$refs.upload.clearFiles();
+          return
+        }
 
         axios({
-          url: "http://106.12.219.66:14100/mes/file_upload",
+          url: window.apiRoot.hostApi + "/mes/file_upload",
           method: "post",
           // headers: header,
           data: formData,
           // headers: headers
-          // onUploadProgress: (progressEvent) => {
-          //                 //console.log(progressEvent.total)
-          //                 this.centerDialogVisible=true
-          //                  let num = progressEvent.loaded / progressEvent.total * 100 | 0;  //百分比
-          //                  this.num=num
-          //               }
+          onUploadProgress: (progressEvent) => {
+            //console.log(progressEvent.total)
+            this.centerDialogVisible = true
+            let num = progressEvent.loaded / progressEvent.total * 100 | 0; //百分比
+            this.num = num
+          }
 
         }).then((res) => {
-          //console.log(res)
+          console.log(res)
           if (res.data.message == "response to success") {
             this.$message({
               message: '上传成功！',
@@ -220,13 +426,12 @@
 
             this.centerDialogVisible = false
 
-
           } else {
             this.$message({
               message: '上传失败！' + res.data.data,
               type: 'error'
             });
-
+        this.centerDialogVisible = false
           }
           this.fileList = []
           this.$refs.upload.clearFiles();
@@ -333,10 +538,13 @@
     },
     mounted() {
       this.getNode()
+      
 
     },
     watch: {
-
+      radio(val) {
+        console.log(val)
+      }
     }
 
   }

@@ -8,7 +8,7 @@
       v-show="szMainShow"
     >
       <div class="operationPane_con_uppershaft">
-        <div class="pch" v-show="issaoma"><input v-model="pch" /></div>
+        <div class="pch" v-show="issaoma"><input v-model="pch" ref="inputs" /></div>
         <div class="chooseBtn">
           <div class="chooseBtn_con">
             <div class="chooseBtn_con_label"><span>机台</span></div>

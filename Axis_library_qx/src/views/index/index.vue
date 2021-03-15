@@ -600,7 +600,7 @@ this.getInAndOutRecord()
               library_name: library_name,
               axis_name: axis_name,
               style_name: style_name,
-              library_num_list: [1, 2,4,100]
+              library_num_list: [1, 2,3,4,100]
             }
           },
           headers: {
