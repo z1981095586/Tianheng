@@ -232,17 +232,15 @@
             console.log(list3);
             for (let i = 0; i < 10; i++) {
               that.zxt_data.push((list3[i].efficiency * 100).toFixed(1));
-
               list3[i].date = (list3[i].date.replace(/-/g, "/")).slice(5);
-
               that.zxt_data2.push(list3[i].date)
-
             }
             that.maxChartEfficiency = Math.max(...that.zxt_data)+0.2;
             that.minChartEfficiency = Math.min(...that.zxt_data)-0.2;
             if (that.maxChartEfficiency>100)
               that.maxChartEfficiency=100;
             console.log(that.maxChartEfficiency);
+
 //             for(let i=0;i<response.data.data[0].selectList.length-1 ;i++){
 //            list.push(response.data.data[0].selectList[i])
 //             }
@@ -812,7 +810,7 @@ sortColumn:"machine_id"
       // 问题聚焦数据
       getProblemsFocusData: function () {
         axios({
-          // url: 'http://localhost:7070/sign2/getYieldAnalysis',
+          // url: 'http://106.12.219.66:7070/sign2/getYieldAnalysis',
           url: this.url + '/s/getEfficiency',
           method: 'post',
           headers: {

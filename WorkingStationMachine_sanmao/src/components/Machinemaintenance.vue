@@ -212,9 +212,14 @@ export default {
         });
       } else {
         this.questionCon.forEach((element) => {
-          error_desc.push(element.question);
+          error_desc.push({
+            error_desc: element.question,
+            repair_type_id: element.id,
+          });
         });
-        error_desc = String(error_desc);
+        // error_desc = String(error_desc);
+        console.log(error_desc);
+        console.log(this.questionCon);
         let url2 = host + "/api/group/getOnDutyShift";
         let that = this;
         axios({
@@ -246,7 +251,7 @@ export default {
               },
               error_submit: {
                 machine_id: that.checkedMachineNum,
-                error_desc: error_desc,
+                error_list: error_desc,
                 submit_person: dcName,
               },
             },

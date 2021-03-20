@@ -1605,10 +1605,10 @@ export default {
       console.log(this.kcgId);
       console.log(this.kcgName);
     },
-    // gobackKaiChe() {
-    //   this.isKaiChe = false;
-    //   this.szMainShow = true;
-    // },
+    gobackKaiChe() {
+      this.isKaiChe = false;
+      this.szMainShow = true;
+    },
   },
   mounted() {},
   watch: {

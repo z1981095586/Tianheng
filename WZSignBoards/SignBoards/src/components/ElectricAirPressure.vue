@@ -1532,7 +1532,7 @@
         }
         let that=this
             axios({
-            url: 'http://106.12.219.66:8227/report/getSimpleReport',
+            url: window.apiRoot.get_table+':8227/report/getSimpleReport',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -1560,7 +1560,7 @@ companyId:"10000005"
       getWarningMessages() {
         let that = this
         axios({
-            url: host2 + ":7070/wanzhou/getWarningMessages",
+            url: window.apiRoot.api_board + ":7070/wanzhou/getWarningMessages",
             method: 'post',
             data: {
               "limit": 20
@@ -1690,7 +1690,7 @@ companyId:"10000005"
             "machineType": 0
           }
         }
-        let url = host2 + ":7070/wanzhou/setWarningRange"
+        let url = window.apiRoot.api_board + ":7070/wanzhou/setWarningRange"
 
         axios({
             url: url,
@@ -2086,7 +2086,7 @@ doHandleMonth(month){
     
         ////console.log(_this.jem[0].machine_id)
            axios({
-            url: 'http://106.12.219.66:8227/report/getSimpleReport',
+            url: window.apiRoot.get_table+':8227/report/getSimpleReport',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -2483,7 +2483,7 @@ companyId:"10000005"
       getWarningRange(workshopId) { //电流取最大最小警戒值
         let that = this
         axios({
-            url: host2 + ':7070/wanzhou/getWarningRange',
+            url: window.apiRoot.api_board + ':7070/wanzhou/getWarningRange',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -2988,7 +2988,7 @@ animation:false,
 getlengganji(){
   let that=this
       axios({
-            url: 'http://106.12.219.66:8227/report/getSimpleReport',
+            url: window.apiRoot.get_table+':8227/report/getSimpleReport',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',

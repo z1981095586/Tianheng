@@ -27,13 +27,21 @@
                 :style=" !item.isFenJiao? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
                 <span>否</span></div>
             </div>
-            <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
+            <!-- <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
               <div class="table_btn" @click="changejiejing(item.id)"
                 :style=" item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
                 <span>1</span></div>
               <div class="table_btn" @click="changejiejing(item.id)"
                 :style=" !item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
                 <span>0.5</span></div>
+            </div> -->
+               <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
+              <div class="table_btn" @click="changejiejing(item.id,true)"
+                style="width:90%">
+                <span>{{item.isJieJing}}</span></div>
+              <!-- <div class="table_btn" @click="changejiejing(item.id,false)"
+                :style=" !item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
+                <span>0.5</span></div> -->
             </div>
                 <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
             
@@ -112,14 +120,16 @@
           </div>
           <div
             style="width:16%;margin-left:3%;height:80%;display:flex;align-items:center;justify-content: space-around;position:relative">
-            <el-select class="sel" v-model="item.JieJing"
+            <!-- <el-select class="sel" v-model="item.JieJing"
               style="font-size:2rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
               :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
               <el-option value="1">1
               </el-option>
               <el-option value="0.5">0.5
               </el-option>
-            </el-select>
+            </el-select> -->
+              <div class="inputs"   
+            :style="item.isEdit?'border:1px solid black;width:90%;height:100%':'border:none;background:rgb(250, 250, 250);width:90%;height:100%;display:flex;align-items:center;'" @click="changejiejing2(item.id,true)">{{item.stop_warping}}</div>
             <!-- <select v-model="item.JieJing" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
               :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'">
               <option value="1">1</option>
@@ -272,26 +282,78 @@
         </tr>
       </table>
     </el-dialog>
-
+  <el-dialog
+      :visible.sync="showModifiedVarieties"
+      width="800px"
+      append-to-body
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+     <div slot="title">
+       <p @click="showModifiedVarieties = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
+      </div>
+      <div>
+           <div style="font-size: 1.5rem;font-weight: bolder;display:flex;">
+              <span>结经次数:&nbsp;&nbsp;&nbsp;</span>
+           <el-input v-model="jiejingNum" disabled style="font-size: 1.5rem;text-transform: uppercase; width: 240px; height: 50px"></el-input>
+            </div>
+          
+        <table width="100%"  cellspacing='0' cellpadding='0' height="300px">
+          <tr v-for="indexTr in 7" >
+            <td  v-for="indexTd in 6" style="text-align: center;">
+              <el-button type="primary" plain style="width: 120px" size="medium"  @click="selectTableButtonAll((indexTr-1)*6+indexTd-1)">
+                <p :style="{'color':buttonListAll[(indexTr-1)*6+indexTd-1].color}" style="font-weight: bolder;font-size: 2rem;width: 100%">{{buttonListAll[(indexTr-1)*6+indexTd-1].label}}</p>
+              </el-button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </el-dialog>
+     <el-dialog
+      :visible.sync="showModifiedVarieties2"
+      width="800px"
+      append-to-body
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+     <div slot="title">
+       <p @click="showModifiedVarieties2 = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
+      </div>
+      <div>
+           <div style="font-size: 1.5rem;font-weight: bolder;display:flex;">
+              <span>结经次数:&nbsp;&nbsp;&nbsp;</span>
+           <el-input v-model="jiejingNum2" disabled style="font-size: 1.5rem;text-transform: uppercase; width: 240px; height: 50px"></el-input>
+            </div>
+          
+        <table width="100%"  cellspacing='0' cellpadding='0' height="300px">
+          <tr v-for="indexTr in 7" >
+            <td  v-for="indexTd in 6" style="text-align: center;">
+              <el-button type="primary" plain style="width: 120px" size="medium"  @click="selectTableButtonAll2((indexTr-1)*6+indexTd-1)">
+                <p :style="{'color':buttonListAll[(indexTr-1)*6+indexTd-1].color}" style="font-weight: bolder;font-size: 2rem;width: 100%">{{buttonListAll[(indexTr-1)*6+indexTd-1].label}}</p>
+              </el-button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-var test="http://47.110.242.174:10086"
- //var test="http://106.12.219.66:8227"
+// var test="http://47.110.242.174:10086"
+var test="http://106.12.219.66:8227"
   import axios from 'axios'
     import { warp_api } from "../../../../static/api/api.js";
   export default {
-     props:['barCode','shift'],
+    props:['barCode','shift'],
     data() {
       return {
-          workShopId:"",
+        workShopId:"",
         staff_name: "",
-        // staff_name2: "",
-        //    staff_name3: "",
         isTable: true,
- imgsrc:require("../../../../static/picture/arrow2.png"),
         staff_code: "",
+      imgsrc:require("../../../../static/picture/arrow2.png"),
+    
         staff_code2: "",
         machine_code: "",
         machine_code2:"",
@@ -301,15 +363,15 @@ var test="http://47.110.242.174:10086"
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
- styleName:""
+          isJieJing: "", //代表0.5
+          styleName:""
         }],
         dataListCon: [{
           id: 1,
           machineId: "",
           isFenJiao: true,
-           isJieJing: true, //代表0.5
- styleName:""
+           isJieJing: "", //代表0.5
+    styleName:""
         }],
         SelectDataList: [{
           id: 1,
@@ -317,9 +379,9 @@ var test="http://47.110.242.174:10086"
           FenJiao: "",
           isEdit: false,
           staff_name: "周品道",
-
+    styleName:"",
           JieJing: "", //代表0.5
- styleName:""
+
         }],
         showNameTable: false,
         showMachineTable: false,
@@ -337,11 +399,465 @@ showMachineTable2:false,
         pageSize2: 4,
         total2:null,
         focusId:"",
-        staffId2:""
+        staffId2:"",
+          showModifiedVarieties:false,
+              showModifiedVarieties2:false,
+        buttonListAll:[
+          {
+            label:"A",
+            color:"#000000",
+          }, {
+            label:"B",
+            color:"#000000",
+          }, {
+            label:"C",
+            color:"#000000",
+          },{
+            label:"D",
+            color:"#000000",
+          },{
+            label:"E",
+            color:"#000000",
+          },{
+            label:"F",
+            color:"#000000",
+          },{
+            label:"G",
+            color:"#000000",
+          },{
+            label:"H",
+            color:"#000000",
+          },{
+            label:"I",
+            color:"#000000",
+          },{
+            label:"J",
+            color:"#000000",
+          },{
+            label:"K",
+            color:"#000000",
+          },{
+            label:"L",
+            color:"#000000",
+          },{
+            label:"M",
+            color:"#000000",
+          },{
+            label:"N",
+            color:"#000000",
+          },{
+            label:"O",
+            color:"#000000",
+          },{
+            label:"P",
+            color:"#000000",
+          },{
+            label:"Q",
+            color:"#000000",
+          },{
+            label:"R",
+            color:"#000000",
+          },{
+            label:"S",
+            color:"#000000",
+          },{
+            label:"T",
+            color:"#000000",
+          },{
+            label:"U",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"V",
+            color:"#000000",
+          },{
+            label:"W",
+            color:"#000000",
+          },{
+            label:"X",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"Y",
+            color:"#000000",
+          },{
+            label:"Z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"小写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+         buttonListB:[
+          {
+            label:"A",
+            color:"#000000",
+          }, {
+            label:"B",
+            color:"#000000",
+          }, {
+            label:"C",
+            color:"#000000",
+          },{
+            label:"D",
+            color:"#000000",
+          },{
+            label:"E",
+            color:"#000000",
+          },{
+            label:"F",
+            color:"#000000",
+          },{
+            label:"G",
+            color:"#000000",
+          },{
+            label:"H",
+            color:"#000000",
+          },{
+            label:"I",
+            color:"#000000",
+          },{
+            label:"J",
+            color:"#000000",
+          },{
+            label:"K",
+            color:"#000000",
+          },{
+            label:"L",
+            color:"#000000",
+          },{
+            label:"M",
+            color:"#000000",
+          },{
+            label:"N",
+            color:"#000000",
+          },{
+            label:"O",
+            color:"#000000",
+          },{
+            label:"P",
+            color:"#000000",
+          },{
+            label:"Q",
+            color:"#000000",
+          },{
+            label:"R",
+            color:"#000000",
+          },{
+            label:"S",
+            color:"#000000",
+          },{
+            label:"T",
+            color:"#000000",
+          },{
+            label:"U",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"V",
+            color:"#000000",
+          },{
+            label:"W",
+            color:"#000000",
+          },{
+            label:"X",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"Y",
+            color:"#000000",
+          },{
+            label:"Z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"小写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+        buttonListS:[
+          {
+            label:"a",
+            color:"#000000",
+          }, {
+            label:"b",
+            color:"#000000",
+          }, {
+            label:"c",
+            color:"#000000",
+          },{
+            label:"d",
+            color:"#000000",
+          },{
+            label:"e",
+            color:"#000000",
+          },{
+            label:"f",
+            color:"#000000",
+          },{
+            label:"g",
+            color:"#000000",
+          },{
+            label:"h",
+            color:"#000000",
+          },{
+            label:"i",
+            color:"#000000",
+          },{
+            label:"j",
+            color:"#000000",
+          },{
+            label:"k",
+            color:"#000000",
+          },{
+            label:"l",
+            color:"#000000",
+          },{
+            label:"m",
+            color:"#000000",
+          },{
+            label:"n",
+            color:"#000000",
+          },{
+            label:"o",
+            color:"#000000",
+          },{
+            label:"p",
+            color:"#000000",
+          },{
+            label:"q",
+            color:"#000000",
+          },{
+            label:"r",
+            color:"#000000",
+          },{
+            label:"s",
+            color:"#000000",
+          },{
+            label:"t",
+            color:"#000000",
+          },{
+            label:"u",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"v",
+            color:"#000000",
+          },{
+            label:"w",
+            color:"#000000",
+          },{
+            label:"x",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"y",
+            color:"#000000",
+          },{
+            label:"z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"大写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+        JieJingId:"",
+        jiejingNum:"",
+                JieJingId2:"",
+        jiejingNum2:""
+     
       }
     },
     methods: {
-         selectStyleName(machineId,index,flag){
+            selectTableButtonAll(index){
+        let buttonName =  this.buttonListAll[index].label;
+        if(buttonName === "小写"){
+          this.buttonListAll=this.buttonListS;
+        }else if(buttonName === "大写"){
+          this.buttonListAll=this.buttonListB;
+        }else if(buttonName === "退格"){
+                      this.dataList.forEach(element => {
+             
+          if(element.id==this.JieJingId){
+       
+             element.isJieJing= element.isJieJing.substring(0, element.isJieJing.length-1);
+             this.jiejingNum=element.isJieJing
+     
+          }
+        });
+        }else{
+                         this.dataList.forEach(element => {
+             
+                
+          if(element.id==this.JieJingId){
+       
+             element.isJieJing+=buttonName
+       this.jiejingNum=element.isJieJing
+          }
+        });
+ 
+        }
+      
+      },
+             selectTableButtonAll2(index){
+        let buttonName =  this.buttonListAll[index].label;
+        if(buttonName === "小写"){
+          this.buttonListAll=this.buttonListS;
+        }else if(buttonName === "大写"){
+          this.buttonListAll=this.buttonListB;
+        }else if(buttonName === "退格"){
+                      this.SelectDataList.forEach(element => {
+             
+          if(element.id==this.JieJingId2){
+       element.stop_warping=String(element.stop_warping)
+             element.stop_warping= element.stop_warping.substring(0, element.stop_warping.length-1);
+             this.jiejingNum2=element.stop_warping
+     
+          }
+        });
+        }else{
+                   this.SelectDataList.forEach(element => {
+             
+                
+          if(element.id==this.JieJingId2){
+         element.stop_warping=String(element.stop_warping)
+             element.stop_warping+=buttonName
+       this.jiejingNum2=element.stop_warping
+          }
+        });
+ 
+        }
+      
+      },
+      selectStyleName(machineId,index,flag){
        console.log(machineId)
        console.log(index)
    let url = test+'/report/getSimpleReport';
@@ -442,7 +958,7 @@ this.SelectDataList.forEach(element => {
    stopWarping:element.stop_warping,
    staffId:element.staff_id,
    staffName:element.staff_name,
-      styleName:element.style_name
+   styleName:element.style_name
   };
   if(this.staffId2!=""){
     data.staffId=this.staffId2
@@ -453,12 +969,14 @@ this.SelectDataList.forEach(element => {
   }else{
        data.fenJiao="0"
   }
-       if(element.JieJing=="1"){
-            data.stopWarping="1"
-           }else{
-             data.stopWarping="0.5"
-           }
-  
+  console.log(data)
+  console.log(element)
+      //  if(element.JieJing=="1"){
+      //       data.stopWarping="1"
+      //      }else{
+      //        data.stopWarping="0.5"
+      //      }
+    // data.stopWarping=element.stopWarping
         warp_api(url, data, this.companyId)
           .then(response => {
             console.log(response)
@@ -484,11 +1002,13 @@ this.SelectDataList.forEach(element => {
          console.log(this.staff_name)
          console.log(this.dataListCon)
          console.log(this.staffId)
+         console.log(this.shift)
+         console.log(this.workShopId)
          let stopWarpingReports=[]
          let json={}
          let flag;
          this.dataListCon.forEach(element => {
-                if(element.machineId==""||element.machineId==null){
+           if(element.machineId==""||element.machineId==null){
               flag=false
               return
            }
@@ -497,31 +1017,32 @@ this.SelectDataList.forEach(element => {
            }else{
              json.fenJiao="0"
            }
-             if(element.isJieJing==true){
-             json.stopWarping="1"
-           }else{
-             json.stopWarping="0.5"
-           }
-                json.styleName=element.styleName
+          //    if(element.isJieJing==true){
+          //    json.stopWarping="1"
+          //  }else{
+          //    json.stopWarping="0.5"
+          //  }
+          json.stopWarping=element.isJieJing
+           json.styleName=element.styleName
            json.machineId=element.machineId
-           json.printCode=this.barCode
+            json.printCode=this.barCode
            json.staffId=this.staffId
            json.staffName=this.staff_name
-            json.workshopId=this.workShopId
-            if(json.printCode==null){
+if(json.printCode==null){
   json.printCode=""
 }
-json.shiftWork=this.shift.shiftQueue
+           json.workshopId=this.workShopId
           json.shiftStartDatetime=this.getNowFormatDate()+" "+this.shift.startTime
            json.shiftEndDatetime=this.getNowFormatDate()+" "+this.shift.endTime
+json.shiftWork=this.shift.shiftQueue
            stopWarpingReports.push(json)
            json={}
          });
-               if(flag==false){
+         if(flag==false){
              this.$message.warning("机台号不能为空，请确认!");
              return
          }
-         console.log(this.barCode)
+          console.log(this.barCode)
            if(this.staff_name==""){
                this.$message.warning("请先填写员工姓名!");
            }else if(this.dataListCon.length==0){
@@ -531,6 +1052,7 @@ json.shiftWork=this.shift.shiftQueue
           //      this.$message.warning("请先输入批号!");
           //  }
            else{
+             console.log(stopWarpingReports)
   let url = "/stop-warping-report/insertList";
   let data={
     stopWarpingReports:stopWarpingReports
@@ -550,7 +1072,7 @@ json.shiftWork=this.shift.shiftQueue
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
+          isJieJing: "", //代表0.5
    styleName:""
         }]
         this.dataListCon=this.dataList
@@ -593,6 +1115,8 @@ query:{
 selectLikeFields:{
   create_time:date
 }
+
+
         };
 
         let that = this
@@ -625,6 +1149,7 @@ selectLikeFields:{
                }else{
                   element.JieJing=""
                }
+               
                element.machineId=element.machine_id
                that.SelectDataList.push(element)
             });
@@ -634,6 +1159,7 @@ selectLikeFields:{
         var offset = (pageNo - 1) * pageSize;
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset +
           pageSize);
+        
       },
 
 
@@ -660,31 +1186,30 @@ selectLikeFields:{
         this.isStaff = id
 
       },
-     addRow() { //新增一行
+      addRow() { //新增一行
  
         if(this.dataListCon.length==0&&this.dataList.length==0){
                this.dataList=[{
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
-              styleName:""
+          isJieJing: "", //代表0.5
+          styleName:""
         }];
         this.dataListCon=[{
           id: 1,
           machineId: "",
           isFenJiao: true,
-           isJieJing: true, //代表0.5
-               styleName:""
-
+           isJieJing: "", //代表0.5
+styleName:""
         }]
         }else{
        this.dataListCon.push({
           id: this.dataListCon.length + 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
-              styleName:""
+          styleName:"",
+          isJieJing:"", //代表0.5
         })
         if (this.dataListCon.length % 3 == 1) {
           this.pageNum = this.pageNum + 1
@@ -743,7 +1268,7 @@ selectLikeFields:{
           });
         }
       },
-          changefenjiao(id,isFenJiao) { //改变分绞状态
+      changefenjiao(id,isFenJiao) { //改变分绞状态
  
         this.dataList.forEach(element => {
              if(element.id==id){
@@ -772,20 +1297,40 @@ selectLikeFields:{
         });
       },
       changejiejing(id,isJieJing) { ///改变结经状态
+
             this.dataList.forEach(element => {
              
           if(element.id==id){
-           if(isJieJing==element.isJieJing){
-
-           }else{
-             element.isJieJing=!element.isJieJing
-           }
+                this.jiejingNum=element.isJieJing
           }
         });
-
+        this.showModifiedVarieties=true
+        this.JieJingId=id
+  
+      console.log(id)
+      console.log(this.dataListCon)
+      console.log(this.dataList)
       },
 
+     changejiejing2(id,isJieJing) { ///改变结经状态
+  
+            this.SelectDataList.forEach(element => {
+             
+          if(element.id==id){
+            if(element.isEdit==true){
+  this.jiejingNum2=element.stop_warping
+       this.showModifiedVarieties2=true
+        this.JieJingId2=id
+            }
+              
+          }
+        });
+   
+  
+      console.log(id)
+      console.log(this.SelectDataList)
 
+      },
 
       selectTableButton(buttonName) {
   
@@ -818,11 +1363,12 @@ selectLikeFields:{
           "selectFields": ["staff_code", "staff_name"],
           'query': {
             staff_code: this.staff_code,
-                 
+           
           },
-             selectLikeFields:{
+          selectLikeFields:{
   workshop_id:this.workShopId
           }
+          
         };
 
         let that = this
@@ -866,7 +1412,9 @@ selectLikeFields:{
         for (let i = 0; i < this.dataList.length; i++) {
           if (this.dataList[i].id == this.id) {
             this.dataList[i].machineId = this.machine_code
-                 this.selectStyleName(this.machine_code,i,true)
+        
+     this.selectStyleName(this.machine_code,i,true)
+           console.log( this.dataList[i])
           }
         }
         this.machine_code = ""
@@ -899,7 +1447,7 @@ selectLikeFields:{
         for (let i = 0; i < this.SelectDataList.length; i++) {
           if (this.SelectDataList[i].id == this.focusId) {
             this.SelectDataList[i].machineId = this.machine_code2
-               this.selectStyleName(this.machine_code2,i,false)
+            this.selectStyleName(this.machine_code2,i,false)
           }
         }
         this.machine_code2 = ""
@@ -943,9 +1491,9 @@ selectLikeFields:{
           "selectFields": ["staff_code", "staff_name"],
           'query': {
             staff_code: this.staff_code2,
-                
+           
           },
-             selectLikeFields:{
+              selectLikeFields:{
   workshop_id:this.workShopId
           }
         };
@@ -994,15 +1542,16 @@ selectLikeFields:{
     mounted() {
       let params = this.$route.params.params.split(",");
       this.companyId = params[1];
-         this.workShopId=params[2]
+      console.log(this.$route.params.params.split(","))
+       this.workShopId=params[2]
+        console.log(this.shift)
+  
     },
     destroyed() {
 
     },
     watch: {
-      shift(val){
-console.log(val)
-      },
+   
       dataList: { //datalist改变datalistcon也改变数据
         deep: true, //深度监听设置为 true
         handler: function (newV, oldV) {
@@ -1023,14 +1572,15 @@ console.log(val)
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.5
-  styleName:""
+            isJieJing: "", //代表0.5
+            styleName:""
+
           }]
           this.dataListCon = [{
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.5
+            isJieJing: "", //代表0.5
   styleName:""
           }]
           this.pageNum = 1

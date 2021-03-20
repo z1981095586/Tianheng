@@ -30,11 +30,11 @@
             </div>
             <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
               <div class="table_btn" @click="changejiejing(item.id,true)"
-                :style=" item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
-                <span>1</span></div>
-              <div class="table_btn" @click="changejiejing(item.id,false)"
+                style="width:90%">
+                <span>{{item.isJieJing}}</span></div>
+              <!-- <div class="table_btn" @click="changejiejing(item.id,false)"
                 :style=" !item.isJieJing? 'background:rgb(68,111,241);color:white':'background:white;color:black'">
-                <span>0.5</span></div>
+                <span>0.5</span></div> -->
             </div>
                 <div class="radio5Table_con_row_con" style="  justify-content: space-around;">
             
@@ -121,14 +121,16 @@
           </div>
           <div
             style="width:16%;margin-left:3%;height:80%;display:flex;align-items:center;justify-content: space-around;position:relative">
-            <el-select class="sel" v-model="item.JieJing"
+            <!-- <el-select class="sel" v-model="item.JieJing"
               style="font-size:1.5rem;border:1px solid black;width:90%;height:100%" :disabled="!item.isEdit"
               :style="item.isEdit?'border:1px solid black;':'border:none'" placeholder="">
               <el-option value="1">1
               </el-option>
               <el-option value="0.5">0.5
               </el-option>
-            </el-select>
+            </el-select> -->
+             <div class="inputs"   
+            :style="item.isEdit?'border:1px solid black;width:90%;height:100%':'border:none;background:rgb(250, 250, 250);width:90%;height:100%;display:flex;align-items:center;'" @click="changejiejing2(item.id,true)">{{item.stop_warping}}</div>
             <!-- <select v-model="item.JieJing" style="font-size:1.5rem;border:1px solid black;width:90%;height:100%"
               :disabled="!item.isEdit" :style="item.isEdit?'border:1px solid black;':'border:none'">
               <option value="1">1</option>
@@ -282,7 +284,60 @@
         </tr>
       </table>
     </el-dialog>
-
+        <el-dialog
+      :visible.sync="showModifiedVarieties"
+      width="800px"
+      append-to-body
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+     <div slot="title">
+       <p @click="showModifiedVarieties = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
+      </div>
+      <div>
+           <div style="font-size: 1.5rem;font-weight: bolder;display:flex;">
+              <span>结经次数:&nbsp;&nbsp;&nbsp;</span>
+           <el-input v-model="jiejingNum" disabled style="font-size: 1.5rem;text-transform: uppercase; width: 240px; height: 50px"></el-input>
+            </div>
+          
+        <table width="100%"  cellspacing='0' cellpadding='0' height="300px">
+          <tr v-for="indexTr in 7" >
+            <td  v-for="indexTd in 6" style="text-align: center;">
+              <el-button type="primary" plain style="width: 120px" size="medium"  @click="selectTableButtonAll((indexTr-1)*6+indexTd-1)">
+                <p :style="{'color':buttonListAll[(indexTr-1)*6+indexTd-1].color}" style="font-weight: bolder;font-size: 2rem;width: 100%">{{buttonListAll[(indexTr-1)*6+indexTd-1].label}}</p>
+              </el-button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="showModifiedVarieties2"
+      width="800px"
+      append-to-body
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+     <div slot="title">
+       <p @click="showModifiedVarieties2 = false" style="font-size: 3rem;font-weight: bolder;display: inline-block" >点击此处返回</p>
+      </div>
+      <div>
+           <div style="font-size: 1.5rem;font-weight: bolder;display:flex;">
+              <span>结经次数:&nbsp;&nbsp;&nbsp;</span>
+           <el-input v-model="jiejingNum2" disabled style="font-size: 1.5rem;text-transform: uppercase; width: 240px; height: 50px"></el-input>
+            </div>
+          
+        <table width="100%"  cellspacing='0' cellpadding='0' height="300px">
+          <tr v-for="indexTr in 7" >
+            <td  v-for="indexTd in 6" style="text-align: center;">
+              <el-button type="primary" plain style="width: 120px" size="medium"  @click="selectTableButtonAll2((indexTr-1)*6+indexTd-1)">
+                <p :style="{'color':buttonListAll[(indexTr-1)*6+indexTd-1].color}" style="font-weight: bolder;font-size: 2rem;width: 100%">{{buttonListAll[(indexTr-1)*6+indexTd-1].label}}</p>
+              </el-button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -310,14 +365,14 @@ var test="http://106.12.219.66:8227"
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
+          isJieJing: "", //代表0.5
           styleName:""
         }],
         dataListCon: [{
           id: 1,
           machineId: "",
           isFenJiao: true,
-           isJieJing: true, //代表0.5
+           isJieJing: "", //代表0.5
     styleName:""
         }],
         SelectDataList: [{
@@ -346,10 +401,464 @@ showMachineTable2:false,
         pageSize2: 4,
         total2:null,
         focusId:"",
-        staffId2:""
+        staffId2:"",
+          showModifiedVarieties:false,
+              showModifiedVarieties2:false,
+        buttonListAll:[
+          {
+            label:"A",
+            color:"#000000",
+          }, {
+            label:"B",
+            color:"#000000",
+          }, {
+            label:"C",
+            color:"#000000",
+          },{
+            label:"D",
+            color:"#000000",
+          },{
+            label:"E",
+            color:"#000000",
+          },{
+            label:"F",
+            color:"#000000",
+          },{
+            label:"G",
+            color:"#000000",
+          },{
+            label:"H",
+            color:"#000000",
+          },{
+            label:"I",
+            color:"#000000",
+          },{
+            label:"J",
+            color:"#000000",
+          },{
+            label:"K",
+            color:"#000000",
+          },{
+            label:"L",
+            color:"#000000",
+          },{
+            label:"M",
+            color:"#000000",
+          },{
+            label:"N",
+            color:"#000000",
+          },{
+            label:"O",
+            color:"#000000",
+          },{
+            label:"P",
+            color:"#000000",
+          },{
+            label:"Q",
+            color:"#000000",
+          },{
+            label:"R",
+            color:"#000000",
+          },{
+            label:"S",
+            color:"#000000",
+          },{
+            label:"T",
+            color:"#000000",
+          },{
+            label:"U",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"V",
+            color:"#000000",
+          },{
+            label:"W",
+            color:"#000000",
+          },{
+            label:"X",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"Y",
+            color:"#000000",
+          },{
+            label:"Z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"小写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+         buttonListB:[
+          {
+            label:"A",
+            color:"#000000",
+          }, {
+            label:"B",
+            color:"#000000",
+          }, {
+            label:"C",
+            color:"#000000",
+          },{
+            label:"D",
+            color:"#000000",
+          },{
+            label:"E",
+            color:"#000000",
+          },{
+            label:"F",
+            color:"#000000",
+          },{
+            label:"G",
+            color:"#000000",
+          },{
+            label:"H",
+            color:"#000000",
+          },{
+            label:"I",
+            color:"#000000",
+          },{
+            label:"J",
+            color:"#000000",
+          },{
+            label:"K",
+            color:"#000000",
+          },{
+            label:"L",
+            color:"#000000",
+          },{
+            label:"M",
+            color:"#000000",
+          },{
+            label:"N",
+            color:"#000000",
+          },{
+            label:"O",
+            color:"#000000",
+          },{
+            label:"P",
+            color:"#000000",
+          },{
+            label:"Q",
+            color:"#000000",
+          },{
+            label:"R",
+            color:"#000000",
+          },{
+            label:"S",
+            color:"#000000",
+          },{
+            label:"T",
+            color:"#000000",
+          },{
+            label:"U",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"V",
+            color:"#000000",
+          },{
+            label:"W",
+            color:"#000000",
+          },{
+            label:"X",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"Y",
+            color:"#000000",
+          },{
+            label:"Z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"小写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+        buttonListS:[
+          {
+            label:"a",
+            color:"#000000",
+          }, {
+            label:"b",
+            color:"#000000",
+          }, {
+            label:"c",
+            color:"#000000",
+          },{
+            label:"d",
+            color:"#000000",
+          },{
+            label:"e",
+            color:"#000000",
+          },{
+            label:"f",
+            color:"#000000",
+          },{
+            label:"g",
+            color:"#000000",
+          },{
+            label:"h",
+            color:"#000000",
+          },{
+            label:"i",
+            color:"#000000",
+          },{
+            label:"j",
+            color:"#000000",
+          },{
+            label:"k",
+            color:"#000000",
+          },{
+            label:"l",
+            color:"#000000",
+          },{
+            label:"m",
+            color:"#000000",
+          },{
+            label:"n",
+            color:"#000000",
+          },{
+            label:"o",
+            color:"#000000",
+          },{
+            label:"p",
+            color:"#000000",
+          },{
+            label:"q",
+            color:"#000000",
+          },{
+            label:"r",
+            color:"#000000",
+          },{
+            label:"s",
+            color:"#000000",
+          },{
+            label:"t",
+            color:"#000000",
+          },{
+            label:"u",
+            color:"#000000",
+          },{
+            label:"1",
+            color:"red",
+          },{
+            label:"2",
+            color:"red",
+          },{
+            label:"3",
+            color:"red",
+          },{
+            label:"v",
+            color:"#000000",
+          },{
+            label:"w",
+            color:"#000000",
+          },{
+            label:"x",
+            color:"#000000",
+          },{
+            label:"4",
+            color:"red",
+          },{
+            label:"5",
+            color:"red",
+          },{
+            label:"6",
+            color:"red",
+          },{
+            label:"y",
+            color:"#000000",
+          },{
+            label:"z",
+            color:"#000000",
+          },{
+            label:".",
+            color:"#000000",
+          },{
+            label:"7",
+            color:"red",
+          },{
+            label:"8",
+            color:"red",
+          },{
+            label:"9",
+            color:"red",
+          },{
+            label:"+",
+            color:"#000000",
+          },{
+            label:"_",
+            color:"#000000",
+          },{
+            label:"-",
+            color:"#000000",
+          },{
+            label:"大写",
+            color:"#000000",
+          },{
+            label:"0",
+            color:"red",
+          },{
+            label:"退格",
+            color:"#000000",
+          }
+        ],
+        JieJingId:"",
+        jiejingNum:"",
+                JieJingId2:"",
+        jiejingNum2:""
+     
       }
     },
     methods: {
+            selectTableButtonAll(index){
+        let buttonName =  this.buttonListAll[index].label;
+        if(buttonName === "小写"){
+          this.buttonListAll=this.buttonListS;
+        }else if(buttonName === "大写"){
+          this.buttonListAll=this.buttonListB;
+        }else if(buttonName === "退格"){
+                      this.dataList.forEach(element => {
+             
+          if(element.id==this.JieJingId){
+       
+             element.isJieJing= element.isJieJing.substring(0, element.isJieJing.length-1);
+             this.jiejingNum=element.isJieJing
+     
+          }
+        });
+        }else{
+                         this.dataList.forEach(element => {
+             
+                
+          if(element.id==this.JieJingId){
+       
+             element.isJieJing+=buttonName
+       this.jiejingNum=element.isJieJing
+          }
+        });
+ 
+        }
+      
+      },
+             selectTableButtonAll2(index){
+        let buttonName =  this.buttonListAll[index].label;
+        if(buttonName === "小写"){
+          this.buttonListAll=this.buttonListS;
+        }else if(buttonName === "大写"){
+          this.buttonListAll=this.buttonListB;
+        }else if(buttonName === "退格"){
+                      this.SelectDataList.forEach(element => {
+             
+          if(element.id==this.JieJingId2){
+       element.stop_warping=String(element.stop_warping)
+             element.stop_warping= element.stop_warping.substring(0, element.stop_warping.length-1);
+             this.jiejingNum2=element.stop_warping
+     
+          }
+        });
+        }else{
+                   this.SelectDataList.forEach(element => {
+             
+                
+          if(element.id==this.JieJingId2){
+         element.stop_warping=String(element.stop_warping)
+             element.stop_warping+=buttonName
+       this.jiejingNum2=element.stop_warping
+          }
+        });
+ 
+        }
+      
+      },
       selectStyleName(machineId,index,flag){
        console.log(machineId)
        console.log(index)
@@ -462,12 +971,14 @@ this.SelectDataList.forEach(element => {
   }else{
        data.fenJiao="0"
   }
-       if(element.JieJing=="1"){
-            data.stopWarping="1"
-           }else{
-             data.stopWarping="0.5"
-           }
-  
+  console.log(data)
+  console.log(element)
+      //  if(element.JieJing=="1"){
+      //       data.stopWarping="1"
+      //      }else{
+      //        data.stopWarping="0.5"
+      //      }
+    // data.stopWarping=element.stopWarping
         warp_api(url, data, this.companyId)
           .then(response => {
             console.log(response)
@@ -508,11 +1019,12 @@ this.SelectDataList.forEach(element => {
            }else{
              json.fenJiao="0"
            }
-             if(element.isJieJing==true){
-             json.stopWarping="1"
-           }else{
-             json.stopWarping="0.5"
-           }
+          //    if(element.isJieJing==true){
+          //    json.stopWarping="1"
+          //  }else{
+          //    json.stopWarping="0.5"
+          //  }
+          json.stopWarping=element.isJieJing
            json.styleName=element.styleName
            json.machineId=element.machineId
             json.printCode=this.barCode
@@ -562,7 +1074,7 @@ json.shiftWork=this.shift.shiftQueue
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
+          isJieJing: "", //代表0.5
    styleName:""
         }]
         this.dataListCon=this.dataList
@@ -683,14 +1195,14 @@ selectLikeFields:{
           id: 1,
           machineId: "",
           isFenJiao: true,
-          isJieJing: true, //代表0.5
+          isJieJing: "", //代表0.5
           styleName:""
         }];
         this.dataListCon=[{
           id: 1,
           machineId: "",
           isFenJiao: true,
-           isJieJing: true, //代表0.5
+           isJieJing: "", //代表0.5
 styleName:""
         }]
         }else{
@@ -699,7 +1211,7 @@ styleName:""
           machineId: "",
           isFenJiao: true,
           styleName:"",
-          isJieJing: true, //代表0.5
+          isJieJing:"", //代表0.5
         })
         if (this.dataListCon.length % 3 == 1) {
           this.pageNum = this.pageNum + 1
@@ -787,20 +1299,40 @@ styleName:""
         });
       },
       changejiejing(id,isJieJing) { ///改变结经状态
+
             this.dataList.forEach(element => {
              
           if(element.id==id){
-           if(isJieJing==element.isJieJing){
-
-           }else{
-             element.isJieJing=!element.isJieJing
-           }
+                this.jiejingNum=element.isJieJing
           }
         });
-
+        this.showModifiedVarieties=true
+        this.JieJingId=id
+  
+      console.log(id)
+      console.log(this.dataListCon)
+      console.log(this.dataList)
       },
 
+        changejiejing2(id,isJieJing) { ///改变结经状态
+  
+            this.SelectDataList.forEach(element => {
+             
+          if(element.id==id){
+            if(element.isEdit==true){
+  this.jiejingNum2=element.stop_warping
+       this.showModifiedVarieties2=true
+        this.JieJingId2=id
+            }
+              
+          }
+        });
+   
+  
+      console.log(id)
+      console.log(this.SelectDataList)
 
+      },
 
       selectTableButton(buttonName) {
   
@@ -1041,7 +1573,7 @@ styleName:""
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.5
+            isJieJing: "", //代表0.5
             styleName:""
 
           }]
@@ -1049,7 +1581,7 @@ styleName:""
             id: 1,
             machineId: "",
             isFenJiao: true,
-            isJieJing: false, //代表0.5
+            isJieJing: "", //代表0.5
   styleName:""
           }]
           this.pageNum = 1

@@ -759,7 +759,14 @@ help:false,
             "id": this.warpPlanId,
             workQty1Time: this.getTime()
           }
-
+if(this.form.zj_zjgh2==""||this.form.zj_zjcd==""||this.form.zj_bs==""){
+     this.$message({
+              message:  '整经工号,长度,把数不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return
+}
 
         } else if (this.isZJ1 == 1) {
 
@@ -780,6 +787,14 @@ help:false,
             "id": this.warpPlanId,
             workQty2Time: this.getTime()
           }
+          if(this.form.zj2_zjgh2==""||this.form.zj2_zjcd==""||this.form.zj2_bs==""||this.form.zj2_swbs==""){
+     this.$message({
+              message:  '整经工号,长度,把数,扫尾把数不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return
+}
         } else if (this.isZJ1 == 2) {
           data = {
             "empId3": this.form.zj3_zjgh2,
@@ -798,7 +813,14 @@ help:false,
             "id": this.warpPlanId,
             workQty3Time: this.getTime()
           }
-
+if(this.form.zj3_zjgh2==""||this.form.zj3_zjcd==""||this.form.zj3_bs==""||this.form.zj3_swbs==""){
+     this.$message({
+              message:  '整经工号,长度,把数,扫尾把数不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return
+}
         }
 
         let that = this;
@@ -906,7 +928,14 @@ help:false,
             "id": this.warpPlanId,
             workQty1Time: this.getTime()
           }
-
+if(this.form.zj_zjgh2==""||this.form.zj_zjcd==""||this.form.zj_bs==""||this.form.zj_zh==""||this.form.zj_dzgh==""){
+     this.$message({
+              message:  '整经工号,长度,把数,轴号,倒轴工号不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return;
+}
 
         } else if (this.isZJ1 == 1) {
 
@@ -927,6 +956,14 @@ help:false,
             "id": this.warpPlanId,
             workQty2Time: this.getTime()
           }
+          if(this.form.zj2_zjgh2==""||this.form.zj2_zjcd==""||this.form.zj2_bs==""||this.form.zj2_zh==""||this.form.zj2_dzgh==""){
+     this.$message({
+              message:  '整经工号,长度,把数,轴号,倒轴工号不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return;
+}
         } else if (this.isZJ1 == 2) {
           data = {
             "empId3": this.form.zj3_zjgh2,
@@ -945,9 +982,17 @@ help:false,
             "id": this.warpPlanId,
             workQty3Time: this.getTime()
           }
+          if(this.form.zj3_zjgh2==""||this.form.zj3_zjcd==""||this.form.zj3_bs==""||this.form.zj3_zh==""||this.form.zj3_dzgh==""){
+     this.$message({
+              message:  '整经工号,长度,把数,轴号,倒轴工号不能为空！',
+              type: 'error',
+              duration: 1000
+            });
+            return;
+}
 
         }
-
+ 
         let header = {
           companyId: this.companyId
         }

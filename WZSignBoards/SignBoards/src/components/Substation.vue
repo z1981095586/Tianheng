@@ -570,7 +570,7 @@
         let _this = this;
 
         axios({
-            url: host1 + ':7070/wanzhou/getLineChart',
+            url: window.apiRoot.api_board + ':7070/wanzhou/getLineChart',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -913,7 +913,7 @@
       getWarningRange(workshopId) { //电流取最大最小警戒值
         let that = this
         axios({
-            url: host1 + ':7070/wanzhou/getWarningRange',
+            url: window.apiRoot.api_board + ':7070/wanzhou/getWarningRange',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -947,7 +947,7 @@
 
 
         axios({
-            url: host1 + ':7070/wanzhou/setWarningRange',
+            url: window.apiRoot.api_board + ':7070/wanzhou/setWarningRange',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -1003,7 +1003,7 @@
       getWarningRange1(workshopId) { //电流取最大最小警戒值
         let that = this
         axios({
-            url: host1 + ':7070/wanzhou/getWarningRange1',
+            url: window.apiRoot.api_board + ':7070/wanzhou/getWarningRange1',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -1042,7 +1042,7 @@
         }
 
         axios({
-            url: host1 + ':7070/wanzhou/setWarningRange1',
+            url: window.apiRoot.api_board + ':7070/wanzhou/setWarningRange1',
             method: 'post',
             headers: {
               'Content-Type': 'application/json',

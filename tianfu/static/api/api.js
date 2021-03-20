@@ -11,6 +11,7 @@ export function warp_api(url, data,companyId)
     'companyId': companyId
   };
   // console.log(data1);
+  console.log(totalUrl)
   return Axios({
     url: totalUrl,
     method: 'post',
@@ -96,8 +97,8 @@ export function realOutput_api(url, data,companyId)
 }
 export function common_api(url, data,companyId)
 {
-  let totalUrl=api66 + ':10086';//测试
-  // let totalUrl=api66 + ':8227';//正式
+  //let totalUrl=api66 + ':10086';//测试
+   let totalUrl=api66 + ':8227';//正式
   totalUrl+=url;
   let headers= {
     'Content-Type': 'application/json',
