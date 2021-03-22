@@ -527,7 +527,7 @@
 <script>
 import axios from "axios";
 import keyboard from "@/components/keyboard2";
-var host = "http://120.55.124.53:12140";
+
 export default {
   components: {
     keyboard,
@@ -656,7 +656,7 @@ export default {
       //获取组员信息
       //console.log("getGroup");
       //console.log(this.isYunzhuan);
-      let url2 = host + "/api/group/getGroupDetail";
+      let url2 = window.apiRoot.api53 + "/api/group/getGroupDetail";
       let that = this;
       axios({
         url: url2,
@@ -845,7 +845,7 @@ export default {
         };
       }
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
       let method = axios({
         url: url,
         method: "post",
@@ -1105,8 +1105,8 @@ export default {
       console.log(this.checkedMachineNum2);
       console.log(this.zbLength);
       console.log(this.jzLength);
-      let url = host + "/api/stationMachine/luoBu";
-      let url2 = host + "/api/stationMachine/downAxis";
+      let url = window.apiRoot.api53 + "/api/stationMachine/luoBu";
+      let url2 = window.apiRoot.api53 + "/api/stationMachine/downAxis";
       let that = this;
       axios({
         url: url,
@@ -1179,7 +1179,7 @@ export default {
         };
       }
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
 
       axios({
         url: url,
@@ -1211,7 +1211,7 @@ export default {
           type: "warning",
         });
       } else {
-        let url = host + "/api/stationMachine/downAxis";
+        let url = window.apiRoot.api53 + "/api/stationMachine/downAxis";
 
         let that = this;
         axios({
@@ -1262,7 +1262,7 @@ export default {
     checkedMachineNum2(val) {
       console.log(val);
       if (val != "") {
-        let url = host + "/api/zj/getInfoByMachineID";
+        let url = window.apiRoot.api53 + "/api/zj/getInfoByMachineID";
         let that = this;
 
         axios({
@@ -1289,7 +1289,7 @@ export default {
     },
     pch(val) {
       //批轴号事件
-      let url = host + "/api/zj/getWarpWorkOrder";
+      let url = window.apiRoot.api53 + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({

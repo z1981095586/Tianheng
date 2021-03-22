@@ -139,7 +139,7 @@
 
 <script>
 import axios from "axios";
-var host = "http://120.55.124.53:12140";
+
 export default {
   name: "Machinemaintenance",
   props: ["problem"],
@@ -220,7 +220,7 @@ export default {
         // error_desc = String(error_desc);
         console.log(error_desc);
         console.log(this.questionCon);
-        let url2 = host + "/api/group/getOnDutyShift";
+        let url2 = window.apiRoot.api53 + "/api/group/getOnDutyShift";
         let that = this;
         axios({
           //获取挡车工姓名
@@ -241,7 +241,7 @@ export default {
           //console.log(error_desc);
           //console.log(this.checkedMachineNum);
           //console.log(dcName);
-          let url = host + "/api/repair/errorSubmit";
+          let url = window.apiRoot.api53 + "/api/repair/errorSubmit";
           axios({
             url: url,
             method: "post",
@@ -280,7 +280,7 @@ export default {
     },
     getMachineList() {
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
       let method = axios({
         url: url,
         method: "post",
@@ -339,7 +339,7 @@ export default {
       }
     },
     getMachine() {
-      let url2 = host + "/api/repair/getRepairType";
+      let url2 = window.apiRoot.api53 + "/api/repair/getRepairType";
       let that = this;
       axios({
         url: url2,
@@ -425,7 +425,7 @@ export default {
     checkedMachineNum(val) {
       console.log(val);
       if (val != "") {
-        let url = host + "/api/zj/getInfoByMachineID";
+        let url = window.apiRoot.api53 + "/api/zj/getInfoByMachineID";
         let that = this;
 
         axios({

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import '../src/api'
   export default {
     name: 'App',
     provide() {

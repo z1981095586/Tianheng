@@ -233,7 +233,6 @@
 </template>
 
 <script>
-let host = "http://120.55.124.53:12140";
 import axios from "axios";
 export default {
   name: "illustration",
@@ -310,7 +309,7 @@ export default {
       }
     },
     getcurrentGroup(id, className) {
-      let url2 = host + "/api/group/getGroupDetail";
+      let url2 = window.apiRoot.api53 + "/api/group/getGroupDetail";
       let that = this;
       that.staffList = [];
       axios({
@@ -476,7 +475,7 @@ export default {
         };
       }
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
       let method = axios({
         url: url,
         method: "post",
@@ -602,7 +601,7 @@ export default {
       //     this.staffList.forEach((element) => {
       //       staffList.push(element.staffName);
       //     });
-      //     let url = host + "/api/stationMachine/caPian";
+      //     let url = window.apiRoot.api53 + "/api/stationMachine/caPian";
 
       //     let method = "post";
       //     let data = {
@@ -646,7 +645,7 @@ export default {
           this.staffList.forEach((element) => {
             staffList.push(element.staffName);
           });
-          let url = host + "/api/stationMachine/wanCencaPian";
+          let url = window.apiRoot.api53 + "/api/stationMachine/wanCencaPian";
 
           let method = "post";
           let data = {
@@ -736,7 +735,7 @@ export default {
     save() {
       //确认按钮事件
       if (this.isStartChange == true) {
-        let url = host + "/api/group/shift";
+        let url = window.apiRoot.api53 + "/api/group/shift";
         let staffList = [];
         for (let i = 0; i < this.staffList.length; i++) {
           staffList.push({
@@ -856,7 +855,7 @@ export default {
   watch: {
     pch(val) {
       //批轴号事件
-      let url = host + "/api/zj/getWarpWorkOrder";
+      let url = window.apiRoot.api53 + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({

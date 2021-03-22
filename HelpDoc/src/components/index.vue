@@ -16,7 +16,8 @@
         <div style="height:70%;">
           <div style="margin:1rem;">
             <el-radio v-model="radio" label="1">天衡</el-radio>
-            <el-radio v-model="radio" label="2">布威</el-radio>
+            <el-radio v-model="radio" label="2">布威七天</el-radio>
+                    <el-radio v-model="radio" label="3">布威mes</el-radio>
           </div>
           <div v-show="radio=='1'">
             <el-cascader @change="changes" v-model="selectedMenu" :clearable="true" filterable placeholder="请选择上传手册的模块"
@@ -39,7 +40,7 @@
               </el-option>
             </el-select>
             <el-upload style="margin:2rem" class="upload-demo" drag ref="upload2" :limit="2"
-              action="http://106.12.219.66:14100/BWmes/file_upload" :file-list="fileList2" :auto-upload="true"
+              action="http://36.26.68.46:14100/BWmes/file_upload" :file-list="fileList2" :auto-upload="true"
               :multiple="true" :on-change="handleChange2" :http-request="allUpload2">
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -49,6 +50,21 @@
             <!-- <el-button type="primary" @click="upload2" :disabled="disabled">上传文件</el-button> -->
             <el-button type="primary" @click="download2()">下载Word</el-button>
 
+          </div>
+                  <div v-show="radio=='3'">
+            <el-cascader @change="changes3" v-model="selectedMenu3" :clearable="true" filterable placeholder="请选择上传手册的模块"
+              :options="data" :props="props"></el-cascader>
+            <el-upload style="margin:2rem" class="upload-demo" drag ref="upload3" :limit="2"
+              action="http://36.26.68.46:14100/mes/file_upload" :file-list="fileList3" :auto-upload="true"
+              :multiple="true" :on-change="handleChange3" :http-request="allUpload3">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">注意：同时上传pdf文件和doc(docx)文件</div>
+              <div class="el-upload__tip" slot="tip" style="color:red;">(选择完成后系统自动上传)</div>
+            </el-upload>
+            <!-- <el-button type="primary" @click="upload" :disabled="disabled">上传文件</el-button> -->
+            <el-button type="primary" @click="download3()">下载Word</el-button>
+            <el-button type="warning" style="margin-bottom:1rem;" @click="tb3()">同步节点</el-button>
           </div>
         </div>
       </div>
@@ -63,6 +79,7 @@
 
 <script>
   var getUrl = window.apiRoot.getApi + '/report/getSimpleReport'
+    var bwgetUrl = window.apiRoot.bwgetApi + '/report/getSimpleReport'
   import axios from 'axios'
   export default {
     name: 'index',
@@ -72,20 +89,27 @@
         loginOutShow: false,
         tab: "message",
         data: [],
+        data3:[],
         props: {
           value: "name",
           label: "name",
           children: "menuMid"
         },
         selectedMenu: "",
+        selectedMenu3:"",
         other: {
+
+        },
+          other3: {
 
         },
         radio: "1",
         disabled: false,
         disabled2: false,
+              disabled3: false,
         fileList: [],
         fileList2: [],
+             fileList3: [],
         options: [{
             value: '第一天培训手册',
             label: '第一天培训手册'
@@ -143,7 +167,7 @@
         }
 
         axios({
-          url: window.apiRoot.hostApi + "/BWmes/file_upload",
+          url: window.apiRoot.bwhostApi + "/BWmes/file_upload",
           method: "post",
           // headers: header,
           data: formData,
@@ -189,7 +213,7 @@
         if (this.value) {
 
           axios({
-            url: window.apiRoot.hostApi + "/BWmes/file_download",
+            url: window.apiRoot.bwhostApi + "/BWmes/file_download",
             method: "post",
             // headers: header,
             data: {
@@ -206,7 +230,7 @@
                 type: 'warning'
               });
             } else {
-              axios.post(window.apiRoot.hostApi + "/BWmes/file_download", {
+              axios.post(window.apiRoot.bwhostApi + "/BWmes/file_download", {
                 dir: this.value,
 
                 file_type: 0
@@ -295,6 +319,34 @@
           }
         })
       },
+           tb3() {
+
+        let url = window.apiRoot.bwhostApi + "/mes/synchronization"
+        axios({
+          url: url,
+          method: "get",
+          // headers: header,
+          // data: data,
+
+
+        }).then((response) => {
+          //console.log(response)
+          if (response.data.message == "response to success") {
+            this.$message({
+              message: '同步成功！',
+              type: 'success',
+              duration: 1000
+            });
+            this.getNode3()
+          } else {
+            this.$message({
+              message: '系统错误！',
+              type: 'warning',
+              duration: 1000
+            });
+          }
+        })
+      },
       download(url) { //下载事件
         let that = this
         //console.log(that.other.name)
@@ -355,9 +407,73 @@
         }
 
       },
+         download3(url) { //下载事件
+        let that = this
+        //console.log(that.other.name)
+        if (this.other3.dir && this.other3.name) {
+
+          axios({
+            url: window.apiRoot.bwhostApi + "/mes/file_download",
+            method: "post",
+            // headers: header,
+            data: {
+              dir: this.other3.dir,
+              name: this.other3.name,
+              file_type: 0
+            },
+            // headers: headers
+          }).then((res) => {
+            console.log(res)
+            if (res.data.data == "文件不存在") {
+              this.$message({
+                message: res.data.data,
+                type: 'warning'
+              });
+            } else {
+              axios.post(window.apiRoot.bwhostApi + "/mes/file_download", {
+                dir: this.other3.dir,
+                name: this.other3.name,
+                file_type: 0
+              }, {
+                responseType: 'blob'
+              }).then(function (res) {
+                console.log(res)
+                var blob = res.data;
+                // FileReader主要用于将文件内容读入内存
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                // onload当读取操作成功完成时调用
+                reader.onload = function (e) {
+                  var a = document.createElement('a');
+                  // 获取文件名fileName
+                  //console.log(res)
+                  var fileName = that.other3.name;
+                  // fileName = fileName[fileName.length - 1];
+                  // fileName = fileName.replace(/"/g, "");
+                  a.download = fileName;
+                  a.href = e.target.result;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }
+              });
+            }
+          })
+        } else {
+          this.$message({
+            message: '请先选择模块！',
+            type: 'warning'
+          });
+        }
+
+      },
       handleChange(file, fileList) { //文件改变事件
 
         this.fileList = fileList;
+      },
+          handleChange3(file, fileList) { //文件改变事件
+
+        this.fileList3 = fileList;
       },
       upload() { //按钮点击触发上传
         if (this.other.dir && this.other.name) {
@@ -443,6 +559,66 @@
         })
 
       },
+           allUpload3() { //上传事件
+        let formData = new FormData();
+
+
+        formData.append("file", this.fileList3[0].raw)
+
+        formData.append("file1", this.fileList3[1].raw)
+        formData.append("dir", this.other3.dir)
+        formData.append("name", this.other3.name)
+
+        if (!this.other3.dir) {
+          this.$message({
+            message: '请先选择模块！',
+            type: 'warning'
+          });
+          this.fileList3 = []
+          this.$refs.upload3.clearFiles();
+          return
+        }
+
+        axios({
+          url: window.apiRoot.bwhostApi + "/mes/file_upload",
+          method: "post",
+          // headers: header,
+          data: formData,
+          // headers: headers
+          onUploadProgress: (progressEvent) => {
+            //console.log(progressEvent.total)
+            this.centerDialogVisible = true
+            let num = progressEvent.loaded / progressEvent.total * 100 | 0; //百分比
+            this.num = num
+          }
+
+        }).then((res) => {
+          console.log(res)
+          if (res.data.message == "response to success") {
+            this.$message({
+              message: '上传成功！',
+              type: 'success'
+            });
+
+            this.centerDialogVisible = false
+
+          } else {
+            this.$message({
+              message: '上传失败！' + res.data.data,
+              type: 'error'
+            });
+        this.centerDialogVisible = false
+          }
+          this.fileList3 = []
+          this.$refs.upload3.clearFiles();
+          this.disabled3 = true
+          setTimeout(() => {
+            this.disabled3 = false
+
+          }, 100);
+        })
+
+      },
       getNode() { //获取联结菜单
         let data = {
           tableName: 'operate_node',
@@ -501,29 +677,68 @@
           })
 
         })
-        //   axios({
-        //     url: "http://106.12.219.66:16011/api/system/login/judgeUser",
-        //     method: "post",
-        //     // headers: header,
-        //     data: {
-        //       "name": "admin",
-        //       "password": "f78b638d5893f4b9c03f877da02b5e9b",
-        //       "from": 1
-        //     },
-        //     // headers: headers
-        //   }).then((res) => {
-
-        //     let arr = []
-        //     for (let i = 0; i < res.data.data.menu.length; i++) {
-        //       arr.push(res.data.data.menu[i])
-        //     }
-        //     this.data = arr
-        // //console.log(this.data)
-
-        //     // that.totalDataNum = res.data.data.totalDataNum
-        //   })
+    
       },
+ getNode3() { //获取联结菜单
+        let data = {
+          tableName: 'operate_node',
+          query: {
 
+            level: 1
+          }
+        }
+        let data2 = {
+          tableName: 'operate_node',
+          query: {
+
+            level: 2
+          }
+        }
+        let header = {
+          companyId: 0
+        }
+
+        axios({
+          url: bwgetUrl,
+          method: "post",
+          headers: header,
+          data: data,
+
+          // headers: headers
+        }).then((response) => {
+          //console.log(response)
+          let arr = response.data.data
+
+          axios({
+            url: bwgetUrl,
+            method: "post",
+            headers: header,
+            data: data2,
+
+            // headers: headers
+          }).then((res) => {
+            //console.log(res.data.data)
+
+            for (let i = 0; i < arr.length; i++) {
+              arr[i].menuMid = []
+            }
+            for (let i = 0; i < arr.length; i++) {
+              for (let j = 0; j < res.data.data.length; j++) {
+
+                if (res.data.data[j].pid == arr[i].id) {
+                  arr[i].menuMid.push(res.data.data[j])
+                }
+
+              }
+            }
+            //console.log(arr)
+            this.data3 = arr
+
+          })
+
+        })
+    
+      },
       changes(e) { //联级菜单模块选择
 
 
@@ -534,7 +749,16 @@
         this.$refs.upload.clearFiles();
         //console.log(this.other)
       },
+      changes3(e) { //联级菜单模块选择
 
+
+        this.other3 = {
+          dir: this.selectedMenu3[0],
+          name: this.selectedMenu3[1],
+        }
+        this.$refs.upload3.clearFiles();
+        //console.log(this.other)
+      },
     },
     mounted() {
       this.getNode()
@@ -544,6 +768,11 @@
     watch: {
       radio(val) {
         console.log(val)
+        if(val=="1"){
+             this.getNode()
+        }else if(val=="3"){
+          this.getNode3()
+        }
       }
     }
 

@@ -399,7 +399,7 @@
 
 <script>
 import axios from "axios";
-var host = "http://120.55.124.53:12140";
+
 export default {
   name: "Out",
   props: ["nameList4"],
@@ -755,7 +755,7 @@ export default {
     },
     getMachineList() {
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
 
       axios({
         url: url,
@@ -829,7 +829,7 @@ export default {
       console.log(this.issaoma);
       if (this.issaoma == true) {
         if (this.print_code != "" && this.machine_id != "") {
-          let url = host + "/api/stationMachine/kaiCu";
+          let url = window.apiRoot.api53 + "/api/stationMachine/kaiCu";
           let data = {
             selectInfo: {
               company_id: this.company_id,
@@ -932,7 +932,7 @@ export default {
         // staffList[0].id = this.staffList[0].id;
         staffList[0].order_num = 1;
 
-        let url = host + "/api/group/shift";
+        let url = window.apiRoot.api53 + "/api/group/shift";
         let data = {
           selectInfo: {
             company_id: this.company_id,
@@ -994,7 +994,7 @@ export default {
       for (let i = 0; i < this.staffList.length; i++) {
         if (this.staffList[i].isSelected == true) {
           this.staffList[i].staffName = e[0];
-          let url = "http://106.12.219.66:8227/report/getSimpleReport";
+          let url = window.apiRoot.api66 + "/report/getSimpleReport";
           let headers = {
             "Content-Type": "application/json",
             companyID: this.company_id,
@@ -1042,7 +1042,7 @@ export default {
       //获取组员信息
       //console.log("getGroup");
       //console.log(this.isYunzhuan);
-      let url2 = host + "/api/group/getGroupDetail";
+      let url2 = window.apiRoot.api53 + "/api/group/getGroupDetail";
       let that = this;
       axios({
         url: url2,
@@ -1205,7 +1205,7 @@ export default {
       });
     },
     getStaffList() {
-      let url = "http://106.12.219.66:8227/report/getSimpleReport";
+      let url = window.apiRoot.api66 + "/report/getSimpleReport";
       let data = {
         tableName: "s_staff",
         sort: "DESC",
@@ -1251,7 +1251,7 @@ export default {
     },
     pch(val) {
       //批轴号事件
-      let url = host + "/api/zj/getWarpWorkOrder";
+      let url = window.apiRoot.api53 + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({

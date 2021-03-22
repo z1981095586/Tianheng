@@ -307,7 +307,7 @@ help:false,
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+        let url2 = window.apiRoot.get_table+":8763/wear-weaving-plan/saveWear";
         let that = this
         axios({
           url: url2,
@@ -366,7 +366,7 @@ help:false,
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+        let url2 = window.apiRoot.get_table+":8763/wear-weaving-plan/saveWear";
         let that = this
         axios({
           url: url2,
@@ -420,7 +420,7 @@ help:false,
           'Content-Type': 'application/json',
           'companyID': this.companyId
         };
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+        let url2 = window.apiRoot.get_table+":8763/wear-weaving-plan/saveWear";
         let that = this
         axios({
           url: url2,
@@ -508,7 +508,7 @@ help:false,
           pageSize);
       },
       getData() {
-        let url = 'http://120.55.124.53:12140/api/zj/getCuanZongPlan';
+        let url = window.apiRoot.api_board+':12140/api/zj/getCuanZongPlan';
 
         let method = "post";
         let data = {
@@ -625,7 +625,7 @@ help:false,
 
       selectStaffCode(flag) {
 
-        let url = "http://106.12.219.66:8227/report/getSimpleReport";
+        let url = window.apiRoot.get_table+":8227/report/getSimpleReport";
         let data = {}
         let header = {
           companyId: this.companyId
@@ -753,8 +753,8 @@ help:false,
         return true;
       },
       getInfo(val) {
-        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
-        let url2 = "http://106.12.219.66:8763/wear-weaving-plan/saveWear";
+        let url = window.apiRoot.get_table+":8763/lm-zjwarp-plan-detail/selectByPlanB";
+        let url2 = window.apiRoot.get_table+":8763/wear-weaving-plan/saveWear";
         let data = {
 
           "barCode": val

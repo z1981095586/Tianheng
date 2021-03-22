@@ -113,7 +113,7 @@
 <script>
 import axios from "axios";
 import pdf from "vue-pdf";
-var host = "http://120.55.124.53:12140";
+
 import Uppershaft from "./Uppershaft"; //上轴操作面板
 import illustration from "./illustration"; //扫码插片操作面板
 import Stopcar from "./Stopcar"; //挡车操作面板
@@ -249,7 +249,7 @@ export default {
       //第一个参数groupId，第二个参数页面缩写
       //获取当前班次(当班分组)(倒数第二级分组)
 
-      let url2 = host + "/api/group/getOnDutyShift";
+      let url2 = window.apiRoot.api53 + "/api/group/getOnDutyShift";
       let that = this;
       axios({
         url: url2,
@@ -442,7 +442,7 @@ export default {
     },
     getProblem() {
       //获取问题列表
-      let url2 = host + "/api/repair/getRepairType";
+      let url2 = window.apiRoot.api53 + "/api/repair/getRepairType";
       let that = this;
 
       axios({

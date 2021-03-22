@@ -138,11 +138,11 @@
       </div>
       <div class="bottom_btn">
         <div class="btns" :style=" enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''"
-          @click="ssFinish()">上纱完成</div>
+          @click="ssFinish()"   v-loading.fullscreen.lock="fullscreenLoading"  element-loading-text="数据请求中"    element-loading-background="rgba(0, 0, 0, 0.8)" >上纱完成</div>
         <div class="btns" :style=" (enabled&&isZJ1!=2)  ? '':'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)'"
-          @click="jjFinish()">交接班</div>
+          @click="jjFinish()"  v-loading.fullscreen.lock="fullscreenLoading"  element-loading-text="数据请求中"    element-loading-background="rgba(0, 0, 0, 0.8)" >交接班</div>
         <div class="btns" @click="isFinish()"
-          :style=" !enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''">完成</div>
+          :style=" !enabled ? 'background:rgba(163,216,151,0.6);color:rgba(0,0,0,0.6)':''"  v-loading.fullscreen.lock="fullscreenLoading"  element-loading-text="数据请求中"    element-loading-background="rgba(0, 0, 0, 0.8)" >完成</div>
         <div class="btns" style="margin-left:15rem;background:#808080;color:white" @click=" back">返回</div>
       </div>
     </div>
@@ -248,7 +248,7 @@
         pageCount: 0, // pdf文件总页数
         fileType: 'pdf', // 文件类型
 　　　　　src: require('../pdf/help.pdf'), // pdf文件地址
-
+fullscreenLoading:false,
         timer: "",
         time: "",
         enabled: false,
@@ -336,7 +336,7 @@ help:false,
     },
     methods: {
       getInfo(val) {
-        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/selectByPlanB";
+        let url = window.apiRoot.get_table+":8763/lm-zjwarp-plan-detail/selectByPlanB";
         let data = {
 
           "barCode": val
@@ -436,7 +436,7 @@ help:false,
       },
       selectStaffCode(flag) {
         console.log(flag)
-        let url = "http://106.12.219.66:8227/report/getSimpleReport";
+        let url = window.apiRoot.get_table+":8227/report/getSimpleReport";
         let data = {}
         let header = {
           companyId: this.companyId
@@ -606,7 +606,7 @@ help:false,
       },
       getShift() {
         console.log(this.getDate())
-        let url = "http://106.12.219.66:8763/shift-rule/selectShift";
+        let url = window.apiRoot.get_table+":8763/shift-rule/selectShift";
         let data = {};
         data.workshopId = "1";
         data.macTypeId = "040000";
@@ -686,7 +686,8 @@ help:false,
 
         // } else {
           if(this.enabled==false){
-      let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/zjYarnSpindle";
+            this.fullscreenLoading=true
+      let url = window.apiRoot.get_table+":8763/lm-zjwarp-plan-detail/zjYarnSpindle";
         let data = {
 
           staffId1Yarn: this.ss_zjgh1_code,
@@ -715,6 +716,7 @@ help:false,
               duration: 1000
             });
             this.getInfo(this.printCode)
+   
             this.enabled = true
           } else {
             this.$message({
@@ -724,6 +726,7 @@ help:false,
             });
 
           }
+                   this.fullscreenLoading=false
         })
           }
   
@@ -732,7 +735,7 @@ help:false,
 
       },
       jjFinish() {
-        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
+        let url = window.apiRoot.get_table+":8763/lm-zjwarp-plan-detail/submit";
         let data = {
 
 
@@ -822,7 +825,7 @@ if(this.form.zj3_zjgh2==""||this.form.zj3_zjcd==""||this.form.zj3_bs==""||this.f
             return
 }
         }
-
+       this.fullscreenLoading=true
         let that = this;
         //  console.log(this.enabled)
         //  console.log(this.isZJ1)
@@ -854,6 +857,7 @@ if(this.form.zj3_zjgh2==""||this.form.zj3_zjcd==""||this.form.zj3_bs==""||this.f
             });
 
           }
+                 this.fullscreenLoading=false
         })
         // } else {
         //                this.$message({
@@ -890,7 +894,7 @@ if(this.form.zj3_zjgh2==""||this.form.zj3_zjcd==""||this.form.zj3_bs==""||this.f
         //  this.$message.warning('请先上纱！');
 
         // } else {
-        let url = "http://106.12.219.66:8763/lm-zjwarp-plan-detail/submit";
+        let url = window.apiRoot.get_table+":8763/lm-zjwarp-plan-detail/submit";
         let data = {}
         // let data = {
         //   "empId3": this.form.zj3_zjgh2,
@@ -997,6 +1001,7 @@ if(this.form.zj_zjgh2==""||this.form.zj_zjcd==""||this.form.zj_bs==""||this.form
           companyId: this.companyId
         }
         let that = this;
+                 this.fullscreenLoading=true
         axios({
           url: url,
           method: "post",
@@ -1035,6 +1040,7 @@ if(this.form.zj_zjgh2==""||this.form.zj_zjcd==""||this.form.zj_bs==""||this.form
             });
 
           }
+                   this.fullscreenLoading=false
         })
 
 

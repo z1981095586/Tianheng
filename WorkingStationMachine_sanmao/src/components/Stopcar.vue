@@ -338,7 +338,6 @@
 </template>
 
 <script>
-let host = "http://120.55.124.53:12140";
 import axios from "axios";
 import keyboard from "@/components/keyboard";
 export default {
@@ -416,8 +415,8 @@ export default {
             type: "warning",
           });
         } else {
-          let url = host + "/api/stationMachine/luoBu";
-          let url2 = host + "/api/stationMachine/downAxis";
+          let url = window.apiRoot.api53 + "/api/stationMachine/luoBu";
+          let url2 = window.apiRoot.api53 + "/api/stationMachine/downAxis";
           let that = this;
           axios({
             url: url,
@@ -479,7 +478,7 @@ export default {
     getGroup(classname) {
       //获取组员信息
       this.checkedName = localStorage.getItem("dcName");
-      // let url2 = host + "/api/group/getGroupDetail";
+      // let url2 = window.apiRoot.api53 + "/api/group/getGroupDetail";
       // let that = this;
       // axios({
       //   url: url2,
@@ -520,7 +519,7 @@ export default {
       // });
     },
     getStaffList() {
-      let url = "http://106.12.219.66:8227/report/getSimpleReport";
+      let url = window.apiRoot.api66 + "/report/getSimpleReport";
       let data = {
         tableName: "s_staff",
         sort: "DESC",
@@ -603,7 +602,7 @@ export default {
         };
       }
       let that = this;
-      let url = host + "/api/stationMachine/getMachines";
+      let url = window.apiRoot.api53 + "/api/stationMachine/getMachines";
       let method = axios({
         url: url,
         method: "post",
@@ -645,7 +644,7 @@ export default {
       this.checkMachineColor.forEach((element) => {
         if (element.isChecked == true) {
           if (String(this.lbLength) != "") {
-            let url = host + "/api/stationMachine/luoBu";
+            let url = window.apiRoot.api53 + "/api/stationMachine/luoBu";
             let that = this;
             axios({
               url: url,
@@ -766,7 +765,7 @@ export default {
       //console.log(this.checkedName);
       //console.log(this.checkedClass);
       if (this.checkedName != "") {
-        let url = "http://106.12.219.66:8227/report/getSimpleReport";
+        let url = window.apiRoot.api66 + "/report/getSimpleReport";
         let headers = {
           "Content-Type": "application/json",
           companyID: this.company_id,
@@ -821,7 +820,7 @@ export default {
           this.shiftShow = false;
           this.PzShow = false;
           this.isMachine = true;
-          // let url2 = host + "/api/group/shift";
+          // let url2 = window.apiRoot.api53 + "/api/group/shift";
           // let data2 = {
           //   selectInfo: {
           //     company_id: that.company_id,
@@ -891,7 +890,7 @@ export default {
           }
         }
         this.checkMachineColor;
-        let url = host + "/api/stationMachine/dangCe";
+        let url = window.apiRoot.api53 + "/api/stationMachine/dangCe";
 
         let method = "post";
         let data = {
@@ -950,7 +949,7 @@ export default {
           }
         }
         this.checkMachineColor;
-        let url = host + "/api/stationMachine/guanJi";
+        let url = window.apiRoot.api53 + "/api/stationMachine/guanJi";
 
         let method = "post";
         let data = {
@@ -1008,7 +1007,7 @@ export default {
           machine_id = this.checkMachineColor[i].label;
         }
       }
-      let url = host + "/api/zj/getInfoByMachineID";
+      let url = window.apiRoot.api53 + "/api/zj/getInfoByMachineID";
       let that = this;
 
       axios({
@@ -1084,7 +1083,7 @@ export default {
       this.shiftShow = false;
       this.isCar = true;
       this.checkMachineColor = [];
-      let url2 = host + "/api/stationMachine/getBindMachines";
+      let url2 = window.apiRoot.api53 + "/api/stationMachine/getBindMachines";
       let that = this;
       axios({
         url: url2,
@@ -1170,7 +1169,7 @@ export default {
         console.log(localStorage.getItem("dcId"));
         console.log(this.checkMachine);
 
-        let url = host + "/api/stationMachine/bindMachines";
+        let url = window.apiRoot.api53 + "/api/stationMachine/bindMachines";
         let that = this;
         axios({
           url: url,
@@ -1213,7 +1212,7 @@ export default {
   watch: {
     pzPrintCode(val) {
       //批轴号事件
-      let url = host + "/api/zj/getWarpWorkOrder";
+      let url = window.apiRoot.api53 + "/api/zj/getWarpWorkOrder";
       let that = this;
       if (val != "") {
         axios({
